@@ -1,7 +1,32 @@
-<ul>
-   <li><a href="" routerLink="/about">About</a></li>
-   <li><a href="" routerLink="/viewer">Viewer</a></li>
-   <li><a href="" routerLink="/technicalmap">Technical Map</a></li>
-   <li><a href="" routerLink="/scorecard">Score Card</a></li>
-   <li><a href="" routerLink="/contact">Contact</a></li>
-</ul>
+<nav class="navbar navbar-toggleable-md navbar-inverse bg-primary">
+   <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+   <span class="navbar-toggler-icon"></span>
+   </button>
+
+   <a class="navbar-brand" href="#"><img class="icon-img"src="assets/image/icon-nav.png" alt="">RESILINCE INDICATOR DATA VISUALIZATION PLATFORM</a>
+   <div class="collapse navbar-collapse" id="navbarColor01">
+      <ul class="navbar-nav mr-auto">
+         <li class="nav-item active">
+            <a class="nav-link" href="" routerLink="/about">ABOUT</a>
+         </li>
+         <li class="nav-item">
+            <a class="nav-link" href="" routerLink="/viewer">VIEWER</a>
+         </li>
+         <li class="nav-item">
+            <a class="nav-link" data-toggle="dropdown" href="" routerLink="/technicalmap">TECHNICAL MAP <span class="caret"></span></a>
+         </li>
+         <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="" routerLink="/scorecard">SCORE CARD</a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="#">Specific Policy Measure</a>
+              <div class="dropdown-divider">
+              </div>
+              <a class="dropdown-item" href="#">Policy Priority List</a>
+            </div>
+         </li>
+         <li class="nav-item">
+            <a class="nav-link" href="" routerLink="/contact">CONTACT</a>
+         </li>
+      </ul>
+   </div>
+</nav>
