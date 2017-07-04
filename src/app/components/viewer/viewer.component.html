@@ -1,3 +1,342 @@
-<p>
-  viewer works!
-</p>
+<div class="container">
+   <div class="row">
+      <div class="col-md-8 vertical-border">
+         <div class="row">
+            <div class="col-md-4 search-map">
+               <div class="input-group">
+                  <input type="search" class="form-control" placeholder="Search Country">
+                  <span class="input-group-btn">
+                  <button class="btn button-search" type="button"><i class="mdi mdi-magnify"></i></button>
+                  </span>
+               </div>
+            </div>
+         </div>
+         <div class="row">
+            <div class="col-md-12 fondo-map">
+               <ngb-carousel>
+                  <ng-template ngbSlide>
+                     <img src="assets/image/map.png" alt="Random first slide">
+                     <div class="carousel-caption">
+                        <h6>SOCIOECONOMIC CAPACITY (%)</h6>
+                     </div>
+                  </ng-template>
+                  <ng-template ngbSlide>
+                     <img src="assets/image/map.png" alt="Random second slide">
+                     <div class="carousel-caption">
+                        <h6>EXPECTED WELFARE LOSSES (% of GDP)</h6>
+                     </div>
+                  </ng-template>
+                  <ng-template ngbSlide>
+                     <img src="assets/image/map.png" alt="Random third slide">
+                     <div class="carousel-caption">
+                        <h6>EXPECTED ASSET LOSSES (% of GDP)</h6>
+                     </div>
+                  </ng-template>
+               </ngb-carousel>
+            </div>
+         </div>
+         <div class="row box-general border-content">
+            <div class="col-md-12">
+               <h6>RESULTS
+                  <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
+                  <i class="mdi mdi-information-outline"></i>
+                  </button>
+                  <span><i class="mdi mdi-checkbox-blank-circle box-icon-c"></i> Country</span>
+                  <span><i class="mdi mdi-checkbox-blank-circle box-icon"></i> Global Avarage</span>
+               </h6>
+            </div>
+         </div>
+         <div class="row box-general border-content">
+            <div class="col-md-12">
+               <button type="button" class="btn btn-secondary bottom-results">Malawi</button>
+            </div>
+            <div class="col-md-4">
+               <p class="text-results">RISK TO ASSETS<br><b class="text-number">71.19%</b></p>
+            </div>
+            <div class="col-md-4">
+               <p class="text-results">SOCIO-ECONOMIC CAPACITY<br><b class="text-number">71.19%</b></p>
+            </div>
+            <div class="col-md-4">
+               <p class="text-results">RISK TO<br>WELL-BEING<br><b class="text-number">71.19%</b></p>
+            </div>
+         </div>
+         <div class="row box-general border-content">
+            <div class="col-md-12">
+               <button type="button" class="btn btn-secondary bottom-results">Malawi</button>
+            </div>
+            <div class="col-md-4">
+               <p class="text-results">RISK TO ASSETS<br><b class="text-number">0.019%</b></p>
+            </div>
+            <div class="col-md-4">
+               <p class="text-results">SOCIO-ECONOMIC CAPACITY<br><b class="text-number">71.19%</b></p>
+            </div>
+            <div class="col-md-4">
+               <p class="text-results">RISK TO<br>WELL-BEING<br><b class="text-number">71.19%</b></p>
+            </div>
+         </div>
+      </div>
+      <div class="col-md-4">
+         <div class="row box-general border-content">
+            <div class="col-md-12 box-factor">
+               <h6>RESILIENCE FACTORS
+                  <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
+                  <i class="mdi mdi-information-outline"></i>
+                  </button>
+               </h6>
+               <div class="box-dowload">
+                  <button type="button" class="btn btn-primary"><i class="mdi mdi-arrow-down-bold-box-outline"></i>CSV</button>
+                  <button type="button" class="btn btn-primary"><i class="mdi mdi-arrow-down-bold-box-outline"></i>PDF</button>
+               </div>
+            </div>
+         </div>
+         <div class="row">
+            <div class="col-md-12">
+               <p>Select two countries from map or dropdown:</p>
+            </div>
+         </div>
+         <div class="row box-general border-content">
+            <div class="col-md-12">
+               <div ngbDropdown class="option-global">
+                  <i class="mdi mdi-checkbox-blank-circle box-icon-c"></i>
+                  <button class="btn btn-secondary dropdown-global" id="dropdownBasic1" ngbDropdownToggle>Global</button>
+                  <div class="dropdown-menu box-item" aria-labelledby="dropdownBasic1">
+                     <button class="dropdown-item">Regional</button>
+                  </div>
+                  <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
+                  <i class="mdi mdi-information-outline"></i>
+                  </button>
+               </div>
+               <div><i class="mdi mdi-checkbox-blank-circle box-icon"></i> Country</div>
+               <div class="box-dropdown">
+                  <div ngbDropdown class="d-inline-block">
+                     <button class="btn btn-secondary" id="dropdownBasic1" ngbDropdownToggle>Malawi</button>
+                     <div class="dropdown-menu" aria-labelledby="dropdownBasic1">
+                        <button class="dropdown-item">Action - 1</button>
+                        <button class="dropdown-item">Action - 2</button>
+                        <button class="dropdown-item">Action - 3</button>
+                     </div>
+                  </div>
+                  <i class="mdi mdi-plus"></i>
+                  <div ngbDropdown class="d-inline-block">
+                     <button class="btn btn-secondary" id="dropdownBasic1" ngbDropdownToggle>Zimbabwe</button>
+                     <div class="dropdown-menu" aria-labelledby="dropdownBasic1">
+                        <button class="dropdown-item">Action - 1</button>
+                        <button class="dropdown-item">Action - 2</button>
+                        <button class="dropdown-item">Action - 3</button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="row">
+            <div class="col-md-12 box-tab">
+               <div class="tab border-content">
+                  <input id="tab-one" type="checkbox" name="tabs">
+                  <label for="tab-one">Exposure <i class="mdi mdi-information-outline"></i></label>
+                  <div class="tab-content">
+                     <div class="row">
+                        <div class="col-md-4 box-tab-text">
+                           Exposure to riverine and coastal floods, poor [% of total assets of poor]
+                        </div>
+                        <div class="col-md-4">
+                           image
+                        </div>
+                        <div class="col-md-4">
+                           image
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-4 box-tab-text">
+                          Exposure to riverine and coastal floods, non-poor [% of total assets of non-poor]
+                        </div>
+                        <div class="col-md-4">
+                           image
+                        </div>
+                        <div class="col-md-4">
+                           image
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-4 box-tab-text">
+                          Asset vulnerability, poor people [% destruction of exposed assets of poor]
+                        </div>
+                        <div class="col-md-4">
+                           image
+                        </div>
+                        <div class="col-md-4">
+                           image
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-4 box-tab-text">
+                           Asset vulnerability, non-poor people [% destruction of exposed assets of non-poor]
+                        </div>
+                        <div class="col-md-4">
+                           image
+                        </div>
+                        <div class="col-md-4">
+                           image
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-4 box-tab-text">
+                           Exposure to earthquakes [% of total assets]
+                        </div>
+                        <div class="col-md-4">
+                          image
+                        </div>
+                        <div class="col-md-4">
+                          image
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-4 box-tab-text">
+                           Exposure to tsunamis [% of total assets]
+                        </div>
+                        <div class="col-md-4 ">
+                           image
+                        </div>
+                        <div class="col-md-4">
+                          image
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-4 box-tab-text">
+                          Exposure to windstorms [% of total assets]
+                        </div>
+                        <div class="col-md-4">
+                          image
+                        </div>
+                        <div class="col-md-4">
+                          image
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="tab border-content">
+                  <input id="tab-two" type="checkbox" name="tabs">
+                  <label for="tab-two">Economic <i class="mdi mdi-information-outline"></i></label>
+                  <div class="tab-content">
+                     <div class="row">
+                        <div class="col-md-4 box-tab-text">
+                           Time to recover and reconstruct [years]
+                        </div>
+                        <div class="col-md-4">
+                           image
+                        </div>
+                        <div class="col-md-4">
+                           image
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-4 box-tab-text">
+                           Access to early warning [% of population]
+                        </div>
+                        <div class="col-md-4">
+                           image
+                        </div>
+                        <div class="col-md-4">
+                          image
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-4 box-tab-text">
+                          Financial inclusion, poor people [% of poor]
+                        </div>
+                        <div class="col-md-4">
+                          image
+                        </div>
+                        <div class="col-md-4">
+                          image
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-4 box-tab-text">
+                      Financial inclusion, non-poor people) [% of non-poor]
+                        </div>
+                        <div class="col-md-4">
+                           image
+                        </div>
+                        <div class="col-md-4">
+                           image
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-4 box-tab-text">
+                           Wealth, poor people [US$, PPP]
+                        </div>
+                        <div class="col-md-4">
+                           image
+                        </div>
+                        <div class="col-md-4">
+                           image
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-4 box-tab-text">
+                           Wealth, non-poor people [US$, PPP]
+                        </div>
+                        <div class="col-md-4">
+                           image
+                        </div>
+                        <div class="col-md-4">
+                           image
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="tab border-content">
+                  <input id="tab-three" type="checkbox" name="tabs">
+                  <label for="tab-three">Social Protection <i class="mdi mdi-information-outline"></i></label>
+                  <div class="tab-content">
+                     <div class="row">
+                        <div class="col-md-4">
+                          Share of social protection/remittances to poor people [% of poor]
+                        </div>
+                        <div class="col-md-4">
+                           image
+                        </div>
+                        <div class="col-md-4">
+                          image
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-4">
+                           Total social protection spending and remittances [US$,PPP]
+                        </div>
+                        <div class="col-md-4">
+                           image
+                        </div>
+                        <div class="col-md-4">
+                          image
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-4">
+                           Ability to access post-disaster financial resources [% of population]
+                        </div>
+                        <div class="col-md-4">
+                           image
+                        </div>
+                        <div class="col-md-4">
+                          image
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-4">
+                           Readiness to scale-up social protection [% increase in SP total payout post-disaster]
+                        </div>
+                        <div class="col-md-4">
+                           image
+                        </div>
+                        <div class="col-md-4">
+                          image
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
