@@ -85,6 +85,9 @@ abbr[title] {
   text-decoration: underline;
   text-decoration: underline dotted;
 }
+*:focus {
+  outline: none;
+ }
 
 b,
 strong {
@@ -280,12 +283,15 @@ template {
  }
  .fondo-map{
    background: #f2f4f8;
-   padding: 10px !important;
+   padding: 8px !important;
  }
  .search-map{
    position: absolute !important;
    margin-top: 10px;
    padding-left: 10px !important;
+ }
+ .text-carousel{
+   font-size: 12px !important;
  }
 
  .button-search{
@@ -299,16 +305,29 @@ template {
    outline: none;
    box-shadow: none !important;
  }
+ .title-results{
+   margin-top: 0px;
+   text-align: center;
+ }
  .text-results{
    width: 120px;
    float: right;
-   font-size: 12px;
+   font-size: 11px;
+   padding-top: 5px;
+   color: #373a3c;
+  font-weight: bold;
+ }
+ .bottom-results{
+   margin-top: -20px;
+ }
+ .bottom-results-1{
+   margin-top: -44px;
  }
  .text-number{
    font-size: 14px;
  }
  .box-general{
-   padding: 10px 0;
+   padding: 5px 0;
   }
 .box-factor{
   display: -webkit-inline-box !important;
@@ -316,43 +335,62 @@ template {
 .box-download{
   position: absolute;
   right: 13px;
-  top: 11px;
+  top: 13px;
+
 }
 .img-download{
-  padding-right: 3px;
-  margin-top: -4px;
+  padding-right: 7px;
+  margin-top: -3px;
 }
 .text-download{
-  font-size: 11px !important;
+  font-size: 10px !important;
+  cursor: pointer;
 }
 .box-dropdown{
   position: absolute;
   right: 14px;
   z-index: 1;
-  top: 30px;
+  top: 0px;
+  display: -webkit-box;
+}
+.box-download .text-download{
+  margin-right: 6px;
 }
 .option-global{
   margin-top: -12px;
 }
 .dropdown-global{
-  padding: 3px 0 !important;
-  width: 94px !important;
+  padding: 3px 5px!important;
+  background: #f4f5fa !important;
+  border-color: #eaecf2 !important;
+  cursor: pointer;
+  font-weight: bold !important;
+  color: #373a3c !important;
+}
+.dropdown-global:hover{
+  background: #f4f5fa !important;
+  border-color: #eaecf2 !important;
+  color: #000 !important;
 }
 
 .box-item{
   margin-top: -4px !important;
   margin-left: 26px !important;
   padding: 0px !important;
-  min-width: 6rem !important;
+  min-width: 4rem !important;
 }
 .text-country{
   font-weight: 600;
   padding-left: 6px;
+  color: #373a3c;
 }
 .icon-plus{
   padding: 5px !important;
   border: 0 !important;
   width: 22px !important;
+  margin-top: 5px;
+  color: #373a3c !important;
+  font-weight: bold !important;
 }
 
 
@@ -372,12 +410,12 @@ template {
  .tab label {
    position: relative;
    display: block;
-   padding: 5px 0 5px 16px;
+   padding: 5px 0;
    background: #fff;
    font-weight: bold;
    line-height: 3;
    cursor: pointer;
-   color: #737373;
+   color: #373a3c;
  }
  .blue label {
    background: #2980b9;
@@ -388,31 +426,33 @@ template {
    background: #fff;
    -webkit-transition: max-height .35s;
    transition: max-height .35s;
-   color: #a5a5a6;
+   /*color: #a5a5a6;*/
  }
  .blue .tab-content {
    background: #3498db;
  }
  .tab-content p {
-   margin: 1em;
+   margin: 0;
  }
  .box-tab{
-   padding-left: 0px !important;
-   padding-right: 0px !important;
+   /*padding-left: 0px !important;
+   padding-right: 0px !important;*/
  }
  .box-tab-text{
    padding-top: 5px;
    padding-bottom: 5px;
+   font-size: 10px;
+   color: #373a3c;
  }
  /* :checked */
  input:checked ~ .tab-content {
    max-height: 100%;
-   padding: 0px 15px !important;
+   /*padding: 0px 15px !important;*/
  }
  /* Icon */
  label::after {
    position: absolute;
-   right: 10px;
+   right: 0px;
    top: 10px;
    display: block;
    width: 1em;
@@ -440,6 +480,16 @@ template {
  }
 
 
+/*footer*/
+.fondo-footer{
+  background: #eaedf2;
+    text-align: center;
+    padding: 15px;
+    /*position: absolute !important;
+    bottom: 0;
+    height: 60px;
+    width: 100%;*/
+}
 
 
 
@@ -528,6 +578,9 @@ html {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
 }
+*:focus {
+  outline: none;
+ }
 
 *,
 *::before,
@@ -563,8 +616,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 p {
-  margin-top: 0;
-  margin-bottom: 1rem;
+  padding: 10px 0px;
 }
 
 abbr[title],
@@ -680,8 +732,7 @@ label {
 }
 
 button:focus {
-  outline: 1px dotted;
-  outline: 5px auto -webkit-focus-ring-color;
+  outline: none;
 }
 
 input,
@@ -2613,22 +2664,24 @@ pre code {
 
 .form-control {
   display: block;
-  width: 100%;
-  padding: 0.5rem 0.75rem;
+  width: 110px;
+  padding: 0.7rem 0.75rem;
   font-size: 0.9375rem;
   line-height: 1.25;
-  color: #7b8a8b;
+  color: #373a3c !important;
   background-color: rgba(255, 255, 255, 0.8);
   background-image: none;
   -webkit-background-clip: padding-box;
           background-clip: padding-box;
-  border: 0px solid rgba(0, 0, 0, 0.15);
-  border-radius: 0;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
   -webkit-transition: border-color ease-in-out 0.15s, -webkit-box-shadow ease-in-out 0.15s;
   transition: border-color ease-in-out 0.15s, -webkit-box-shadow ease-in-out 0.15s;
   -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s, -webkit-box-shadow ease-in-out 0.15s;
+  font-weight: 600;
+  text-align: center;
 }
 .form-control::-ms-expand {
   background-color: transparent;
@@ -2674,7 +2727,7 @@ select.form-control:focus::-ms-value {
 
 .form-control-file,
 .form-control-range {
-  display: block;
+  display: inline-block;
 }
 
 .col-form-label {
@@ -3019,18 +3072,17 @@ fieldset[disabled] a.btn {
   pointer-events: none;
 }
 .btn-icon-info{
-  color: #a5a5a6;
+  color: #373a3c;
   background-color: #fff;
   border-color: #fff;
   font-size: 17px;
   padding: 0.5rem 0.3rem;
+  cursor: pointer;
 }
 .btn-icon-info:hover{
   color: #c3d700;
 }
-.bottom-results{
-  margin-top: -43px;
-}
+
 .btn-primary {
   color: #fff;
   background-color: #353a48;
@@ -3057,11 +3109,11 @@ fieldset[disabled] a.btn {
 }
 
 .btn-secondary {
-  color: #4a4b4b;
+  color: #373a3c;
   background-color: #f4f5fa;
   border-color: #d6d7e2;
-  width: 110px;
-  padding: 0.7rem 1rem;
+  width: 102px;
+  padding: 0.5rem;
   font-weight: 600;
 }
 .btn-secondary:hover {
@@ -3204,7 +3256,7 @@ fieldset[disabled] a.btn {
   background-color: transparent;
 }
 .btn-outline-primary:active, .btn-outline-primary.active, .show > .btn-outline-primary.dropdown-toggle {
-  color: #fff;
+  color:#2C3E50;
   background-color: #2C3E50;
   border-color: #2C3E50;
 }
@@ -3467,6 +3519,7 @@ tbody.collapse.show {
           background-clip: padding-box;
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 0.25rem;
+  border-color: #eaecf2;
 }
 
 .dropdown-divider {
@@ -3479,24 +3532,26 @@ tbody.collapse.show {
 .dropdown-item {
   display: block;
   width: 100%;
-  padding: 3px 1.5rem;
+  padding: 3px 0.5rem;
   clear: both;
-  font-weight: normal;
-  color: #353a48;
+  font-weight: bold;
+  color: #373a3c;
   text-align: inherit;
   white-space: nowrap;
   background: none;
   border: 0;
+  cursor: pointer;
+  font-size: 12px;
 }
 .dropdown-item:focus, .dropdown-item:hover {
-  color: #fff;
+  color: #373a3c;
   text-decoration: none;
-  background-color: #798d8f;
+  background-color: #f4f5fa;
 }
 .dropdown-item.active, .dropdown-item:active {
-  color: #fff;
+  color: #373a3c;
   text-decoration: none;
-  background-color: #798d8f;
+  background-color: #f4f5fa;
 }
 .dropdown-item.disabled, .dropdown-item:disabled {
   color: #95a5a6;
@@ -4398,6 +4453,9 @@ tbody.collapse.show {
     -webkit-flex-direction: row;
         -ms-flex-direction: row;
             flex-direction: row;
+            position: absolute;
+            right: 30px;
+            top: -3px;
   }
   .navbar-toggleable-md .navbar-nav .nav-link {
     padding-right: .5rem;
@@ -5840,7 +5898,7 @@ button.close {
   border-top-color: #fff;
 }
 .popover.popover-right, .popover.bs-tether-element-attached-left {
-  margin-left: 10px;
+  margin-left: 1px;
 }
 .popover.popover-right::before, .popover.popover-right::after, .popover.bs-tether-element-attached-left::before, .popover.bs-tether-element-attached-left::after {
   top: 50%;
@@ -6160,12 +6218,12 @@ button.close {
   bottom: auto;
   padding-top: 3px;
   padding-bottom: 3px;
-  color: #7b8a8b;
+  color: #373a3c;
   background-color: rgba(255, 255, 255, 0.8);
   /*color: #373a3c;*/
   text-align: center;
   top: 0;
-  font-weight: 100 !important;
+
 }
 
 .align-baseline {
@@ -6198,6 +6256,7 @@ button.close {
 
 .bg-primary {
   background-color: #353a48 !important;
+  height: 54px;
 }
 
 a.bg-primary:focus, a.bg-primary:hover {
@@ -8091,7 +8150,7 @@ a.bg-inverse:focus, a.bg-inverse:hover {
 }
 
 .mr-auto {
-    margin-left: 60% !important;
+
     font-weight: bold;
     font-size: 12px;
 }
