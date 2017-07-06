@@ -13,6 +13,7 @@ import { ScorecardComponent } from './components/scorecard/scorecard.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { SpecificpolicymeasureComponent } from './components/specificpolicymeasure/specificpolicymeasure.component';
 import { PolicyprioritylistComponent } from './components/policyprioritylist/policyprioritylist.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 import {routing} from './app.routes';
 
@@ -26,7 +27,8 @@ import {routing} from './app.routes';
     ScorecardComponent,
     ContactComponent,
     SpecificpolicymeasureComponent,
-    PolicyprioritylistComponent
+    PolicyprioritylistComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
