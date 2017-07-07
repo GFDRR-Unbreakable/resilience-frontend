@@ -320,9 +320,7 @@ template {
  .bottom-results{
    margin-top: -20px;
  }
- .bottom-results-1{
-   margin-top: -44px;
- }
+
  .text-number{
    font-size: 14px;
  }
@@ -360,7 +358,7 @@ template {
   margin-top: -12px;
 }
 .dropdown-global{
-  padding: 3px 5px!important;
+  padding: 3px 6px 3px 8px!important;
   background: #f4f5fa !important;
   border-color: #eaecf2 !important;
   cursor: pointer;
@@ -479,6 +477,34 @@ template {
            transform: rotateX(180deg);
  }
 
+/*technical map*/
+.box-input{
+  display: -webkit-box;
+}
+.icon-hazard{
+  background: #f4f5fa;
+  padding: 3% 4.5%;
+  border-radius: 5px;
+  border: 1px solid #eaecf2;
+  margin-bottom: 12px;
+  margin-right: 3px;
+}
+.button-reset{
+  background: #999ba3;
+  border-color: #999ba3;
+  font-size: 8px !important;
+  padding: 5px !important;
+  cursor: pointer;
+  color: #fff;
+}
+.button-reset:hover{
+  background: #a5a5a6;
+  border-color: #a5a5a6;
+
+}
+.text-social{
+  padding: 5px 30px;
+}
 
 /*footer*/
 .fondo-footer{
@@ -3076,7 +3102,7 @@ fieldset[disabled] a.btn {
   background-color: #fff;
   border-color: #fff;
   font-size: 17px;
-  padding: 0.5rem 0.3rem;
+  padding: 0.5rem 0.1rem;
   cursor: pointer;
 }
 .btn-icon-info:hover{
@@ -3484,7 +3510,7 @@ tbody.collapse.show {
   display: inline-block;
   width: 0;
   height: 0;
-  margin-left: 0.3em;
+  margin-left: 0.6em;
   vertical-align: middle;
   content: "";
   border-top: 0.3em solid;
@@ -3532,7 +3558,7 @@ tbody.collapse.show {
 .dropdown-item {
   display: block;
   width: 100%;
-  padding: 3px 0.5rem;
+  padding: 3px 0.6rem;
   clear: both;
   font-weight: bold;
   color: #373a3c;
@@ -5852,11 +5878,10 @@ button.close {
   position: absolute;
   top: 20% !important;
   left: 0;
-  z-index: 1060 !important;
+  z-index: 2060 !important;
   display: block;
   max-width: 276px;
   padding: 1px;
-  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-style: normal;
   font-weight: normal;
   letter-spacing: normal;
