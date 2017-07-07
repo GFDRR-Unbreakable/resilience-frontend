@@ -9,6 +9,10 @@ import {ViewerComponent} from './components/viewer/viewer.component';
 
 export const appRoutes: Routes = [
   {
+    path: '',
+    redirectTo: '/viewer',
+    pathMatch: 'full'
+  }, {
     path: 'about',
     component: AboutComponent
   }, {
