@@ -3225,8 +3225,8 @@ fieldset[disabled] a.btn {
 }
 .btn-primary:hover {
   color: #fff;
-  background-color: #8691b4;
-  border-color: #8691b4;
+  background-color: #6e9cd0;
+  border-color: #6e9cd0;
 }
 .btn-primary:focus, .btn-primary.focus {
   -webkit-box-shadow: 0 0 0 2px rgba(44, 62, 80, 0.5);
@@ -6118,6 +6118,7 @@ button.close {
 .popover-content {
   padding: 9px 14px;
   z-index: 3000 !important;
+  width: 255px !important;
 }
 
 .popover::before,
