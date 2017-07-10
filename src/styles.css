@@ -330,7 +330,7 @@ template {
    padding-top: 0px;
    color: #373a3c;
    font-weight: bold;
-   padding-bottom: 2px;
+   padding-bottom: 13px;
  }
  .bottom-results{
    margin-top: -20px;
@@ -590,7 +590,41 @@ template {
 }
 
 
-
+/*specificpolicymeasure*/
+.box-terms{
+  margin-left: 9%;
+}
+.box-text-policy{
+  padding: 22px 0;
+  text-align: right;
+  font-size: 17px;
+}
+.dropdown-politics{
+  border: 1px solid #353a48 !important;
+  background: #fff;
+  margin: 0 15px;
+}
+.dropdown-politics:hover{
+  border: 1px solid #0cbd8f !important;
+  background: #fff;
+  box-shadow:0 5px 14px rgba(0,0,0,.1);
+}
+.dropdown-politics-menu{
+  background: #fff !important;
+  margin-left: 15px !important;
+}
+.dropdown-politics-item{
+  background: #fff;
+}
+.dropdown-politics-item:hover{
+  background: #fff !important;
+}
+.dropdown-divider-1 {
+  height: 1px;
+  margin: 0.6rem;
+  overflow: hidden;
+  background-color: #f4f5fa;
+}
 
 
 
