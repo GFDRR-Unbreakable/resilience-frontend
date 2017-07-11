@@ -563,7 +563,7 @@ template {
     padding: 5px 10px !important;
     cursor: pointer;
     color: #fff;
-    margin-top: 6px;
+    margin-top: 5px;
     margin-right: 17px;
 }
 .button-map:hover {
@@ -4849,7 +4849,12 @@ tbody.collapse.show {
   border-color:#353a48;
 }
 .navbar-item{
-  color: #8691b4;
+  color: #fff;
+}
+.navbar-item:hover{
+  color: #c3d700;
+  text-decoration: none;
+  background-color: #353a48;
 }
 
 .card {
@@ -6096,6 +6101,7 @@ button.close {
 }
 .popover.popover-bottom, .popover.bs-tether-element-attached-top {
   margin-top: 10px;
+  z-index: 3000 !important;
 }
 .popover.popover-bottom::before, .popover.popover-bottom::after, .popover.bs-tether-element-attached-top::before, .popover.bs-tether-element-attached-top::after {
   left: 50%;
