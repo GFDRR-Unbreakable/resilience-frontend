@@ -531,7 +531,7 @@ template {
 .scorecard-title{
   display: -webkit-inline-box;
   vertical-align: middle !important;
-  padding: 10px 0;
+  padding: 10px 36px !important;
 }
 .scorecard-text{
   padding: 0px;
@@ -587,6 +587,15 @@ template {
   padding: 5px 0px;
   font-weight: bold;
   border: 0px !important;
+}
+.box-policyprioritylist{
+      padding: 22px !important;
+}
+.box-policyprioritylist-1{
+      padding: 17px 38px !important;
+}
+.scorecard-title h6{
+  margin-top: 10px;
 }
 
 
