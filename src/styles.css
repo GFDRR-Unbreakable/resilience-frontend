@@ -425,7 +425,7 @@ template {
  .tab label {
    position: relative;
    display: block;
-   padding: 5px 0;
+   padding: 15px 0;
    background: #fff;
    font-weight: bold;
    line-height: 3;
@@ -468,7 +468,7 @@ template {
  label::after {
    position: absolute;
    right: 0px;
-   top: 10px;
+   top: 18px;
    display: block;
    width: 1em;
    height: 1em;
@@ -3253,8 +3253,8 @@ fieldset[disabled] a.btn {
 }
 .btn-primary:hover {
   color: #fff;
-  background-color: #6e9cd0;
-  border-color: #6e9cd0;
+  background-color: #c3d700;
+  border-color: #c3d700;
 }
 .btn-primary:focus, .btn-primary.focus {
   -webkit-box-shadow: 0 0 0 2px rgba(44, 62, 80, 0.5);
