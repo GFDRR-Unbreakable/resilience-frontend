@@ -597,6 +597,19 @@ template {
 .scorecard-title h6{
   margin-top: 10px;
 }
+.icon-sort{
+  background: url(assets/image/sort.png) no-repeat;
+  height: 14px;
+  width: 12px;
+  cursor: pointer;
+  padding: 7px 12px !important;
+}
+.icon-sort:hover{
+  background: url(assets/image/sort-v.png) no-repeat;
+}
+.text-sort{
+  font-weight: 600;
+}
 
 
 /*specificpolicymeasure*/
@@ -627,6 +640,7 @@ template {
 }
 .dropdown-politics-item:hover{
   background: #fff !important;
+  color: #0cbd8f !important;
 }
 .dropdown-divider-1 {
   height: 1px;
