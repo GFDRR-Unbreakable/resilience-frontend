@@ -4789,11 +4789,11 @@ tbody.collapse.show {
   border-bottom: 3px solid #fff;
   margin-top: -2px;
 }
-.navbar-collapse ul li a:hover, .navbar-collapse ul li a:focus, .navbar-collapse ul li a:active, .navbar-collapse ul li a.active
+/*.navbar-collapse ul li a:hover, .navbar-collapse ul li a:focus, .navbar-collapse ul li a:active, .navbar-collapse ul li a.active
  {
   padding-bottom: 15px;
   padding-top: 23px !important;
-}
+}*/
 
 .navbar-inverse .navbar-nav .nav-link.disabled {
   color: rgba(255, 255, 255, 0.25);
@@ -4813,6 +4813,15 @@ tbody.collapse.show {
 }
 .navbar-inverse .navbar-text {
   color: white;
+}
+
+.navbar-dropdown{
+  background: #353a48;
+  margin-top: 5px;
+  border-color:#353a48;
+}
+.navbar-item{
+  color: #8691b4;
 }
 
 .card {
