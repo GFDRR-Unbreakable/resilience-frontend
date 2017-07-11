@@ -648,6 +648,9 @@ template {
   overflow: hidden;
   background-color: #f4f5fa;
 }
+.box-title-policyprioritylist{
+  padding-bottom: 25px;
+}
 
 
 
