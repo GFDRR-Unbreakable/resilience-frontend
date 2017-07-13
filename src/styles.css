@@ -388,6 +388,11 @@ template {
    background: #f2f4f8;
    padding: 8px !important;
  }
+ .fondo-map .carousel-ctn{
+   z-index: 10;
+   position: absolute;
+   width: 99%
+ }
  .search-map{
    position: absolute !important;
    margin-top: 10px;
@@ -837,7 +842,11 @@ template {
   padding: 15px 0 !important;
 }
 
-
+div#map {
+  height: 300px;
+  width: inherit;
+  z-index: 1;
+}
 
 
 
@@ -3605,7 +3614,7 @@ fieldset[disabled] a.btn {
 .btn-outline-secondary:hover {
   color: #95a5a6;
   background-color: #fff;
-  border-color: ##d6d7e2;
+  border-color: #d6d7e2;
 }
 .btn-outline-secondary:focus, .btn-outline-secondary.focus {
   -webkit-box-shadow: 0 0 0 2px rgba(149, 165, 166, 0.5);

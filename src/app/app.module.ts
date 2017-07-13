@@ -16,6 +16,7 @@ import { PolicyprioritylistComponent } from './components/policyprioritylist/pol
 import { FooterComponent } from './components/footer/footer.component';
 
 import {routing} from './app.routes';
+import {MapService} from './services/map.service';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,9 @@ import {routing} from './app.routes';
     NgbModule.forRoot(),
     routing
   ],
-  providers: [],
+  providers: [
+    MapService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

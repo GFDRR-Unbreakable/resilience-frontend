@@ -3,6 +3,7 @@ import {Observable} from 'rxjs/Observable';
 import {map} from 'rxjs/operator/map';
 import {debounceTime} from 'rxjs/operator/debounceTime';
 import {distinctUntilChanged} from 'rxjs/operator/distinctUntilChanged';
+import {MapService} from '../../services/map.service';
 
 const states = ['a', 'b'];
 
@@ -13,13 +14,14 @@ const states = ['a', 'b'];
 })
 export class ViewerComponent implements OnInit {
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
   public model: any;
   public model1: any;
+
+  constructor(private mapService: MapService) { }
+
+  ngOnInit() {
+    this.mapService.createMap('map');
+  }
 
   search = (text$: Observable<string>) =>
     map.call(distinctUntilChanged.call(debounceTime.call(text$, 200)),
