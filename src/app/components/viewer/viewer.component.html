@@ -3,22 +3,22 @@
       <div class="col-md-8 vertical-border">
          <div class="row">
             <div class="col-md-12 fondo-map">
-               <ngb-carousel class="carousel-ctn">
-                  <ng-template ngbSlide>
+               <ngb-carousel class="carousel-ctn" (slide)="onSlideChangeEvent($event)">
+                  <ng-template ngbSlide id="socio-sl">
                     <br/>
                     <br/>
                      <div class="carousel-caption">
                         <h6 class="text-carousel">SOCIO-ECONOMIC CAPACITY (%)</h6>
                      </div>
                   </ng-template>
-                  <ng-template ngbSlide>
+                  <ng-template ngbSlide id="well-sl">
                     <br/>
                     <br/>
                      <div class="carousel-caption">
-                        <h6 class="text-carousel">EXPECTED WELFARE LOSSES (% of GDP)</h6>
+                        <h6 class="text-carousel">EXPECTED WELL-BEING LOSSES (% of GDP)</h6>
                      </div>
                   </ng-template>
-                   <ng-template ngbSlide>
+                   <ng-template ngbSlide id="asset-sl">
                        <br/>
                        <br/>
                        <div class="carousel-caption">

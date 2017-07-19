@@ -24,13 +24,16 @@
     "@ngrx/core": "^1.2.0",
     "@ngrx/router-store": "^1.2.6",
     "@ngrx/store": "^2.2.2",
+    "@types/jquery": "^3.2.9",
     "@types/mapbox-gl": "^0.39.2",
     "bootstrap": "^4.0.0-alpha.6",
     "core-js": "^2.4.1",
     "d3": "^4.9.1",
+    "jquery": "^3.2.1",
     "mapbox-gl": "^0.38.0",
     "mdi": "^1.9.33",
     "rxjs": "^5.1.0",
+    "science": "^1.9.3",
     "zone.js": "^0.8.4"
   },
   "devDependencies": {

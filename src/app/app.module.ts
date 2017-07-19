@@ -17,6 +17,7 @@ import { FooterComponent } from './components/footer/footer.component';
 
 import {routing} from './app.routes';
 import {MapService} from './services/map.service';
+import {ChartService} from './services/chart.service';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import {MapService} from './services/map.service';
     routing
   ],
   providers: [
-    MapService
+    MapService,
+    ChartService
   ],
   bootstrap: [AppComponent]
 })
