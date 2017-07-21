@@ -69,6 +69,9 @@ export class MapService {
       zoom: 1
     });
   }
+  getMap() {
+    return this.map;
+  }
   getMapPaintConf(type: string) {
     const mapStyleConf = {
       asset: {
