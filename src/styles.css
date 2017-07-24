@@ -273,6 +273,7 @@ summary {
 
 canvas {
   display: inline-block;
+  width: 98.4% !important;
 }
 
 template {
@@ -391,7 +392,7 @@ template {
  .fondo-map .carousel-ctn{
    z-index: 10;
    position: absolute;
-   width: 99%
+   width: 98.4%;
  }
  .search-map{
    position: absolute !important;
@@ -10303,7 +10304,7 @@ fieldset {
         height: auto;
         /*box-shadow: 0 0 2px rgba(0,0,0,0.5);*/
         overflow: hidden;
-        margin-top: 15px;
+        /*margin-top: 15px;*/
     }
     .sm-map {
         /*box-shadow: 0 0 2px rgba(0,0,0,0.5);*/
