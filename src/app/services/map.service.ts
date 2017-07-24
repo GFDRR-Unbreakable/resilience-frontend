@@ -66,7 +66,8 @@ export class MapService {
     this.map = new Map({
       container: mapId,
       style: 'mapbox://styles/gfdrr-dashboard/cj59tfxrb686y2sp97c40f56d',
-      zoom: 1
+      center: [0, 15],
+      zoom: 0.95
     });
   }
   getMap() {

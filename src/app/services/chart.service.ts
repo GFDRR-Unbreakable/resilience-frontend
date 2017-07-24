@@ -8,7 +8,7 @@ import {SERVER} from './server.conf';
 
 @Injectable()
 export class ChartService {
-  private _outputDataProm$: Observable<Promise<any>>;
+  private _outputDataProm$: Observable<any>;
   private _baseURL = SERVER.URL.BASE;
   private _outputDataURL = SERVER.URL.OUTPUT_DATA;
   private _outputDomains: any = {};
@@ -77,7 +77,7 @@ export class ChartService {
           .attr('data-output-title', output.descriptor)
           .style('pointer-events', 'all')
           .on('click', () => {
-            //TODO verify if this event will be needed
+            // TODO verify if this event will be needed
             const divEl = jQuery(`div#${containerId}`).find('div')[0];
             const chloroplethField = divEl.getAttribute('data-output');
             const chloroplethTitle = divEl.getAttribute('data-output-title');
@@ -183,7 +183,6 @@ export class ChartService {
           });
 
         // keep a reference to the brush for the output domain
-
         this._outputDomains[idx].brush = brush;
         this._outputDomains[idx].x = x;
         this._outputDomains[idx].height = height;
@@ -220,14 +219,14 @@ export class ChartService {
     // });
   }
   filterOutputDataByGroup(outputData, groupName: string) {
-    if(groupName == 'GLOBAL' || !groupName){
+    if (groupName === 'GLOBAL' || !groupName) {
     		return outputData;
   	}
 
   	const filteredOutputDomains = jQuery.extend(true, {}, outputData)
-  	for (let key in outputData as any){
+  	for (let key in outputData as any) {
       if (outputData.hasOwnProperty(key)) {
-        for(let key2 in outputData[key] as any) {
+        for (let key2 in outputData[key] as any) {
           if (outputData[key].hasOwnProperty(key2) && (key2 === 'domain' || key2 === 'group_name')){
             filteredOutputDomains[key][key2] = [];
           }
