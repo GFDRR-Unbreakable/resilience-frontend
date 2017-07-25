@@ -16,6 +16,7 @@ import { PolicyprioritylistComponent } from './components/policyprioritylist/pol
 import { FooterComponent } from './components/footer/footer.component';
 
 import {routing} from './app.routes';
+import {store} from './app.store';
 import {MapService} from './services/map.service';
 import {ChartService} from './services/chart.service';
 
@@ -37,7 +38,8 @@ import {ChartService} from './services/chart.service';
     FormsModule,
     HttpModule,
     NgbModule.forRoot(),
-    routing
+    routing,
+    store
   ],
   providers: [
     MapService,

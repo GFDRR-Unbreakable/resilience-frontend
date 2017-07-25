@@ -14,6 +14,7 @@ export class ChartService {
   private _outputDomains: any = {};
   private _outputDataSubs: Subscription;
   public _outputUIList: Array<any> = [];
+  public _outputList: Array<any> = [];
   constructor() { }
   createOutputChart(outputData: any, containerId: string, groupName?: string) {
     // this._outputDataSubs = this._outputDataProm$.subscribe(outputData => {
@@ -91,7 +92,7 @@ export class ChartService {
           .attr('width', '100%')
           .attr('class', 'table table-responsive')
           .attr('id', 'table-' + idx);
-        let tr = table.append('tr');
+        const tr = table.append('tr');
         const td = tr.append('td')
           .attr('width', '100%');
         const svg = td.append('svg')
@@ -216,31 +217,29 @@ export class ChartService {
           .attr('height', height)
           .style('pointer-events', 'none');
       });
-    // });
   }
   filterOutputDataByGroup(outputData, groupName: string) {
     if (groupName === 'GLOBAL' || !groupName) {
-    		return outputData;
-  	}
-
-  	const filteredOutputDomains = jQuery.extend(true, {}, outputData)
-  	for (let key in outputData as any) {
+      return outputData;
+    }
+    const filteredOutputDomains = jQuery.extend(true, {}, outputData);
+    for (const key in outputData as any) {
       if (outputData.hasOwnProperty(key)) {
-        for (let key2 in outputData[key] as any) {
-          if (outputData[key].hasOwnProperty(key2) && (key2 === 'domain' || key2 === 'group_name')){
+        for (const key2 in outputData[key] as any) {
+          if (outputData[key].hasOwnProperty(key2) && (key2 === 'domain' || key2 === 'group_name')) {
             filteredOutputDomains[key][key2] = [];
           }
         }
         for (let i = 0; i < outputData[key]['group_name'].length; i++) {
-    			if (groupName == outputData[key]['group_name'][i]) {
-    				filteredOutputDomains[key]['domain'].push(outputData[key]['domain'][i]);
-    				filteredOutputDomains[key]['group_name'].push(outputData[key]['group_name'][i]);
-    			}
-    		}
+          if (groupName === outputData[key]['group_name'][i]) {
+            filteredOutputDomains[key]['domain'].push(outputData[key]['domain'][i]);
+            filteredOutputDomains[key]['group_name'].push(outputData[key]['group_name'][i]);
+          }
+        }
       }
-  	}
+    }
     console.log(filteredOutputDomains);
-  	return filteredOutputDomains;
+    return filteredOutputDomains;
   }
   getChartsConf() {
     return {
@@ -288,7 +287,10 @@ export class ChartService {
   getOutputDataUIList() {
     return this._outputUIList;
   }
-  initOutputChartConf() {
+  getOutputList() {
+    return this._outputList;
+  }
+   initOutputChartConf() {
     this.setOutputData();
   }
   setOutputData() {
@@ -317,10 +319,11 @@ export class ChartService {
               }
             }
           }
-          this._outputUIList.push({
-            id: value.id,
+          this._outputList.push({
+            code: value.iso3,
             name: value.name
           });
+          this._outputUIList.push(value.name);
         });
         resolve(this._outputDomains);
       });
