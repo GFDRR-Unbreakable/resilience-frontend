@@ -19,8 +19,8 @@ import {AppStore} from '../../store/default.store';
 @Component({
   selector: 'app-viewer',
   templateUrl: './viewer.component.html',
-  styleUrls: ['./viewer.component.css'],
-  changeDetection: ChangeDetectionStrategy.Default
+  styleUrls: ['./viewer.component.css']
+  // changeDetection: ChangeDetectionStrategy.Default
 })
 export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   public getOutputDataSubs: Subscription;
@@ -60,90 +60,53 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getOutputDataSubs.unsubscribe();
   }
   ngAfterViewInit() {
-    const self = this;
-    this.mapService.addStylesOnMapLoading(() => {
-      this.mapService.addBasemap();
-      this.mapService.setClickFnMapEvent((ev) => {
-        const features = self.mapService.getMap().queryRenderedFeatures(ev.point, {layers: [self.mapService.getViewerFillLayer()]});
-        if (features.length) {
-          console.log(features);
-          const isoCode = features[0].properties['ISO_Codes'];
-          self.changeCountryInputs(isoCode);
-          self.mapService.setMapFilterByISOCode(isoCode);
-        }
-      });
-    });
+    this.setMapConf();
   }
   // METHODS
   private _changeCountryInput(isFirstInput) {
     const input = isFirstInput ? this.viewerModel.firstCountry : this.viewerModel.secondCountry;
-    const fromList = this.countryListComp.filter(
+    const fromListFilter = this.countryListComp.filter(
       val => val.name.toLowerCase() === input.toLowerCase());
-    console.log(this._selectedCountryList);
     const MAX_SELECTED_COUNTRIES = 2;
     if (this._selectedCountryList.length <= MAX_SELECTED_COUNTRIES) {
       if (isFirstInput) {
-        if (fromList.length) {
-          const filterExistence1 = this._selectedCountryList.filter(val => {
-            return val.name === fromList[0].name;
-          });
-          if (!filterExistence1.length) {
-            this._selectedCountryList.push({
-              index: 0,
-              name: fromList[0].name
-            });
-            this.mapService.setMapFilterByISOCode(fromList[0].code);
-          }
-        } else {
-          const filterIndex1 = this._selectedCountryList.map((val, index) => {
-            if (val.index === 0) {
-              return index;
-            }
-          }).filter(isFinite);
-          if (filterIndex1.length) {
-            const filterIndexFromAll = this.countryListComp.filter(val => {
-              return val.name === this._selectedCountryList[filterIndex1[0]].name;
-            });
-            if (filterIndex1.length > 0 && filterIndexFromAll.length > 0 &&
-              this.viewerModel.firstCountry.toLowerCase() !== this._selectedCountryList[filterIndex1[0]].name.toLowerCase()) {
-              this.mapService.setMapFilterByISOCode(filterIndexFromAll[0].code);
-              this._selectedCountryList.splice(filterIndex1[0], 1);
-            }
-          }
-        }
+        this._filterCountryByInput(fromListFilter, 0, this.viewerModel.firstCountry);
       } else {
-        if (fromList.length) {
-          const filterExistence1 = this._selectedCountryList.filter(val => {
-            return val.name === fromList[0].name;
-          });
-          if (!filterExistence1.length) {
-            this._selectedCountryList.push({
-              index: 1,
-              name: fromList[0].name
-            });
-            this.mapService.setMapFilterByISOCode(fromList[0].code);
-          }
-        } else {
-          const filterIndex1 = this._selectedCountryList.map((val, index) => {
-            if (val.index === 1) {
-              return index;
-            }
-          }).filter(isFinite);
-          if (filterIndex1.length > 0) {
-            const filterIndexFromAll = this.countryListComp.filter(val => {
-              return val.name === this._selectedCountryList[filterIndex1[0]].name;
-            });
-            if (filterIndex1.length > 0 && filterIndexFromAll.length > 0 &&
-              this.viewerModel.firstCountry.toLowerCase() !== this._selectedCountryList[filterIndex1[0]].name.toLowerCase()) {
-              this.mapService.setMapFilterByISOCode(filterIndexFromAll[0].code);
-              this._selectedCountryList.splice(filterIndex1[0], 1);
-            }
-          }
+        this._filterCountryByInput(fromListFilter, 1, this.viewerModel.secondCountry);
+      }
+    }
+  }
+  private _filterCountryByInput(list, selectedIdx, field) {
+    if (list.length) {
+      const filterExistence = this._selectedCountryList.filter(val => {
+        return val.name === list[0].name;
+      });
+      if (!filterExistence.length) {
+        this._selectedCountryList.push({
+          index: selectedIdx,
+          name: list[0].name
+        });
+        this.mapService.setMapFilterByISOCode(list[0].code);
+      }
+    } else {
+      const filterIndex = this._selectedCountryList.map((val, index) => {
+        if (val.index === selectedIdx) {
+          return index;
+        }
+      }).filter(isFinite);
+      if (filterIndex.length) {
+        const filterIndexFromAll = this.countryListComp.filter(val => {
+          return val.name === this._selectedCountryList[filterIndex[0]].name;
+        });
+        if (filterIndex.length > 0 && filterIndexFromAll.length > 0 &&
+          field.toLowerCase() !== this._selectedCountryList[filterIndex[0]].name.toLowerCase()) {
+          this.mapService.setMapFilterByISOCode(filterIndexFromAll[0].code);
+          this._selectedCountryList.splice(filterIndex[0], 1);
         }
       }
     }
   }
-  changeCountryInputs(isoCode) {
+  changeCountryInputsByClick(isoCode) {
     const filteredName = this.countryListComp.filter(val => val.code === isoCode)[0].name;
     const selectedCountryIdx = this._selectedCountryList.map((val, index) => {
       if (val.name.toLowerCase() === filteredName.toLowerCase()) {
@@ -152,9 +115,13 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     }).filter(isFinite);
     if (selectedCountryIdx.length === 0) {
       let index = 0;
-      if (!this.viewerModel.firstCountry) {
+      const filterCountryVal1 = this.countryListComp.filter(val =>
+        val.name.toLowerCase() === this.viewerModel.firstCountry.toLowerCase());
+      const filterCountryVal2 = this.countryListComp.filter(val =>
+        val.name.toLowerCase() === this.viewerModel.secondCountry.toLowerCase());  
+        if (!this.viewerModel.firstCountry || filterCountryVal1.length === 0) {
         this.viewerModel.firstCountry = filteredName;
-      } else if (!this.viewerModel.secondCountry) {
+      } else if (!this.viewerModel.secondCountry.trim() || filterCountryVal2.length === 0) {
         index += 1;
         this.viewerModel.secondCountry = filteredName;
       }
@@ -181,6 +148,20 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       this.countryListComp = this.chartService.getOutputList();
     }, err => {
       console.log(err);
+    });
+  }
+  setMapConf() {
+    const self = this;
+    this.mapService.addStylesOnMapLoading(() => {
+      this.mapService.addBasemap();
+      this.mapService.setClickFnMapEvent((ev) => {
+        const features = self.mapService.getMap().queryRenderedFeatures(ev.point, {layers: [self.mapService.getViewerFillLayer()]});
+        if (features.length) {
+          const isoCode = features[0].properties['ISO_Codes'];
+          self.changeCountryInputsByClick(isoCode);
+          self.mapService.setMapFilterByISOCode(isoCode);
+        }
+      });
     });
   }
   // EVENTS

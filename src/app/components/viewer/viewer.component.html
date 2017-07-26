@@ -121,13 +121,13 @@
                            <div><i class="mdi mdi-checkbox-blank-circle box-icon-c"></i> <span class="text-country">Country</span></div>
                            <div class="box-dropdown">
                               <div class="form-group" [class.has-danger]="searchFailed">
-                                 <input id="country-1" type="text" class="form-control" [(ngModel)]="viewerModel.firstCountry" [ngbTypeahead]="searchCountryFn" (ngModelChange)="onFirstCountryInputChangeEvent($event, true)"/>
+                                 <input id="country-1Txt" type="text" class="form-control" [(ngModel)]="viewerModel.firstCountry" [ngbTypeahead]="searchCountryFn" #country1="ngModel" (ngModelChange)="onFirstCountryInputChangeEvent()"/>
                                  <span *ngIf="searching">searching...</span>
                                  <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
                               </div>
                               <button type="button" class="btn btn-outline-secondary icon-plus"><i class="mdi mdi-plus"></i></button>
                               <div class="form-group" [class.has-danger]="searchFailed">
-                                 <input id="country-2" type="text" class="form-control" [(ngModel)]="viewerModel.secondCountry" [ngbTypeahead]="searchCountryFn" (ngModelChange)="onSecondCountryInputChangeEvent($event, false)"/>
+                                 <input id="country-2Txt" type="text" class="form-control" [(ngModel)]="viewerModel.secondCountry" [ngbTypeahead]="searchCountryFn" #country2="ngModel" (ngModelChange)="onSecondCountryInputChangeEvent()"/>
                                  <span *ngIf="searching">searching...</span>
                                  <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
                               </div>
