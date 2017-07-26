@@ -86,6 +86,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           index: selectedIdx,
           name: list[0].name
         });
+        this.chartService.updateOutputCharts(selectedIdx === 0 ? 'outputs-1' : 'outputs-2', list[0].code);
         this.mapService.setMapFilterByISOCode(list[0].code);
       }
     } else {
@@ -101,6 +102,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         if (filterIndex.length > 0 && filterIndexFromAll.length > 0 &&
           field.toLowerCase() !== this._selectedCountryList[filterIndex[0]].name.toLowerCase()) {
           this.mapService.setMapFilterByISOCode(filterIndexFromAll[0].code);
+          this.chartService.updateOutputCharts(selectedIdx === 0 ? 'outputs-1' : 'outputs-2');
           this._selectedCountryList.splice(filterIndex[0], 1);
         }
       }
@@ -118,12 +120,14 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       const filterCountryVal1 = this.countryListComp.filter(val =>
         val.name.toLowerCase() === this.viewerModel.firstCountry.toLowerCase());
       const filterCountryVal2 = this.countryListComp.filter(val =>
-        val.name.toLowerCase() === this.viewerModel.secondCountry.toLowerCase());  
+        val.name.toLowerCase() === this.viewerModel.secondCountry.toLowerCase());
         if (!this.viewerModel.firstCountry || filterCountryVal1.length === 0) {
         this.viewerModel.firstCountry = filteredName;
+        this.chartService.updateOutputCharts('outputs-1', isoCode);
       } else if (!this.viewerModel.secondCountry.trim() || filterCountryVal2.length === 0) {
         index += 1;
         this.viewerModel.secondCountry = filteredName;
+        this.chartService.updateOutputCharts('outputs-2', isoCode);
       }
       this._selectedCountryList.push({
         index: index,
@@ -133,8 +137,10 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       const selectedC = this._selectedCountryList[selectedCountryIdx[0]].name;
       if (this.viewerModel.firstCountry.length && selectedC.indexOf(this.viewerModel.firstCountry) >= 0) {
         this.viewerModel.firstCountry = '';
+        this.chartService.updateOutputCharts('outputs-1');
       } else if (this.viewerModel.secondCountry.length && selectedC.indexOf(this.viewerModel.secondCountry) >= 0) {
         this.viewerModel.secondCountry = '';
+        this.chartService.updateOutputCharts('outputs-2');
       }
       this._selectedCountryList.splice(selectedCountryIdx[0], 1);
     }

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Output } from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {Subscription} from 'rxjs/Subscription';
 import 'rxjs/add/observable/fromPromise';
@@ -12,6 +12,7 @@ export class ChartService {
   private _baseURL = SERVER.URL.BASE;
   private _outputDataURL = SERVER.URL.OUTPUT_DATA;
   private _outputDomains: any = {};
+  private _globalModelData: any = {};
   private _outputDataSubs: Subscription;
   public _outputUIList: Array<any> = [];
   public _outputList: Array<any> = [];
@@ -319,6 +320,7 @@ export class ChartService {
               }
             }
           }
+          this._globalModelData[value.iso3] = value;
           this._outputList.push({
             code: value.iso3,
             name: value.name
@@ -329,6 +331,50 @@ export class ChartService {
       });
     });
     this._outputDataProm$ = Observable.fromPromise(promisedData);
+  }
+  updateOutputCharts(containerId: string, selectedId?: string) {
+    const domains = this._outputDomains;
+    jQuery.each(domains, (idx, outputData) => {
+      const ini = d3.select(`#${containerId} svg#${idx} g.initial line`);
+      const x = domains[idx].x;
+      const height = domains[idx].height;
+      let model;
+      if (selectedId) {
+        model = this._globalModelData[selectedId];
+      } else {
+        const data: Array<number> = outputData.domain.sort((a, b) => {
+          return a - b;
+        });
+        const globalData = d3.mean(data);
+        model = {};
+        model[idx] = globalData;
+      }
+      ini.attr('x1', (d) => {
+          return x(+model[idx]);
+        })
+        .attr('y1', 0)
+        .attr('x2', (d) => {
+          return x(+model[idx]);
+        })
+        .attr('y2', height);
+      // get the input config
+      const brush = domains[idx].brush;
+      // get the value of the current input from the model
+      // and update the brush extent
+      const extent = +model[idx];
+      brush.extent([0, extent]);
+      const output = domains[idx];
+      const percent = output.number_type === ('percent') ? ' %' : '';
+      const precision = +output.precision;
+      jQuery(`#${containerId} #${idx} .text-number`).html((brush.extent()[1] * 100).toFixed(precision) + percent);
+      const brushg = d3.selectAll(`#${containerId} svg#${idx} g.brush`);
+      brushg.transition()
+        .duration(750)
+        .call(brush)
+        .call(brush.event);
+      // remove w resize extent handle
+      d3.selectAll(`#${containerId} g.brush > g.resize.w`).remove();
+    });
   }
   unsubscribeOutputData() {
     this._outputDataSubs.unsubscribe();
