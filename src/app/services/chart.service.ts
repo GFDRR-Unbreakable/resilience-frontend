@@ -123,7 +123,7 @@ export class ChartService {
         const gaus = svg.append('g')
           .attr('id', idx)
           .attr('class', 'gaussian');
-        gaus.selectAll('g#' + idx + ' .gaussian')
+        gaus.selectAll('#' + containerId + ' g#' + idx + ' .gaussian')
         // Multivariant Density Estimation
         // http://bit.ly/1Y3jEcD
           .data([science['stats'].bandwidth.nrd0])
@@ -136,7 +136,7 @@ export class ChartService {
         const area = svg.append('g')
           .attr('id', 'area-' + idx)
           .attr('class', 'area');
-        area.selectAll('g#area-' + idx + ' .area')
+        area.selectAll('#' + containerId + ' g#area-' + idx + ' .area')
           .data([science['stats'].bandwidth.nrd0])
           .enter()
           .append('path')
@@ -161,7 +161,7 @@ export class ChartService {
           svg.classed('selecting-output', true);
         };
         const brushmove = () => {
-          d3.select('#' + idx + ' g.resize.e path')
+          d3.select('#' + containerId + ' #' + idx + ' g.resize.e path')
             .attr('d', 'M 0, 0 ' + ' L 0 ' + height);
         };
         const brushend = () => {
@@ -207,13 +207,13 @@ export class ChartService {
           .call(brush.extent([0, d3.mean(data)]))
           .call(brush.event);
 
-        brushg.selectAll('g.resize.w').remove();
+        brushg.selectAll('#' + containerId + ' g.resize.w').remove();
 
-        brushg.select('#' + idx + ' g.resize.e').append('path')
+        brushg.select('#' + containerId + ' #' + idx + ' g.resize.e').append('path')
           .attr('d', line)
           .style('pointer-events', 'none');
 
-        brushg.selectAll('rect')
+        brushg.selectAll('#' + containerId + ' rect')
           .attr('height', height)
           .style('pointer-events', 'none');
       });
