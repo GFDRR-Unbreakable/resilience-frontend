@@ -115,43 +115,46 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   changeCountryInputsByClick(isoCode) {
-    const filteredName = this.countryListComp.filter(val => val.code === isoCode)[0].name;
-    const selectedCountryIdx = this._selectedCountryList.map((val, index) => {
-      if (val.name.toLowerCase() === filteredName.toLowerCase()) {
-        return index;
+    const filterISOCode = this.countryListComp.filter(val => val.code === isoCode);
+    if (filterISOCode.length > 0) {
+      const filteredName = filterISOCode[0].name;
+      const selectedCountryIdx = this._selectedCountryList.map((val, index) => {
+        if (val.name.toLowerCase() === filteredName.toLowerCase()) {
+          return index;
+        }
+      }).filter(isFinite);
+      const MAX_SELECTED_COUNTRIES = 2;
+      if (selectedCountryIdx.length === 0) {
+        let index = 0;
+        const filterCountryVal1 = this.countryListComp.filter(val =>
+          val.name.toLowerCase() === this.viewerModel.firstCountry.toLowerCase());
+        const filterCountryVal2 = this.countryListComp.filter(val =>
+          val.name.toLowerCase() === this.viewerModel.secondCountry.toLowerCase());
+        if (!this.viewerModel.firstCountry || filterCountryVal1.length === 0) {
+          this.viewerModel.firstCountry = filteredName;
+          this.chartService.updateOutputCharts('outputs-1', isoCode);
+        } else if (!this.viewerModel.secondCountry.trim() || filterCountryVal2.length === 0) {
+          index += 1;
+          this.viewerModel.secondCountry = filteredName;
+          this.chartService.updateOutputCharts('outputs-2', isoCode);
+        }
+        if (this._selectedCountryList.length < MAX_SELECTED_COUNTRIES) {
+          this._selectedCountryList.push({
+            index: index,
+            name: filteredName
+          });
+        }
+      } else {
+        const selectedC = this._selectedCountryList[selectedCountryIdx[0]].name;
+        if (this.viewerModel.firstCountry.length && selectedC.indexOf(this.viewerModel.firstCountry) >= 0) {
+          this.viewerModel.firstCountry = '';
+          this.chartService.updateOutputCharts('outputs-1');
+        } else if (this.viewerModel.secondCountry.length && selectedC.indexOf(this.viewerModel.secondCountry) >= 0) {
+          this.viewerModel.secondCountry = '';
+          this.chartService.updateOutputCharts('outputs-2');
+        }
+        this._selectedCountryList.splice(selectedCountryIdx[0], 1);
       }
-    }).filter(isFinite);
-    const MAX_SELECTED_COUNTRIES = 2;
-    if (selectedCountryIdx.length === 0) {
-      let index = 0;
-      const filterCountryVal1 = this.countryListComp.filter(val =>
-        val.name.toLowerCase() === this.viewerModel.firstCountry.toLowerCase());
-      const filterCountryVal2 = this.countryListComp.filter(val =>
-        val.name.toLowerCase() === this.viewerModel.secondCountry.toLowerCase());
-      if (!this.viewerModel.firstCountry || filterCountryVal1.length === 0) {
-        this.viewerModel.firstCountry = filteredName;
-        this.chartService.updateOutputCharts('outputs-1', isoCode);
-      } else if (!this.viewerModel.secondCountry.trim() || filterCountryVal2.length === 0) {
-        index += 1;
-        this.viewerModel.secondCountry = filteredName;
-        this.chartService.updateOutputCharts('outputs-2', isoCode);
-      }
-      if (this._selectedCountryList.length < MAX_SELECTED_COUNTRIES) {
-        this._selectedCountryList.push({
-          index: index,
-          name: filteredName
-        });
-      }
-    } else {
-      const selectedC = this._selectedCountryList[selectedCountryIdx[0]].name;
-      if (this.viewerModel.firstCountry.length && selectedC.indexOf(this.viewerModel.firstCountry) >= 0) {
-        this.viewerModel.firstCountry = '';
-        this.chartService.updateOutputCharts('outputs-1');
-      } else if (this.viewerModel.secondCountry.length && selectedC.indexOf(this.viewerModel.secondCountry) >= 0) {
-        this.viewerModel.secondCountry = '';
-        this.chartService.updateOutputCharts('outputs-2');
-      }
-      this._selectedCountryList.splice(selectedCountryIdx[0], 1);
     }
   }
   getChartOutputData() {
@@ -161,6 +164,11 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       this.chartService.createOutputChart(data, 'outputs-2');
       this.countryUIList = this.chartService.getOutputDataUIList();
       this.countryListComp = this.chartService.getOutputList();
+      this.chartService.getInputDataObs().subscribe(inpData => {
+        console.log(inpData);
+        // this.chartService.createInputCharts(inpData, 'inputs-1');
+        // this.chartService.createInputCharts(inpData, 'inputs-2');
+      });
     }, err => {
       console.log(err);
     });

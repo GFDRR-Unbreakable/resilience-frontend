@@ -6,6 +6,7 @@ export const SERVER = {
     // BASE: 'http://13.58.142.191:9090/api/',
     // OUTPUT_DATA: 'output_data'
     BASE: '/assets/data/',
-    OUTPUT_DATA: 'df2.csv'
+    OUTPUT_DATA: 'df2.csv',
+    INPUTS_INFO: 'inputs_info.csv'
   }
 };

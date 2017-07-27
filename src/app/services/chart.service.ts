@@ -9,215 +9,458 @@ import {SERVER} from './server.conf';
 @Injectable()
 export class ChartService {
   private _outputDataProm$: Observable<any>;
+  private _inputDataProm$: Observable<any>;
   private _baseURL = SERVER.URL.BASE;
   private _outputDataURL = SERVER.URL.OUTPUT_DATA;
+  private _inputInfoURL = SERVER.URL.INPUTS_INFO;
+  private _inputDomains: any;
+  private _inputConfig: any = {};
   private _outputDomains: any = {};
   private _globalModelData: any = {};
+  private _countryGroupData: any = {};
   private _outputDataSubs: Subscription;
   public _outputUIList: Array<any> = [];
   public _outputList: Array<any> = [];
   constructor() { }
-  createOutputChart(outputData: any, containerId: string, groupName?: string) {
-    // this._outputDataSubs = this._outputDataProm$.subscribe(outputData => {
-      jQuery(`div#${containerId}`).empty();
-      const finalOutput = this.filterOutputDataByGroup(outputData, groupName);
-      jQuery.each(finalOutput, (idx, output) => {
-        const s1 = output.gradient[0];
-        const s2 = output.gradient[1];
-        // sort the distribution
-        const data: Array<number> = output.domain.sort((a, b) => {
-          return a - b;
-        });
-        const bounds = d3.extent(data);
-        const margin = {
-          top: 5,
-          right: 2,
-          bottom: 0,
-          left: 2
-        };
-        const width = 160 - margin.left - margin.right;
-        const height = 40 - margin.top - margin.bottom;
+  createInputCharts(inputData: any, containerId: string, groupName?: string) {
+    jQuery(`div#${containerId}`).empty();
+    jQuery.each(inputData, (idx, input) => {
+      const dataArr = [];
+      for (let k = 0; k < input.distribGroupArr.length; k++) {
+        dataArr.push(input.distribGroupArr[k]['distribution']);
+      }
+      const data = dataArr;
 
-        const kde = science['stats'].kde().sample(data);
-        const bw = kde.bandwidth(science['stats'].bandwidth.nrd0)(data);
-        const x = d3.scale.linear()
-          .domain(bounds)
-          .range([0, width])
-          .clamp(true);
-        const d1Y = d3.max(bw, (d) => {
+		  // add a margin of 0.1 m,M
+      const m1 = data[0] - (data[0] * 0.1);
+      const m2 = data[data.length - 1] + (data[data.length - 1] * 0.1);
+      data.unshift(m1);
+      data.push(m2);
+
+      const bounds = d3.extent(data);
+      const margin = {
+        top: 5,
+        right: 1,
+        bottom: 0,
+        left: 1
+      };
+      const width = 120 - margin.left - margin.right;
+      const height = 30 - margin.top - margin.bottom;
+
+      const kde = science.stats.kde().sample(data);
+      const bw = kde.bandwidth(science.stats.bandwidth.nrd0)(data);
+
+      const x = d3.scale.linear()
+        .domain(bounds)
+        .range([0, width]);
+
+      const y = d3.scale.linear()
+        .domain([0, d3.max(bw, (d) => {
           return d[1];
+        })])
+        .range([height, 0]);
+
+		  // gaussian curve
+      const l = d3.svg.line()
+        .x((d) => {
+          return x(d[0]);
+        })
+        .y((d) => {
+          return y(d[1]);
+        })
+        .interpolate('basis');
+
+		  // area under gaussian curve
+      const a = d3.svg.area()
+        .x((d) => {
+          return x(d[0]);
+        })
+        .y0(height)
+        .y1((d) => {
+          return y(d[1]);
         });
-        const y = d3.scale.linear()
-          .domain([0, d1Y])
-          .range([height, 0]);
-        // gaussian curve
-        const l = d3.svg.line()
-          .x((d) => {
-            return x(d[0]);
-          })
-          .y((d) => {
-            return y(d[1]);
-          });
-        // area under gaussian curve
-        const a = d3.svg.area()
-          .x((d) => {
-            return x(d[0]);
-          })
-          .y0(height)
-          .y1((d) => {
-            return y(d[1]);
-          });
-        // bisect data array at brush selection point
-        const b = d3.bisector((d) => {
-          return d;
-        }).left;
-        const div = d3.select(`#${containerId}`)
-          .append('div')
-          .attr('id', idx)
-          .attr('class', 'col-sm-4')
-          .attr('data-output', idx)
-          .attr('data-output-title', output.descriptor)
-          .style('pointer-events', 'all')
-          .on('click', () => {
-            // TODO verify if this event will be needed
-            const divEl = jQuery(`div#${containerId}`).find('div')[0];
-            const chloroplethField = divEl.getAttribute('data-output');
-            const chloroplethTitle = divEl.getAttribute('data-output-title');
-            // jQuery.event.trigger({
-            //   type: 'mapselect',
-            //   chloropleth_field: chloroplethField,
-            //   chloropleth_title: chloroplethTitle
-            // });
-          });
-        const table = div.append('table')
-          .attr('width', '100%')
-          .attr('class', 'table table-responsive')
-          .attr('id', 'table-' + idx);
-        const tr = table.append('tr');
-        const td = tr.append('td')
-          .attr('width', '100%');
-        const svg = td.append('svg')
-          .attr('width', width + margin.left + margin.right)
-          .attr('height', height + margin.top + margin.bottom)
-          .attr('id', idx)
-          .append('g')
-          .attr('transform',
-            'translate(' + margin.left + ',' + margin.top + ')')
-          .style('pointer-events', 'none')
-          .style('border-bottom', '1px solid lightgrey');
-        const gradient = svg.append('defs')
-          .append('linearGradient')
-          .attr('id', 'gradient-' + idx)
-          .attr('x1', '0%')
-          .attr('y1', '0%')
-          .attr('x2', '100%')
-          .attr('y2', '0%');
-        gradient.append('stop')
-          .attr('offset', '0%')
-          .attr('stop-color', s1)
-          .attr('stop-opacity', 1);
-        gradient.append('stop')
-          .attr('offset', '100%')
-          .attr('stop-color', s2)
-          .attr('stop-opacity', 1);
-        // add gaussian curve
-        const gaus = svg.append('g')
-          .attr('id', idx)
-          .attr('class', 'gaussian');
-        gaus.selectAll('#' + containerId + ' g#' + idx + ' .gaussian')
+
+		// bisect data array at brush selection point
+      const b = d3.bisector((d) => {
+        return d;
+      }).left;
+
+      const div = d3.select(`div#${containerId}`)
+        .append('div')
+        .attr('class', 'input-row');
+
+      const tr = div.append('table')
+        .attr('width', '100%')
+        .attr('class', 'table table-responsive')
+        .attr('id', 'table-' + input.key)
+        .style('pointer-events', 'none')
+        .append('tr')
+        .style('pointer-events', 'none');
+
+      tr.append('td')
+        .attr('width', '55%')
+        .append('span')
+        .attr('class', 'descriptor')
+        .style('pointer-events', 'all')
+        .text(input.descriptor);
+
+      tr.append('td')
+        .attr('width', '15%')
+        .append('span')
+        .attr('class', 'value')
+        .style('pointer-events', 'none')
+        .text(' ');
+
+      const td = tr.append('td')
+        .attr('width', '30%')
+        .style('pointer-events', 'none');
+
+      const svg = td.append('svg')
+        .attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom)
+        .attr('id', input.key)
+        .style('pointer-events', 'all')
+        .append('g')
+        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+		  // add gaussian curve
+      const gaus = svg.append('g')
+        .attr('id', input.key)
+        .attr('class', 'gaussian');
+
+      gaus.selectAll('#' + containerId + ' g#' + input.key + ' .gaussian')
         // Multivariant Density Estimation
         // http://bit.ly/1Y3jEcD
-          .data([science['stats'].bandwidth.nrd0])
-            .enter()
-          .append('path')
-          .attr('d', (d) => {
-            return l(kde.bandwidth(d)(data));
-          });
-        // add gaussian curve
-        const area = svg.append('g')
-          .attr('id', 'area-' + idx)
-          .attr('class', 'area');
-        area.selectAll('#' + containerId + ' g#area-' + idx + ' .area')
-          .data([science['stats'].bandwidth.nrd0])
+        .data([science.stats.bandwidth.nrd0])
+        .enter()
+        .append('path')
+        .attr('d', (d) => {
+          return l(kde.bandwidth(d)(data));
+        });
+
+      // add gaussian curve
+      const area = svg.append('g')
+        .attr('id', 'area-' + input.key)
+        .attr('class', 'area');
+
+      area.selectAll('#' + containerId + ' g#area-' + input.key + ' .area')
+        .data([science.stats.bandwidth.nrd0])
+        .enter()
+        .append('path')
+        .attr('d', (d) => {
+          const dd = kde.bandwidth(d)(data);
+          return a(dd);
+        });
+
+      const mask = svg.append('g')
+        .attr('id', 'mask-' + input.key)
+        .attr('class', 'mask');
+
+      // add placeholder for initial model value
+      const initial = svg.append('g')
+        .attr('id', 'initial-' + input.key)
+        .attr('class', 'initial')
+        .append('line');
+
+      const brush = d3.svg.brush()
+        .x(x)
+        .extent([0, d3.mean(data)])
+        .on('brushstart', brushstart)
+        .on('brush', brushmove)
+        .on('brushend', brushend);
+
+      // add the brush to the input config so
+      // we can access it later
+      input.brush = brush;
+      input.x = x;
+      input.width = width;
+      input.height = height;
+      this._inputConfig[input.key] = input;
+
+      const line = d3.svg.line()
+        .x((d) => {
+          return brush.extent()[1];
+        })
+        .y((d) => {
+          return height;
+        });
+
+      const brushg = svg.append('g')
+        .attr('class', 'brush')
+        .call(brush);
+
+      brushg.call(brush.event)
+        .transition()
+        .duration(750)
+        .call(brush.extent([0, d3.mean(data)]))
+        .call(brush.event);
+
+      brushg.selectAll('#' + containerId + ' g.resize.w').remove();
+
+      brushg.select('#' + containerId + ' #' + input.key + ' g.resize.e').append('path')
+        .attr('d', line);
+
+      brushg.selectAll('#' + containerId + ' rect')
+        .attr('height', height);
+
+      const self = this;
+      function brushstart() {
+        svg.classed('selecting', true);
+      }
+      function brushmove() {
+        // clear existing mask
+        jQuery('#' + containerId + ' #mask-' + input.key).empty();
+        const s = brush.extent();
+        const clip = b(data, s[1]);
+        const selected = data.slice(0, clip);
+        selected.push(s[1]);
+        mask.selectAll('#' + containerId + ' g#mask-' + input.key + ' .mask')
+          .data([science.stats.bandwidth.nrd0])
           .enter()
           .append('path')
-          .attr('d', (d) => {
-            return a(kde.bandwidth(d)(data));
-          })
-          .style('fill', 'url(#gradient-' + idx + ')');
-        // add placeholder for initial model value
-        const initial = svg.append('g')
-          .attr('id', 'initial-' + idx)
-          .attr('class', 'initial')
-          .append('line');
-
-        const infoEl = tr.append('td')
-          .attr('width', '100%');
-
-        infoEl.append('p')
-          .attr('class', 'text-results')
-          .text(output.descriptor.toUpperCase());
-
-        const brushstart = () => {
-          svg.classed('selecting-output', true);
-        };
-        const brushmove = () => {
-          d3.select('#' + containerId + ' #' + idx + ' g.resize.e path')
-            .attr('d', 'M 0, 0 ' + ' L 0 ' + height);
-        };
-        const brushend = () => {
-          svg.classed('selecting', !d3.event.target.empty());
-        };
-        const brush = d3.svg.brush()
-          .x(x)
-          .extent([0, d3.mean(data)])
-          .on('brushstart', brushstart)
-          .on('brush', brushmove)
-          .on('brushend', brushend);
-
-        infoEl.append('p')
-          .append('b')
-          .attr('class', 'text-number')
-          .text(() => {
-            const percent = output.number_type === ('percent') ? ' %' : '';
-            const precision = +output.precision;
-            return (+brush.extent()[1] * 100).toFixed(precision) + percent;
+          .attr('d', function(d) {
+            return a(kde.bandwidth(d)(selected));
           });
-
-        // keep a reference to the brush for the output domain
-        this._outputDomains[idx].brush = brush;
-        this._outputDomains[idx].x = x;
-        this._outputDomains[idx].height = height;
-
-        const line = d3.svg.line()
-          .x((d) => {
-            return d3.mean(data);
-          })
-          .y((d) => {
-            return height;
-          });
-
-        const brushg = svg.append('g')
-          .attr('class', 'brush')
-          .style('pointer-events', 'none')
-          .call(brush);
-
-        brushg.call(brush.event)
-          .transition()
-          .duration(750)
-          .call(brush.extent([0, d3.mean(data)]))
-          .call(brush.event);
-
-        brushg.selectAll('#' + containerId + ' g.resize.w').remove();
-
-        brushg.select('#' + containerId + ' #' + idx + ' g.resize.e').append('path')
-          .attr('d', line)
-          .style('pointer-events', 'none');
-
-        brushg.selectAll('#' + containerId + ' rect')
-          .attr('height', height)
-          .style('pointer-events', 'none');
+        d3.select('#' + containerId + ' #' + input.key + ' g.resize.e path')
+          .attr('d', 'M 0, 0 ' + ' L 0 ' + height);
+        const span = jQuery('#' + containerId + ' #table-' + input.key + ' span.value');
+        span.empty();
+        span.html(function() {
+          const percent = input.number_type === ('percent' || 'small_percent') ? ' %' : '';
+          let ext = +input.brush.extent()[1];
+          if (percent !== '') {
+            ext = +input.brush.extent()[1] * 100;
+            return ext.toFixed(1) + percent;
+          }
+          return ext.toFixed(3);
+        });
+      }
+      function brushend() {
+        if (d3.event.sourceEvent) {
+          // source is a MouseEvent
+          // user is updating the input manually
+          const node = d3.select(d3.event.sourceEvent.target).node();
+          const s = jQuery(node).closest('svg');
+          const id = jQuery(s).attr('id');
+          // redraw the input plot
+          if (id) {
+            _redrawInputPlot.call(self, id);
+          } else {
+            console.warn('Cant get input id from:' + node);
+          }
+        }
+        svg.classed('selecting', !d3.event.target.empty());
+      }
+      function _redrawInputPlot(id) {
+        const config = this._inputConfig;
+        const input = config[id];
+        // jQuery.event.trigger({
+        //   type: 'inputchanged',
+        //   input: input
+        // });
+      }
+    });
+  }
+  createOutputChart(outputData: any, containerId: string, groupName?: string) {
+    jQuery(`div#${containerId}`).empty();
+    const finalOutput = this.filterOutputDataByGroup(outputData, groupName);
+    jQuery.each(finalOutput, (idx, output) => {
+      const s1 = output.gradient[0];
+      const s2 = output.gradient[1];
+      // sort the distribution
+      const data: Array<number> = output.domain.sort((a, b) => {
+        return a - b;
       });
+      const bounds = d3.extent(data);
+      const margin = {
+        top: 5,
+        right: 2,
+        bottom: 0,
+        left: 2
+      };
+      const width = 160 - margin.left - margin.right;
+      const height = 40 - margin.top - margin.bottom;
+
+      const kde = science['stats'].kde().sample(data);
+      const bw = kde.bandwidth(science['stats'].bandwidth.nrd0)(data);
+      const x = d3.scale.linear()
+        .domain(bounds)
+        .range([0, width])
+        .clamp(true);
+      const d1Y = d3.max(bw, (d) => {
+        return d[1];
+      });
+      const y = d3.scale.linear()
+        .domain([0, d1Y])
+        .range([height, 0]);
+      // gaussian curve
+      const l = d3.svg.line()
+        .x((d) => {
+          return x(d[0]);
+        })
+        .y((d) => {
+          return y(d[1]);
+        });
+      // area under gaussian curve
+      const a = d3.svg.area()
+        .x((d) => {
+          return x(d[0]);
+        })
+        .y0(height)
+        .y1((d) => {
+          return y(d[1]);
+        });
+      // bisect data array at brush selection point
+      const b = d3.bisector((d) => {
+        return d;
+      }).left;
+      const div = d3.select(`#${containerId}`)
+        .append('div')
+        .attr('id', idx)
+        .attr('class', 'col-sm-4')
+        .attr('data-output', idx)
+        .attr('data-output-title', output.descriptor)
+        .style('pointer-events', 'all')
+        .on('click', () => {
+          // TODO verify if this event will be needed
+          const divEl = jQuery(`div#${containerId}`).find('div')[0];
+          const chloroplethField = divEl.getAttribute('data-output');
+          const chloroplethTitle = divEl.getAttribute('data-output-title');
+          // jQuery.event.trigger({
+          //   type: 'mapselect',
+          //   chloropleth_field: chloroplethField,
+          //   chloropleth_title: chloroplethTitle
+          // });
+        });
+      const table = div.append('table')
+        .attr('width', '100%')
+        .attr('class', 'table table-responsive')
+        .attr('id', 'table-' + idx);
+      const tr = table.append('tr');
+      const td = tr.append('td')
+        .attr('width', '100%');
+      const svg = td.append('svg')
+        .attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom)
+        .attr('id', idx)
+        .append('g')
+        .attr('transform',
+          'translate(' + margin.left + ',' + margin.top + ')')
+        .style('pointer-events', 'none')
+        .style('border-bottom', '1px solid lightgrey');
+      const gradient = svg.append('defs')
+        .append('linearGradient')
+        .attr('id', 'gradient-' + idx)
+        .attr('x1', '0%')
+        .attr('y1', '0%')
+        .attr('x2', '100%')
+        .attr('y2', '0%');
+      gradient.append('stop')
+        .attr('offset', '0%')
+        .attr('stop-color', s1)
+        .attr('stop-opacity', 1);
+      gradient.append('stop')
+        .attr('offset', '100%')
+        .attr('stop-color', s2)
+        .attr('stop-opacity', 1);
+      // add gaussian curve
+      const gaus = svg.append('g')
+        .attr('id', idx)
+        .attr('class', 'gaussian');
+      gaus.selectAll('#' + containerId + ' g#' + idx + ' .gaussian')
+      // Multivariant Density Estimation
+      // http://bit.ly/1Y3jEcD
+        .data([science['stats'].bandwidth.nrd0])
+          .enter()
+        .append('path')
+        .attr('d', (d) => {
+          return l(kde.bandwidth(d)(data));
+        });
+      // add gaussian curve
+      const area = svg.append('g')
+        .attr('id', 'area-' + idx)
+        .attr('class', 'area');
+      area.selectAll('#' + containerId + ' g#area-' + idx + ' .area')
+        .data([science['stats'].bandwidth.nrd0])
+        .enter()
+        .append('path')
+        .attr('d', (d) => {
+          return a(kde.bandwidth(d)(data));
+        })
+        .style('fill', 'url(#gradient-' + idx + ')');
+      // add placeholder for initial model value
+      const initial = svg.append('g')
+        .attr('id', 'initial-' + idx)
+        .attr('class', 'initial')
+        .append('line');
+
+      const infoEl = tr.append('td')
+        .attr('width', '100%');
+
+      infoEl.append('p')
+        .attr('class', 'text-results')
+        .text(output.descriptor.toUpperCase());
+
+      const brushstart = () => {
+        svg.classed('selecting-output', true);
+      };
+      const brushmove = () => {
+        d3.select('#' + containerId + ' #' + idx + ' g.resize.e path')
+          .attr('d', 'M 0, 0 ' + ' L 0 ' + height);
+      };
+      const brushend = () => {
+        svg.classed('selecting', !d3.event.target.empty());
+      };
+      const brush = d3.svg.brush()
+        .x(x)
+        .extent([0, d3.mean(data)])
+        .on('brushstart', brushstart)
+        .on('brush', brushmove)
+        .on('brushend', brushend);
+
+      infoEl.append('p')
+        .append('b')
+        .attr('class', 'text-number')
+        .text(() => {
+          const percent = output.number_type === ('percent') ? ' %' : '';
+          const precision = +output.precision;
+          return (+brush.extent()[1] * 100).toFixed(precision) + percent;
+        });
+
+      // keep a reference to the brush for the output domain
+      this._outputDomains[idx].brush = brush;
+      this._outputDomains[idx].x = x;
+      this._outputDomains[idx].height = height;
+
+      const line = d3.svg.line()
+        .x((d) => {
+          return d3.mean(data);
+        })
+        .y((d) => {
+          return height;
+        });
+
+      const brushg = svg.append('g')
+        .attr('class', 'brush')
+        .style('pointer-events', 'none')
+        .call(brush);
+
+      brushg.call(brush.event)
+        .transition()
+        .duration(750)
+        .call(brush.extent([0, d3.mean(data)]))
+        .call(brush.event);
+
+      brushg.selectAll('#' + containerId + ' g.resize.w').remove();
+
+      brushg.select('#' + containerId + ' #' + idx + ' g.resize.e').append('path')
+        .attr('d', line)
+        .style('pointer-events', 'none');
+
+      brushg.selectAll('#' + containerId + ' rect')
+        .attr('height', height)
+        .style('pointer-events', 'none');
+    });
   }
   filterOutputDataByGroup(outputData, groupName: string) {
     if (groupName === 'GLOBAL' || !groupName) {
@@ -282,6 +525,9 @@ export class ChartService {
       }
     };
   }
+  getInputDataObs() {
+    return this._inputDataProm$;
+  }
   getOutputDataObs() {
     return this._outputDataProm$;
   }
@@ -293,6 +539,68 @@ export class ChartService {
   }
   initOutputChartConf() {
     this.setOutputData();
+    this.setInputData();
+  }
+  private _populateInputDomains(inputArr) {
+    const inputIds = this.getChartsConf().inputs;
+    const inputDomains = [];
+    inputArr.forEach((val, index, arr) => {
+      if (inputIds.indexOf(val.key) >= 0) {
+        const inpObj: any = {};
+        inpObj.key = val.key;
+        inpObj.descriptor = val.descriptor;
+        inpObj.distribGroupArr = [];
+        inpObj.lower = +val.lower;
+        inpObj.upper = +val.upper;
+        inpObj.number_type = val.number_type;
+        jQuery.each(this._globalModelData, (ind, globalObj) => {
+          if (globalObj[val.key]) {
+            const value = +globalObj[val.key];
+            const obj: any = {};
+            if (inpObj.lower === 0 && obj.upper === 0) {
+              obj.distribution = value;
+              obj.group = globalObj['group_name'];
+              inpObj.distribGroupArr.push(obj);
+            } else if (value > inpObj.upper) {
+              globalObj[val.key] = inpObj.upper;
+              obj.distribution = inpObj.upper;
+              obj.group = globalObj['group_name'];
+              inpObj.distribGroupArr.push(obj);
+            } else {
+              obj.distribution = value;
+              obj.group = globalObj['group_name'];
+              inpObj.distribGroupArr.push(obj);
+            }
+            //obj.group = globalObj['group_name'];
+            // inpObj.distribGroupArr.push(obj);
+          }
+        });
+        this._sortByKey(inpObj.distribGroupArr, 'distribution');
+        inputDomains.push(inpObj);
+      }
+    });
+    return inputDomains;
+  }
+  setInputData() {
+    const url = `${this._baseURL}${this._inputInfoURL}`;
+    const promisedData = new Promise((resolve, reject) => {
+      d3.csv(url, (err, data: any) => {
+        if (err) { reject(err); }
+        const inputDomainsArr = [];
+        data.forEach((value) => {
+          const inputObj = {};
+          inputObj['key'] = value.key;
+          inputObj['descriptor'] = value.descriptor;
+          inputObj['lower'] = +value.lower;
+          inputObj['upper'] = +value.upper;
+          inputObj['number_type'] = value.number_type;
+          inputDomainsArr.push(inputObj);
+        });
+        this._inputDomains = this._populateInputDomains(inputDomainsArr);
+        resolve(this._inputDomains);
+      });
+    });
+    this._inputDataProm$ = Observable.fromPromise(promisedData);
   }
   setOutputData() {
     const outputConf = this.getChartsConf().outputs;
@@ -309,9 +617,7 @@ export class ChartService {
         data.forEach((value, index, arr) => {
           for (const key in value) {
             if (value.hasOwnProperty(key)) {
-              if (key === 'name' || key === 'id' || key === 'iso3' || key === 'original_country' || key === 'group_name') {
-                //
-              } else {
+              if (isFinite(value[key])) {
                 value[key] = +value[key];
               }
               if (this._outputDomains.hasOwnProperty(key)) {
@@ -319,6 +625,9 @@ export class ChartService {
                 this._outputDomains[key]['group_name'].push(value['group_name']);
               }
             }
+          }
+          if (!this._countryGroupData[value['group_name']]) {
+            this._countryGroupData[value['group_name']] = value['group_name'];
           }
           this._globalModelData[value.iso3] = value;
           this._outputList.push({
@@ -331,6 +640,15 @@ export class ChartService {
       });
     });
     this._outputDataProm$ = Observable.fromPromise(promisedData);
+  }
+  private _sortByKey(array, key) {
+    array.sort((a, b) => {
+      const x = a[key]; const y = b[key];
+      return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+    });
+  }
+  unsubscribeOutputData() {
+    this._outputDataSubs.unsubscribe();
   }
   updateOutputCharts(containerId: string, selectedId?: string) {
     const domains = this._outputDomains;
@@ -375,8 +693,5 @@ export class ChartService {
       // remove w resize extent handle
       d3.selectAll(`#${containerId} g.brush > g.resize.w`).remove();
     });
-  }
-  unsubscribeOutputData() {
-    this._outputDataSubs.unsubscribe();
   }
 }

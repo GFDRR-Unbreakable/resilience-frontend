@@ -10425,10 +10425,10 @@ fieldset {
         pointer-events: all;
         border-bottom: 1px solid lightgrey;
     }
-    .selecting rect {
+    .selecting rect, #inputs-1 .selecting rect, #inputs-2 .selecting rect{
         fill: orange;
     }
-    .resize.e path {
+    .resize.e path, #inputs-1 .resize.e path, #inputs-2 .resize.e path {
         fill: #666;
         fill-opacity: .8;
         stroke: #000;
@@ -10444,7 +10444,7 @@ fieldset {
     g.tick> text {
         font-size: .5em !important;
     }
-    .axis path, .axis line {
+    .axis path, .axis line, #inputs-1 .axis path, #inputs-1 .axis line, #inputs-2 .axis path, #inputs-2 .axis line {
         fill: none;
         stroke: #000;
         stroke-width: 2px;
@@ -10460,7 +10460,7 @@ fieldset {
         fill-opacity: 0;
         shape-rendering: crispEdges;
     }
-    .initial line {
+    .initial line, #inputs-1 .initial line, #inputs-2 .initial line {
         fill: none;
         stroke: #2f4f4f;
         stroke-width: 2px;
@@ -10511,10 +10511,10 @@ fieldset {
         fill: none;
         shape-rendering: auto;
     }
-    #inputs g.area path {
+    #inputs-1 g.area path, #inputs-2 g.area path {
         fill: #B9D908;
     }
-    #inputs g.mask path {
+    #inputs-1 g.mask path, #inputs-2 g.mask path {
         fill: #C17391;
         opacity: 1;
     }
