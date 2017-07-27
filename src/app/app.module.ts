@@ -2,7 +2,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MdSliderModule} from '@angular/material';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
+import 'hammerjs';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -38,6 +42,8 @@ import {ChartService} from './services/chart.service';
     FormsModule,
     HttpModule,
     NgbModule.forRoot(),
+    BrowserAnimationsModule,
+    MdSliderModule,
     routing,
     store
   ],

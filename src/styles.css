@@ -18,6 +18,7 @@
 @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 @import "../node_modules/mdi/css/materialdesignicons.min.css";
 @import url("https://fonts.googleapis.com/css?family=Lato:400,700,400italic");
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 html {
   line-height: 1.15;
@@ -615,7 +616,7 @@ template {
     border-color: #a5a5a6;
   }
   .text-social{
-    padding: 5px 30px;
+    padding: 5px 20px;
   }
 
   /*tab technical Map*/
@@ -10547,3 +10548,10 @@ fieldset {
         padding-left: 0;
         padding-right: 0;
     }
+
+.tab .mat-accent .mat-slider-thumb, .tab .mat-accent .mat-slider-thumb-label, .tab .mat-accent .mat-slider-track-fill {
+  background-color: #0cbd8f;
+}
+.tab .mat-accent .mat-slider-track-fill, .tab .mat-slider-horizontal .mat-slider-track-wrapper {
+  height: 3px;
+}
