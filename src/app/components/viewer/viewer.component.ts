@@ -31,6 +31,12 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     firstCountry: '',
     secondCountry: ''
   };
+  public hazards = {
+    hazard1: true,
+    hazard2: true,
+    hazard3: true,
+    hazard4: true
+  };
   public viewer$: Observable<Viewer>;
   public searchCountryFn = (text$: Observable<string>) => {
     const debounceTimeFn = debounceTime.call(text$, 200);

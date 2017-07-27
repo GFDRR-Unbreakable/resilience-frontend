@@ -25,7 +25,7 @@
                           <h6 class="text-carousel">EXPECTED ASSET LOSSES (% of GDP)</h6>
                        </div>
                    </ng-template>
-               </ngb-carousel> 
+               </ngb-carousel>
                <div id="map"></div>
             </div>
          </div>
@@ -372,13 +372,13 @@
                         <div class="col-md-12">
                            <div class="box-input">
                               <div class="form-group" [class.has-danger]="searchFailed">
-                                 <input id="typeahead-http" type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search" placeholder="Malawi" />
+                                 <input id="country-1Txt" type="text" class="form-control" [(ngModel)]="viewerModel.firstCountry" [ngbTypeahead]="searchCountryFn" #country1="ngModel" (ngModelChange)="onFirstCountryInputChangeEvent()"/>
                                  <span *ngIf="searching">searching...</span>
                                  <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
                               </div>
                               <button type="button" class="btn btn-outline-secondary icon-plus"><i class="mdi mdi-plus"></i></button>
                               <div class="form-group" [class.has-danger]="searchFailed">
-                                 <input id="typeahead-http" type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search" placeholder="Zimbabwe" />
+                                 <input id="country-2Txt" type="text" class="form-control" [(ngModel)]="viewerModel.secondCountry" [ngbTypeahead]="searchCountryFn" #country2="ngModel" (ngModelChange)="onSecondCountryInputChangeEvent()"/>
                                  <span *ngIf="searching">searching...</span>
                                  <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
                               </div>
@@ -390,10 +390,10 @@
                            <h6>Hazard Selection</h6>
                            <p>Select one or multiple hazards:</p>
                            <div class="">
-                              <a href="#"><img class="icon-hazard" src="assets/image/flood.png" alt=""></a>
-                              <a href="#"><img class="icon-hazard" src="assets/image/earthquake.png" alt=""></a>
-                              <a href="#"><img class="icon-hazard" src="assets/image/tsunami.png" alt=""></a>
-                              <a href="#"><img class="icon-hazard" src="assets/image/wind.png" alt=""></a>
+                              <a (click)="hazards.hazard1 = !hazards.hazard1"><img class="icon-hazard" [ngClass]="{'btn-primary': hazards.hazard1}" src="assets/image/flood.png" alt="" /></a>
+                              <a (click)="hazards.hazard2 = !hazards.hazard2"><img class="icon-hazard" [ngClass]="{'btn-primary': hazards.hazard2}" src="assets/image/earthquake.png" alt="" /></a>
+                              <a (click)="hazards.hazard3 = !hazards.hazard3"><img class="icon-hazard" [ngClass]="{'btn-primary': hazards.hazard3}" src="assets/image/tsunami.png" alt="" /></a>
+                              <a (click)="hazards.hazard4 = !hazards.hazard4"><img class="icon-hazard" [ngClass]="{'btn-primary': hazards.hazard4}" src="assets/image/wind.png" alt="" /></a>
                            </div>
                         </div>
                      </div>
