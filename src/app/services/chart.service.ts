@@ -291,7 +291,7 @@ export class ChartService {
   getOutputList() {
     return this._outputList;
   }
-   initOutputChartConf() {
+  initOutputChartConf() {
     this.setOutputData();
   }
   setOutputData() {

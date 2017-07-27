@@ -115,13 +115,14 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         return index;
       }
     }).filter(isFinite);
+    const MAX_SELECTED_COUNTRIES = 2;
     if (selectedCountryIdx.length === 0) {
       let index = 0;
       const filterCountryVal1 = this.countryListComp.filter(val =>
         val.name.toLowerCase() === this.viewerModel.firstCountry.toLowerCase());
       const filterCountryVal2 = this.countryListComp.filter(val =>
         val.name.toLowerCase() === this.viewerModel.secondCountry.toLowerCase());
-        if (!this.viewerModel.firstCountry || filterCountryVal1.length === 0) {
+      if (!this.viewerModel.firstCountry || filterCountryVal1.length === 0) {
         this.viewerModel.firstCountry = filteredName;
         this.chartService.updateOutputCharts('outputs-1', isoCode);
       } else if (!this.viewerModel.secondCountry.trim() || filterCountryVal2.length === 0) {
@@ -129,10 +130,12 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         this.viewerModel.secondCountry = filteredName;
         this.chartService.updateOutputCharts('outputs-2', isoCode);
       }
-      this._selectedCountryList.push({
-        index: index,
-        name: filteredName
-      });
+      if (this._selectedCountryList.length < MAX_SELECTED_COUNTRIES) {
+        this._selectedCountryList.push({
+          index: index,
+          name: filteredName
+        });
+      }
     } else {
       const selectedC = this._selectedCountryList[selectedCountryIdx[0]].name;
       if (this.viewerModel.firstCountry.length && selectedC.indexOf(this.viewerModel.firstCountry) >= 0) {
