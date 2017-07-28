@@ -121,13 +121,13 @@
                            <div><i class="mdi mdi-checkbox-blank-circle box-icon-c"></i> <span class="text-country">Country</span></div>
                            <div class="box-dropdown">
                               <div class="form-group" [class.has-danger]="searchFailed">
-                                 <input id="country-1Txt" type="text" class="form-control" [(ngModel)]="viewerModel.firstCountry" [ngbTypeahead]="searchCountryFn" #country1="ngModel" (ngModelChange)="onFirstCountryInputChangeEvent()"/>
+                                 <input id="country-1Txt" type="text" class="form-control" [(ngModel)]="viewerModel.firstCountry" [ngbTypeahead]="searchCountryFn" #country1="ngModel" (ngModelChange)="onFirstCountryInputChangeEvent()" placeholder="Country 1"/>
                                  <span *ngIf="searching">searching...</span>
                                  <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
                               </div>
                               <button type="button" class="btn btn-outline-secondary icon-plus"><i class="mdi mdi-plus"></i></button>
                               <div class="form-group" [class.has-danger]="searchFailed">
-                                 <input id="country-2Txt" type="text" class="form-control" [(ngModel)]="viewerModel.secondCountry" [ngbTypeahead]="searchCountryFn" #country2="ngModel" (ngModelChange)="onSecondCountryInputChangeEvent()"/>
+                                 <input id="country-2Txt" type="text" class="form-control" [(ngModel)]="viewerModel.secondCountry" [ngbTypeahead]="searchCountryFn" #country2="ngModel" (ngModelChange)="onSecondCountryInputChangeEvent()" placeholder="Country 2"/>
                                  <span *ngIf="searching">searching...</span>
                                  <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
                               </div>
@@ -145,50 +145,26 @@
                               </label>
                               <div class="tab-content">
                                  <div class="row">
-                                    <div class="col-md-4 box-tab-text">
-                                       Share of social protection / remittances to poor people (% of poor)
+                                    <div class="col-md-4 label-text">
+                                      <div class="box-tab-text">
+                                        Share of social protection / remittances to poor people (% of poor)
+                                      </div>
+                                      <div class="box-tab-text">
+                                        Total social protection spending and remittances (US$,PPP)
+                                      </div>
+                                      <div class="box-tab-text">
+                                        Ability to access post-disaster financial resources (% of population)
+                                      </div>
+                                      <div class="box-tab-text">
+                                        Readiness to scale-up social protection (% increase in SP total payout post-disaster)
+                                      </div>
                                     </div>
-                                    <!-- <div id="inputs-1"></div> -->
-                                    <!-- <div class="col-md-4 box-tab-text">
-                                       image
+                                    <div class="col-md-4">
+                                      <div id="inputSoc-1"></div>
                                     </div>
-                                    <div class="col-md-4 box-tab-text">
-                                       image
-                                    </div> -->
-                                 </div>
-                                 <div class="row">
-                                    <div class="col-md-4 box-tab-text">
-                                       Total social protection spending and remittances (US$,PPP)
-                                    </div>
-                                    <!-- <div id="inputs-2"></div> -->
-                                    <!-- <div class="col-md-4 box-tab-text">
-                                       image
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                       image
-                                    </div> -->
-                                 </div>
-                                 <div class="row">
-                                    <div class="col-md-4 box-tab-text">
-                                       Ability to access post-disaster financial resources (% of population)
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                       image
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                       image
-                                    </div>
-                                 </div>
-                                 <div class="row">
-                                    <div class="col-md-4 box-tab-text">
-                                       Readiness to scale-up social protection (% increase in SP total payout post-disaster)
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                       image
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                       image
-                                    </div>
+                                    <div class="col-md-4">
+                                      <div id="inputSoc-2"></div>
+                                    </div> 
                                  </div>
                               </div>
                            </div>
@@ -202,70 +178,32 @@
                               </label>
                               <div class="tab-content">
                                  <div class="row">
-                                    <div class="col-md-4 box-tab-text">
-                                       Time to recover and reconstruct (years)
+                                    <div class="col-md-4 label-text">
+                                      <div class="box-tab-text">
+                                        Time to recover and reconstruct (years)
+                                      </div>
+                                      <div class="box-tab-text">
+                                        Access to early warning (% of population)
+                                      </div>
+                                      <div class="box-tab-text">
+                                        Financial inclusion, poor people (% of poor)
+                                      </div>
+                                      <div class="box-tab-text">
+                                        Financial inclusion, non-poor people (% of non-poor)
+                                      </div>
+                                      <div class="box-tab-text">
+                                        Wealth, poor people (US$, PPP)
+                                      </div>
+                                      <div class="box-tab-text">
+                                        Wealth, non-poor people (US$, PPP)
+                                      </div>
                                     </div>
-                                    <div class="col-md-4 box-tab-text">
-                                       image
+                                    <div class="col-md-4">
+                                      <div id="inputEco-1"></div>
                                     </div>
-                                    <div class="col-md-4 box-tab-text">
-                                       image
-                                    </div>
-                                 </div>
-                                 <div class="row">
-                                    <div class="col-md-4 box-tab-text">
-                                       Access to early warning (% of population)
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                       image
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                       image
-                                    </div>
-                                 </div>
-                                 <div class="row">
-                                    <div class="col-md-4 box-tab-text">
-                                       Financial inclusion, poor people (% of poor)
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                       image
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                       image
-                                    </div>
-                                 </div>
-                                 <div class="row">
-                                    <div class="col-md-4 box-tab-text">
-                                       Financial inclusion, non-poor people (% of non-poor)
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                       image
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                       image
-                                    </div>
-                                 </div>
-                                 <div class="row">
-                                    <div class="col-md-4 box-tab-text">
-                                       Wealth, poor people (US$, PPP)
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                       image
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                       image
-                                    </div>
-                                 </div>
-                                 <div class="row">
-                                    <div class="col-md-4 box-tab-text">
-                                       Wealth, non-poor people (US$, PPP)
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                       image
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                       image
-                                    </div>
+                                    <div class="col-md-4">
+                                      <div id="inputEco-2"></div>
+                                    </div> 
                                  </div>
                               </div>
                            </div>
@@ -279,80 +217,34 @@
                               </label>
                               <div class="tab-content">
                                  <div class="row">
-                                    <div class="col-md-4 box-tab-text">
-                                       Exposure to riverine and coastal floods, poor (% of total assets of poor)
+                                    <div class="col-md-4 label-text">
+                                      <div class="box-tab-text">
+                                        Exposure to riverine and coastal floods, poor (% of total assets of poor)
+                                      </div>
+                                      <div class="box-tab-text">
+                                        Exposure to riverine and coastal floods, non-poor (% of total assets of non-poor)
+                                      </div>
+                                      <div class="box-tab-text">
+                                        Asset vulnerability, poor people (% destruction of exposed assets of poor)
+                                      </div>
+                                      <div class="box-tab-text">
+                                        Asset vulnerability, non-poor people (% destruction of exposed assets of non-poor)
+                                      </div>
+                                      <div class="box-tab-text">
+                                        Exposure to earthquakes (% of total assets)
+                                      </div>
+                                      <div class="box-tab-text">
+                                        Exposure to tsunamis (% of total assets)
+                                      </div>
+                                      <!-- <div class="box-tab-text">
+                                        Exposure to windstorms (% of total assets)
+                                      </div> -->
                                     </div>
-                                    <div class="col-md-4 box-tab-text">
-                                       image
+                                    <div class="col-md-4">
+                                      <div id="inputExp-1"></div>
                                     </div>
-                                    <div class="col-md-4 box-tab-text">
-                                       image
-                                    </div>
-                                 </div>
-                                 <div class="row">
-                                    <div class="col-md-4 box-tab-text">
-                                       Exposure to riverine and coastal floods, non-poor (% of total assets of non-poor)
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                       image
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                       image
-                                    </div>
-                                 </div>
-                                 <div class="row">
-                                    <div class="col-md-4 box-tab-text">
-                                       Asset vulnerability, poor people (% destruction of exposed assets of poor)
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                       image
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                       image
-                                    </div>
-                                 </div>
-                                 <div class="row">
-                                    <div class="col-md-4 box-tab-text">
-                                       Asset vulnerability, non-poor people (% destruction of exposed assets of non-poor)
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                       image
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                       image
-                                    </div>
-                                 </div>
-                                 <div class="row">
-                                    <div class="col-md-4 box-tab-text">
-                                       Exposure to earthquakes (% of total assets)
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                       image
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                       image
-                                    </div>
-                                 </div>
-                                 <div class="row">
-                                    <div class="col-md-4 box-tab-text">
-                                       Exposure to tsunamis (% of total assets)
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                       image
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                       image
-                                    </div>
-                                 </div>
-                                 <div class="row">
-                                    <div class="col-md-4 box-tab-text">
-                                       Exposure to windstorms (% of total assets)
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                       image
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                       image
+                                    <div class="col-md-4">
+                                      <div id="inputExp-2"></div>
                                     </div>
                                  </div>
                               </div>

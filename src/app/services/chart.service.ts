@@ -24,7 +24,14 @@ export class ChartService {
   constructor() { }
   createInputCharts(inputData: any, containerId: string, groupName?: string) {
     jQuery(`div#${containerId}`).empty();
-    jQuery.each(inputData, (idx, input) => {
+    const inputTypeTxt = containerId.split('-')[0];
+    const inputTypes = this.getInputIdChartByType(inputTypeTxt);
+    const filterInputType = inputData.filter(val => {
+      return inputTypes.filter(type => {
+        return val.key === type;
+      })[0];
+    });
+    jQuery.each(filterInputType, (idx, input) => {
       const dataArr = [];
       for (let k = 0; k < input.distribGroupArr.length; k++) {
         dataArr.push(input.distribGroupArr[k]['distribution']);
@@ -44,8 +51,8 @@ export class ChartService {
         bottom: 0,
         left: 1
       };
-      const width = 120 - margin.left - margin.right;
-      const height = 30 - margin.top - margin.bottom;
+      const width = 80 - margin.left - margin.right;
+      const height = 35 - margin.top - margin.bottom;
 
       const kde = science.stats.kde().sample(data);
       const bw = kde.bandwidth(science.stats.bandwidth.nrd0)(data);
@@ -88,45 +95,60 @@ export class ChartService {
       const div = d3.select(`div#${containerId}`)
         .append('div')
         .attr('class', 'input-row');
+        // .attr('class', 'box-tab-text');
 
-      const tr = div.append('table')
+      const table = div.append('table')
         .attr('width', '100%')
         .attr('class', 'table table-responsive')
         .attr('id', 'table-' + input.key)
         .style('pointer-events', 'none')
-        .append('tr')
+        .style('overflow-x', 'hidden');
+
+      const tr = table.append('tr')
         .style('pointer-events', 'none');
 
-      tr.append('td')
-        .attr('width', '55%')
-        .append('span')
-        .attr('class', 'descriptor')
-        .style('pointer-events', 'all')
-        .text(input.descriptor);
+      // tr.append('td')
+      //   .attr('width', '55%')
+      //   .append('span')
+      //   .attr('class', 'descriptor')
+      //   .style('pointer-events', 'all')
+      //   .text(input.descriptor);
 
-      tr.append('td')
-        .attr('width', '15%')
-        .append('span')
-        .attr('class', 'value')
-        .style('pointer-events', 'none')
-        .text(' ');
+      // tr.append('td')
+      //   .attr('width', '15%')
+      //   .append('span')
+      //   .attr('class', 'value')
+      //   .style('pointer-events', 'none')
+        // .text(' ');
 
-      const td = tr.append('td')
-        .attr('width', '30%')
+      // const td = tr.append('td')
+      //   .attr('width', '30%')
+      //   .style('pointer-events', 'none');
+
+        const td = tr.append('td')
+        .attr('width', '60%')
         .style('pointer-events', 'none');
 
-      const svg = td.append('svg')
-        .attr('width', width + margin.left + margin.right)
-        .attr('height', height + margin.top + margin.bottom)
-        .attr('id', input.key)
-        .style('pointer-events', 'all')
-        .append('g')
-        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+        tr.append('td')
+          .attr('width', '40%')
+          .style('vertical-align', 'middle')
+          .append('span')
+          .attr('class', 'value')
+          .style('pointer-events', 'none')
+          .text(' ');
+
+        const svg = td.append('svg')
+          .attr('width', width + margin.left + margin.right)
+          .attr('height', height + margin.top + margin.bottom)
+          .attr('id', input.key)
+          .style('pointer-events', 'all')
+          .append('g')
+          .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
 		  // add gaussian curve
-      const gaus = svg.append('g')
-        .attr('id', input.key)
-        .attr('class', 'gaussian');
+        const gaus = svg.append('g')
+          .attr('id', input.key)
+          .attr('class', 'gaussian');
 
       gaus.selectAll('#' + containerId + ' g#' + input.key + ' .gaussian')
         // Multivariant Density Estimation
@@ -528,6 +550,14 @@ export class ChartService {
   getInputDataObs() {
     return this._inputDataProm$;
   }
+  getInputIdChartByType(type: string) {
+    const inputType = {
+      inputSoc: ['share1', 'social_p', 'social_r', 'unemp'],
+      inputEco: ['protection', 'fa', 'v', 'finance_pre', 'pe', 'plgp'],
+      inputExp: ['axfin_p', 'axfin_r', 'axhealth', 'prepare_scaleup', 'pv', 'rating']
+    };
+    return inputType[type];
+  }
   getOutputDataObs() {
     return this._outputDataProm$;
   }
@@ -539,11 +569,11 @@ export class ChartService {
   }
   initOutputChartConf() {
     this.setOutputData();
-    this.setInputData();
   }
-  private _populateInputDomains(inputArr) {
+  private _populateInputDomains(inputArr, _globalModelData) {
     const inputIds = this.getChartsConf().inputs;
     const inputDomains = [];
+    // this._globalModelData = _globalModelData;
     inputArr.forEach((val, index, arr) => {
       if (inputIds.indexOf(val.key) >= 0) {
         const inpObj: any = {};
@@ -553,11 +583,11 @@ export class ChartService {
         inpObj.lower = +val.lower;
         inpObj.upper = +val.upper;
         inpObj.number_type = val.number_type;
-        jQuery.each(this._globalModelData, (ind, globalObj) => {
+        jQuery.each(_globalModelData, (ind, globalObj) => {
           if (globalObj[val.key]) {
             const value = +globalObj[val.key];
             const obj: any = {};
-            if (inpObj.lower === 0 && obj.upper === 0) {
+            if (inpObj.lower === 0 && inpObj.upper === 0) {
               obj.distribution = value;
               obj.group = globalObj['group_name'];
               inpObj.distribGroupArr.push(obj);
@@ -581,7 +611,7 @@ export class ChartService {
     });
     return inputDomains;
   }
-  setInputData() {
+  setInputData(_globalModelData: any) {
     const url = `${this._baseURL}${this._inputInfoURL}`;
     const promisedData = new Promise((resolve, reject) => {
       d3.csv(url, (err, data: any) => {
@@ -596,11 +626,12 @@ export class ChartService {
           inputObj['number_type'] = value.number_type;
           inputDomainsArr.push(inputObj);
         });
-        this._inputDomains = this._populateInputDomains(inputDomainsArr);
+        this._inputDomains = this._populateInputDomains(inputDomainsArr, _globalModelData);
         resolve(this._inputDomains);
       });
     });
-    this._inputDataProm$ = Observable.fromPromise(promisedData);
+    return promisedData;
+    // this._inputDataProm$ = Observable.fromPromise(promisedData);
   }
   setOutputData() {
     const outputConf = this.getChartsConf().outputs;
@@ -636,7 +667,10 @@ export class ChartService {
           });
           this._outputUIList.push(value.name);
         });
-        resolve(this._outputDomains);
+        resolve({
+          _outputDomains: this._outputDomains,
+          _globalModelData: this._globalModelData
+        });
       });
     });
     this._outputDataProm$ = Observable.fromPromise(promisedData);

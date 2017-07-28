@@ -552,10 +552,11 @@ template {
      padding-right: 0px !important;*/
    }
    .box-tab-text{
-     padding-top: 5px;
-     padding-bottom: 5px;
+     padding-top: 15px;
+     padding-bottom: 15px;
      font-size: 10px;
      color: #373a3c;
+     line-height: 16px;
    }
 
    /* :checked */
@@ -10518,10 +10519,14 @@ fieldset {
         fill: none;
         shape-rendering: auto;
     }
-    #inputs-1 g.area path, #inputs-2 g.area path {
+    #inputSoc-1 g.area path, #inputSoc-2 g.area path, 
+    #inputEco-1 g.area path, #inputEco-2 g.area path, 
+    #inputExp-1 g.area path, #inputExp-2 g.area path {
         fill: #B9D908;
     }
-    #inputs-1 g.mask path, #inputs-2 g.mask path {
+    #inputSoc-1 g.mask path, #inputSoc-2 g.mask path,
+    #inputEco-1 g.mask path, #inputEco-2 g.mask path, 
+    #inputExp-1 g.mask path, #inputExp-2 g.mask path {
         fill: #C17391;
         opacity: 1;
     }
@@ -10561,4 +10566,10 @@ fieldset {
 }
 .tab .mat-accent .mat-slider-track-fill, .tab .mat-slider-horizontal .mat-slider-track-wrapper {
   height: 3px;
+}
+.input-row {
+  color: black;
+}
+.input-row span.value{
+  vertical-align: middle
 }

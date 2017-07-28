@@ -161,19 +161,29 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   getChartOutputData() {
     this.chartService.initOutputChartConf();
     this.getOutputDataSubs = this.chartService.getOutputDataObs().subscribe(data => {
-      this.chartService.createOutputChart(data, 'outputs-1');
-      this.chartService.createOutputChart(data, 'outputs-2');
+      console.log(data);
+      this.chartService.setInputData(data._globalModelData).then((inputData) => {
+        console.log(inputData);
+        this.chartService.createInputCharts(inputData, 'inputSoc-1');
+        this.chartService.createInputCharts(inputData, 'inputSoc-2');
+        this.chartService.createInputCharts(inputData, 'inputEco-1');
+        this.chartService.createInputCharts(inputData, 'inputEco-2');
+        this.chartService.createInputCharts(inputData, 'inputExp-1');
+        this.chartService.createInputCharts(inputData, 'inputExp-2');
+      });
+      this.chartService.createOutputChart(data._outputDomains, 'outputs-1');
+      this.chartService.createOutputChart(data._outputDomains, 'outputs-2');
       this.countryUIList = this.chartService.getOutputDataUIList();
       this.countryListComp = this.chartService.getOutputList();
       this.countryListIsoCodes = this.countryListComp.map(val => val.code);
-      this.chartService.getInputDataObs().subscribe(inpData => {
-        console.log(inpData);
-        // this.chartService.createInputCharts(inpData, 'inputs-1');
-        // this.chartService.createInputCharts(inpData, 'inputs-2');
-      });
-      this.mapService.addStylesOnMapLoading(() => {
-        this.mapService.setMapFilterByISOCodes(this.countryListIsoCodes);
-      });
+      // this.mapService.addStylesOnMapLoading(() => {
+      //   this.mapService.setMapFilterByISOCodes(this.countryListIsoCodes);
+      // });
+      // this.chartService.getInputDataObs().subscribe(inpData => {
+      //   console.log(inpData);
+      //   this.chartService.createInputCharts(inpData, 'inputs-1');
+      // this.chartService.createInputCharts(inpData, 'inputs-2');
+      // });
     }, err => {
       console.log(err);
     });
@@ -182,6 +192,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     const self = this;
     this.mapService.addStylesOnMapLoading(() => {
       this.mapService.addBasemap();
+      this.mapService.setMapFilterByISOCodes(this.countryListIsoCodes);
       this.mapService.setClickFnMapEvent((ev) => {
         const features = self.mapService.getMap().queryRenderedFeatures(ev.point, {layers: [self.mapService.getViewerFillLayer()]});
         if (features.length) {
