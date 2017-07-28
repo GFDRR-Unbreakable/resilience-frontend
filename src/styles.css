@@ -499,6 +499,13 @@ template {
     color: #373a3c !important;
     font-weight: bold !important;
   }
+  .box-select{
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+  .box-tab-gc{
+    padding-bottom: 15px;
+  }
 
  /* Acordeon styles viewer */
    .tab {
@@ -592,16 +599,16 @@ template {
     display: -webkit-box;
   }
   .icon-hazard{
-    background: #f4f5fa;
+    background: #f4f5fa !important;
     padding: 3% 4.5%;
     border-radius: 5px;
-    border: 1px solid #eaecf2;
+    border: 1px solid #eaecf2 !important;
     margin-bottom: 12px;
     margin-right: 3px;
   }
   .icon-hazard:hover{
-    background: #d8deea;
-    border: 1px solid #eaecf2;
+    background: #d8deea !important;
+    border: 1px solid #eaecf2 !important;
   }
   .button-reset{
     background: #999ba3;
