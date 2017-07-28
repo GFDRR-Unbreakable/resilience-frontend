@@ -226,6 +226,11 @@ export class MapService {
     this.changeIsoCodeFilter(isoCode);
     this.map.setFilter(this._layerHoverId, [...defaultArr, ...this._isoCodesArr]);
   }
+  setMapFilterByISOCodes(isoCodes) {
+    const defaultArr = ['in', 'ISO_Codes'];
+    this.map.setFilter(this._layerId, [...defaultArr, ...isoCodes]);
+    this.map.setFilter(this._layerFillId, [...defaultArr, ...isoCodes]);
+  }
   // EVENTS
   setClickFnMapEvent(cb: Function) {
     this.map.on('click', cb);

@@ -26,6 +26,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   public getOutputDataSubs: Subscription;
   public countryUIList: Array<any> = [];
   public countryListComp: Array<any> = [];
+  public countryListIsoCodes: Array<any> = [];
   private _selectedCountryList: Array<any> = [];
   public viewerModel: Viewer = {
     firstCountry: '',
@@ -164,10 +165,14 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       this.chartService.createOutputChart(data, 'outputs-2');
       this.countryUIList = this.chartService.getOutputDataUIList();
       this.countryListComp = this.chartService.getOutputList();
+      this.countryListIsoCodes = this.countryListComp.map(val => val.code);
       this.chartService.getInputDataObs().subscribe(inpData => {
         console.log(inpData);
         // this.chartService.createInputCharts(inpData, 'inputs-1');
         // this.chartService.createInputCharts(inpData, 'inputs-2');
+      });
+      this.mapService.addStylesOnMapLoading(() => {
+        this.mapService.setMapFilterByISOCodes(this.countryListIsoCodes);
       });
     }, err => {
       console.log(err);
@@ -181,8 +186,10 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         const features = self.mapService.getMap().queryRenderedFeatures(ev.point, {layers: [self.mapService.getViewerFillLayer()]});
         if (features.length) {
           const isoCode = features[0].properties['ISO_Codes'];
-          self.changeCountryInputsByClick(isoCode);
-          self.mapService.setMapFilterByISOCode(isoCode);
+          if (this.countryListIsoCodes.filter(val => val === isoCode).length) {
+            self.changeCountryInputsByClick(isoCode);
+            self.mapService.setMapFilterByISOCode(isoCode);
+          }
         }
       });
     });
