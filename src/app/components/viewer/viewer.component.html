@@ -110,9 +110,15 @@
                         <div class="col-md-12">
                            <div ngbDropdown class="option-global">
                               <img src="assets/image/icon-map.png" alt="">
-                              <button class="btn btn-outline-primary btn-sm dropdown-global" id="dropdownBasic1" ngbDropdownToggle>Global</button>
+                              <button class="btn btn-outline-primary btn-sm dropdown-global" id="dropdownBasic1" ngbDropdownToggle>
+                                <span *ngIf="global">Global</span>
+                                <span *ngIf="!global">Regional</span>
+                              </button>
                               <div class="dropdown-menu box-item" aria-labelledby="dropdownBasic1">
-                                 <button class="dropdown-item">Regional</button>
+                                 <button class="dropdown-item" (click)="onSwitchGlobal()">
+                                   <span *ngIf="!global">Global</span>
+                                   <span *ngIf="global">Regional</span>
+                                 </button>
                               </div>
                               <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
                               <i class="mdi mdi-information-outline"></i>

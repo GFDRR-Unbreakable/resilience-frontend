@@ -38,6 +38,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     hazard3: true,
     hazard4: true
   };
+  public global = true;
   public viewer$: Observable<Viewer>;
   public searchCountryFn = (text$: Observable<string>) => {
     const debounceTimeFn = debounceTime.call(text$, 200);
@@ -220,5 +221,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       property: layerPaintProp,
       type: currentSlideId
     });
+  }
+  onSwitchGlobal() {
+    this.global = !this.global;
   }
 }
