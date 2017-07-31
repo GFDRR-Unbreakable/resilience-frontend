@@ -150,7 +150,7 @@ export class ChartService {
           .attr('id', input.key)
           .attr('class', 'gaussian');
 
-      gaus.selectAll('#' + containerId + ' g#' + input.key + ' .gaussian')
+        gaus.selectAll('#' + containerId + ' g#' + input.key + '.gaussian')
         // Multivariant Density Estimation
         // http://bit.ly/1Y3jEcD
         .data([science.stats.bandwidth.nrd0])
@@ -165,7 +165,7 @@ export class ChartService {
         .attr('id', 'area-' + input.key)
         .attr('class', 'area');
 
-      area.selectAll('#' + containerId + ' g#area-' + input.key + ' .area')
+      area.selectAll('#' + containerId + ' g#area-' + input.key + '.area')
         .data([science.stats.bandwidth.nrd0])
         .enter()
         .append('path')
@@ -183,6 +183,36 @@ export class ChartService {
         .attr('id', 'initial-' + input.key)
         .attr('class', 'initial')
         .append('line');
+
+
+      const brushmove = () => {
+        // clear existing mask
+        jQuery('#' + containerId + ' svg#' + input.key + ' #mask-' + input.key).empty();
+        const s = input.brush.extent();
+        const clip = b(data, s[1]);
+        const selected = data.slice(0, clip);
+        selected.push(s[1]);
+        mask.selectAll('#' + containerId + ' g#mask-' + input.key + '.mask')
+          .data([science.stats.bandwidth.nrd0])
+          .enter()
+          .append('path')
+          .attr('d', (d) => {
+            return a(kde.bandwidth(d)(selected));
+          });
+        d3.select('#' + containerId + ' #' + input.key + ' g.resize.e path')
+          .attr('d', 'M 0, 0 ' + ' L 0 ' + height);
+        const span = jQuery('#' + containerId + ' #table-' + input.key + ' span.value');
+        span.empty();
+        span.html(() => {
+          const percent = input.number_type === ('percent' || 'small_percent') ? ' %' : '';
+          let ext = +input.brush.extent()[1];
+          if (percent !== '') {
+            ext = +input.brush.extent()[1] * 100;
+            return ext.toFixed(1) + percent;
+          }
+          return ext.toFixed(3);
+        });
+      };
 
       const brush = d3.svg.brush()
         .x(x)
@@ -229,48 +259,20 @@ export class ChartService {
       function brushstart() {
         svg.classed('selecting', true);
       }
-      function brushmove() {
-        // clear existing mask
-        jQuery('#' + containerId + ' #mask-' + input.key).empty();
-        const s = brush.extent();
-        const clip = b(data, s[1]);
-        const selected = data.slice(0, clip);
-        selected.push(s[1]);
-        mask.selectAll('#' + containerId + ' g#mask-' + input.key + ' .mask')
-          .data([science.stats.bandwidth.nrd0])
-          .enter()
-          .append('path')
-          .attr('d', function(d) {
-            return a(kde.bandwidth(d)(selected));
-          });
-        d3.select('#' + containerId + ' #' + input.key + ' g.resize.e path')
-          .attr('d', 'M 0, 0 ' + ' L 0 ' + height);
-        const span = jQuery('#' + containerId + ' #table-' + input.key + ' span.value');
-        span.empty();
-        span.html(function() {
-          const percent = input.number_type === ('percent' || 'small_percent') ? ' %' : '';
-          let ext = +input.brush.extent()[1];
-          if (percent !== '') {
-            ext = +input.brush.extent()[1] * 100;
-            return ext.toFixed(1) + percent;
-          }
-          return ext.toFixed(3);
-        });
-      }
       function brushend() {
-        if (d3.event.sourceEvent) {
-          // source is a MouseEvent
-          // user is updating the input manually
-          const node = d3.select(d3.event.sourceEvent.target).node();
-          const s = jQuery(node).closest('svg');
-          const id = jQuery(s).attr('id');
-          // redraw the input plot
-          if (id) {
-            _redrawInputPlot.call(self, id);
-          } else {
-            console.warn('Cant get input id from:' + node);
-          }
-        }
+        // if (d3.event.sourceEvent) {
+        //   // source is a MouseEvent
+        //   // user is updating the input manually
+        //   const node = d3.select(d3.event.sourceEvent.target).node();
+        //   const s = jQuery(node).closest('svg');
+        //   const id = jQuery(s).attr('id');
+        //   // redraw the input plot
+        //   if (id) {
+        //     _redrawInputPlot.call(self, id);
+        //   } else {
+        //     console.warn('Cant get input id from:' + node);
+        //   }
+        // }
         svg.classed('selecting', !d3.event.target.empty());
       }
       function _redrawInputPlot(id) {
@@ -685,6 +687,48 @@ export class ChartService {
   unsubscribeOutputData() {
     this._outputDataSubs.unsubscribe();
   }
+  updateInputCharts(containerId: string, selectedId?: string, groupName?: string) {
+    const config = this._inputConfig;
+    jQuery.each(config, (conf, inpObj) => {
+      const ini = d3.select(`#${containerId} svg#` + conf + ' g.initial line');
+      const iniEl = ini[0][0];
+      if (iniEl) {
+        let model;
+        if (selectedId === 'global') {
+          const data: Array<number> = [];
+          this._sortByKey(inpObj.distribGroupArr, 'distribution');
+          inpObj.distribGroupArr.forEach(val => data.push(val.distribution));
+          const globalData = d3.mean(data);
+          model = {};
+          model[conf] = globalData;
+        } else {
+          model = this._globalModelData[selectedId];
+        }
+        const input = inpObj;
+        ini.attr('x1', function(d) {
+            return input.x(+model[conf]);
+          })
+          .attr('y1', 0)
+          .attr('x2', function(d) {
+            return input.x(+model[conf]);
+          })
+          .attr('y2', input.height);
+        // get the input config
+        const brush = input.brush;
+        // get the value of the current input from the model
+        // and update the brush extent
+        const extent = +model[conf];
+        brush.extent([0, extent]);
+        const brushg = d3.selectAll(`#${containerId} svg#${conf} g.brush`);
+        brushg.transition()
+          .duration(750)
+          .call(brush)
+          .call(brush.event);
+        d3.selectAll(`#${containerId} g.brush > g.resize.w`).remove();
+      }
+      // remove existing initial marker
+    });
+  }
   updateOutputCharts(containerId: string, selectedId?: string, groupName?: string) {
     const domains = this.filterOutputDataByGroup(this._outputDomains, groupName);
     jQuery.each(domains, (idx, outputData) => {
@@ -692,15 +736,15 @@ export class ChartService {
       const x = domains[idx].x;
       const height = domains[idx].height;
       let model;
-      if (selectedId) {
-        model = this._globalModelData[selectedId];
-      } else {
+      if (selectedId === 'global') {
         const data: Array<number> = outputData.domain.sort((a, b) => {
           return a - b;
         });
         const globalData = d3.mean(data);
         model = {};
         model[idx] = globalData;
+      } else {
+         model = this._globalModelData[selectedId];
       }
       ini.attr('x1', (d) => {
           return x(+model[idx]);

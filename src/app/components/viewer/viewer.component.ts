@@ -98,8 +98,14 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         });
         if (this.global) {
           this.chartService.updateOutputCharts(selectedIdx === 0 ? 'outputs-1' : 'outputs-2', list[0].code);
+          this.chartService.updateInputCharts(selectedIdx === 0 ? 'inputSoc-1' : 'inputSoc-2', list[0].code);
+          this.chartService.updateInputCharts(selectedIdx === 0 ? 'inputEco-1' : 'inputEco-2', list[0].code);
+          this.chartService.updateInputCharts(selectedIdx === 0 ? 'inputExp-1' : 'inputExp-2', list[0].code);
         } else {
           this.chartService.updateOutputCharts(selectedIdx === 0 ? 'outputs-1' : 'outputs-2', list[0].code, list[0].group);
+          this.chartService.updateInputCharts(selectedIdx === 0 ? 'inputSoc-1' : 'inputSoc-2', list[0].code, list[0].group);
+          this.chartService.updateInputCharts(selectedIdx === 0 ? 'inputEco-1' : 'inputEco-2', list[0].code, list[0].group);
+          this.chartService.updateInputCharts(selectedIdx === 0 ? 'inputExp-1' : 'inputExp-2', list[0].code, list[0].group);
         }
         this.mapService.setMapFilterByISOCode(list[0].code);
       }
@@ -117,9 +123,19 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           field.toLowerCase() !== this._selectedCountryList[filterIndex[0]].name.toLowerCase()) {
           this.mapService.setMapFilterByISOCode(filterIndexFromAll[0].code);
           if (this.global) {
-            this.chartService.updateOutputCharts(selectedIdx === 0 ? 'outputs-1' : 'outputs-2', filterIndexFromAll[0].code);
+            this.chartService.updateOutputCharts(selectedIdx === 0 ? 'outputs-1' : 'outputs-2', 'global');
+            this.chartService.updateInputCharts(selectedIdx === 0 ? 'inputSoc-1' : 'inputSoc-2', 'global');
+            this.chartService.updateInputCharts(selectedIdx === 0 ? 'inputEco-1' : 'inputEco-2', 'global');
+            this.chartService.updateInputCharts(selectedIdx === 0 ? 'inputExp-1' : 'inputExp-2', 'global');
           } else {
-            this.chartService.updateOutputCharts(selectedIdx === 0 ? 'outputs-1' : 'outputs-2', filterIndexFromAll[0].code, filterIndexFromAll[0].group);
+            this.chartService.updateOutputCharts(
+              selectedIdx === 0 ? 'outputs-1' : 'outputs-2', 'global', filterIndexFromAll[0].group);
+            this.chartService.updateInputCharts(
+              selectedIdx === 0 ? 'inputSoc-1' : 'inputSoc-2', 'global', filterIndexFromAll[0].group);
+            this.chartService.updateInputCharts(
+              selectedIdx === 0 ? 'inputEco-1' : 'inputEco-2', 'global', filterIndexFromAll[0].group);
+            this.chartService.updateInputCharts(
+              selectedIdx === 0 ? 'inputExp-1' : 'inputExp-2', 'global', filterIndexFromAll[0].group);
           }
           this._selectedCountryList.splice(filterIndex[0], 1);
         }
@@ -147,16 +163,28 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           this.viewerModel.firstCountry = filteredName;
           if (this.global) {
             this.chartService.updateOutputCharts('outputs-1', isoCode);
+            this.chartService.updateInputCharts('inputSoc-1', isoCode);
+            this.chartService.updateInputCharts('inputEco-1', isoCode);
+            this.chartService.updateInputCharts('inputExp-1', isoCode);
           } else {
             this.chartService.updateOutputCharts('outputs-1', isoCode, filteredGroup);
+            this.chartService.updateInputCharts('inputSoc-1', isoCode, filteredGroup);
+            this.chartService.updateInputCharts('inputEco-1', isoCode, filteredGroup);
+            this.chartService.updateInputCharts('inputExp-1', isoCode, filteredGroup);
           }
         } else if (!this.viewerModel.secondCountry.trim() || filterCountryVal2.length === 0) {
           index += 1;
           this.viewerModel.secondCountry = filteredName;
           if (this.global) {
             this.chartService.updateOutputCharts('outputs-2', isoCode);
+            this.chartService.updateInputCharts('inputSoc-2', isoCode);
+            this.chartService.updateInputCharts('inputEco-2', isoCode);
+            this.chartService.updateInputCharts('inputExp-2', isoCode);
           } else {
             this.chartService.updateOutputCharts('outputs-2', isoCode, filteredGroup);
+            this.chartService.updateInputCharts('inputSoc-2', isoCode, filteredGroup);
+            this.chartService.updateInputCharts('inputEco-2', isoCode, filteredGroup);
+            this.chartService.updateInputCharts('inputExp-2', isoCode, filteredGroup);
           }
         }
         if (this._selectedCountryList.length < MAX_SELECTED_COUNTRIES) {
@@ -172,16 +200,28 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.viewerModel.firstCountry.length && selectedC.indexOf(this.viewerModel.firstCountry) >= 0) {
           this.viewerModel.firstCountry = '';
           if (this.global) {
-            this.chartService.updateOutputCharts('outputs-1', isoCode);
+            this.chartService.updateOutputCharts('outputs-1', 'global');
+            this.chartService.updateInputCharts('inputExp-1', 'global');
+            this.chartService.updateInputCharts('inputSoc-1', 'global');
+            this.chartService.updateInputCharts('inputEco-1', 'global');
           } else {
-            this.chartService.updateOutputCharts('outputs-1', isoCode, filteredGroup);
+            this.chartService.updateOutputCharts('outputs-1', 'global', filteredGroup);
+            this.chartService.updateInputCharts('inputExp-1', 'global', filteredGroup);
+            this.chartService.updateInputCharts('inputSoc-1', 'global', filteredGroup);
+            this.chartService.updateInputCharts('inputEco-1', 'global', filteredGroup);
           }
         } else if (this.viewerModel.secondCountry.length && selectedC.indexOf(this.viewerModel.secondCountry) >= 0) {
           this.viewerModel.secondCountry = '';
           if (this.global) {
-            this.chartService.updateOutputCharts('outputs-2', isoCode);
+            this.chartService.updateOutputCharts('outputs-2', 'global');
+            this.chartService.updateInputCharts('inputExp-2', 'global');
+            this.chartService.updateInputCharts('inputSoc-2', 'global');
+            this.chartService.updateInputCharts('inputEco-2', 'global');
           } else {
-            this.chartService.updateOutputCharts('outputs-2', isoCode, filteredGroup);
+            this.chartService.updateOutputCharts('outputs-2', 'global', filteredGroup);
+            this.chartService.updateInputCharts('inputExp-2', 'global', filteredGroup);
+            this.chartService.updateInputCharts('inputSoc-2', 'global', filteredGroup);
+            this.chartService.updateInputCharts('inputEco-2', 'global', filteredGroup);
           }
         }
         this._selectedCountryList.splice(selectedCountryIdx[0], 1);
@@ -254,18 +294,30 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   onSwitchGlobal() {
     this.global = !this.global;
     this._selectedCountryList.forEach(country => {
-      if (country.index == 0) {
+      if (country.index === 0) {
         if (this.global) {
           this.chartService.updateOutputCharts('outputs-1', country.code);
+          this.chartService.updateInputCharts('inputExp-1', country.code);
+          this.chartService.updateInputCharts('inputSoc-1', country.code);
+          this.chartService.updateInputCharts('inputEco-1', country.code);
         } else {
           this.chartService.updateOutputCharts('outputs-1', country.code, country.group);
+          // this.chartService.createInputCharts(inputData, 'inputSoc-1');
+          // this.chartService.createInputCharts(inputData, 'inputEco-1');
+          // this.chartService.createInputCharts(inputData, 'inputExp-1');
         }
       }
-      if (country.index == 1) {
+      if (country.index === 1) {
         if (this.global) {
           this.chartService.updateOutputCharts('outputs-2', country.code);
+          this.chartService.updateInputCharts('inputExp-2', country.code);
+          this.chartService.updateInputCharts('inputSoc-2', country.code);
+          this.chartService.updateInputCharts('inputEco-2', country.code);
         } else {
           this.chartService.updateOutputCharts('outputs-2', country.code, country.group);
+          // this.chartService.createInputCharts(inputData, 'inputSoc-2');
+          // this.chartService.createInputCharts(inputData, 'inputEco-2');
+          // this.chartService.createInputCharts(inputData, 'inputExp-2');
         }
       }
     });
