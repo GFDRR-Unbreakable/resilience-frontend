@@ -663,7 +663,8 @@ export class ChartService {
           this._globalModelData[value.iso3] = value;
           this._outputList.push({
             code: value.iso3,
-            name: value.name
+            name: value.name,
+            group: value.group_name
           });
           this._outputUIList.push(value.name);
         });
@@ -684,8 +685,8 @@ export class ChartService {
   unsubscribeOutputData() {
     this._outputDataSubs.unsubscribe();
   }
-  updateOutputCharts(containerId: string, selectedId?: string) {
-    const domains = this._outputDomains;
+  updateOutputCharts(containerId: string, selectedId?: string, groupName?: string) {
+    const domains = this.filterOutputDataByGroup(this._outputDomains, groupName);
     jQuery.each(domains, (idx, outputData) => {
       const ini = d3.select(`#${containerId} svg#${idx} g.initial line`);
       const x = domains[idx].x;
