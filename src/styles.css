@@ -611,6 +611,12 @@ template {
     background: #d8deea !important;
     border: 1px solid #eaecf2 !important;
   }
+  .icon-hazard-selected {
+    background-color: #353a48 !important;
+  }
+  .icon-hazard-selected:hover {
+    background-color: #c3d700 !important;
+  }
   .button-reset{
     background: #999ba3;
     border-color: #999ba3;
@@ -10519,13 +10525,13 @@ fieldset {
         fill: none;
         shape-rendering: auto;
     }
-    #inputSoc-1 g.area path, #inputSoc-2 g.area path, 
-    #inputEco-1 g.area path, #inputEco-2 g.area path, 
+    #inputSoc-1 g.area path, #inputSoc-2 g.area path,
+    #inputEco-1 g.area path, #inputEco-2 g.area path,
     #inputExp-1 g.area path, #inputExp-2 g.area path {
         fill: #B9D908;
     }
     #inputSoc-1 g.mask path, #inputSoc-2 g.mask path,
-    #inputEco-1 g.mask path, #inputEco-2 g.mask path, 
+    #inputEco-1 g.mask path, #inputEco-2 g.mask path,
     #inputExp-1 g.mask path, #inputExp-2 g.mask path {
         fill: #C17391;
         opacity: 1;
