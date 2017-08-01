@@ -146,7 +146,7 @@ export class ChartService {
           .attr('width', width + margin.left + margin.right)
           .attr('height', height + margin.top + margin.bottom)
           .attr('id', input.key)
-          .style('pointer-events', 'all')
+          .style('pointer-events', 'none')
           .append('g')
           .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
@@ -189,43 +189,19 @@ export class ChartService {
         .attr('class', 'initial')
         .append('line');
 
-
-      const brushmove = () => {
-        // clear existing mask
-        jQuery('#' + containerId + ' svg#' + input.key + ' #mask-' + input.key).empty();
-        const s = input.brush.extent();
-        const clip = b(data, s[1]);
-        const selected = data.slice(0, clip);
-        selected.push(s[1]);
-        mask.selectAll('#' + containerId + ' g#mask-' + input.key + '.mask')
-          .data([science.stats.bandwidth.nrd0])
-          .enter()
-          .append('path')
-          .attr('d', (d) => {
-            return a(kde.bandwidth(d)(selected));
-          });
-        d3.select('#' + containerId + ' #' + input.key + ' g.resize.e path')
-          .attr('d', 'M 0, 0 ' + ' L 0 ' + height);
-        const span = jQuery('#' + containerId + ' #table-' + input.key + ' span.value');
-        span.empty();
-        span.html(() => {
-          const percent = input.number_type === ('percent' || 'small_percent') ? ' %' : '';
-          let ext = +input.brush.extent()[1];
-          if (percent !== '') {
-            ext = +input.brush.extent()[1] * 100;
-            return ext.toFixed(1) + percent;
-          }
-          return ext.toFixed(3);
-        });
+      input.forUpdate = {
+        b,
+        a,
+        distribData: data,
+        kde
       };
 
       const brush = d3.svg.brush()
         .x(x)
         .extent([0, d3.mean(data)])
         .on('brushstart', brushstart)
-        .on('brush', brushmove)
         .on('brushend', brushend);
-
+      brush.on('brush', this._inputBrushMoveEv(containerId, input, brush));
       // add the brush to the input config so
       // we can access it later
       input.brush = brush;
@@ -250,7 +226,7 @@ export class ChartService {
         .transition()
         .duration(750)
         .call(brush.extent([0, d3.mean(data)]))
-        .call(brush.event);
+        // .call(brush.event);
 
       brushg.selectAll('#' + containerId + ' g.resize.w').remove();
 
@@ -262,7 +238,7 @@ export class ChartService {
 
       const self = this;
       function brushstart() {
-        svg.classed('selecting', true);
+        svg.classed('selecting-input', true);
       }
       function brushend() {
         // if (d3.event.sourceEvent) {
@@ -278,7 +254,7 @@ export class ChartService {
         //     console.warn('Cant get input id from:' + node);
         //   }
         // }
-        svg.classed('selecting', !d3.event.target.empty());
+        svg.classed('selecting-input', !d3.event.target.empty());
       }
       function _redrawInputPlot(id) {
         const config = this._inputConfig;
@@ -577,6 +553,38 @@ export class ChartService {
   initOutputChartConf() {
     this.setOutputData();
   }
+  private _inputBrushMoveEv(containerId: string, input: any, brush?: any) {
+    return () => {
+      if (brush) { input.brush = brush; }
+      const toUpd = input.forUpdate;
+      jQuery('#' + containerId + ' svg#' + input.key + ' #mask-' + input.key).empty();
+      const s = input.brush.extent();
+      const clip = toUpd.b(toUpd.distribData, s[1]);
+      const selected = toUpd.distribData.slice(0, clip);
+      selected.push(s[1]);
+      const mask = d3.select(`#${containerId} svg#${input.key} #mask-${input.key}`);
+      mask.selectAll('#' + containerId + ' g#mask-' + input.key + '.mask')
+        .data([science.stats.bandwidth.nrd0])
+        .enter()
+        .append('path')
+        .attr('d', (d) => {
+          return toUpd.a(toUpd.kde.bandwidth(d)(selected));
+        });
+      d3.select('#' + containerId + ' #' + input.key + ' g.resize.e path')
+        .attr('d', 'M 0, 0 ' + ' L 0 ' + input.height);
+      const span = jQuery('#' + containerId + ' #table-' + input.key + ' span.value');
+      span.empty();
+      span.html(() => {
+        const percent = input.number_type === ('percent' || 'small_percent') ? ' %' : '';
+        let ext = +input.brush.extent()[1];
+        if (percent !== '') {
+          ext = +input.brush.extent()[1] * 100;
+          return ext.toFixed(1) + percent;
+        }
+        return ext.toFixed(3);
+      });
+    };
+  }
   private _populateInputDomains(inputArr, _globalModelData) {
     const inputIds = this.getChartsConf().inputs;
     const inputDomains = [];
@@ -720,11 +728,13 @@ export class ChartService {
           .attr('y2', input.height);
         // get the input config
         const brush = input.brush;
+        const toUpd = input.forUpdate;
         // get the value of the current input from the model
         // and update the brush extent
         const extent = +model[conf];
         brush.extent([0, extent]);
         const brushg = d3.selectAll(`#${containerId} svg#${conf} g.brush`);
+        brush.on('brush', this._inputBrushMoveEv(containerId, input));
         brushg.transition()
           .duration(750)
           .call(brush)
