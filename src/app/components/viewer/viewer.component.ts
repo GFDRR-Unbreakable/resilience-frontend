@@ -38,6 +38,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     hazard3: true,
     hazard4: true
   };
+  public sliderValues1 = {};
+  public sliderValues2 = {};
   public global = true;
   public viewer$: Observable<Viewer>;
   public searchCountryFn = (text$: Observable<string>) => {
@@ -240,6 +242,37 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         this.chartService.createInputCharts(inputData, 'inputEco-2');
         this.chartService.createInputCharts(inputData, 'inputExp-1');
         this.chartService.createInputCharts(inputData, 'inputExp-2');
+        for (let inputDataIndex in inputData) {
+          let key = inputData[inputDataIndex].key;
+          let min = inputData[inputDataIndex].distribGroupArr[0].distribution;
+          let max = inputData[inputDataIndex].distribGroupArr[0].distribution;
+          console.log(inputData[inputDataIndex]);
+          for (let index = 1; index < inputData[inputDataIndex].distribGroupArr.length; index++) {
+            let valueInput = inputData[inputDataIndex].distribGroupArr[index].distribution;
+            if (valueInput > max) {
+              max = valueInput;
+            }
+            if (valueInput < min) {
+              min = valueInput;
+            }
+          }
+          if (min == max) {
+            min--;
+            max++;
+          }
+          this.sliderValues1[key] = {
+            min: min,
+            max: max,
+            step: ((max - min) / 6.0),
+            value: ((max + min) / 2)
+          };
+          this.sliderValues2[key] = {
+            min: min,
+            max: max,
+            step: ((max - min) / 6.0),
+            value: ((max + min) / 2)
+          };
+        }
       });
       this.chartService.createOutputChart(data._outputDomains, 'outputs-1');
       this.chartService.createOutputChart(data._outputDomains, 'outputs-2');
