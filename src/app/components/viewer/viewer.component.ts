@@ -322,4 +322,22 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
   }
+  onSwitchExposure() {
+  }
+  onSwitchExposure1() {
+    this.hazards.hazard1 = !this.hazards.hazard1;
+    this.onSwitchExposure();
+  }
+  onSwitchExposure2() {
+    this.hazards.hazard2 = !this.hazards.hazard2;
+    this.onSwitchExposure();
+  }
+  onSwitchExposure3() {
+    this.hazards.hazard3 = !this.hazards.hazard3;
+    this.onSwitchExposure();
+  }
+  onSwitchExposure4() {
+    this.hazards.hazard4 = !this.hazards.hazard4;
+    this.onSwitchExposure();
+  }
 }

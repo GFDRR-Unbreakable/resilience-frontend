@@ -290,10 +290,10 @@
                            <h6>Hazard Selection</h6>
                            <p>Select one or multiple hazards:</p>
                            <div class="">
-                              <a (click)="hazards.hazard1 = !hazards.hazard1"><img class="icon-hazard" [ngClass]="{'icon-hazard-selected': hazards.hazard1}" src="assets/image/flood.png" alt="" /></a>
-                              <a (click)="hazards.hazard2 = !hazards.hazard2"><img class="icon-hazard" [ngClass]="{'icon-hazard-selected': hazards.hazard2}" src="assets/image/earthquake.png" alt="" /></a>
-                              <a (click)="hazards.hazard3 = !hazards.hazard3"><img class="icon-hazard" [ngClass]="{'icon-hazard-selected': hazards.hazard3}" src="assets/image/tsunami.png" alt="" /></a>
-                              <a (click)="hazards.hazard4 = !hazards.hazard4"><img class="icon-hazard" [ngClass]="{'icon-hazard-selected': hazards.hazard4}" src="assets/image/wind.png" alt="" /></a>
+                              <a (click)="onSwitchExposure1()"><img class="icon-hazard" [ngClass]="{'icon-hazard-selected': hazards.hazard1}" src="assets/image/flood.png" alt="" /></a>
+                              <a (click)="onSwitchExposure2()"><img class="icon-hazard" [ngClass]="{'icon-hazard-selected': hazards.hazard2}" src="assets/image/earthquake.png" alt="" /></a>
+                              <a (click)="onSwitchExposure3()"><img class="icon-hazard" [ngClass]="{'icon-hazard-selected': hazards.hazard3}" src="assets/image/tsunami.png" alt="" /></a>
+                              <a (click)="onSwitchExposure4()"><img class="icon-hazard" [ngClass]="{'icon-hazard-selected': hazards.hazard4}" src="assets/image/wind.png" alt="" /></a>
                            </div>
                         </div>
                      </div>
@@ -443,7 +443,7 @@
                               </button>
                               </label>
                               <div class="tab-content">
-                                 <div class="row">
+                                 <div class="row" [hidden]="!hazards.hazard1">
                                     <div class="col-md-4 box-tab-text">
                                        Exposure to riverine and coastal floods, poor (% of total assets of poor)
                                     </div>
@@ -454,7 +454,7 @@
                                        <md-slider tickInterval="auto"></md-slider>
                                     </div>
                                  </div>
-                                 <div class="row">
+                                 <div class="row" [hidden]="!hazards.hazard1">
                                     <div class="col-md-4 box-tab-text">
                                        Exposure to riverine and coastal floods, non-poor (% of total assets of non-poor)
                                     </div>
@@ -465,7 +465,7 @@
                                        <md-slider tickInterval="auto"></md-slider>
                                     </div>
                                  </div>
-                                 <div class="row">
+                                 <div class="row" [hidden]="!hazards.hazard1">
                                     <div class="col-md-4 box-tab-text">
                                        Asset vulnerability, poor people (% destruction of exposed assets of poor)
                                     </div>
@@ -476,7 +476,7 @@
                                        <md-slider tickInterval="auto"></md-slider>
                                     </div>
                                  </div>
-                                 <div class="row">
+                                 <div class="row" [hidden]="!hazards.hazard1">
                                     <div class="col-md-4 box-tab-text">
                                        Asset vulnerability, non-poor people (% destruction of exposed assets of non-poor)
                                     </div>
@@ -487,7 +487,7 @@
                                        <md-slider tickInterval="auto"></md-slider>
                                     </div>
                                  </div>
-                                 <div class="row">
+                                 <div class="row" [hidden]="!hazards.hazard2">
                                     <div class="col-md-4 box-tab-text">
                                        Exposure to earthquakes (% of total assets)
                                     </div>
@@ -498,7 +498,7 @@
                                        <md-slider tickInterval="auto"></md-slider>
                                     </div>
                                  </div>
-                                 <div class="row">
+                                 <div class="row" [hidden]="!hazards.hazard3">
                                     <div class="col-md-4 box-tab-text">
                                        Exposure to tsunamis (% of total assets)
                                     </div>
@@ -509,7 +509,7 @@
                                        <md-slider tickInterval="auto"></md-slider>
                                     </div>
                                  </div>
-                                 <div class="row">
+                                 <div class="row" [hidden]="!hazards.hazard4">
                                     <div class="col-md-4 box-tab-text">
                                        Exposure to windstorms (% of total assets)
                                     </div>
