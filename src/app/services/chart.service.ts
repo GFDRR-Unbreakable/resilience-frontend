@@ -358,21 +358,21 @@ export class ChartService {
           'translate(' + margin.left + ',' + margin.top + ')')
         .style('pointer-events', 'none')
         .style('border-bottom', '1px solid lightgrey');
-      const gradient = svg.append('defs')
-        .append('linearGradient')
-        .attr('id', 'gradient-' + idx)
-        .attr('x1', '0%')
-        .attr('y1', '0%')
-        .attr('x2', '100%')
-        .attr('y2', '0%');
-      gradient.append('stop')
-        .attr('offset', '0%')
-        .attr('stop-color', s1)
-        .attr('stop-opacity', 1);
-      gradient.append('stop')
-        .attr('offset', '100%')
-        .attr('stop-color', s2)
-        .attr('stop-opacity', 1);
+      // const gradient = svg.append('defs')
+      //   .append('linearGradient')
+      //   .attr('id', 'gradient-' + idx)
+      //   .attr('x1', '0%')
+      //   .attr('y1', '0%')
+      //   .attr('x2', '100%')
+      //   .attr('y2', '0%');
+      // gradient.append('stop')
+      //   .attr('offset', '0%')
+      //   .attr('stop-color', s1)
+      //   .attr('stop-opacity', 1);
+      // gradient.append('stop')
+      //   .attr('offset', '100%')
+      //   .attr('stop-color', s2)
+      //   .attr('stop-opacity', 1);
       // add gaussian curve
       const gaus = svg.append('g')
         .attr('id', idx)
@@ -396,8 +396,8 @@ export class ChartService {
         .append('path')
         .attr('d', (d) => {
           return a(kde.bandwidth(d)(data));
-        })
-        .style('fill', 'url(#gradient-' + idx + ')');
+        });
+        // .style('fill', 'url(#gradient-' + idx + ')');
       // add placeholder for initial model value
       const initial = svg.append('g')
         .attr('id', 'initial-' + idx)

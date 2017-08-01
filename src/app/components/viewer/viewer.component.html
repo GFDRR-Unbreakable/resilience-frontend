@@ -43,7 +43,7 @@
          <div class="row border-content">
             <div class="col-md-12">
                <div class="form-group bottom-results" [class.has-danger]="searchFailed">
-                  <input type="text" class="form-control" [(ngModel)]="viewerModel.firstCountry" disabled placeholder="" />
+                  <input type="text" class="form-control" [(ngModel)]="viewerModel.firstCountry" disabled placeholder="Country 1" />
                   <span *ngIf="searching">searching...</span>
                   <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
                </div>
@@ -64,7 +64,7 @@
          <div class="row border-content">
             <div class="col-md-12">
                <div class="form-group bottom-results" [class.has-danger]="searchFailed">
-                  <input type="text" class="form-control" [(ngModel)]="viewerModel.secondCountry" disabled placeholder="" />
+                  <input type="text" class="form-control" [(ngModel)]="viewerModel.secondCountry" disabled placeholder="Country 2" />
                   <span *ngIf="searching">searching...</span>
                   <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
                </div>
@@ -272,13 +272,13 @@
                         <div class="col-md-12">
                            <div class="box-input">
                               <div class="form-group" [class.has-danger]="searchFailed">
-                                 <input id="country-1Txt" type="text" class="form-control" [(ngModel)]="viewerModel.firstCountry" [ngbTypeahead]="searchCountryFn" #country1="ngModel" (ngModelChange)="onFirstCountryInputChangeEvent()"/>
+                                 <input id="country-1Txt" type="text" class="form-control" [(ngModel)]="viewerModel.firstCountry" [ngbTypeahead]="searchCountryFn" #country1="ngModel" (ngModelChange)="onFirstCountryInputChangeEvent()" placeholder="Country 1"/>
                                  <span *ngIf="searching">searching...</span>
                                  <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
                               </div>
                               <button type="button" class="btn btn-outline-secondary icon-plus"><i class="mdi mdi-plus"></i></button>
                               <div class="form-group" [class.has-danger]="searchFailed">
-                                 <input id="country-2Txt" type="text" class="form-control" [(ngModel)]="viewerModel.secondCountry" [ngbTypeahead]="searchCountryFn" #country2="ngModel" (ngModelChange)="onSecondCountryInputChangeEvent()"/>
+                                 <input id="country-2Txt" type="text" class="form-control" [(ngModel)]="viewerModel.secondCountry" [ngbTypeahead]="searchCountryFn" #country2="ngModel" (ngModelChange)="onSecondCountryInputChangeEvent()" placeholder="Country 2"/>
                                  <span *ngIf="searching">searching...</span>
                                  <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
                               </div>
