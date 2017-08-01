@@ -667,9 +667,9 @@ export class ChartService {
           if (!this._countryGroupData[value['group_name']]) {
             this._countryGroupData[value['group_name']] = value['group_name'];
           }
-          this._globalModelData[value.iso3] = value;
+          this._globalModelData[value.id] = value;
           this._outputList.push({
-            code: value.iso3,
+            code: value.id,
             name: value.name,
             group: value.group_name
           });
