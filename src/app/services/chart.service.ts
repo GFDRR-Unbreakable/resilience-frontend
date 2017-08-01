@@ -591,7 +591,7 @@ export class ChartService {
         inpObj.upper = +val.upper;
         inpObj.number_type = val.number_type;
         jQuery.each(_globalModelData, (ind, globalObj) => {
-          if (globalObj[val.key]) {
+          if (!isNaN(globalObj[val.key])) {
             const value = +globalObj[val.key];
             const obj: any = {};
             if (inpObj.lower === 0 && inpObj.upper === 0) {
