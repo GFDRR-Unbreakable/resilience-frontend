@@ -7,6 +7,6 @@ export const SERVER = {
     // OUTPUT_DATA: 'output_data'
     BASE: '/assets/data/',
       OUTPUT_DATA: 'df_for_wrapper.csv',
-    INPUTS_INFO: 'inputs_info.csv'
+    INPUTS_INFO: 'inputs_info_wrapper.csv'
   }
 };

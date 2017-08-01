@@ -39,10 +39,15 @@ export class ChartService {
       const data = dataArr;
 
 		  // add a margin of 0.1 m,M
-      const m1 = data[0] - (data[0] * 0.1);
-      const m2 = data[data.length - 1] + (data[data.length - 1] * 0.1);
-      data.unshift(m1);
-      data.push(m2);
+      if (data.length > 0) {
+        const m1 = data[0] - (data[0] * 0.1);
+        const m2 = data[data.length - 1] + (data[data.length - 1] * 0.1);
+        data.unshift(m1);
+        data.push(m2);
+      } else {
+        data.push(-0.1);
+        data.push(0.1);
+      }
 
       const bounds = d3.extent(data);
       const margin = {
@@ -531,11 +536,11 @@ export class ChartService {
           'precision': 3
         }
       },
-      'inputs': ['axfin_p', 'axfin_r', 'axhealth', 'finance_pre',
-        'pe', 'plgp', 'prepare_scaleup', 'pv', 'rating', 'share1',
-        'social_p', 'social_r', 'unemp', 'protection', 'fa', 'v'
+      'inputs': ['gamma_SP_cat_info__poor', 'macro_tau_tax', 'macro_borrow_abi', 'macro_prepare_scaleup',
+        'macro_T_rebuild_K', 'shew_for_hazard_ratio', 'axfin_cat_info__poor', 'axfin_cat_info__nonpoor', 'k_cat_info__poor', 'k_cat_info__nonpoor',
+        'hazard_ratio_flood_poor', 'hazard_ratio_fa__flood', 'v_cat_info__poor', 'v_cat_info__nonpoor', 'hazard_ratio_fa__earthquake', 'hazard_ratio_fa__tsunami'
       ],
-      'inputs_info': 'inputs_info.csv',
+      'inputs_info': 'inputs_info_wrapper.csv',
       'default_input': 'axfin_p',
       'default_output': 'resilience',
       'default_feature': 'AUS',
@@ -554,9 +559,9 @@ export class ChartService {
   }
   getInputIdChartByType(type: string) {
     const inputType = {
-      inputSoc: ['share1', 'social_p', 'social_r', 'unemp'],
-      inputEco: ['protection', 'fa', 'v', 'finance_pre', 'pe', 'plgp'],
-      inputExp: ['axfin_p', 'axfin_r', 'axhealth', 'prepare_scaleup', 'pv', 'rating']
+      inputSoc: ['gamma_SP_cat_info__poor', 'macro_tau_tax', 'macro_borrow_abi', 'macro_prepare_scaleup'],
+      inputEco: ['macro_T_rebuild_K', 'shew_for_hazard_ratio', 'axfin_cat_info__poor', 'axfin_cat_info__nonpoor', 'k_cat_info__poor', 'k_cat_info__nonpoor'],
+      inputExp: ['hazard_ratio_flood_poor', 'hazard_ratio_fa__flood', 'v_cat_info__poor', 'v_cat_info__nonpoor', 'hazard_ratio_fa__earthquake', 'hazard_ratio_fa__tsunami']
     };
     return inputType[type];
   }
