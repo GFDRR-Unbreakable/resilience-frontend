@@ -226,7 +226,7 @@ export class ChartService {
         .transition()
         .duration(750)
         .call(brush.extent([0, d3.mean(data)]))
-        // .call(brush.event);
+        .call(brush.event);
 
       brushg.selectAll('#' + containerId + ' g.resize.w').remove();
 
@@ -235,6 +235,11 @@ export class ChartService {
 
       brushg.selectAll('#' + containerId + ' rect')
         .attr('height', height);
+
+      brushg.style('pointer-events', 'none');
+      const brushEl = brushg[0][0];
+      brushEl.removeAllListeners();
+      // console.log(brushg);
 
       const self = this;
       function brushstart() {
@@ -739,6 +744,11 @@ export class ChartService {
           .duration(750)
           .call(brush)
           .call(brush.event);
+
+        brushg.style('pointer-events', 'none');
+        const brushEl = brushg[0][0];
+        brushEl.removeAllListeners();
+
         d3.selectAll(`#${containerId} g.brush > g.resize.w`).remove();
       }
       // remove existing initial marker
