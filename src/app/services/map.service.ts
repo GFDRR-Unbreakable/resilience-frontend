@@ -172,7 +172,7 @@ export class MapService {
       container: mapId,
       style: 'mapbox://styles/gfdrr-dashboard/cj59tfxrb686y2sp97c40f56d',
       center: [10, 35],
-      zoom: 0.55
+      zoom: 1
     });
   }
   getMap() {
