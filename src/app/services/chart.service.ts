@@ -57,7 +57,7 @@ export class ChartService {
         bottom: 0,
         left: 1
       };
-      const width = 80 - margin.left - margin.right;
+      const width = 50 - margin.left - margin.right;
       const height = 35 - margin.top - margin.bottom;
 
       const kde = science.stats.kde().sample(data);
@@ -289,7 +289,7 @@ export class ChartService {
         bottom: 0,
         left: 2
       };
-      const width = 160 - margin.left - margin.right;
+      const width = 90 - margin.left - margin.right;
       const height = 40 - margin.top - margin.bottom;
 
       const kde = science['stats'].kde().sample(data);
