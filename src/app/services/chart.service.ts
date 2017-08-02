@@ -24,9 +24,10 @@ export class ChartService {
   constructor() { }
   createInputCharts(inputData: any, containerId: string, groupName?: string) {
     jQuery(`div#${containerId}`).empty();
+    const filteredInputData = this.filterInputDataByGroup(inputData, groupName);
     const inputTypeTxt = containerId.split('-')[0];
     const inputTypes = this.getInputIdChartByType(inputTypeTxt);
-    const filterInputType = inputData.filter(val => {
+    const filterInputType = filteredInputData.filter(val => {
       return inputTypes.filter(type => {
         return val.key === type;
       })[0];
@@ -495,6 +496,28 @@ export class ChartService {
     console.log(filteredOutputDomains);
     return filteredOutputDomains;
   }
+  filterInputDataByGroup(inputData, groupName?: string) {
+    if (groupName === 'GLOBAL' || !groupName) {
+      return inputData;
+    }
+    const filteredInputDomains = jQuery.extend(true, [], inputData);
+
+    for (const g in filteredInputDomains) {
+      if (filteredInputDomains.hasOwnProperty(g)) {
+        filteredInputDomains[g]['distribGroupArr'] = [];
+      }
+    }
+    for (const g in inputData) {
+      if (inputData.hasOwnProperty(g)) {
+        for (let m = 0; m < inputData[g]['distribGroupArr'].length; m++) {
+          if (inputData[g]['distribGroupArr'][m]['group'] === groupName) {
+            filteredInputDomains[g]['distribGroupArr'].push(inputData[g]['distribGroupArr'][m]);
+          }
+        }
+      }
+    }
+    return filteredInputDomains;
+  }
   getChartsConf() {
     return {
       'outputs': {
@@ -535,6 +558,9 @@ export class ChartService {
       }
     };
   }
+  getInputData() {
+    return this._inputDomains;
+  }
   getInputDataObs() {
     return this._inputDataProm$;
   }
@@ -545,6 +571,9 @@ export class ChartService {
       inputExp: ['hazard_ratio_flood_poor', 'hazard_ratio_fa__flood', 'v_cat_info__poor', 'v_cat_info__nonpoor', 'hazard_ratio_fa__earthquake', 'hazard_ratio_fa__tsunami', 'hazard_ratio_fa__wind']
     };
     return inputType[type];
+  }
+  getOutputData() {
+    return this._outputDomains;
   }
   getOutputDataObs() {
     return this._outputDataProm$;

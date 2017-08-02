@@ -87,6 +87,12 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   private _filterCountryByInput(list, selectedIdx, field) {
+    const inData = this.chartService.getInputData();
+    const outData = this.chartService.getOutputData();
+    const idOut = selectedIdx === 0 ? 'outputs-1' : 'outputs-2';
+    const idInSoc = selectedIdx === 0 ? 'inputSoc-1' : 'inputSoc-2';
+    const idInEco = selectedIdx === 0 ? 'inputEco-1' : 'inputEco-2';
+    const idInExp = selectedIdx === 0 ? 'inputExp-1' : 'inputExp-2';
     if (list.length) {
       const filterExistence = this._selectedCountryList.filter(val => {
         return val.name === list[0].name;
@@ -99,15 +105,19 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           group: list[0].group
         });
         if (this.global) {
-          this.chartService.updateOutputCharts(selectedIdx === 0 ? 'outputs-1' : 'outputs-2', list[0].code);
-          this.chartService.updateInputCharts(selectedIdx === 0 ? 'inputSoc-1' : 'inputSoc-2', list[0].code);
-          this.chartService.updateInputCharts(selectedIdx === 0 ? 'inputEco-1' : 'inputEco-2', list[0].code);
-          this.chartService.updateInputCharts(selectedIdx === 0 ? 'inputExp-1' : 'inputExp-2', list[0].code);
+          this.chartService.updateOutputCharts(idOut, list[0].code);
+          this.chartService.updateInputCharts(idInSoc, list[0].code);
+          this.chartService.updateInputCharts(idInEco, list[0].code);
+          this.chartService.updateInputCharts(idInExp, list[0].code);
         } else {
-          this.chartService.updateOutputCharts(selectedIdx === 0 ? 'outputs-1' : 'outputs-2', list[0].code, list[0].group);
-          this.chartService.updateInputCharts(selectedIdx === 0 ? 'inputSoc-1' : 'inputSoc-2', list[0].code, list[0].group);
-          this.chartService.updateInputCharts(selectedIdx === 0 ? 'inputEco-1' : 'inputEco-2', list[0].code, list[0].group);
-          this.chartService.updateInputCharts(selectedIdx === 0 ? 'inputExp-1' : 'inputExp-2', list[0].code, list[0].group);
+          this.chartService.createOutputChart(outData, idOut, list[0].group);
+          this.chartService.createInputCharts(inData, idInSoc, list[0].group);
+          this.chartService.createInputCharts(inData, idInEco, list[0].group);
+          this.chartService.createInputCharts(inData, idInExp, list[0].group);
+          // this.chartService.updateOutputCharts(idOut, list[0].code, list[0].group);
+          // this.chartService.updateInputCharts(idInSoc, list[0].code, list[0].group);
+          // this.chartService.updateInputCharts(idInEco, list[0].code, list[0].group);
+          // this.chartService.updateInputCharts(idInExp, list[0].code, list[0].group);
         }
         this.mapService.setMapFilterByISOCode(list[0].code);
       }
@@ -125,19 +135,23 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           field.toLowerCase() !== this._selectedCountryList[filterIndex[0]].name.toLowerCase()) {
           this.mapService.setMapFilterByISOCode(filterIndexFromAll[0].code);
           if (this.global) {
-            this.chartService.updateOutputCharts(selectedIdx === 0 ? 'outputs-1' : 'outputs-2', 'global');
-            this.chartService.updateInputCharts(selectedIdx === 0 ? 'inputSoc-1' : 'inputSoc-2', 'global');
-            this.chartService.updateInputCharts(selectedIdx === 0 ? 'inputEco-1' : 'inputEco-2', 'global');
-            this.chartService.updateInputCharts(selectedIdx === 0 ? 'inputExp-1' : 'inputExp-2', 'global');
+            this.chartService.updateOutputCharts(idOut, 'global');
+            this.chartService.updateInputCharts(idInSoc, 'global');
+            this.chartService.updateInputCharts(idInEco, 'global');
+            this.chartService.updateInputCharts(idInExp, 'global');
           } else {
-            this.chartService.updateOutputCharts(
-              selectedIdx === 0 ? 'outputs-1' : 'outputs-2', 'global', filterIndexFromAll[0].group);
-            this.chartService.updateInputCharts(
-              selectedIdx === 0 ? 'inputSoc-1' : 'inputSoc-2', 'global', filterIndexFromAll[0].group);
-            this.chartService.updateInputCharts(
-              selectedIdx === 0 ? 'inputEco-1' : 'inputEco-2', 'global', filterIndexFromAll[0].group);
-            this.chartService.updateInputCharts(
-              selectedIdx === 0 ? 'inputExp-1' : 'inputExp-2', 'global', filterIndexFromAll[0].group);
+            // this.chartService.updateOutputCharts(
+            //   selectedIdx === 0 ? 'outputs-1' : 'outputs-2', 'global', filterIndexFromAll[0].group);
+            // this.chartService.updateInputCharts(
+            //   selectedIdx === 0 ? 'inputSoc-1' : 'inputSoc-2', 'global', filterIndexFromAll[0].group);
+            // this.chartService.updateInputCharts(
+            //   selectedIdx === 0 ? 'inputEco-1' : 'inputEco-2', 'global', filterIndexFromAll[0].group);
+            // this.chartService.updateInputCharts(
+            //   selectedIdx === 0 ? 'inputExp-1' : 'inputExp-2', 'global', filterIndexFromAll[0].group);
+            this.chartService.createOutputChart(outData, idOut, 'GLOBAL');
+            this.chartService.createInputCharts(inData, idInSoc, 'GLOBAL');
+            this.chartService.createInputCharts(inData, idInEco, 'GLOBAL');
+            this.chartService.createInputCharts(inData, idInExp, 'GLOBAL');
           }
           this._selectedCountryList.splice(filterIndex[0], 1);
         }
@@ -155,6 +169,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }).filter(isFinite);
       const MAX_SELECTED_COUNTRIES = 2;
+      const inData = this.chartService.getInputData();
+      const outData = this.chartService.getOutputData();
       if (selectedCountryIdx.length === 0) {
         let index = 0;
         const filterCountryVal1 = this.countryListComp.filter(val =>
@@ -169,10 +185,10 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
             this.chartService.updateInputCharts('inputEco-1', isoCode);
             this.chartService.updateInputCharts('inputExp-1', isoCode);
           } else {
-            this.chartService.updateOutputCharts('outputs-1', isoCode, filteredGroup);
-            this.chartService.updateInputCharts('inputSoc-1', isoCode, filteredGroup);
-            this.chartService.updateInputCharts('inputEco-1', isoCode, filteredGroup);
-            this.chartService.updateInputCharts('inputExp-1', isoCode, filteredGroup);
+            this.chartService.createOutputChart(outData, 'outputs-1', filteredGroup);
+            this.chartService.createInputCharts(inData, 'inputSoc-1', filteredGroup);
+            this.chartService.createInputCharts(inData, 'inputEco-1', filteredGroup);
+            this.chartService.createInputCharts(inData, 'inputExp-1', filteredGroup);
           }
         } else if (!this.viewerModel.secondCountry.trim() || filterCountryVal2.length === 0) {
           index += 1;
@@ -183,10 +199,10 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
             this.chartService.updateInputCharts('inputEco-2', isoCode);
             this.chartService.updateInputCharts('inputExp-2', isoCode);
           } else {
-            this.chartService.updateOutputCharts('outputs-2', isoCode, filteredGroup);
-            this.chartService.updateInputCharts('inputSoc-2', isoCode, filteredGroup);
-            this.chartService.updateInputCharts('inputEco-2', isoCode, filteredGroup);
-            this.chartService.updateInputCharts('inputExp-2', isoCode, filteredGroup);
+            this.chartService.createOutputChart(outData, 'outputs-2', filteredGroup);
+            this.chartService.createInputCharts(inData, 'inputSoc-2', filteredGroup);
+            this.chartService.createInputCharts(inData, 'inputEco-2', filteredGroup);
+            this.chartService.createInputCharts(inData, 'inputExp-2', filteredGroup);
           }
         }
         if (this._selectedCountryList.length < MAX_SELECTED_COUNTRIES) {
@@ -207,10 +223,10 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
             this.chartService.updateInputCharts('inputSoc-1', 'global');
             this.chartService.updateInputCharts('inputEco-1', 'global');
           } else {
-            this.chartService.updateOutputCharts('outputs-1', 'global', filteredGroup);
-            this.chartService.updateInputCharts('inputExp-1', 'global', filteredGroup);
-            this.chartService.updateInputCharts('inputSoc-1', 'global', filteredGroup);
-            this.chartService.updateInputCharts('inputEco-1', 'global', filteredGroup);
+            this.chartService.createOutputChart(outData, 'outputs-1', 'GLOBAL');
+            this.chartService.createInputCharts(inData, 'inputSoc-1', 'GLOBAL');
+            this.chartService.createInputCharts(inData, 'inputEco-1', 'GLOBAL');
+            this.chartService.createInputCharts(inData, 'inputExp-1', 'GLOBAL');
           }
         } else if (this.viewerModel.secondCountry.length && selectedC.indexOf(this.viewerModel.secondCountry) >= 0) {
           this.viewerModel.secondCountry = '';
@@ -220,10 +236,10 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
             this.chartService.updateInputCharts('inputSoc-2', 'global');
             this.chartService.updateInputCharts('inputEco-2', 'global');
           } else {
-            this.chartService.updateOutputCharts('outputs-2', 'global', filteredGroup);
-            this.chartService.updateInputCharts('inputExp-2', 'global', filteredGroup);
-            this.chartService.updateInputCharts('inputSoc-2', 'global', filteredGroup);
-            this.chartService.updateInputCharts('inputEco-2', 'global', filteredGroup);
+            this.chartService.createOutputChart(outData, 'outputs-2', 'GLOBAL');
+            this.chartService.createInputCharts(inData, 'inputSoc-2', 'GLOBAL');
+            this.chartService.createInputCharts(inData, 'inputEco-2', 'GLOBAL');
+            this.chartService.createInputCharts(inData, 'inputExp-2', 'GLOBAL');
           }
         }
         this._selectedCountryList.splice(selectedCountryIdx[0], 1);
@@ -242,36 +258,38 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         this.chartService.createInputCharts(inputData, 'inputEco-2');
         this.chartService.createInputCharts(inputData, 'inputExp-1');
         this.chartService.createInputCharts(inputData, 'inputExp-2');
-        for (let inputDataIndex in inputData) {
-          let key = inputData[inputDataIndex].key;
-          let min = inputData[inputDataIndex].distribGroupArr[0].distribution;
-          let max = inputData[inputDataIndex].distribGroupArr[0].distribution;
-          console.log(inputData[inputDataIndex]);
-          for (let index = 1; index < inputData[inputDataIndex].distribGroupArr.length; index++) {
-            let valueInput = inputData[inputDataIndex].distribGroupArr[index].distribution;
-            if (valueInput > max) {
-              max = valueInput;
+        for (const inputDataIndex in inputData) {
+          if (inputData.hasOwnProperty(inputDataIndex)) {
+            const key = inputData[inputDataIndex].key;
+            let min = inputData[inputDataIndex].distribGroupArr[0].distribution;
+            let max = inputData[inputDataIndex].distribGroupArr[0].distribution;
+            console.log(inputData[inputDataIndex]);
+            for (let index = 1; index < inputData[inputDataIndex].distribGroupArr.length; index++) {
+              let valueInput = inputData[inputDataIndex].distribGroupArr[index].distribution;
+              if (valueInput > max) {
+                max = valueInput;
+              }
+              if (valueInput < min) {
+                min = valueInput;
+              }
             }
-            if (valueInput < min) {
-              min = valueInput;
+            if (min == max) {
+              min--;
+              max++;
             }
+            this.sliderValues1[key] = {
+              min: min,
+              max: max,
+              step: ((max - min) / 6.0),
+              value: ((max + min) / 2)
+            };
+            this.sliderValues2[key] = {
+              min: min,
+              max: max,
+              step: ((max - min) / 6.0),
+              value: ((max + min) / 2)
+            };
           }
-          if (min == max) {
-            min--;
-            max++;
-          }
-          this.sliderValues1[key] = {
-            min: min,
-            max: max,
-            step: ((max - min) / 6.0),
-            value: ((max + min) / 2)
-          };
-          this.sliderValues2[key] = {
-            min: min,
-            max: max,
-            step: ((max - min) / 6.0),
-            value: ((max + min) / 2)
-          };
         }
       });
       this.chartService.createOutputChart(data._outputDomains, 'outputs-1');
@@ -327,6 +345,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   onSwitchGlobal() {
     this.global = !this.global;
     this._selectedCountryList.forEach(country => {
+      const inData = this.chartService.getInputData();
+      const outData = this.chartService.getOutputData();
       if (country.index === 0) {
         if (this.global) {
           this.chartService.updateOutputCharts('outputs-1', country.code);
@@ -334,10 +354,10 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           this.chartService.updateInputCharts('inputSoc-1', country.code);
           this.chartService.updateInputCharts('inputEco-1', country.code);
         } else {
-          this.chartService.updateOutputCharts('outputs-1', country.code, country.group);
-          // this.chartService.createInputCharts(inputData, 'inputSoc-1');
-          // this.chartService.createInputCharts(inputData, 'inputEco-1');
-          // this.chartService.createInputCharts(inputData, 'inputExp-1');
+          this.chartService.createOutputChart(outData, 'outputs-1', country.group);
+          this.chartService.createInputCharts(inData, 'inputSoc-1', country.group);
+          this.chartService.createInputCharts(inData, 'inputEco-1', country.group);
+          this.chartService.createInputCharts(inData, 'inputExp-1', country.group);
         }
       }
       if (country.index === 1) {
@@ -347,10 +367,10 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           this.chartService.updateInputCharts('inputSoc-2', country.code);
           this.chartService.updateInputCharts('inputEco-2', country.code);
         } else {
-          this.chartService.updateOutputCharts('outputs-2', country.code, country.group);
-          // this.chartService.createInputCharts(inputData, 'inputSoc-2');
-          // this.chartService.createInputCharts(inputData, 'inputEco-2');
-          // this.chartService.createInputCharts(inputData, 'inputExp-2');
+          this.chartService.createOutputChart(outData, 'outputs-2', country.group);
+          this.chartService.createInputCharts(inData, 'inputSoc-2', country.group);
+          this.chartService.createInputCharts(inData, 'inputEco-2', country.group);
+          this.chartService.createInputCharts(inData, 'inputExp-2', country.group);
         }
       }
     });
