@@ -42,6 +42,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   public sliderValues2 = {};
   public viewerDisplay: boolean = true;
   public global = true;
+  public legends: Array<any> = [];
   public viewer$: Observable<Viewer>;
   public searchCountryFn = (text$: Observable<string>) => {
     const debounceTimeFn = debounceTime.call(text$, 200);
@@ -323,6 +324,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     const self = this;
     this.mapService.addStylesOnMapLoading(() => {
       this.mapService.addBasemap();
+      this.legends = this.mapService.getMapLegendConf('socio');
       this.mapService.setMapFilterByISOCodes(this.countryListIsoCodes);
       this.mapService.setClickFnMapEvent((ev) => {
         const features = self.mapService.getMap().queryRenderedFeatures(ev.point, {layers: [self.mapService.getViewerFillLayer()]});
@@ -351,6 +353,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       property: layerPaintProp,
       type: currentSlideId
     });
+    let currentLegend = this.mapService.getMapPaintConf(currentSlideId);
+    this.legends = this.mapService.getMapLegendConf(currentSlideId);
   }
   onSwitchGlobal() {
     this.global = !this.global;

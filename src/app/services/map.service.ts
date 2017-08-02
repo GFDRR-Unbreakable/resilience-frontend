@@ -48,6 +48,29 @@ export class MapService {
       ]
     }
   };
+  private _getViewerMapLegendConf = {
+    asset: [
+      [0, 5, '#deebf7'],
+      [5, 10, '#9ecae1'],
+      [10, 15, '#4292c6'],
+      [15, 20, '#2171b5'],
+      [20, 30, '#08306b'],
+    ],
+    socio: [
+      [0, 20, '#deebf7'],
+      [20, 40, '#9ecae1'],
+      [40, 60, '#4292c6'],
+      [60, 80, '#2171b5'],
+      [80, 100, '#08306b'],
+    ],
+    well: [
+      [0, 10, '#deebf7'],
+      [10, 20, '#9ecae1'],
+      [20, 30, '#4292c6'],
+      [30, 40, '#2171b5'],
+      [40, 50, '#08306b'],
+    ]
+  };
   constructor() {
     (mapboxgl as any).accessToken = this.token;
   }
@@ -181,6 +204,9 @@ export class MapService {
   }
   getMapPaintConf(type: string) {
     return this._getViewerStyleConf[type];
+  }
+  getMapLegendConf(type: string) {
+    return this._getViewerMapLegendConf[type];
   }
   getVectorFillParams(sourceParams, mapParams) {
     const defaultSourceParams: any = {

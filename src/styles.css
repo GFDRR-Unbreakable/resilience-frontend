@@ -10591,3 +10591,12 @@ fieldset {
 .input-row span.value{
   vertical-align: middle
 }
+
+.map-legend {
+  position: absolute;
+  left: 20px;
+  bottom: 30px;
+  z-index: 1;
+  background-color: #FFFFFF;
+  border: solid 5px #FFFFFF;
+}
