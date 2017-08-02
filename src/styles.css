@@ -552,11 +552,12 @@ template {
      padding-right: 0px !important;*/
    }
    .box-tab-text{
-     padding-top: 15px;
-     padding-bottom: 15px;
+     /* padding-top: 15px; */
+     /* padding-bottom: 15px; */
      font-size: 10px;
      color: #373a3c;
-     line-height: 16px;
+     line-height: 13px;
+     height: 64px;
    }
 
    /* :checked */
