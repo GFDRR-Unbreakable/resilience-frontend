@@ -12,8 +12,8 @@ export class MapService {
   private _layerId = 'all-country';
   private _layerHoverId = 'all-country-hover';
   private _layerFillId = 'all-country-fill';
-  private _layerSource = 'gfdrr2-3y582x';
-  private _sourceMapUrl = 'mapbox://gfdrr-dashboard.d9vo9zfe';
+  private _layerSource = 'gfdrr2-5qf3ph';
+  private _sourceMapUrl = 'mapbox://gfdrr-dashboard.0qa6vcac';
   private _MAX_COUNTRIES_SELECTED = 2;
   private _isoCodesArr = [];
   private _getViewerStyleConf = {
