@@ -40,6 +40,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   };
   public sliderValues1 = {};
   public sliderValues2 = {};
+  public viewerDisplay: boolean = true;
   public global = true;
   public viewer$: Observable<Viewer>;
   public searchCountryFn = (text$: Observable<string>) => {
@@ -290,6 +291,33 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
               value: ((max + min) / 2)
             };
           }
+<<<<<<< HEAD
+=======
+          if (min == max) {
+            min--;
+            max++;
+          }
+          this.sliderValues1[key + '_min'] = min;
+          this.sliderValues1[key + '_max'] = max;
+          this.sliderValues1[key + '_step'] = ((max - min) / 6.0);
+          this.sliderValues1[key + '_value'] = ((max + min) / 2);
+          this.sliderValues2[key + '_min'] = min;
+          this.sliderValues2[key + '_max'] = max;
+          this.sliderValues2[key + '_step'] = ((max - min) / 6.0);
+          this.sliderValues2[key + '_value'] = ((max + min) / 2);
+          this.sliderValues1[key] = {
+            min: min,
+            max: max,
+            step: ((max - min) / 6.0),
+            value: ((max + min) / 2)
+          };
+          this.sliderValues2[key] = {
+            min: min,
+            max: max,
+            step: ((max - min) / 6.0),
+            value: ((max + min) / 2)
+          };
+>>>>>>> 6bf62121ec045f09c5b5a8533b41e66b2abd0172
         }
       });
       this.chartService.createOutputChart(data._outputDomains, 'outputs-1');

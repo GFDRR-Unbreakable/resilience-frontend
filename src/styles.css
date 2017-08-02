@@ -687,15 +687,25 @@ template {
    border-top-left-radius: 0;
  }
 
- .nav-pills .nav-link {
+ .nav-pills .nav-link, .nav-pills.btn {
    display: block;
    padding: 14px 13px 4px 13px;
    color: #a5a5a6;
    border-bottom: 2px solid #a5a5a6 !important;
    border-radius: 0;
-   }
+}
+
+.nav-pills.btn.focus.active {
+  box-shadow: 0 0 0 0;
+}
+
+#viewerContent, #technicalMapContent {
+  overflow: none;
+  max-height: 0;
+}
 
  .nav-pills .nav-link.active,
+ .nav-pills.btn.active,
  .nav-pills .nav-item.show .nav-link {
    /*color: #fff;
    cursor: default;
