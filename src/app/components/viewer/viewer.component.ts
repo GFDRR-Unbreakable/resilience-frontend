@@ -306,6 +306,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       this.countryUIList = this.chartService.getOutputDataUIList();
       this.countryListComp = this.chartService.getOutputList();
       this.countryListIsoCodes = this.countryListComp.map(val => val.code);
+      this.mapService.setMapFilterByISOCodes(this.countryListIsoCodes);
       // this.mapService.addStylesOnMapLoading(() => {
       //   this.mapService.setMapFilterByISOCodes(this.countryListIsoCodes);
       // });
@@ -326,7 +327,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       this.mapService.setClickFnMapEvent((ev) => {
         const features = self.mapService.getMap().queryRenderedFeatures(ev.point, {layers: [self.mapService.getViewerFillLayer()]});
         if (features.length) {
-          const isoCode = features[0].properties['ISO_Codes'];
+          const isoCode = features[0].properties['ISO_Code'];
           if (this.countryListIsoCodes.filter(val => val === isoCode).length) {
             self.changeCountryInputsByClick(isoCode);
             self.mapService.setMapFilterByISOCode(isoCode);

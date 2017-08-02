@@ -12,8 +12,8 @@ export class MapService {
   private _layerId = 'all-country';
   private _layerHoverId = 'all-country-hover';
   private _layerFillId = 'all-country-fill';
-  private _layerSource = 'gfdrr-7hi00u';
-  private _sourceMapUrl = 'mapbox://gfdrr-dashboard.b9bmqe5r';
+  private _layerSource = 'gfdrr2-3y582x';
+  private _sourceMapUrl = 'mapbox://gfdrr-dashboard.d9vo9zfe';
   private _MAX_COUNTRIES_SELECTED = 2;
   private _isoCodesArr = [];
   private _getViewerStyleConf = {
@@ -76,7 +76,7 @@ export class MapService {
         'fill-color': '#ffe502',
         'fill-opacity': 1,
       },
-      filter: ['==', 'ISO_Codes', ''],
+      filter: ['==', 'ISO_Code', ''],
     });
     // Click-based country layer
     this.addVectorFillFromUrl({
@@ -222,12 +222,12 @@ export class MapService {
     return this._layerFillId;
   }
   setMapFilterByISOCode(isoCode) {
-    const defaultArr = ['in', 'ISO_Codes'];
+    const defaultArr = ['in', 'ISO_Code'];
     this.changeIsoCodeFilter(isoCode);
     this.map.setFilter(this._layerHoverId, [...defaultArr, ...this._isoCodesArr]);
   }
   setMapFilterByISOCodes(isoCodes) {
-    const defaultArr = ['in', 'ISO_Codes'];
+    const defaultArr = ['in', 'ISO_Code'];
     this.map.setFilter(this._layerId, [...defaultArr, ...isoCodes]);
     this.map.setFilter(this._layerFillId, [...defaultArr, ...isoCodes]);
   }
