@@ -98,9 +98,18 @@
             </div>
          </div>
          <div class="">
-            <ngb-tabset type="pills">
+            <div [(ngModel)]="viewerDisplay" ngbRadioGroup>
+              <label ngbButtonLabel class="nav-pills">
+                <input ngbButton type="radio" [value]="true">Viewer
+              </label>
+              <label ngbButtonLabel class="nav-pills">
+                <input ngbButton type="radio" [value]="false">Technical Map
+              </label>
+            </div>
+            <!-- <ngb-tabset type="pills">
                <ngb-tab title="Viewer">
-                  <ng-template ngbTabContent>
+                  <ng-template ngbTabContent> -->
+                  <div id="viewerContent" [hidden]="!viewerDisplay">
                      <div class="row">
                         <div class="col-md-12 box-select">
                            <p>Select two countries from map or dropdown:</p>
@@ -258,11 +267,13 @@
                            <div class="row border-content"></div>
                         </div>
                      </div>
-                  </ng-template>
+                  </div>
+                  <!-- </ng-template>
                </ngb-tab>
                <ngb-tab>
                   <ng-template ngbTabTitle>Technical Map</ng-template>
-                  <ng-template ngbTabContent>
+                  <ng-template ngbTabContent> -->
+                  <div id="technicalMapContent" [hidden]="viewerDisplay">
                      <div class="row">
                         <div class="col-md-12 box-select">
                            <p>Select two countries from map or type the country's name:</p>
@@ -301,8 +312,8 @@
                      <div class="row">
                         <div class="col-md-12 box-tab">
                            <div class="tab">
-                              <input id="tab-one" type="checkbox" name="tabs">
-                              <label for="tab-one">Social Protection
+                              <input id="tab-one_tech" type="checkbox" name="tabs">
+                              <label for="tab-one_tech">Social Protection
                               <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
                               <i class="mdi mdi-information-outline"></i>
                               </button>
@@ -316,24 +327,24 @@
                                        Share of social protection / remittances to poor people (% of poor)
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues1.gamma_SP_cat_info__poor.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues1.gamma_SP_cat_info__poor_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues1.gamma_SP_cat_info__poor.min"
-                                        [max]="sliderValues1.gamma_SP_cat_info__poor.max"
-                                        [step]="sliderValues1.gamma_SP_cat_info__poor.step"
-                                        [value]="sliderValues1.gamma_SP_cat_info__poor.value"
-                                        [(ngModel)]="sliderValues1.gamma_SP_cat_info__poor.value"
+                                        [min]="sliderValues1.gamma_SP_cat_info__poor_min"
+                                        [max]="sliderValues1.gamma_SP_cat_info__poor_max"
+                                        [step]="sliderValues1.gamma_SP_cat_info__poor_step"
+                                        [value]="sliderValues1.gamma_SP_cat_info__poor_value"
+                                        [(ngModel)]="sliderValues1.gamma_SP_cat_info__poor_value"
                                         >
                                       </md-slider>
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues2.gamma_SP_cat_info__poor.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues2.gamma_SP_cat_info__poor_value | number: '.0-5'}}</div>
                                       <md-slider
-                                         [min]="sliderValues2.gamma_SP_cat_info__poor.min"
-                                         [max]="sliderValues2.gamma_SP_cat_info__poor.max"
-                                         [step]="sliderValues2.gamma_SP_cat_info__poor.step"
-                                         [value]="sliderValues2.gamma_SP_cat_info__poor.value"
-                                         [(ngModel)]="sliderValues2.gamma_SP_cat_info__poor.value"
+                                         [min]="sliderValues2.gamma_SP_cat_info__poor_min"
+                                         [max]="sliderValues2.gamma_SP_cat_info__poor_max"
+                                         [step]="sliderValues2.gamma_SP_cat_info__poor_step"
+                                         [value]="sliderValues2.gamma_SP_cat_info__poor_value"
+                                         [(ngModel)]="sliderValues2.gamma_SP_cat_info__poor_value"
                                          >
                                        </md-slider>
                                     </div>
@@ -343,24 +354,24 @@
                                        Total social protection spending and remittances (US$,PPP)
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues1.macro_tau_tax.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues1.macro_tau_tax_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues1.macro_tau_tax.min"
-                                        [max]="sliderValues1.macro_tau_tax.max"
-                                        [step]="sliderValues1.macro_tau_tax.step"
-                                        [value]="sliderValues1.macro_tau_tax.value"
-                                        [(ngModel)]="sliderValues1.macro_tau_tax.value"
+                                        [min]="sliderValues1.macro_tau_tax_min"
+                                        [max]="sliderValues1.macro_tau_tax_max"
+                                        [step]="sliderValues1.macro_tau_tax_step"
+                                        [value]="sliderValues1.macro_tau_tax_value"
+                                        [(ngModel)]="sliderValues1.macro_tau_tax_value"
                                         >
                                       </md-slider>
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues2.macro_tau_tax.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues2.macro_tau_tax_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues2.macro_tau_tax.min"
-                                        [max]="sliderValues2.macro_tau_tax.max"
-                                        [step]="sliderValues2.macro_tau_tax.step"
-                                        [value]="sliderValues2.macro_tau_tax.value"
-                                        [(ngModel)]="sliderValues2.macro_tau_tax.value"
+                                        [min]="sliderValues2.macro_tau_tax_min"
+                                        [max]="sliderValues2.macro_tau_tax_max"
+                                        [step]="sliderValues2.macro_tau_tax_step"
+                                        [value]="sliderValues2.macro_tau_tax_value"
+                                        [(ngModel)]="sliderValues2.macro_tau_tax_value"
                                         >
                                       </md-slider>
                                     </div>
@@ -370,24 +381,24 @@
                                        Ability to access post-disaster financial resources (% of population)
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues1.macro_borrow_abi.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues1.macro_borrow_abi_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues1.macro_borrow_abi.min"
-                                        [max]="sliderValues1.macro_borrow_abi.max"
-                                        [step]="sliderValues1.macro_borrow_abi.step"
-                                        [value]="sliderValues1.macro_borrow_abi.value"
-                                        [(ngModel)]="sliderValues1.macro_borrow_abi.value"
+                                        [min]="sliderValues1.macro_borrow_abi_min"
+                                        [max]="sliderValues1.macro_borrow_abi_max"
+                                        [step]="sliderValues1.macro_borrow_abi_step"
+                                        [value]="sliderValues1.macro_borrow_abi_value"
+                                        [(ngModel)]="sliderValues1.macro_borrow_abi_value"
                                         >
                                       </md-slider>
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues2.macro_borrow_abi.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues2.macro_borrow_abi_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues2.macro_borrow_abi.min"
-                                        [max]="sliderValues2.macro_borrow_abi.max"
-                                        [step]="sliderValues2.macro_borrow_abi.step"
-                                        [value]="sliderValues2.macro_borrow_abi.value"
-                                        [(ngModel)]="sliderValues2.macro_borrow_abi.value"
+                                        [min]="sliderValues2.macro_borrow_abi_min"
+                                        [max]="sliderValues2.macro_borrow_abi_max"
+                                        [step]="sliderValues2.macro_borrow_abi_step"
+                                        [value]="sliderValues2.macro_borrow_abi_value"
+                                        [(ngModel)]="sliderValues2.macro_borrow_abi_value"
                                         >
                                       </md-slider>
                                     </div>
@@ -397,24 +408,24 @@
                                        Readiness to scale-up social protection (% increase in SP total payout post-disaster)
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues1.macro_prepare_scaleup.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues1.macro_prepare_scaleup_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues1.macro_prepare_scaleup.min"
-                                        [max]="sliderValues1.macro_prepare_scaleup.max"
-                                        [step]="sliderValues1.macro_prepare_scaleup.step"
-                                        [value]="sliderValues1.macro_prepare_scaleup.value"
-                                        [(ngModel)]="sliderValues1.macro_prepare_scaleup.value"
+                                        [min]="sliderValues1.macro_prepare_scaleup_min"
+                                        [max]="sliderValues1.macro_prepare_scaleup_max"
+                                        [step]="sliderValues1.macro_prepare_scaleup_step"
+                                        [value]="sliderValues1.macro_prepare_scaleup_value"
+                                        [(ngModel)]="sliderValues1.macro_prepare_scaleup_value"
                                         >
                                       </md-slider>
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues2.macro_prepare_scaleup.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues2.macro_prepare_scaleup_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues2.macro_prepare_scaleup.min"
-                                        [max]="sliderValues2.macro_prepare_scaleup.max"
-                                        [step]="sliderValues2.macro_prepare_scaleup.step"
-                                        [value]="sliderValues2.macro_prepare_scaleup.value"
-                                        [(ngModel)]="sliderValues2.macro_prepare_scaleup.value"
+                                        [min]="sliderValues2.macro_prepare_scaleup_min"
+                                        [max]="sliderValues2.macro_prepare_scaleup_max"
+                                        [step]="sliderValues2.macro_prepare_scaleup_step"
+                                        [value]="sliderValues2.macro_prepare_scaleup_value"
+                                        [(ngModel)]="sliderValues2.macro_prepare_scaleup_value"
                                         >
                                       </md-slider>
                                     </div>
@@ -423,8 +434,8 @@
                            </div>
                            <div class="row border-content"></div>
                            <div class="tab">
-                              <input id="tab-two" type="checkbox" name="tabs">
-                              <label for="tab-two">Economic
+                              <input id="tab-two_tech" type="checkbox" name="tabs">
+                              <label for="tab-two_tech">Economic
                               <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
                               <i class="mdi mdi-information-outline"></i>
                               </button>
@@ -435,24 +446,24 @@
                                        Time to recover and reconstruct (years)
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues1.macro_T_rebuild_K.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues1.macro_T_rebuild_K_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues1.macro_T_rebuild_K.min"
-                                        [max]="sliderValues1.macro_T_rebuild_K.max"
-                                        [step]="sliderValues1.macro_T_rebuild_K.step"
-                                        [value]="sliderValues1.macro_T_rebuild_K.value"
-                                        [(ngModel)]="sliderValues1.macro_T_rebuild_K.value"
+                                        [min]="sliderValues1.macro_T_rebuild_K_min"
+                                        [max]="sliderValues1.macro_T_rebuild_K_max"
+                                        [step]="sliderValues1.macro_T_rebuild_K_step"
+                                        [value]="sliderValues1.macro_T_rebuild_K_value"
+                                        [(ngModel)]="sliderValues1.macro_T_rebuild_K_value"
                                         >
                                       </md-slider>
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues2.macro_T_rebuild_K.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues2.macro_T_rebuild_K_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues2.macro_T_rebuild_K.min"
-                                        [max]="sliderValues2.macro_T_rebuild_K.max"
-                                        [step]="sliderValues2.macro_T_rebuild_K.step"
-                                        [value]="sliderValues2.macro_T_rebuild_K.value"
-                                        [(ngModel)]="sliderValues2.macro_T_rebuild_K.value"
+                                        [min]="sliderValues2.macro_T_rebuild_K_min"
+                                        [max]="sliderValues2.macro_T_rebuild_K_max"
+                                        [step]="sliderValues2.macro_T_rebuild_K_step"
+                                        [value]="sliderValues2.macro_T_rebuild_K_value"
+                                        [(ngModel)]="sliderValues2.macro_T_rebuild_K_value"
                                         >
                                       </md-slider>
                                     </div>
@@ -462,24 +473,24 @@
                                        Access to early warning (% of population)
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues1.shew_for_hazard_ratio.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues1.shew_for_hazard_ratio_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues1.shew_for_hazard_ratio.min"
-                                        [max]="sliderValues1.shew_for_hazard_ratio.max"
-                                        [step]="sliderValues1.shew_for_hazard_ratio.step"
-                                        [value]="sliderValues1.shew_for_hazard_ratio.value"
-                                        [(ngModel)]="sliderValues1.shew_for_hazard_ratio.value"
+                                        [min]="sliderValues1.shew_for_hazard_ratio_min"
+                                        [max]="sliderValues1.shew_for_hazard_ratio_max"
+                                        [step]="sliderValues1.shew_for_hazard_ratio_step"
+                                        [value]="sliderValues1.shew_for_hazard_ratio_value"
+                                        [(ngModel)]="sliderValues1.shew_for_hazard_ratio_value"
                                         >
                                       </md-slider>
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues2.shew_for_hazard_ratio.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues2.shew_for_hazard_ratio_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues2.shew_for_hazard_ratio.min"
-                                        [max]="sliderValues2.shew_for_hazard_ratio.max"
-                                        [step]="sliderValues2.shew_for_hazard_ratio.step"
-                                        [value]="sliderValues2.shew_for_hazard_ratio.value"
-                                        [(ngModel)]="sliderValues2.shew_for_hazard_ratio.value"
+                                        [min]="sliderValues2.shew_for_hazard_ratio_min"
+                                        [max]="sliderValues2.shew_for_hazard_ratio_max"
+                                        [step]="sliderValues2.shew_for_hazard_ratio_step"
+                                        [value]="sliderValues2.shew_for_hazard_ratio_value"
+                                        [(ngModel)]="sliderValues2.shew_for_hazard_ratio_value"
                                         >
                                       </md-slider>
                                     </div>
@@ -489,24 +500,24 @@
                                        Financial inclusion, poor people (% of poor)
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues1.axfin_cat_info__poor.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues1.axfin_cat_info__poor_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues1.axfin_cat_info__poor.min"
-                                        [max]="sliderValues1.axfin_cat_info__poor.max"
-                                        [step]="sliderValues1.axfin_cat_info__poor.step"
-                                        [value]="sliderValues1.axfin_cat_info__poor.value"
-                                        [(ngModel)]="sliderValues1.axfin_cat_info__poor.value"
+                                        [min]="sliderValues1.axfin_cat_info__poor_min"
+                                        [max]="sliderValues1.axfin_cat_info__poor_max"
+                                        [step]="sliderValues1.axfin_cat_info__poor_step"
+                                        [value]="sliderValues1.axfin_cat_info__poor_value"
+                                        [(ngModel)]="sliderValues1.axfin_cat_info__poor_value"
                                         >
                                       </md-slider>
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues2.axfin_cat_info__poor.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues2.axfin_cat_info__poor_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues2.axfin_cat_info__poor.min"
-                                        [max]="sliderValues2.axfin_cat_info__poor.max"
-                                        [step]="sliderValues2.axfin_cat_info__poor.step"
-                                        [value]="sliderValues2.axfin_cat_info__poor.value"
-                                        [(ngModel)]="sliderValues2.axfin_cat_info__poor.value"
+                                        [min]="sliderValues2.axfin_cat_info__poor_min"
+                                        [max]="sliderValues2.axfin_cat_info__poor_max"
+                                        [step]="sliderValues2.axfin_cat_info__poor_step"
+                                        [value]="sliderValues2.axfin_cat_info__poor_value"
+                                        [(ngModel)]="sliderValues2.axfin_cat_info__poor_value"
                                         >
                                       </md-slider>
                                     </div>
@@ -516,24 +527,24 @@
                                        Financial inclusion, non-poor people) (% of non-poor)
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues1.axfin_cat_info__nonpoor.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues1.axfin_cat_info__nonpoor_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues1.axfin_cat_info__nonpoor.min"
-                                        [max]="sliderValues1.axfin_cat_info__nonpoor.max"
-                                        [step]="sliderValues1.axfin_cat_info__nonpoor.step"
-                                        [value]="sliderValues1.axfin_cat_info__nonpoor.value"
-                                        [(ngModel)]="sliderValues1.axfin_cat_info__nonpoor.value"
+                                        [min]="sliderValues1.axfin_cat_info__nonpoor_min"
+                                        [max]="sliderValues1.axfin_cat_info__nonpoor_max"
+                                        [step]="sliderValues1.axfin_cat_info__nonpoor_step"
+                                        [value]="sliderValues1.axfin_cat_info__nonpoor_value"
+                                        [(ngModel)]="sliderValues1.axfin_cat_info__nonpoor_value"
                                         >
                                       </md-slider>
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues2.axfin_cat_info__nonpoor.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues2.axfin_cat_info__nonpoor_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues2.axfin_cat_info__nonpoor.min"
-                                        [max]="sliderValues2.axfin_cat_info__nonpoor.max"
-                                        [step]="sliderValues2.axfin_cat_info__nonpoor.step"
-                                        [value]="sliderValues2.axfin_cat_info__nonpoor.value"
-                                        [(ngModel)]="sliderValues2.axfin_cat_info__nonpoor.value"
+                                        [min]="sliderValues2.axfin_cat_info__nonpoor_min"
+                                        [max]="sliderValues2.axfin_cat_info__nonpoor_max"
+                                        [step]="sliderValues2.axfin_cat_info__nonpoor_step"
+                                        [value]="sliderValues2.axfin_cat_info__nonpoor_value"
+                                        [(ngModel)]="sliderValues2.axfin_cat_info__nonpoor_value"
                                         >
                                       </md-slider>
                                     </div>
@@ -543,24 +554,24 @@
                                        Wealth, poor people (US$, PPP)
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues1.k_cat_info__poor.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues1.k_cat_info__poor_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues1.k_cat_info__poor.min"
-                                        [max]="sliderValues1.k_cat_info__poor.max"
-                                        [step]="sliderValues1.k_cat_info__poor.step"
-                                        [value]="sliderValues1.k_cat_info__poor.value"
-                                        [(ngModel)]="sliderValues1.k_cat_info__poor.value"
+                                        [min]="sliderValues1.k_cat_info__poor_min"
+                                        [max]="sliderValues1.k_cat_info__poor_max"
+                                        [step]="sliderValues1.k_cat_info__poor_step"
+                                        [value]="sliderValues1.k_cat_info__poor_value"
+                                        [(ngModel)]="sliderValues1.k_cat_info__poor_value"
                                         >
                                       </md-slider>
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues2.k_cat_info__poor.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues2.k_cat_info__poor_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues2.k_cat_info__poor.min"
-                                        [max]="sliderValues2.k_cat_info__poor.max"
-                                        [step]="sliderValues2.k_cat_info__poor.step"
-                                        [value]="sliderValues2.k_cat_info__poor.value"
-                                        [(ngModel)]="sliderValues2.k_cat_info__poor.value"
+                                        [min]="sliderValues2.k_cat_info__poor_min"
+                                        [max]="sliderValues2.k_cat_info__poor_max"
+                                        [step]="sliderValues2.k_cat_info__poor_step"
+                                        [value]="sliderValues2.k_cat_info__poor_value"
+                                        [(ngModel)]="sliderValues2.k_cat_info__poor_value"
                                         >
                                       </md-slider>
                                     </div>
@@ -570,24 +581,24 @@
                                        Wealth, non-poor people (US$, PPP)
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues1.k_cat_info__nonpoor.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues1.k_cat_info__nonpoor_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues1.k_cat_info__nonpoor.min"
-                                        [max]="sliderValues1.k_cat_info__nonpoor.max"
-                                        [step]="sliderValues1.k_cat_info__nonpoor.step"
-                                        [value]="sliderValues1.k_cat_info__nonpoor.value"
-                                        [(ngModel)]="sliderValues1.k_cat_info__nonpoor.value"
+                                        [min]="sliderValues1.k_cat_info__nonpoor_min"
+                                        [max]="sliderValues1.k_cat_info__nonpoor_max"
+                                        [step]="sliderValues1.k_cat_info__nonpoor_step"
+                                        [value]="sliderValues1.k_cat_info__nonpoor_value"
+                                        [(ngModel)]="sliderValues1.k_cat_info__nonpoor_value"
                                         >
                                       </md-slider>
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues2.k_cat_info__nonpoor.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues2.k_cat_info__nonpoor_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues2.k_cat_info__nonpoor.min"
-                                        [max]="sliderValues2.k_cat_info__nonpoor.max"
-                                        [step]="sliderValues2.k_cat_info__nonpoor.step"
-                                        [value]="sliderValues2.k_cat_info__nonpoor.value"
-                                        [(ngModel)]="sliderValues2.k_cat_info__nonpoor.value"
+                                        [min]="sliderValues2.k_cat_info__nonpoor_min"
+                                        [max]="sliderValues2.k_cat_info__nonpoor_max"
+                                        [step]="sliderValues2.k_cat_info__nonpoor_step"
+                                        [value]="sliderValues2.k_cat_info__nonpoor_value"
+                                        [(ngModel)]="sliderValues2.k_cat_info__nonpoor_value"
                                         >
                                       </md-slider>
                                     </div>
@@ -596,8 +607,8 @@
                            </div>
                            <div class="row border-content"></div>
                            <div class="tab">
-                              <input id="tab-three" type="checkbox" name="tabs">
-                              <label for="tab-three">Exposure
+                              <input id="tab-three_tech" type="checkbox" name="tabs">
+                              <label for="tab-three_tech">Exposure
                               <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
                               <i class="mdi mdi-information-outline"></i>
                               </button>
@@ -608,24 +619,24 @@
                                        Exposure to riverine and coastal floods, poor (% of total assets of poor)
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues1.hazard_ratio_flood_poor.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues1.hazard_ratio_flood_poor_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues1.hazard_ratio_flood_poor.min"
-                                        [max]="sliderValues1.hazard_ratio_flood_poor.max"
-                                        [step]="sliderValues1.hazard_ratio_flood_poor.step"
-                                        [value]="sliderValues1.hazard_ratio_flood_poor.value"
-                                        [(ngModel)]="sliderValues1.hazard_ratio_flood_poor.value"
+                                        [min]="sliderValues1.hazard_ratio_flood_poor_min"
+                                        [max]="sliderValues1.hazard_ratio_flood_poor_max"
+                                        [step]="sliderValues1.hazard_ratio_flood_poor_step"
+                                        [value]="sliderValues1.hazard_ratio_flood_poor_value"
+                                        [(ngModel)]="sliderValues1.hazard_ratio_flood_poor_value"
                                         >
                                       </md-slider>
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues2.hazard_ratio_flood_poor.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues2.hazard_ratio_flood_poor_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues2.hazard_ratio_flood_poor.min"
-                                        [max]="sliderValues2.hazard_ratio_flood_poor.max"
-                                        [step]="sliderValues2.hazard_ratio_flood_poor.step"
-                                        [value]="sliderValues2.hazard_ratio_flood_poor.value"
-                                        [(ngModel)]="sliderValues2.hazard_ratio_flood_poor.value"
+                                        [min]="sliderValues2.hazard_ratio_flood_poor_min"
+                                        [max]="sliderValues2.hazard_ratio_flood_poor_max"
+                                        [step]="sliderValues2.hazard_ratio_flood_poor_step"
+                                        [value]="sliderValues2.hazard_ratio_flood_poor_value"
+                                        [(ngModel)]="sliderValues2.hazard_ratio_flood_poor_value"
                                         >
                                       </md-slider>
                                     </div>
@@ -635,24 +646,24 @@
                                        Exposure to riverine and coastal floods, non-poor (% of total assets of non-poor)
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues1.hazard_ratio_fa__flood.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues1.hazard_ratio_fa__flood_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues1.hazard_ratio_fa__flood.min"
-                                        [max]="sliderValues1.hazard_ratio_fa__flood.max"
-                                        [step]="sliderValues1.hazard_ratio_fa__flood.step"
-                                        [value]="sliderValues1.hazard_ratio_fa__flood.value"
-                                        [(ngModel)]="sliderValues1.hazard_ratio_fa__flood.value"
+                                        [min]="sliderValues1.hazard_ratio_fa__flood_min"
+                                        [max]="sliderValues1.hazard_ratio_fa__flood_max"
+                                        [step]="sliderValues1.hazard_ratio_fa__flood_step"
+                                        [value]="sliderValues1.hazard_ratio_fa__flood_value"
+                                        [(ngModel)]="sliderValues1.hazard_ratio_fa__flood_value"
                                         >
                                       </md-slider>
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues2.hazard_ratio_fa__flood.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues2.hazard_ratio_fa__flood_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues2.hazard_ratio_fa__flood.min"
-                                        [max]="sliderValues2.hazard_ratio_fa__flood.max"
-                                        [step]="sliderValues2.hazard_ratio_fa__flood.step"
-                                        [value]="sliderValues2.hazard_ratio_fa__flood.value"
-                                        [(ngModel)]="sliderValues2.hazard_ratio_fa__flood.value"
+                                        [min]="sliderValues2.hazard_ratio_fa__flood_min"
+                                        [max]="sliderValues2.hazard_ratio_fa__flood_max"
+                                        [step]="sliderValues2.hazard_ratio_fa__flood_step"
+                                        [value]="sliderValues2.hazard_ratio_fa__flood_value"
+                                        [(ngModel)]="sliderValues2.hazard_ratio_fa__flood_value"
                                         >
                                       </md-slider>
                                     </div>
@@ -662,24 +673,24 @@
                                        Asset vulnerability, poor people (% destruction of exposed assets of poor)
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues1.v_cat_info__poor.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues1.v_cat_info__poor_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues1.v_cat_info__poor.min"
-                                        [max]="sliderValues1.v_cat_info__poor.max"
-                                        [step]="sliderValues1.v_cat_info__poor.step"
-                                        [value]="sliderValues1.v_cat_info__poor.value"
-                                        [(ngModel)]="sliderValues1.v_cat_info__poor.value"
+                                        [min]="sliderValues1.v_cat_info__poor_min"
+                                        [max]="sliderValues1.v_cat_info__poor_max"
+                                        [step]="sliderValues1.v_cat_info__poor_step"
+                                        [value]="sliderValues1.v_cat_info__poor_value"
+                                        [(ngModel)]="sliderValues1.v_cat_info__poor_value"
                                         >
                                       </md-slider>
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues2.v_cat_info__poor.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues2.v_cat_info__poor_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues2.v_cat_info__poor.min"
-                                        [max]="sliderValues2.v_cat_info__poor.max"
-                                        [step]="sliderValues2.v_cat_info__poor.step"
-                                        [value]="sliderValues2.v_cat_info__poor.value"
-                                        [(ngModel)]="sliderValues2.v_cat_info__poor.value"
+                                        [min]="sliderValues2.v_cat_info__poor_min"
+                                        [max]="sliderValues2.v_cat_info__poor_max"
+                                        [step]="sliderValues2.v_cat_info__poor_step"
+                                        [value]="sliderValues2.v_cat_info__poor_value"
+                                        [(ngModel)]="sliderValues2.v_cat_info__poor_value"
                                         >
                                       </md-slider>
                                     </div>
@@ -689,24 +700,24 @@
                                        Asset vulnerability, non-poor people (% destruction of exposed assets of non-poor)
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues1.v_cat_info__nonpoor.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues1.v_cat_info__nonpoor_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues1.v_cat_info__nonpoor.min"
-                                        [max]="sliderValues1.v_cat_info__nonpoor.max"
-                                        [step]="sliderValues1.v_cat_info__nonpoor.step"
-                                        [value]="sliderValues1.v_cat_info__nonpoor.value"
-                                        [(ngModel)]="sliderValues1.v_cat_info__nonpoor.value"
+                                        [min]="sliderValues1.v_cat_info__nonpoor_min"
+                                        [max]="sliderValues1.v_cat_info__nonpoor_max"
+                                        [step]="sliderValues1.v_cat_info__nonpoor_step"
+                                        [value]="sliderValues1.v_cat_info__nonpoor_value"
+                                        [(ngModel)]="sliderValues1.v_cat_info__nonpoor_value"
                                         >
                                       </md-slider>
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues2.v_cat_info__nonpoor.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues2.v_cat_info__nonpoor_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues2.v_cat_info__nonpoor.min"
-                                        [max]="sliderValues2.v_cat_info__nonpoor.max"
-                                        [step]="sliderValues2.v_cat_info__nonpoor.step"
-                                        [value]="sliderValues2.v_cat_info__nonpoor.value"
-                                        [(ngModel)]="sliderValues2.v_cat_info__nonpoor.value"
+                                        [min]="sliderValues2.v_cat_info__nonpoor_min"
+                                        [max]="sliderValues2.v_cat_info__nonpoor_max"
+                                        [step]="sliderValues2.v_cat_info__nonpoor_step"
+                                        [value]="sliderValues2.v_cat_info__nonpoor_value"
+                                        [(ngModel)]="sliderValues2.v_cat_info__nonpoor_value"
                                         >
                                       </md-slider>
                                     </div>
@@ -716,24 +727,24 @@
                                        Exposure to earthquakes (% of total assets)
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues1.hazard_ratio_fa__earthquake.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues1.hazard_ratio_fa__earthquake_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues1.hazard_ratio_fa__earthquake.min"
-                                        [max]="sliderValues1.hazard_ratio_fa__earthquake.max"
-                                        [step]="sliderValues1.hazard_ratio_fa__earthquake.step"
-                                        [value]="sliderValues1.hazard_ratio_fa__earthquake.value"
-                                        [(ngModel)]="sliderValues1.hazard_ratio_fa__earthquake.value"
+                                        [min]="sliderValues1.hazard_ratio_fa__earthquake_min"
+                                        [max]="sliderValues1.hazard_ratio_fa__earthquake_max"
+                                        [step]="sliderValues1.hazard_ratio_fa__earthquake_step"
+                                        [value]="sliderValues1.hazard_ratio_fa__earthquake_value"
+                                        [(ngModel)]="sliderValues1.hazard_ratio_fa__earthquake_value"
                                         >
                                       </md-slider>
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues2.hazard_ratio_fa__earthquake.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues2.hazard_ratio_fa__earthquake_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues2.hazard_ratio_fa__earthquake.min"
-                                        [max]="sliderValues2.hazard_ratio_fa__earthquake.max"
-                                        [step]="sliderValues2.hazard_ratio_fa__earthquake.step"
-                                        [value]="sliderValues2.hazard_ratio_fa__earthquake.value"
-                                        [(ngModel)]="sliderValues2.hazard_ratio_fa__earthquake.value"
+                                        [min]="sliderValues2.hazard_ratio_fa__earthquake_min"
+                                        [max]="sliderValues2.hazard_ratio_fa__earthquake_max"
+                                        [step]="sliderValues2.hazard_ratio_fa__earthquake_step"
+                                        [value]="sliderValues2.hazard_ratio_fa__earthquake_value"
+                                        [(ngModel)]="sliderValues2.hazard_ratio_fa__earthquake_value"
                                         >
                                       </md-slider>
                                     </div>
@@ -743,24 +754,24 @@
                                        Exposure to tsunamis (% of total assets)
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues1.hazard_ratio_fa__tsunami.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues1.hazard_ratio_fa__tsunami_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues1.hazard_ratio_fa__tsunami.min"
-                                        [max]="sliderValues1.hazard_ratio_fa__tsunami.max"
-                                        [step]="sliderValues1.hazard_ratio_fa__tsunami.step"
-                                        [value]="sliderValues1.hazard_ratio_fa__tsunami.value"
-                                        [(ngModel)]="sliderValues1.hazard_ratio_fa__tsunami.value"
+                                        [min]="sliderValues1.hazard_ratio_fa__tsunami_min"
+                                        [max]="sliderValues1.hazard_ratio_fa__tsunami_max"
+                                        [step]="sliderValues1.hazard_ratio_fa__tsunami_step"
+                                        [value]="sliderValues1.hazard_ratio_fa__tsunami_value"
+                                        [(ngModel)]="sliderValues1.hazard_ratio_fa__tsunami_value"
                                         >
                                       </md-slider>
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues2.hazard_ratio_fa__tsunami.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues2.hazard_ratio_fa__tsunami_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues2.hazard_ratio_fa__tsunami.min"
-                                        [max]="sliderValues2.hazard_ratio_fa__tsunami.max"
-                                        [step]="sliderValues2.hazard_ratio_fa__tsunami.step"
-                                        [value]="sliderValues2.hazard_ratio_fa__tsunami.value"
-                                        [(ngModel)]="sliderValues2.hazard_ratio_fa__tsunami.value"
+                                        [min]="sliderValues2.hazard_ratio_fa__tsunami_min"
+                                        [max]="sliderValues2.hazard_ratio_fa__tsunami_max"
+                                        [step]="sliderValues2.hazard_ratio_fa__tsunami_step"
+                                        [value]="sliderValues2.hazard_ratio_fa__tsunami_value"
+                                        [(ngModel)]="sliderValues2.hazard_ratio_fa__tsunami_value"
                                         >
                                       </md-slider>
                                     </div>
@@ -770,24 +781,24 @@
                                        Exposure to windstorms (% of total assets)
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues1.hazard_ratio_fa__wind.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues1.hazard_ratio_fa__wind_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues1.hazard_ratio_fa__wind.min"
-                                        [max]="sliderValues1.hazard_ratio_fa__wind.max"
-                                        [step]="sliderValues1.hazard_ratio_fa__wind.step"
-                                        [value]="sliderValues1.hazard_ratio_fa__wind.value"
-                                        [(ngModel)]="sliderValues1.hazard_ratio_fa__wind.value"
+                                        [min]="sliderValues1.hazard_ratio_fa__wind_min"
+                                        [max]="sliderValues1.hazard_ratio_fa__wind_max"
+                                        [step]="sliderValues1.hazard_ratio_fa__wind_step"
+                                        [value]="sliderValues1.hazard_ratio_fa__wind_value"
+                                        [(ngModel)]="sliderValues1.hazard_ratio_fa__wind_value"
                                         >
                                       </md-slider>
                                     </div>
                                     <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues2.hazard_ratio_fa__wind.value | number: '.0-5'}}</div>
+                                      <div class="text-center">{{sliderValues2.hazard_ratio_fa__wind_value | number: '.0-5'}}</div>
                                       <md-slider
-                                        [min]="sliderValues2.hazard_ratio_fa__wind.min"
-                                        [max]="sliderValues2.hazard_ratio_fa__wind.max"
-                                        [step]="sliderValues2.hazard_ratio_fa__wind.step"
-                                        [value]="sliderValues2.hazard_ratio_fa__wind.value"
-                                        [(ngModel)]="sliderValues2.hazard_ratio_fa__wind.value"
+                                        [min]="sliderValues2.hazard_ratio_fa__wind_min"
+                                        [max]="sliderValues2.hazard_ratio_fa__wind_max"
+                                        [step]="sliderValues2.hazard_ratio_fa__wind_step"
+                                        [value]="sliderValues2.hazard_ratio_fa__wind_value"
+                                        [(ngModel)]="sliderValues2.hazard_ratio_fa__wind_value"
                                         >
                                       </md-slider>
                                     </div>
@@ -797,9 +808,10 @@
                            <div class="row border-content"></div>
                         </div>
                      </div>
-                  </ng-template>
+                  </div>
+                  <!-- </ng-template>
                </ngb-tab>
-            </ngb-tabset>
+            </ngb-tabset> -->
          </div>
       </div>
    </div>
