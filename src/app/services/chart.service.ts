@@ -22,7 +22,7 @@ export class ChartService {
   public _outputUIList: Array<any> = [];
   public _outputList: Array<any> = [];
   constructor() { }
-  createInputCharts(inputData: any, containerId: string, groupName?: string) {
+  createInputCharts(inputData: any, containerId: string, sliderValues: any, groupName?: string) {
     jQuery(`div#${containerId}`).empty();
     const filteredInputData = this.filterInputDataByGroup(inputData, groupName);
     const inputTypeTxt = containerId.split('-')[0];
@@ -38,6 +38,13 @@ export class ChartService {
         dataArr.push(input.distribGroupArr[k]['distribution']);
       }
       const data = dataArr;
+
+      const dataMean = d3.mean(data);
+      sliderValues[input.key + '_display_value'] = dataMean;
+      if (sliderValues[input.key]) {
+        sliderValues[input.key].value = dataMean;
+        sliderValues[input.key + '_value'] = dataMean / (sliderValues[input.key].max + sliderValues[input.key].min) * 100;
+      }
 
 		  // add a margin of 0.1 m,M
       if (data.length > 0) {
@@ -734,7 +741,7 @@ export class ChartService {
   unsubscribeOutputData() {
     this._outputDataSubs.unsubscribe();
   }
-  updateInputCharts(containerId: string, selectedId?: string, groupName?: string) {
+  updateInputCharts(containerId: string, sliderValues: any, selectedId?: string, groupName?: string) {
     const config = this._inputConfig;
     jQuery.each(config, (conf, inpObj) => {
       const ini = d3.select(`#${containerId} svg#` + conf + ' g.initial line');
@@ -751,6 +758,9 @@ export class ChartService {
         } else {
           model = this._globalModelData[selectedId];
         }
+        sliderValues[conf + '_display_value'] = model[conf];
+        sliderValues[conf].value = model[conf];
+        sliderValues[conf + '_value'] = model[conf] / (sliderValues[conf].max + sliderValues[conf].min) * 100;
         const input = inpObj;
         ini.attr('x1', function(d) {
             return input.x(+model[conf]);
