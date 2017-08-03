@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Input, Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-about',
@@ -6,8 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./about.component.css']
 })
 export class AboutComponent implements OnInit {
-
-  constructor() { }
+  constructor(public activeModal: NgbActiveModal) {}
 
   ngOnInit() {
   }

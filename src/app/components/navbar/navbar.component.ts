@@ -1,3 +1,6 @@
+import { NgbModalOptions } from '@ng-bootstrap/ng-bootstrap/modal/modal.module';
+import { AboutComponent } from '../about/about.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +10,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor() { }
+  constructor(private modalService: NgbModal) {}
 
   ngOnInit() {
+  }
+  onOpenModalEvent() {
+    this.modalService.open(AboutComponent,  {
+      size: 'lg'
+    });
   }
 
 }

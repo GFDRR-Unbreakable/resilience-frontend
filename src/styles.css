@@ -10624,3 +10624,7 @@ fieldset {
   text-align: center;
   float: left;
 }
+.about.modal-header {
+  color: white;
+  background-color: #353A48
+}
