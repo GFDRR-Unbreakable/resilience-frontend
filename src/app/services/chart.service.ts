@@ -64,7 +64,7 @@ export class ChartService {
         bottom: 0,
         left: 1
       };
-      const width = 50 - margin.left - margin.right;
+      const width = 70 - margin.left - margin.right;
       const height = 35 - margin.top - margin.bottom;
 
       const kde = science.stats.kde().sample(data);
@@ -209,7 +209,8 @@ export class ChartService {
         .extent([0, d3.mean(data)])
         .on('brushstart', brushstart)
         .on('brushend', brushend);
-      brush.on('brush', this._inputBrushMoveEv(containerId, input, brush));
+      const me = this;
+      brush.on('brush', me._inputBrushMoveEv.call(me, containerId, input, brush));
       // add the brush to the input config so
       // we can access it later
       input.brush = brush;
@@ -594,7 +595,7 @@ export class ChartService {
   initOutputChartConf() {
     this.setOutputData();
   }
-  private _inputBrushMoveEv(containerId: string, input: any, brush?: any) {
+  _inputBrushMoveEv(containerId, input, brush) {
     return () => {
       if (brush) { input.brush = brush; }
       const toUpd = input.forUpdate;
@@ -778,7 +779,8 @@ export class ChartService {
         const extent = +model[conf];
         brush.extent([0, extent]);
         const brushg = d3.selectAll(`#${containerId} svg#${conf} g.brush`);
-        brush.on('brush', this._inputBrushMoveEv(containerId, input));
+        const me = this;
+        brush.on('brush', me._inputBrushMoveEv.call(me, containerId, input));
         brushg.transition()
           .duration(750)
           .call(brush)
