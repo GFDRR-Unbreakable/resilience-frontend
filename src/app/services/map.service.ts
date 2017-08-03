@@ -12,8 +12,8 @@ export class MapService {
   private _layerId = 'all-country';
   private _layerHoverId = 'all-country-hover';
   private _layerFillId = 'all-country-fill';
-  private _layerSource = 'gfdrr2-5qf3ph';
-  private _sourceMapUrl = 'mapbox://gfdrr-dashboard.0qa6vcac';
+  private _layerSource = 'WB_Country_Polygons_2017';
+  private _sourceMapUrl = 'mapbox://gfdrr-dashboard.bccf048a';
   private _MAX_COUNTRIES_SELECTED = 2;
   private _isoCodesArr = [];
   private _getViewerStyleConf = {
@@ -195,8 +195,7 @@ export class MapService {
       container: mapId,
       style: 'mapbox://styles/gfdrr-dashboard/cj59tfxrb686y2sp97c40f56d',
       center: [10, 35],
-      minZoom: 1,
-      zoom: 1
+      zoom: 0.55
     });
   }
   getMap() {
