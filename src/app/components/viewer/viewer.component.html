@@ -29,8 +29,12 @@
                <div id="map"></div>
                <div class="map-legend">
                  <div *ngFor="let legend of legends">
-                   <i class="mdi mdi-checkbox-blank" [ngStyle]="{color: legend[2]}"></i>
-                   {{legend[0]}} - {{legend[1]}} %
+                   <i class="mdi mdi-checkbox-blank float-left" [ngStyle]="{color: legend[2]}"></i>
+                   <span class="map-legend-text-first">{{legend[0]}}</span>
+                   <span class="map-legend-text-middle">-</span>
+                   <span class="map-legend-text-last">{{legend[1]}}</span>
+                   <span class="map-legend-text-percent">%</span>
+                   <br />
                  </div>
                </div>
             </div>

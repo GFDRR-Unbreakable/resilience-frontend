@@ -10594,9 +10594,33 @@ fieldset {
 
 .map-legend {
   position: absolute;
-  left: 20px;
-  bottom: 30px;
+  left: 14px;
+  bottom: 14px;
   z-index: 1;
   background-color: #FFFFFF;
   border: solid 5px #FFFFFF;
+}
+
+.map-legend-text-first {
+  width: 28px;
+  text-align: center;
+  float: left;
+}
+
+.map-legend-text-middle {
+  width: 10px;
+  text-align: center;
+  float: left;
+}
+
+.map-legend-text-last {
+  width: 24px;
+  text-align: center;
+  float: left;
+}
+
+.map-legend-text-percent {
+  width: 20px;
+  text-align: center;
+  float: left;
 }
