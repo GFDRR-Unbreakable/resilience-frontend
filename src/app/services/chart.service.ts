@@ -780,7 +780,7 @@ export class ChartService {
         brush.extent([0, extent]);
         const brushg = d3.selectAll(`#${containerId} svg#${conf} g.brush`);
         const me = this;
-        brush.on('brush', me._inputBrushMoveEv.call(me, containerId, input));
+        brush.on('brush', me._inputBrushMoveEv.call(me, containerId, input, brush));
         brushg.transition()
           .duration(750)
           .call(brush)
