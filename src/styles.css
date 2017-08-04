@@ -373,7 +373,9 @@ template {
   position: absolute;
   right: 1rem;
 }
-
+.navbar li{
+  cursor: pointer;
+}
 /*viewer*/
 
  h6 span{
@@ -633,7 +635,9 @@ template {
   .text-social{
     padding: 5px 20px;
   }
-
+  .hover-a a:hover, .hover-a a:focus {
+    cursor: pointer;
+  }
   /*tab technical Map*/
  .nav {
    display: -webkit-box;
@@ -5948,7 +5952,23 @@ button.close {
   height: 50px;
   overflow: scroll;
 }
-
+.modal-body .block-modal{
+  border-left: 7px solid #eeeeee;
+  padding: 15px 0px;
+}
+.modal-body .p-modal{
+  text-align: left;
+  color: #b2b2b2;
+  padding-left: 25px;
+}
+.modal-body a{
+  text-decoration: underline;
+}
+.modal-header button{
+  border: 1px solid;
+  border-radius: 50%;
+  padding: 8px;
+}
 @media (min-width: 576px) {
   .modal-dialog {
     max-width: 500px;
