@@ -5960,6 +5960,7 @@ button.close {
   text-align: left;
   color: #b2b2b2;
   padding-left: 25px;
+  margin-bottom: 15px;
 }
 .modal-body a{
   text-decoration: underline;
