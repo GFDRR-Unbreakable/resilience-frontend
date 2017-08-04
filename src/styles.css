@@ -615,10 +615,12 @@ template {
     border: 1px solid #eaecf2 !important;
   }
   .icon-hazard-selected {
-    background-color: #353a48 !important;
+    /*background-color: #353a48 !important;*/
+    background-color: #f4f5fa !important;
   }
   .icon-hazard-selected:hover {
-    background-color: #c3d700 !important;
+    background-color: #f4f5fa !important;
+    /*background-color: #c3d700 !important;*/
   }
   .button-reset{
     background: #999ba3;

@@ -311,10 +311,22 @@
                            <h6>Hazard Selection</h6>
                            <p>Select one or multiple hazards:</p>
                            <div class="hover-a">
-                              <a (click)="onSwitchExposure1()"><img class="icon-hazard" [ngClass]="{'icon-hazard-selected': hazards.hazard1}" src="assets/image/flood.png" alt="" /></a>
-                              <a (click)="onSwitchExposure2()"><img class="icon-hazard" [ngClass]="{'icon-hazard-selected': hazards.hazard2}" src="assets/image/earthquake.png" alt="" /></a>
-                              <a (click)="onSwitchExposure3()"><img class="icon-hazard" [ngClass]="{'icon-hazard-selected': hazards.hazard3}" src="assets/image/tsunami.png" alt="" /></a>
-                              <a (click)="onSwitchExposure4()"><img class="icon-hazard" [ngClass]="{'icon-hazard-selected': hazards.hazard4}" src="assets/image/wind.png" alt="" /></a>
+                              <a (click)="onSwitchExposure1()">
+                                <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard1" src="assets/image/flood-yellow.png" alt="" />
+                                <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard1" src="assets/image/flood.png" alt="" />
+                              </a>
+                              <a (click)="onSwitchExposure2()">
+                                <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard2" src="assets/image/earthquake-yellow.png" alt="" />
+                                <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard2" src="assets/image/earthquake.png" alt="" />
+                              </a>
+                              <a (click)="onSwitchExposure3()">
+                                <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard3" src="assets/image/tsunami-yellow.png" alt="" />
+                                <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard3" src="assets/image/tsunami.png" alt="" />
+                              </a>
+                              <a (click)="onSwitchExposure4()">
+                                <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard4" src="assets/image/wind-yellow.png" alt="" />
+                                <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard4" src="assets/image/wind.png" alt="" />
+                              </a>
                            </div>
                         </div>
                      </div>
