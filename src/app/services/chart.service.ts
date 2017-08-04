@@ -64,7 +64,7 @@ export class ChartService {
         bottom: 0,
         left: 1
       };
-      const width = 70 - margin.left - margin.right;
+      const width = 50 - margin.left - margin.right;
       const height = 35 - margin.top - margin.bottom;
 
       const kde = science.stats.kde().sample(data);
@@ -139,11 +139,13 @@ export class ChartService {
       //   .style('pointer-events', 'none');
 
         const td = tr.append('td')
-        .attr('width', '60%')
+        .attr('width', '50%')
+        .style('padding-left', '5px')
         .style('pointer-events', 'none');
 
         tr.append('td')
-          .attr('width', '40%')
+          .attr('width', '50%')
+          .style('padding', '0')
           .style('vertical-align', 'middle')
           .append('span')
           .attr('class', 'value')
@@ -297,7 +299,7 @@ export class ChartService {
         bottom: 0,
         left: 2
       };
-      const width = 90 - margin.left - margin.right;
+      const width = 110 - margin.left - margin.right;
       const height = 40 - margin.top - margin.bottom;
 
       const kde = science['stats'].kde().sample(data);
@@ -438,6 +440,7 @@ export class ChartService {
         .on('brushend', brushend);
 
       infoEl.append('p')
+        .attr('class', 'text-results')
         .append('b')
         .attr('class', 'text-number')
         .text(() => {

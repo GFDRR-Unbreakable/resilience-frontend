@@ -419,13 +419,13 @@ template {
    text-align: center;
  }
  .text-results{
-   width: 120px;
+   width: 100px;
    float: right;
    font-size: 11px;
    padding-top: 0px;
    color: #373a3c;
    font-weight: bold;
-   padding-bottom: 13px;
+   padding-bottom: 4px;
  }
  .bottom-results{
    margin-top: -20px;
@@ -10589,7 +10589,8 @@ fieldset {
   color: black;
 }
 .input-row span.value{
-  vertical-align: middle
+  vertical-align: middle;
+  font-size: 12px;
 }
 
 .map-legend {
