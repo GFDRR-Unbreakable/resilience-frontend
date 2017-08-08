@@ -10561,12 +10561,14 @@ fieldset {
     }
     #outputs-1 g.area path, #outputs-2 g.area path,
     #inputSoc-1 g.area path, #inputSoc-2 g.area path,
+    #inputVul-1 g.area path, #inputVul-2 g.area path,    
     #inputEco-1 g.area path, #inputEco-2 g.area path,
     #inputExp-1 g.area path, #inputExp-2 g.area path {
         fill: #E6E8EF;
     }
     #inputSoc-1 g.mask path, #inputSoc-2 g.mask path,
     #inputEco-1 g.mask path, #inputEco-2 g.mask path,
+    #inputVul-1 g.mask path, #inputVul-2 g.mask path,    
     #inputExp-1 g.mask path, #inputExp-2 g.mask path {
         fill: #C1D502;
         opacity: 1;
