@@ -1,10 +1,10 @@
 import { Action } from '@ngrx/store';
 import * as fromStore from '../default.store';
-import {ViewerAction} from '../action/viewer.action';
+import {PolicyAction} from '../action/policy.action';
 
-export function viewer(state = fromStore.defaultStore.viewer, action: Action) {
+export function policy(state = fromStore.defaultStore.policyPriorityList, action: Action) {
     switch (action.type) {
-        case ViewerAction.EDIT_VIEWER:
+        case PolicyAction.EDIT_POLICY_FIELDS:
             const newEdit = action.payload;
             return Object.assign({}, state, newEdit);
         default:

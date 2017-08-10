@@ -282,7 +282,7 @@ export class ChartService {
       }
     });
   }
-  createOutputChart(outputData: any, containerId: string, groupName?: string) {
+  createOutputChart(outputData: any, containerId: string, groupName?: string, isScoreCardPage?: boolean) {
     jQuery(`div#${containerId}`).empty();
     const finalOutput = this.filterOutputDataByGroup(outputData, groupName);
     jQuery.each(finalOutput, (idx, output) => {
@@ -299,8 +299,8 @@ export class ChartService {
         bottom: 0,
         left: 2
       };
-      const width = 110 - margin.left - margin.right;
-      const height = 40 - margin.top - margin.bottom;
+      const width = (isScoreCardPage ? 140 : 110) - margin.left - margin.right;
+      const height = (isScoreCardPage ? 50 : 40) - margin.top - margin.bottom;
 
       const kde = science['stats'].kde().sample(data);
       const bw = kde.bandwidth(science['stats'].bandwidth.nrd0)(data);
@@ -415,12 +415,23 @@ export class ChartService {
         .attr('class', 'initial')
         .append('line');
 
-      const infoEl = tr.append('td')
-        .attr('width', '100%');
-
-      infoEl.append('p')
+      let infoEl;
+      if (!isScoreCardPage) {
+        infoEl = tr.append('td')
+          .attr('width', '100%');
+        infoEl.append('p')
         .attr('class', 'text-results')
         .text(output.descriptor.toUpperCase());
+      } else {
+        infoEl = table.append('tr');
+        const tdEl = infoEl.append('td')
+          .attr('width', '100%');
+        const divData = tdEl.append('div')
+          .attr('class', 'box-text-results text-center');
+        divData.append('p')
+          .attr('class', 'scorecard-title-result')
+          .text(output.descriptor);
+      }
 
       const brushstart = () => {
         svg.classed('selecting-output', true);
@@ -439,15 +450,26 @@ export class ChartService {
         .on('brush', brushmove)
         .on('brushend', brushend);
 
-      infoEl.append('p')
+      const textFn = () => {
+        const percent = output.number_type === ('percent') ? ' %' : '';
+        const precision = +output.precision;
+        return (+brush.extent()[1] * 100).toFixed(precision) + percent;
+      };
+
+      if (!isScoreCardPage) {
+        infoEl.append('p')
         .attr('class', 'text-results')
         .append('b')
         .attr('class', 'text-number')
-        .text(() => {
-          const percent = output.number_type === ('percent') ? ' %' : '';
-          const precision = +output.precision;
-          return (+brush.extent()[1] * 100).toFixed(precision) + percent;
-        });
+        .text(textFn);
+      } else {
+        infoEl.select('div.box-text-results')
+          .append('p')
+          .attr('class', 'scorecard-text-result')
+          .append('b')
+          .attr('class', 'text-number')
+          .text(textFn);
+      }
 
       // keep a reference to the brush for the output domain
       this._outputDomains[idx].brush = brush;

@@ -4,9 +4,9 @@
          <a href="" routerLink="/viewer"><button type="button" class="btn button-map"><i class="mdi mdi-keyboard-backspace"></i> Map</button></a>
          <h6>Policy Priority List</h6>
          <div class="scorecard-input">
-            <input  type="text" class="form-control" placeholder="Malawi"/>
+            <input  type="text" class="form-control" placeholder="" name="firstCountry" [ngbTypeahead]="searchCountryFn" #firstCountry="ngModel" [(ngModel)]="policyModel.firstCountry" (ngModelChange)="onFirstCountryInputChangeEvent()" placeholder="Country 1"/>
             <button type="button" class="btn btn-outline-secondary icon-plus"><i class="mdi mdi-plus"></i></button>
-            <input  type="text" class="form-control" placeholder="Zimbabwe"/>
+            <input  type="text" class="form-control" placeholder="" name="secondCountry" [ngbTypeahead]="searchCountryFn" #secondCountry="ngModel" [(ngModel)]="policyModel.secondCountry" (ngModelChange)="onSecondCountryInputChangeEvent()" placeholder="Country 2"/>
          </div>
          <button type="button" class="btn btn-primary text-download box-button-pdf"><img class="img-download" src="assets/image/ic-download.png" alt="">PDF</button>
       </div>
@@ -15,7 +15,7 @@
    <div class="row">
       <div class="col-md-6 box-policyprioritylist vertical-border">
          <div class="col-md-12">
-            <h5>Malawi</h5>
+            <h5>{{policyModel.firstCountry || 'Country 1'}}</h5>
             <p class="scorecard-text"><b>GDP:</b> $21.843 billion</p>
             <p class="scorecard-text"><b>Population (2013 estimate):</b> 16.407.000</p>
          </div>
@@ -31,45 +31,15 @@
                </div>
             </div>
             <div class="row">
-               <div class="col-md-4">
-                  <div class="scorecard-img">
-                     <img src="" alt="">
-                     image
-                  </div>
-                  <div class="box-text-results">
-                     <p class="scorecard-title-result">RISK TO ASSETS</p>
-                     <P class="scorecard-text-result"><b class="text-number">0.019%</b> OF POPULATION</P>
-                     <P class="scorecard-text-result"><b class="text-number">$43,32</b> MILLON</P>
-                  </div>
-               </div>
-               <div class="col-md-4">
-                  <div class="scorecard-img">
-                     <img src="" alt="">
-                     image
-                  </div>
-                  <div class="box-text-results">
-                     <p class="scorecard-title-result">SOCIO-ECONOMIC CAPACITY</p>
-                     <P class="scorecard-text-result"><b class="text-number">71.19%</b> OF POPULATION</P>
-                     <P class="scorecard-text-result"><b class="text-number">$43,32</b> MILLON</P>
-                  </div>
-               </div>
-               <div class="col-md-4">
-                  <div class="scorecard-img">
-                     <img src="" alt="">
-                     image
-                  </div>
-                  <div class="box-text-results">
-                     <p class="scorecard-title-result">RISK TO WELL-BEING</p>
-                     <P class="scorecard-text-result"><b class="text-number">71.19%</b> OF POPULATION</P>
-                     <P class="scorecard-text-result"><b class="text-number">$43,32</b> MILLON</P>
-                  </div>
-               </div>
+                <div class="col-md-12">
+                    <div class="row" id="outputs-1"></div>
+                </div>
             </div>
          </div>
       </div>
       <div class="col-md-6 box-policyprioritylist">
          <div class="col-md-12">
-            <h5>Zimbabwe</h5>
+            <h5>{{policyModel.secondCountry || 'Country 2'}}</h5>
             <p class="scorecard-text"><b>GDP:</b> $28.826 billion</p>
             <p class="scorecard-text"><b>Population (2013 estimate):</b> 12.973.808</p>
          </div>
@@ -85,39 +55,9 @@
                </div>
             </div>
             <div class="row">
-               <div class="col-md-4">
-                  <div class="scorecard-img">
-                     <img src="" alt="">
-                     image
-                  </div>
-                  <div class="box-text-results">
-                     <p class="scorecard-title-result">RISK TO ASSETS</p>
-                     <P class="scorecard-text-result"><b class="text-number">0.019%</b> OF POPULATION</P>
-                     <P class="scorecard-text-result"><b class="text-number">$43,32</b> MILLON</P>
-                  </div>
-               </div>
-               <div class="col-md-4">
-                  <div class="scorecard-img">
-                     <img src="" alt="">
-                     image
-                  </div>
-                  <div class="box-text-results">
-                     <p class="scorecard-title-result">SOCIO-ECONOMIC CAPACITY</p>
-                     <P class="scorecard-text-result"><b class="text-number">71.19%</b> OF POPULATION</P>
-                     <P class="scorecard-text-result"><b class="text-number">$43,32</b> MILLON</P>
-                  </div>
-               </div>
-               <div class="col-md-4">
-                  <div class="scorecard-img">
-                     <img src="" alt="">
-                     image
-                  </div>
-                  <div class="box-text-results">
-                     <p class="scorecard-title-result">RISK TO WELL-BEING</p>
-                     <P class="scorecard-text-result"><b class="text-number">71.19%</b> OF POPULATION</P>
-                     <P class="scorecard-text-result"><b class="text-number">$43,32</b> MILLON</P>
-                  </div>
-               </div>
+                <div class="col-md-12">
+                    <div class="row" id="outputs-2"></div>
+                </div>
             </div>
          </div>
       </div>

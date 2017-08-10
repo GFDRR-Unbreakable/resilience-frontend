@@ -480,6 +480,35 @@
                                       </md-slider>
                                     </div>
                                  </div>
+                                  <div class="row">
+                                  <div class="col-md-4 box-tab-text">
+                                      Time to recover and reconstruct (years)
+                                  </div>
+                                  <div class="col-md-4 box-tab-text">
+                                    <div class="text-center">{{sliderValues1.macro_T_rebuild_K_display_value | number: '.0-5'}}</div>
+                                    <md-slider
+                                      [min]="sliderValues1.macro_T_rebuild_K_min"
+                                      [max]="sliderValues1.macro_T_rebuild_K_max"
+                                      [step]="sliderValues1.macro_T_rebuild_K_step"
+                                      [value]="sliderValues1.macro_T_rebuild_K_value"
+                                      [(ngModel)]="sliderValues1.macro_T_rebuild_K_value"
+                                      (change)="onSliderChangeEvent1('macro_T_rebuild_K')"
+                                      >
+                                    </md-slider>
+                                  </div>
+                                  <div class="col-md-4 box-tab-text">
+                                    <div class="text-center">{{sliderValues2.macro_T_rebuild_K_display_value | number: '.0-5'}}</div>
+                                    <md-slider
+                                      [min]="sliderValues2.macro_T_rebuild_K_min"
+                                      [max]="sliderValues2.macro_T_rebuild_K_max"
+                                      [step]="sliderValues2.macro_T_rebuild_K_step"
+                                      [value]="sliderValues2.macro_T_rebuild_K_value"
+                                      [(ngModel)]="sliderValues2.macro_T_rebuild_K_value"
+                                      (change)="onSliderChangeEvent2('macro_T_rebuild_K')"
+                                      >
+                                    </md-slider>
+                                  </div>
+                                </div>
                               </div>
                            </div>
                            <div class="row border-content"></div>
@@ -491,64 +520,7 @@
                               </button>
                               </label>
                               <div class="tab-content">
-                                 <div class="row">
-                                    <div class="col-md-4 box-tab-text">
-                                       Time to recover and reconstruct (years)
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues1.macro_T_rebuild_K_display_value | number: '.0-5'}}</div>
-                                      <md-slider
-                                        [min]="sliderValues1.macro_T_rebuild_K_min"
-                                        [max]="sliderValues1.macro_T_rebuild_K_max"
-                                        [step]="sliderValues1.macro_T_rebuild_K_step"
-                                        [value]="sliderValues1.macro_T_rebuild_K_value"
-                                        [(ngModel)]="sliderValues1.macro_T_rebuild_K_value"
-                                        (change)="onSliderChangeEvent1('macro_T_rebuild_K')"
-                                        >
-                                      </md-slider>
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues2.macro_T_rebuild_K_display_value | number: '.0-5'}}</div>
-                                      <md-slider
-                                        [min]="sliderValues2.macro_T_rebuild_K_min"
-                                        [max]="sliderValues2.macro_T_rebuild_K_max"
-                                        [step]="sliderValues2.macro_T_rebuild_K_step"
-                                        [value]="sliderValues2.macro_T_rebuild_K_value"
-                                        [(ngModel)]="sliderValues2.macro_T_rebuild_K_value"
-                                        (change)="onSliderChangeEvent2('macro_T_rebuild_K')"
-                                        >
-                                      </md-slider>
-                                    </div>
-                                 </div>
-                                 <div class="row">
-                                    <div class="col-md-4 box-tab-text">
-                                       Access to early warning (% of population)
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues1.shew_for_hazard_ratio_display_value | number: '.0-5'}}</div>
-                                      <md-slider
-                                        [min]="sliderValues1.shew_for_hazard_ratio_min"
-                                        [max]="sliderValues1.shew_for_hazard_ratio_max"
-                                        [step]="sliderValues1.shew_for_hazard_ratio_step"
-                                        [value]="sliderValues1.shew_for_hazard_ratio_value"
-                                        [(ngModel)]="sliderValues1.shew_for_hazard_ratio_value"
-                                        (change)="onSliderChangeEvent1('shew_for_hazard_ratio')"
-                                        >
-                                      </md-slider>
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues2.shew_for_hazard_ratio_display_value | number: '.0-5'}}</div>
-                                      <md-slider
-                                        [min]="sliderValues2.shew_for_hazard_ratio_min"
-                                        [max]="sliderValues2.shew_for_hazard_ratio_max"
-                                        [step]="sliderValues2.shew_for_hazard_ratio_step"
-                                        [value]="sliderValues2.shew_for_hazard_ratio_value"
-                                        [(ngModel)]="sliderValues2.shew_for_hazard_ratio_value"
-                                        (change)="onSliderChangeEvent2('shew_for_hazard_ratio')"
-                                        >
-                                      </md-slider>
-                                    </div>
-                                 </div>
+                                
                                  <div class="row">
                                     <div class="col-md-4 box-tab-text">
                                        Financial inclusion, poor people (% of poor)
@@ -670,7 +642,105 @@
                            <div class="row border-content"></div>
                            <div class="tab">
                               <input id="tab-three_tech" type="checkbox" name="tabs">
-                              <label for="tab-three_tech">Exposure
+                              <label for="tab-three_tech">Vulnerability
+                              <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
+                              <i class="mdi mdi-information-outline"></i>
+                              </button>
+                              </label>
+                              <div class="tab-content">
+                                  <div class="row" [hidden]="!hazards.hazard1">
+                                    <div class="col-md-4 box-tab-text">
+                                       Asset vulnerability, poor people (% destruction of exposed assets of poor)
+                                    </div>
+                                    <div class="col-md-4 box-tab-text">
+                                      <div class="text-center">{{sliderValues1.v_cat_info__poor_display_value | number: '.0-5'}}</div>
+                                      <md-slider
+                                        [min]="sliderValues1.v_cat_info__poor_min"
+                                        [max]="sliderValues1.v_cat_info__poor_max"
+                                        [step]="sliderValues1.v_cat_info__poor_step"
+                                        [value]="sliderValues1.v_cat_info__poor_value"
+                                        [(ngModel)]="sliderValues1.v_cat_info__poor_value"
+                                        (change)="onSliderChangeEvent1('v_cat_info__poor')"
+                                        >
+                                      </md-slider>
+                                    </div>
+                                    <div class="col-md-4 box-tab-text">
+                                      <div class="text-center">{{sliderValues2.v_cat_info__poor_display_value | number: '.0-5'}}</div>
+                                      <md-slider
+                                        [min]="sliderValues2.v_cat_info__poor_min"
+                                        [max]="sliderValues2.v_cat_info__poor_max"
+                                        [step]="sliderValues2.v_cat_info__poor_step"
+                                        [value]="sliderValues2.v_cat_info__poor_value"
+                                        [(ngModel)]="sliderValues2.v_cat_info__poor_value"
+                                        (change)="onSliderChangeEvent2('v_cat_info__poor')"
+                                        >
+                                      </md-slider>
+                                    </div>
+                                 </div>
+                                 <div class="row" [hidden]="!hazards.hazard1">
+                                    <div class="col-md-4 box-tab-text">
+                                       Asset vulnerability, non-poor people (% destruction of exposed assets of non-poor)
+                                    </div>
+                                    <div class="col-md-4 box-tab-text">
+                                      <div class="text-center">{{sliderValues1.v_cat_info__nonpoor_display_value | number: '.0-5'}}</div>
+                                      <md-slider
+                                        [min]="sliderValues1.v_cat_info__nonpoor_min"
+                                        [max]="sliderValues1.v_cat_info__nonpoor_max"
+                                        [step]="sliderValues1.v_cat_info__nonpoor_step"
+                                        [value]="sliderValues1.v_cat_info__nonpoor_value"
+                                        [(ngModel)]="sliderValues1.v_cat_info__nonpoor_value"
+                                        (change)="onSliderChangeEvent1('v_cat_info__nonpoor')"
+                                        >
+                                      </md-slider>
+                                    </div>
+                                    <div class="col-md-4 box-tab-text">
+                                      <div class="text-center">{{sliderValues2.v_cat_info__nonpoor_display_value | number: '.0-5'}}</div>
+                                      <md-slider
+                                        [min]="sliderValues2.v_cat_info__nonpoor_min"
+                                        [max]="sliderValues2.v_cat_info__nonpoor_max"
+                                        [step]="sliderValues2.v_cat_info__nonpoor_step"
+                                        [value]="sliderValues2.v_cat_info__nonpoor_value"
+                                        [(ngModel)]="sliderValues2.v_cat_info__nonpoor_value"
+                                        (change)="onSliderChangeEvent2('v_cat_info__nonpoor')"
+                                        >
+                                      </md-slider>
+                                    </div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-md-4 box-tab-text">
+                                       Access to early warning (% of population)
+                                    </div>
+                                    <div class="col-md-4 box-tab-text">
+                                      <div class="text-center">{{sliderValues1.shew_for_hazard_ratio_display_value | number: '.0-5'}}</div>
+                                      <md-slider
+                                        [min]="sliderValues1.shew_for_hazard_ratio_min"
+                                        [max]="sliderValues1.shew_for_hazard_ratio_max"
+                                        [step]="sliderValues1.shew_for_hazard_ratio_step"
+                                        [value]="sliderValues1.shew_for_hazard_ratio_value"
+                                        [(ngModel)]="sliderValues1.shew_for_hazard_ratio_value"
+                                        (change)="onSliderChangeEvent1('shew_for_hazard_ratio')"
+                                        >
+                                      </md-slider>
+                                    </div>
+                                    <div class="col-md-4 box-tab-text">
+                                      <div class="text-center">{{sliderValues2.shew_for_hazard_ratio_display_value | number: '.0-5'}}</div>
+                                      <md-slider
+                                        [min]="sliderValues2.shew_for_hazard_ratio_min"
+                                        [max]="sliderValues2.shew_for_hazard_ratio_max"
+                                        [step]="sliderValues2.shew_for_hazard_ratio_step"
+                                        [value]="sliderValues2.shew_for_hazard_ratio_value"
+                                        [(ngModel)]="sliderValues2.shew_for_hazard_ratio_value"
+                                        (change)="onSliderChangeEvent2('shew_for_hazard_ratio')"
+                                        >
+                                      </md-slider>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="row border-content"></div>
+                           <div class="tab">
+                              <input id="tab-four_tech" type="checkbox" name="tabs">
+                              <label for="tab-four_tech">Exposure
                               <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
                               <i class="mdi mdi-information-outline"></i>
                               </button>
@@ -730,64 +800,6 @@
                                         [value]="sliderValues2.hazard_ratio_fa__flood_value"
                                         [(ngModel)]="sliderValues2.hazard_ratio_fa__flood_value"
                                         (change)="onSliderChangeEvent2('hazard_ratio_fa__flood')"
-                                        >
-                                      </md-slider>
-                                    </div>
-                                 </div>
-                                 <div class="row" [hidden]="!hazards.hazard1">
-                                    <div class="col-md-4 box-tab-text">
-                                       Asset vulnerability, poor people (% destruction of exposed assets of poor)
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues1.v_cat_info__poor_display_value | number: '.0-5'}}</div>
-                                      <md-slider
-                                        [min]="sliderValues1.v_cat_info__poor_min"
-                                        [max]="sliderValues1.v_cat_info__poor_max"
-                                        [step]="sliderValues1.v_cat_info__poor_step"
-                                        [value]="sliderValues1.v_cat_info__poor_value"
-                                        [(ngModel)]="sliderValues1.v_cat_info__poor_value"
-                                        (change)="onSliderChangeEvent1('v_cat_info__poor')"
-                                        >
-                                      </md-slider>
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues2.v_cat_info__poor_display_value | number: '.0-5'}}</div>
-                                      <md-slider
-                                        [min]="sliderValues2.v_cat_info__poor_min"
-                                        [max]="sliderValues2.v_cat_info__poor_max"
-                                        [step]="sliderValues2.v_cat_info__poor_step"
-                                        [value]="sliderValues2.v_cat_info__poor_value"
-                                        [(ngModel)]="sliderValues2.v_cat_info__poor_value"
-                                        (change)="onSliderChangeEvent2('v_cat_info__poor')"
-                                        >
-                                      </md-slider>
-                                    </div>
-                                 </div>
-                                 <div class="row" [hidden]="!hazards.hazard1">
-                                    <div class="col-md-4 box-tab-text">
-                                       Asset vulnerability, non-poor people (% destruction of exposed assets of non-poor)
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues1.v_cat_info__nonpoor_display_value | number: '.0-5'}}</div>
-                                      <md-slider
-                                        [min]="sliderValues1.v_cat_info__nonpoor_min"
-                                        [max]="sliderValues1.v_cat_info__nonpoor_max"
-                                        [step]="sliderValues1.v_cat_info__nonpoor_step"
-                                        [value]="sliderValues1.v_cat_info__nonpoor_value"
-                                        [(ngModel)]="sliderValues1.v_cat_info__nonpoor_value"
-                                        (change)="onSliderChangeEvent1('v_cat_info__nonpoor')"
-                                        >
-                                      </md-slider>
-                                    </div>
-                                    <div class="col-md-4 box-tab-text">
-                                      <div class="text-center">{{sliderValues2.v_cat_info__nonpoor_display_value | number: '.0-5'}}</div>
-                                      <md-slider
-                                        [min]="sliderValues2.v_cat_info__nonpoor_min"
-                                        [max]="sliderValues2.v_cat_info__nonpoor_max"
-                                        [step]="sliderValues2.v_cat_info__nonpoor_step"
-                                        [value]="sliderValues2.v_cat_info__nonpoor_value"
-                                        [(ngModel)]="sliderValues2.v_cat_info__nonpoor_value"
-                                        (change)="onSliderChangeEvent2('v_cat_info__nonpoor')"
                                         >
                                       </md-slider>
                                     </div>

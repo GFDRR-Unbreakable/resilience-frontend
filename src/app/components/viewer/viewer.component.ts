@@ -44,6 +44,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   public global = true;
   public legends: Array<any> = [];
   public viewer$: Observable<Viewer>;
+  public viewerSubs: Subscription;
   public searchCountryFn = (text$: Observable<string>) => {
     const debounceTimeFn = debounceTime.call(text$, 200);
     const distinctUntilChangedFn = distinctUntilChanged.call(debounceTimeFn);
@@ -86,6 +87,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       } else {
         this._filterCountryByInput(fromListFilter, 1, this.viewerModel.secondCountry);
       }
+      this.store.dispatch({type: ViewerAction.EDIT_VIEWER, payload: this.viewerModel});
     }
   }
   private _filterCountryByInput(list, selectedIdx, field) {
@@ -120,10 +122,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           this.chartService.createInputCharts(inData, idInEco, sliderValues, list[0].group);
           this.chartService.createInputCharts(inData, idInExp, sliderValues, list[0].group);
           this.chartService.createInputCharts(inData, idInVul, sliderValues, list[0].group);
-          // this.chartService.updateOutputCharts(idOut, list[0].code, list[0].group);
-          // this.chartService.updateInputCharts(idInSoc, list[0].code, list[0].group);
-          // this.chartService.updateInputCharts(idInEco, list[0].code, list[0].group);
-          // this.chartService.updateInputCharts(idInExp, list[0].code, list[0].group);
 
         }
         this.mapService.setMapFilterByISOCode(list[0].code);
@@ -253,6 +251,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         this._selectedCountryList.splice(selectedCountryIdx[0], 1);
       }
+      this.store.dispatch({type: ViewerAction.EDIT_VIEWER, payload: this.viewerModel});
     }
   }
   getChartOutputData() {
@@ -345,6 +344,14 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           }
         }
       });
+    });
+  }
+  setViewerObservableConf() {
+    this.viewerSubs = this.viewer$.subscribe(state => {
+      console.log(state);
+      if (state) {
+        this.viewerModel = state;
+      }
     });
   }
   // EVENTS
