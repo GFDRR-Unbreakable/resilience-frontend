@@ -1,10 +1,13 @@
 import { Injectable, Output } from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs/Rx';
 import {Subscription} from 'rxjs/Subscription';
 import 'rxjs/add/observable/fromPromise';
 import * as d3 from 'd3/d3.js';
 import * as science from 'science/index.js';
 import {SERVER} from './server.conf';
+import {WebService} from '../services/web.service';
+import {ViewerModel} from '../store/model/viewer.model';
+import {URLSearchParams} from '@angular/http';
 
 @Injectable()
 export class ChartService {
@@ -21,7 +24,7 @@ export class ChartService {
   private _outputDataSubs: Subscription;
   public _outputUIList: Array<any> = [];
   public _outputList: Array<any> = [];
-  constructor() { }
+  constructor(private webService: WebService) { }
   createInputCharts(inputData: any, containerId: string, sliderValues: any, groupName?: string) {
     jQuery(`div#${containerId}`).empty();
     const filteredInputData = this.filterInputDataByGroup(inputData, groupName);
@@ -250,7 +253,6 @@ export class ChartService {
       brushg.style('pointer-events', 'none');
       const brushEl = brushg[0][0];
       brushEl.removeAllListeners();
-      // console.log(brushg);
 
       const self = this;
       function brushstart() {
@@ -274,7 +276,7 @@ export class ChartService {
       }
       function _redrawInputPlot(id) {
         const config = this._inputConfig;
-        const input = config[id];
+        const inputD = config[id];
         // jQuery.event.trigger({
         //   type: 'inputchanged',
         //   input: input
@@ -526,7 +528,6 @@ export class ChartService {
         }
       }
     }
-    console.log(filteredOutputDomains);
     return filteredOutputDomains;
   }
   filterInputDataByGroup(inputData, groupName?: string) {
@@ -550,6 +551,9 @@ export class ChartService {
       }
     }
     return filteredInputDomains;
+  }
+  getGlobalModelData() {
+    return this._globalModelData;
   }
   getChartsConf() {
     return {
@@ -582,8 +586,8 @@ export class ChartService {
       'default_input': 'axfin_p',
       'default_output': 'resilience',
       'default_feature': 'AUS',
-      'model_data': 'df.csv',
-      'model_function': 'res_ind_lib.compute_resiliences',
+      'model_data': 'df_for_wrapper.csv',
+      'model_function': 'res_ind_lib.compute_resilience_from_packed_inputs',
       'pop': 'pop',
       'gdp': 'gdp_pc_pp',
       'map': {
@@ -607,6 +611,18 @@ export class ChartService {
         'hazard_ratio_fa__wind']
     };
     return inputType[type];
+  }
+  getInputPModelData(data: ViewerModel): Observable<Response> {
+    const url = SERVER.URL.BASE_SERVER_PY + SERVER.URL.SERVER_INPUT_PY;
+    const chartConf = this.getChartsConf();
+    const model = chartConf.model_function;
+    const modelData = chartConf.model_data;
+    const formData = new URLSearchParams();
+    formData.append('d', JSON.stringify(data));
+    formData.append('g', '');
+    formData.append('m', model);
+    formData.append('i_df', modelData);
+    return this.webService.post(url, formData).map((res: Response) => res.json()).catch(this.webService.errorHandler);
   }
   getOutputData() {
     return this._outputDomains;
@@ -686,7 +702,7 @@ export class ChartService {
               obj.group = globalObj['group_name'];
               inpObj.distribGroupArr.push(obj);
             }
-            //obj.group = globalObj['group_name'];
+            // obj.group = globalObj['group_name'];
             // inpObj.distribGroupArr.push(obj);
           }
         });
@@ -823,14 +839,16 @@ export class ChartService {
       // remove existing initial marker
     });
   }
-  updateOutputCharts(containerId: string, selectedId?: string, groupName?: string) {
+  updateOutputCharts(containerId: string, selectedId?: any, groupName?: string) {
     const domains = this.filterOutputDataByGroup(this._outputDomains, groupName);
     jQuery.each(domains, (idx, outputData) => {
       const ini = d3.select(`#${containerId} svg#${idx} g.initial line`);
       const x = domains[idx].x;
       const height = domains[idx].height;
       let model;
-      if (selectedId === 'global') {
+      if (typeof selectedId === 'object') {
+        model = selectedId['model'];
+      } else if (selectedId === 'global') {
         const data: Array<number> = outputData.domain.sort((a, b) => {
           return a - b;
         });

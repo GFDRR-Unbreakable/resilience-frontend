@@ -2,7 +2,7 @@ import { listenToTriggers } from '@ng-bootstrap/ng-bootstrap/util/triggers';
 import { search } from '@ngrx/router-store';
 import { distinctUntilKeyChanged } from 'rxjs/operator/distinctUntilKeyChanged';
 import { distinct } from 'rxjs/operator/distinct';
-import { Viewer } from '../../store/model/viewer.model';
+import { Viewer, ViewerModel } from '../../store/model/viewer.model';
 import { ViewerAction } from '../../store/action/viewer.action';
 import {AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -23,27 +23,123 @@ import {AppStore} from '../../store/default.store';
   // changeDetection: ChangeDetectionStrategy.Default
 })
 export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
-  public getOutputDataSubs: Subscription;
   public countryUIList: Array<any> = [];
   public countryListComp: Array<any> = [];
   public countryListIsoCodes: Array<any> = [];
-  private _selectedCountryList: Array<any> = [];
-  public viewerModel: Viewer = {
-    firstCountry: '',
-    secondCountry: ''
-  };
+  public getOutputDataSubs: Subscription;
+  public global = true;
   public hazards = {
     hazard1: true,
     hazard2: true,
     hazard3: true,
     hazard4: true
   };
+  public legends: Array<any> = [];
+  private _selectedCountryList: Array<any> = [];
   public sliderValues1 = {};
   public sliderValues2 = {};
-  public viewerDisplay: boolean = true;
-  public global = true;
-  public legends: Array<any> = [];
+  public viewerDisplay = true;
+  public viewerModel: Viewer = {
+    firstCountry: '',
+    secondCountry: ''
+  };
+  public viewerP1: ViewerModel = {
+    name: '',
+    macro_gdp_pc_pp: 0,
+    macro_pop: 0,
+    macro_urbanization_rate: 0,
+    macro_prepare_scaleup: 0,
+    macro_borrow_abi: 0,
+    macro_avg_prod_k: 0,
+    macro_T_rebuild_K: 0,
+    macro_pi: 0,
+    macro_income_elast: 0,
+    macro_rho: 0,
+    macro_shareable: 0,
+    macro_max_increased_spending: 0,
+    macro_fa_glofris: 0,
+    macro_protection: 0,
+    macro_tau_tax: 0,
+    n_cat_info__nonpoor: 0,
+    n_cat_info__poor: 0,
+    c_cat_info__nonpoor: 0,
+    c_cat_info__poor: 0,
+    axfin_cat_info__nonpoor: 0,
+    axfin_cat_info__poor: 0,
+    gamma_SP_cat_info__nonpoor: 0,
+    gamma_SP_cat_info__poor: 0,
+    k_cat_info__nonpoor: 0,
+    k_cat_info__poor: 0,
+    fa_cat_info__nonpoor: 0,
+    fa_cat_info__poor: 0,
+    v_cat_info__nonpoor: 0,
+    v_cat_info__poor: 0,
+    shew_cat_info__nonpoor: 0,
+    shew_cat_info__poor: 0,
+    shew_for_hazard_ratio: 0,
+    hazard_ratio_fa__earthquake: 0,
+    hazard_ratio_fa__flood: 0,
+    hazard_ratio_fa__surge: 0,
+    hazard_ratio_fa__tsunami: 0,
+    hazard_ratio_fa__wind: 0,
+    hazard_ratio_flood_poor: 0,
+    ratio_surge_flood: 0,
+    risk: 0,
+    resilience: 0,
+    risk_to_assets: 0,
+    id: '',
+    group_name: ''
+  };
+  public viewerP2: ViewerModel = {
+    name: '',
+    macro_gdp_pc_pp: 0,
+    macro_pop: 0,
+    macro_urbanization_rate: 0,
+    macro_prepare_scaleup: 0,
+    macro_borrow_abi: 0,
+    macro_avg_prod_k: 0,
+    macro_T_rebuild_K: 0,
+    macro_pi: 0,
+    macro_income_elast: 0,
+    macro_rho: 0,
+    macro_shareable: 0,
+    macro_max_increased_spending: 0,
+    macro_fa_glofris: 0,
+    macro_protection: 0,
+    macro_tau_tax: 0,
+    n_cat_info__nonpoor: 0,
+    n_cat_info__poor: 0,
+    c_cat_info__nonpoor: 0,
+    c_cat_info__poor: 0,
+    axfin_cat_info__nonpoor: 0,
+    axfin_cat_info__poor: 0,
+    gamma_SP_cat_info__nonpoor: 0,
+    gamma_SP_cat_info__poor: 0,
+    k_cat_info__nonpoor: 0,
+    k_cat_info__poor: 0,
+    fa_cat_info__nonpoor: 0,
+    fa_cat_info__poor: 0,
+    v_cat_info__nonpoor: 0,
+    v_cat_info__poor: 0,
+    shew_cat_info__nonpoor: 0,
+    shew_cat_info__poor: 0,
+    shew_for_hazard_ratio: 0,
+    hazard_ratio_fa__earthquake: 0,
+    hazard_ratio_fa__flood: 0,
+    hazard_ratio_fa__surge: 0,
+    hazard_ratio_fa__tsunami: 0,
+    hazard_ratio_fa__wind: 0,
+    hazard_ratio_flood_poor: 0,
+    ratio_surge_flood: 0,
+    risk: 0,
+    resilience: 0,
+    risk_to_assets: 0,
+    id: '',
+    group_name: ''
+  };
   public viewer$: Observable<Viewer>;
+  public viewerModel1$: Observable<ViewerModel>;
+  public viewerModel2$: Observable<ViewerModel>;
   public viewerSubs: Subscription;
   public searchCountryFn = (text$: Observable<string>) => {
     const debounceTimeFn = debounceTime.call(text$, 200);
@@ -63,6 +159,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     private chartService: ChartService,
     private store: Store<AppStore>) {
       this.viewer$ = store.select('viewer');
+      this.viewerModel1$ = store.select('viewerModel1');
+      this.viewerModel2$ = store.select('viewerModel2');
     }
   // LIFE-CYCLE METHODS
   ngOnInit() {
@@ -74,6 +172,9 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   ngAfterViewInit() {
     this.setMapConf();
+    this.setViewerObservableConf();
+    this.setViewerModel1ObservableConf();
+    this.setViewerModel2ObservableConf();
   }
   // METHODS
   private _changeCountryInput(isFirstInput) {
@@ -90,6 +191,39 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       this.store.dispatch({type: ViewerAction.EDIT_VIEWER, payload: this.viewerModel});
     }
   }
+  private _changeSliderValue(key, isFirstInput) {
+    const sliderObj = isFirstInput ? this.sliderValues1 : this.sliderValues2;
+    const inputIdx = isFirstInput ? 0 : 1;
+    const viewerMod = isFirstInput ? this.viewerP1 : this.viewerP2;
+    const viewerActionStr = isFirstInput ? 'EDIT_VIEWER_MODEL_1' : 'EDIT_VIEWER_MODEL_2';
+    const outputChartId = isFirstInput ? 'outputs-1' : 'outputs-2';
+    const countryArr = this._selectedCountryList.filter(country => {
+      return country.index === inputIdx;
+    });
+    if (countryArr.length) {
+      const globalObj = this.chartService.getGlobalModelData();
+      const selectedCtr = globalObj[countryArr[0].code];
+      jQuery.each(selectedCtr, (idx, glob) => {
+        if (viewerMod[idx] === 0 && glob > viewerMod[idx]) {
+          viewerMod[idx] = glob;
+        }
+      });
+      viewerMod[key] = sliderObj[key].value;
+      viewerMod['name'] = countryArr[0].name;
+      viewerMod['id'] = countryArr[0].code;
+      viewerMod['group_name'] = countryArr[0].group;
+      this.chartService.getInputPModelData(viewerMod).subscribe(data => {
+        const newObj = {};
+        for (const dataK in data) {
+          if (data.hasOwnProperty(dataK)) {
+            newObj[dataK] = data[dataK][viewerMod['name']];
+          }
+        }
+        this.chartService.updateOutputCharts(outputChartId, {model: newObj}, data['group_name']);
+      });
+      this.store.dispatch({type: ViewerAction[viewerActionStr], payload: viewerMod});
+    }
+  }
   private _filterCountryByInput(list, selectedIdx, field) {
     const inData = this.chartService.getInputData();
     const outData = this.chartService.getOutputData();
@@ -98,7 +232,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     const idInEco = selectedIdx === 0 ? 'inputEco-1' : 'inputEco-2';
     const idInExp = selectedIdx === 0 ? 'inputExp-1' : 'inputExp-2';
     const idInVul = selectedIdx === 0 ? 'inputVul-1' : 'inputVul-2';
-    let sliderValues = selectedIdx === 0 ? this.sliderValues1 : this.sliderValues2;
+    const sliderValues = selectedIdx === 0 ? this.sliderValues1 : this.sliderValues2;
     if (list.length) {
       const filterExistence = this._selectedCountryList.filter(val => {
         return val.name === list[0].name;
@@ -273,9 +407,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
             const key = inputData[inputDataIndex].key;
             let min = inputData[inputDataIndex].distribGroupArr[0].distribution;
             let max = inputData[inputDataIndex].distribGroupArr[0].distribution;
-            console.log(inputData[inputDataIndex]);
             for (let index = 1; index < inputData[inputDataIndex].distribGroupArr.length; index++) {
-              let valueInput = inputData[inputDataIndex].distribGroupArr[index].distribution;
+              const valueInput = inputData[inputDataIndex].distribGroupArr[index].distribution;
               if (valueInput > max) {
                 max = valueInput;
               }
@@ -283,7 +416,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
                 min = valueInput;
               }
             }
-            if (min == max) {
+            if (min === max) {
               min--;
               max++;
             }
@@ -305,6 +438,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
               this.sliderValues2[key + '_value'] = 50;
               this.sliderValues2[key + '_display_value'] = (max + min) / 2;
             }
+            this.viewerP1[key] = this.sliderValues1[key + '_display_value'];
+            this.viewerP2[key] = this.sliderValues2[key + '_display_value'];
             this.sliderValues1[key] = {
               min: min,
               max: max,
@@ -348,9 +483,22 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   setViewerObservableConf() {
     this.viewerSubs = this.viewer$.subscribe(state => {
-      console.log(state);
       if (state) {
         this.viewerModel = state;
+      }
+    });
+  }
+  setViewerModel1ObservableConf() {
+    this.viewerSubs = this.viewerModel1$.subscribe(state => {
+      if (state) {
+        this.viewerP1 = state;
+      }
+    });
+  }
+  setViewerModel2ObservableConf() {
+    this.viewerSubs = this.viewerModel2$.subscribe(state => {
+      if (state) {
+        this.viewerP2 = state;
       }
     });
   }
@@ -427,14 +575,16 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.onSwitchExposure();
   }
   onSliderChangeEvent(sliderValues, key) {
-    let newValue = (sliderValues[key].max + sliderValues[key].min) / 100 * sliderValues[key + '_value'];
+    const newValue = (sliderValues[key].max + sliderValues[key].min) / 100 * sliderValues[key + '_value'];
     sliderValues[key + '_display_value'] = newValue;
     sliderValues[key].value = newValue;
   }
   onSliderChangeEvent1(key) {
     this.onSliderChangeEvent(this.sliderValues1, key);
+    this._changeSliderValue(key, true);
   }
   onSliderChangeEvent2(key) {
     this.onSliderChangeEvent(this.sliderValues2, key);
+    this._changeSliderValue(key, false);
   }
 }

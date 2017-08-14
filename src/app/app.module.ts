@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import {HttpModule, RequestOptions, XHRBackend} from '@angular/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MdSliderModule} from '@angular/material';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -23,6 +23,10 @@ import {routing} from './app.routes';
 import {store} from './app.store';
 import {MapService} from './services/map.service';
 import {ChartService} from './services/chart.service';
+import {WebService} from './services/web.service';
+export function httpServiceFactory(backend: XHRBackend, defaultOptions: RequestOptions) {
+  return new WebService(backend, defaultOptions);
+}
 
 @NgModule({
   declarations: [
@@ -48,6 +52,11 @@ import {ChartService} from './services/chart.service';
     store
   ],
   providers: [
+    {
+      provide: WebService,
+      useFactory: httpServiceFactory,
+      deps: [XHRBackend, RequestOptions]
+    },
     MapService,
     ChartService
   ],
