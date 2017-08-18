@@ -23,6 +23,7 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
   public countryListComp: Array<any> = [];
   public countryUIList: Array<any> = [];
   public getOutputDataSubs: Subscription;
+  public getScorecardDataSubs: Subscription;
   public isSetUIGlobal: boolean = true;
   public policyList$: Observable<PolicyPriority>;
   public policySubs: Subscription;
@@ -51,10 +52,12 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.setPolicyPriorityObservableConf();
-    this.setOutputChartConf();
+    this.setChartsConf();
   }
   ngOnDestroy() {
     this.policySubs.unsubscribe();
+    this.getOutputDataSubs.unsubscribe();
+    this.getScorecardDataSubs.unsubscribe();
   }
   // METHODS
   private _changeCountryInput(isFirstInput) {
@@ -75,6 +78,7 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
     const inData = this.chartService.getInputData();
     const outData = this.chartService.getOutputData();
     const idOut = selectedIdx === 0 ? 'outputs-1' : 'outputs-2';
+    const idScList = selectedIdx === 0 ? 'policy-list1' : 'policy-list2';
     if (list.length) {
       const filterExistence = this._selectedCountryList.filter(val => {
         return val.name === list[0].name;
@@ -91,6 +95,7 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
         } else {
           this.chartService.createOutputChart(outData, idOut, list[0].group, true);
         }
+        this.plotScorecardPolicyChart(list[0].code, idScList);
       }
     } else {
       const filterIndex = this._selectedCountryList.map((val, index) => {
@@ -114,13 +119,26 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
       }
     }
   }
-  setOutputChartConf() {
+  plotScorecardPolicyChart(code, chartId) {
+    const data = this.chartService.getMetricAllPoliciesSingleCountry(code);
+    this.chartService.createPolicyListChart(data, chartId);
+    console.log(data);
+  }
+  setChartsConf() {
     this.chartService.initOutputChartConf();
     this.getOutputDataSubs = this.chartService.getOutputDataObs().subscribe(data => {
       this.chartService.createOutputChart(data._outputDomains, 'outputs-1', 'GLOBAL', true);
       this.chartService.createOutputChart(data._outputDomains, 'outputs-2', 'GLOBAL', true);
       this.countryUIList = this.chartService.getOutputDataUIList();
       this.countryListComp = this.chartService.getOutputList();
+      this.setScorecardChartConf();
+    });
+  }
+  setScorecardChartConf() {
+    this.chartService.initScorecardChartConf();
+    this.getScorecardDataSubs = this.chartService.getScoreCardDataObs().subscribe(data => {
+      data = JSON.parse(data);
+      this.chartService.setPoliciesData(data);
     });
   }
   setPolicyPriorityObservableConf() {

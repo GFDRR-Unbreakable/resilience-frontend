@@ -10657,3 +10657,30 @@ fieldset {
 .pad-botTop10{
   padding: 10px 0;
 }
+.x-axis path,
+.x-axis line {
+  fill: none;
+  stroke: #626262;
+	shape-rendering: crispEdges;	
+}
+.y-axis path,
+.y-axis line {
+  fill: none;
+  stroke: transparent;
+	shape-rendering: crispEdges;	
+}
+.x-axis text {
+  font-weight: bold;
+}
+.x-axis g.tick text{
+  font-size: 11px !important;
+  font-weight: bold;
+  text-anchor: start !important;
+}
+.lanes path,
+.lanes line {
+	fill: none;
+  stroke: #E7E9F0;
+  stroke-dasharray: 2;
+	shape-rendering: crispEdges;	
+}

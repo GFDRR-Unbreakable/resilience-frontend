@@ -8,6 +8,7 @@ export const SERVER = {
     SERVER_API: 'api/',
     // SERVER_PYDATA: 'data/',
     SERVER_INPUT_PY: 'model_adapter.py',
+    SERVER_SCORECARD_PY: 'model_scorecard_adapter.py',
     // OUTPUT_DATA: 'output_data'
     BASE: '/assets/data/',
     INPUT_MODEL: 'model_adapter.py',

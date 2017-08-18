@@ -21,10 +21,49 @@ export class ChartService {
   private _outputDomains: any = {};
   private _globalModelData: any = {};
   private _countryGroupData: any = {};
+  private _policyInfoObj: any = null;
+  private _regionalPoliciesInfoObj: any = {};
   private _outputDataSubs: Subscription;
   public _outputUIList: Array<any> = [];
   public _outputList: Array<any> = [];
+  private _scoreCardDataObs$: Observable<any>;
   constructor(private webService: WebService) { }
+  private _calculateRegionalAvgSinglePolicy(policy) {
+    const chartConf = this.getChartsConf();
+    const outputMetric = chartConf.policyMetrics;
+    const outputMetricAvgInfo = {};
+    const countryGr = jQuery.extend({}, this._countryGroupData);
+    countryGr['GLOBAL'] = 'GLOBAL';
+    jQuery.each(countryGr, (key, group) => {
+      outputMetricAvgInfo[key] = {};
+      outputMetric.forEach((val, idx) => {
+        outputMetricAvgInfo[key][`sum_${val}`] = 0.0;
+        outputMetricAvgInfo[key][`avg_${val}`] = 0.0;
+        outputMetricAvgInfo[key][`count_${val}`] = 0.0;
+      });
+    });
+    const policyList = chartConf.policyList;
+    const selectedPol = policyList.map((val, idx) => {
+      if (val.id === policy) {
+        return idx;
+      }
+    }).filter(isFinite)[0];
+    const policyObj = this._policyInfoObj.data[selectedPol];
+    jQuery.each(countryGr, (key, group) => {
+      jQuery.each(policyObj['group_name'], (k, pol) => {
+        if (pol === group || key === 'GLOBAL') {
+          outputMetric.forEach((val) => {
+            outputMetricAvgInfo[key][`sum_${val}`] += policyObj[val][k];
+            outputMetricAvgInfo[key][`count_${val}`]++;
+          });
+        }
+      });
+      outputMetric.forEach((val) => {
+        outputMetricAvgInfo[group][`avg_${val}`] = outputMetricAvgInfo[group][`sum_${val}`] / outputMetricAvgInfo[group][`count${val}`];
+      });
+    });
+    return outputMetricAvgInfo;
+  }
   createInputCharts(inputData: any, containerId: string, sliderValues: any, groupName?: string) {
     jQuery(`div#${containerId}`).empty();
     const filteredInputData = this.filterInputDataByGroup(inputData, groupName);
@@ -283,6 +322,309 @@ export class ChartService {
         // });
       }
     });
+  }
+  createPolicyListChart(policyListData: any, containerId: string) {
+    jQuery(`div#${containerId}`).empty();
+    // d3.select(`div#${containerId}`).remove();
+    const dkTotArr = [];
+    const dWTotCurrencyArr = [];
+    const allData = [];
+    jQuery.each(policyListData, (idx, polData) => {
+      dkTotArr.push(polData.dKtot);
+      dWTotCurrencyArr.push(polData.dWtot_currency);
+      allData.push({
+        id: idx,
+        dKtot: polData.dKtot,
+        dWtot_currency: polData.dWtot_currency
+      });
+    });
+    const policyList = this.getChartsConf().policyList;
+    policyList.forEach((val, idx) => {
+      if (val.id === allData[idx].id) {
+        allData[idx].label = val.label;
+      }
+    });
+    console.log(allData);
+    const allValues = dkTotArr.concat(dWTotCurrencyArr);
+    let maxValue = d3.max(allValues);
+    maxValue = Math.round(maxValue / 1000000);
+    const minValue = d3.min(allValues);
+    const w = 750;
+    const h = 1000;
+    const margin = {
+      left: 150,
+      right: 50,
+      bottom: 50,
+      top: 5
+    };
+    const width = w - margin.left - margin.right;
+    const height = h - margin.top - margin.bottom;
+    const spaceLblCh = 10;
+    const xDomain = [];
+    if (minValue > 0) {
+      xDomain.push(-5, maxValue);
+    }
+
+    const xLane = d3.scale.linear()
+      .domain(xDomain).nice()
+      .range([0, width - margin.left - spaceLblCh - margin.right]);
+    let maxValChart1 = d3.max(allData, (d) => {
+        return d.dWtot_currency;
+      });
+    maxValChart1 = Math.round(maxValChart1 / 1000000);
+    const xChart1 = d3.scale.linear()
+      .domain([0, maxValue])
+      .range([0, width - margin.left - spaceLblCh - margin.right]);
+    const yLane = d3.scale.ordinal()
+      .domain(policyList.map((val) => {
+        return val.label;
+      }))
+      .rangeBands([0, height]);
+    const yRgLabel = d3.scale.ordinal()
+      .domain(allData.map(val => {
+        return val.dWtot_currency;
+      }))
+      .range([0, height]);
+
+    const xAxis = d3.svg.axis()
+      .scale(xLane)
+      .orient('bottom');
+    const yAxis = d3.svg.axis()
+      .scale(yLane)
+      .orient('left');
+    const yRightAx = d3.svg.axis()
+      .scale(yLane)
+      .orient('right');
+
+    const xGridLines = d3.svg.axis()
+      .scale(xLane)
+      .tickSize(-height, 0, 0)
+      .tickFormat('')
+      .orient('bottom');
+
+    const laneChart = d3.select(`#${containerId}`)
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height);
+      // .attr('transform', 'translate(' + margin.left + ', ' + 0 + ')');
+    const textWrap = (text, txtWidth) => {
+      text.each(function() {
+        const textEl = d3.select(this),
+            words = textEl.text().split(/\s+/).reverse();
+        let word,
+            line = [],
+            lineNumber = 0;
+        const lineHeight = 1.1, // ems
+            y = textEl.attr('y'),
+            dy = parseFloat(textEl.attr('dy'));
+        let tspan = textEl.text(null).append('tspan').attr('x', 0).attr('y', y).attr('dy', dy + 'em');
+        while (word = words.pop()) {
+          line.push(word);
+          tspan.text(line.join(' '));
+          if (tspan.node().getComputedTextLength() > txtWidth) {
+            line.pop();
+            tspan.text(line.join(' '));
+            line = [word];
+            tspan = textEl.append('tspan').attr('x', 0).attr('y', y).attr('dy', (++lineNumber * lineHeight + dy) + 'em').text(word + ' ');
+          }
+        }
+      });
+    };
+
+    // Adding lane lines
+    laneChart.append('g')
+      .call(xGridLines)
+      .classed('lanes', true)
+      .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ',' + (height - margin.bottom) + ')');
+    // Adding X axis
+    laneChart.append('g')
+      .classed('x-axis', true)
+      .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', ' + (height - margin.bottom) + ')')
+      .call(xAxis);
+    // Adding x axis descriptive label
+    laneChart.select('.x-axis')
+      .append('text')
+      .attr('x', 0)
+      .attr('y', 0)
+      .style('text-anchor', 'middle')
+      .attr('transform', 'translate(' + (width / 3) + ', ' + (margin.bottom - spaceLblCh) + ')')
+      .text('US$, millions per year');
+    // Adding y axis labels
+    laneChart.append('g')
+      .classed('y-axis', true)
+      .attr('transform', 'translate(' + margin.left + ', -40)')
+      .call(yAxis);
+    // Apply text wrapping in y-axis labels
+    laneChart.select('.y-axis')
+      .selectAll('.tick text')
+        .call(textWrap, margin.left);
+
+    // Add empty bar charts
+    const barHeight = 15;
+    const spaceBars = 5;
+    const eBar = laneChart.append('g')
+      .classed('e-bar', true)
+      // .attr('width', width - margin.left - (spaceLblCh * 2) - margin.right);
+
+    eBar
+      .selectAll('.empty-bar1')
+      .data(allData)
+      .enter()
+        .append('rect')
+        .classed('empty-bar1', true)
+        .transition()
+        .duration(500)
+        .attr('x', (d, i) => {
+          return 0;
+        })
+        .attr('y', (d, i) => {
+          return yLane(d.label);
+        })
+        .attr('rx', 10)
+        .attr('ry', 30)
+        .attr('width', (d) => {
+          return width - margin.left - spaceLblCh - margin.right;
+        })
+        .attr('height', (d, i) => {
+          return barHeight;
+        })
+        .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', 0)')
+        .style('fill', '#E7E9F0');
+
+    eBar
+      .selectAll('.empty-bar2')
+      .data(allData)
+      .enter()
+        .append('rect')
+        .classed('empty-bar2', true)
+        .transition()
+        .duration(500)
+        .attr('x', (d, i) => {
+          return 0;
+        })
+        .attr('y', (d, i) => {
+          return yLane(d.label) + barHeight + spaceBars;
+        })
+        .attr('rx', 10)
+        .attr('ry', 30)
+        .attr('width', (d) => {
+          return width - margin.left - spaceLblCh - margin.right;
+        })
+        .attr('height', (d, i) => {
+          return barHeight;
+        })
+        .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', 0)')
+        .style('fill', '#E7E9F0');
+
+    const dataBars = laneChart.append('g')
+      .classed('bar-charts', true);
+
+    dataBars.selectAll('.bar-chart1')
+      .data(allData)
+      .enter()
+        .append('rect')
+        .classed('bar-chart1', true)
+        .transition()
+        .duration(500)
+        .attr('x', (d, i) => {
+          let from = d.dWtot_currency / 1000000;
+          if (d.dWtot_currency > 0) {
+            from = 0;
+          }
+          return xLane(from);
+        })
+        .attr('y', (d, i) => {
+          return yLane(d.label);
+        })
+        .attr('rx', 10)
+        .attr('ry', 30)
+        .attr('width', (d) => {
+          let total = xLane(d.dWtot_currency / 1000000);
+          let fromZero = 0;
+          if (d.dWtot_currency > 0) {
+            total = xLane(d.dWtot_currency / 1000000);
+            fromZero = xLane(0);
+          }
+          return total - fromZero;
+        })
+        .attr('height', (d, i) => {
+          return barHeight;
+        })
+        .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', 0)')
+        .style('fill', '#0CBD8F');
+
+    dataBars.selectAll('.bar-chart2')
+      .data(allData)
+      .enter()
+        .append('rect')
+        .classed('bar-chart2', true)
+        .transition()
+        .duration(500)
+        .attr('x', (d, i) => {
+          let from = d.dKtot;
+          if (d.dWtot_currency > 0) {
+            from = 0;
+          }
+          return xLane(from);
+        })
+        .attr('y', (d, i) => {
+          return yLane(d.label) + barHeight + spaceBars;
+        })
+        .attr('rx', 10)
+        .attr('ry', 30)
+        .attr('width', (d) => {
+          let total = xLane(d.dKtot / 1000000);
+          let fromZero = 0;
+          if (d.dKtot > 0) {
+            total = xLane(d.dKtot / 1000000);
+            fromZero = xLane(0);
+          }
+          return total - fromZero;
+        })
+        .attr('height', (d, i) => {
+          return barHeight;
+        })
+        .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', 0)')
+        .style('fill', '#C3D700');
+
+    const barLabels = laneChart.append('g')
+      .classed('bar-labels', true);
+
+    barLabels.selectAll('.labels1')
+      .data(allData)
+      .enter()
+        .append('text')
+        .classed('labels1', true)
+        .transition()
+        .duration(500)
+        .attr('x', (d, i) => {
+          return width - 40;
+        })
+        .attr('y', (d, i) => {
+          return yLane(d.label) + barHeight - spaceBars;
+        })
+        .style('fill', '#0CBD8F')
+        .text((d) => {
+          return Math.round(d.dWtot_currency / 1000000);
+        });
+
+    barLabels.selectAll('.labels2')
+      .data(allData)
+      .enter()
+        .append('text')
+        .classed('labels2', true)
+        .transition()
+        .duration(500)
+        .attr('x', (d, i) => {
+          return width - 40;
+        })
+        .attr('y', (d, i) => {
+          return yLane(d.label) + (barHeight * 2) + spaceBars;
+        })
+        .style('fill', '#C3D700')
+        .text((d) => {
+          return Math.round(d.dKtot / 1000000);
+        });
   }
   createOutputChart(outputData: any, containerId: string, groupName?: string, isScoreCardPage?: boolean) {
     jQuery(`div#${containerId}`).empty();
@@ -582,12 +924,28 @@ export class ChartService {
         'k_cat_info__poor', 'k_cat_info__nonpoor', 'hazard_ratio_flood_poor', 'hazard_ratio_fa__flood',
         'v_cat_info__poor', 'v_cat_info__nonpoor', 'hazard_ratio_fa__earthquake', 'hazard_ratio_fa__tsunami', 'hazard_ratio_fa__wind'
       ],
+      'policyList': [
+        {'id': '_exp095', 'label': 'Reduce vulnerability of the poor by 5% of their current exposure', 'mapping': 'v_cat_info__poor'},
+        {'id': '_exr095', 'label': 'Reduce vulnerability of the rich by 5% of their current exposure', 'mapping': 'v_cat_info__nonpoor'},
+        {'id': '_pcinc_p_110', 'label': 'Increase income of the poor by 10%', 'mapping': 'k_cat_info__poor'},
+        {'id': '_soc133', 'label': 'Increase social transfers to poor BY one third', 'mapping': 'gamma_SP_cat_info__poor'},
+        {'id': '_rec067', 'label': 'Decrease reconstruction time by 1/3', 'mapping': 'macro_T_rebuild_K'},
+        {'id': '_ew100', 'label': 'Increase access to early warnings to 100%', 'mapping': 'shew_for_hazard_ratio'},
+        {'id': '_vul070p', 'label': 'Decrease vulnerability of poor by 30%', 'mapping': 'v_cat_info__poor'},
+        {'id': '_vul070', 'label': 'Reduce vulnerability of the rich by 5% of their current exposure', 'mapping': 'v_cat_info__nonpoor'},
+        {'id': 'optionsPDS', 'label': 'Postdisaster support package', 'mapping': 'optionPDS'},
+        {'id': 'optionFee', 'label': 'Develop market insurance', 'mapping': 'optionFee'},
+        {'id': 'axfin', 'label': 'Universal access to finance', 'mapping': 'axfin'}
+      ],
+      'policyMetrics': ['dK', 'dKtot', 'dWpc_currency', 'dWtot_currency'],
       'inputs_info': 'inputs_info_wrapper.csv',
       'default_input': 'axfin_p',
       'default_output': 'resilience',
       'default_feature': 'AUS',
       'model_data': 'df_for_wrapper.csv',
+      'model_scp_data': 'df_for_wrapper_scp.csv',
       'model_function': 'res_ind_lib.compute_resilience_from_packed_inputs',
+      'policy_model_fn': 'res_ind_lib_big.compute_resilience_from_adjusted_inputs_for_pol',
       'pop': 'pop',
       'gdp': 'gdp_pc_pp',
       'map': {
@@ -624,6 +982,28 @@ export class ChartService {
     formData.append('i_df', modelData);
     return this.webService.post(url, formData).map((res: Response) => res.json()).catch(this.webService.errorHandler);
   }
+  getMetricAllPoliciesSingleCountry(countryCode: string) {
+    const countryName = this._globalModelData[countryCode]['name'];
+    const output = {};
+    const chartConf = this.getChartsConf();
+    const outputMetric = chartConf.policyMetrics;
+    const policyList = chartConf.policyList;
+    policyList.forEach((pol) => {
+      output[pol.id] = {};
+      outputMetric.forEach((met) => {
+        output[pol.id][met] = {};
+      });
+    });
+    const policyListData = this._policyInfoObj.data;
+    policyListData.forEach((pol, idxP) => {
+      jQuery.each(pol, (idx, prop) => {
+        if (output[policyList[idxP].id].hasOwnProperty(idx) && prop.hasOwnProperty(countryName)) {
+          output[policyList[idxP].id][idx] = prop[countryName];
+        }
+      });
+    });
+    return output;
+  }
   getOutputData() {
     return this._outputDomains;
   }
@@ -636,8 +1016,37 @@ export class ChartService {
   getOutputList() {
     return this._outputList;
   }
+  getPolicyListData() {
+    return this._policyInfoObj;
+  }
+  getRegionalPolicyData() {
+    return this._regionalPoliciesInfoObj;
+  }
+  getScorecardData() {
+    const url = SERVER.URL.BASE_SERVER_PY + SERVER.URL.SERVER_SCORECARD_PY;
+    const chartConf = this.getChartsConf();
+    const policyList = chartConf.policyList;
+    const policyListStr = policyList.map((val) => {
+      return val.id;
+    }).join(', ');
+    const socialCol = policyList.filter((val) => {
+      return val.id === '_soc133';
+    })[0].mapping;
+    const formData = new URLSearchParams();
+    formData.append('pol_m', chartConf.policy_model_fn);
+    formData.append('pol_str_arr', policyListStr);
+    formData.append('i_df', chartConf.model_scp_data);
+    formData.append('social_col', socialCol);
+    this._scoreCardDataObs$ = this.webService.post(url, formData).map((res: Response) => res.json()).catch(this.webService.errorHandler);
+  }
+  getScoreCardDataObs() {
+    return this._scoreCardDataObs$;
+  }
   initOutputChartConf() {
     this.setOutputData();
+  }
+  initScorecardChartConf() {
+    this.getScorecardData();
   }
   _inputBrushMoveEv(containerId, input, brush) {
     return () => {
@@ -776,6 +1185,17 @@ export class ChartService {
       });
     });
     this._outputDataProm$ = Observable.fromPromise(promisedData);
+  }
+  setPoliciesData(data) {
+    this._policyInfoObj = data;
+    const chartConf = this.getChartsConf();
+    const policyList = chartConf.policyList;
+    const policyIds = policyList.map((val) => {
+      return val.id;
+    });
+    policyIds.forEach((val) => {
+      this._regionalPoliciesInfoObj[val] = this._calculateRegionalAvgSinglePolicy(val);
+    });
   }
   private _sortByKey(array, key) {
     array.sort((a, b) => {
