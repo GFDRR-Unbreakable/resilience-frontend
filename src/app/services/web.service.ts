@@ -2,19 +2,22 @@ import {Injectable} from '@angular/core';
 import {ConnectionBackend, Headers, Http, RequestOptions, RequestOptionsArgs, Response} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import {SERVER} from '../services/server.conf';
+import {LoadingMaskService} from '../services/loadingmask.service';
 
 @Injectable()
 export class WebService extends Http {
 
   constructor(
     backend: ConnectionBackend,
-    defaultOptions: RequestOptions
+    defaultOptions: RequestOptions,
+    private loadingMaskService: LoadingMaskService
   ) {
     super(backend, defaultOptions);
   }
 
   get(url: string, options?: RequestOptionsArgs): Observable<any> {
     const headerOptions = options || this.getDefaultFormOptions();
+    this.interceptRequest();
     return super.get(url, headerOptions)
       .catch(this.onCatch)
       .do((res: Response) => {
@@ -29,6 +32,7 @@ export class WebService extends Http {
 
   post(url: string, body: any, options?: RequestOptionsArgs): Observable<any> {
     const headerOptions = options || this.getDefaultFormOptions();
+    this.interceptRequest();
     return super.post(url, body, headerOptions)
       .catch(this.onCatch)
       .do((res: Response) => {
@@ -43,6 +47,7 @@ export class WebService extends Http {
 
   put(url: string, body: any, options?: RequestOptionsArgs): Observable<any> {
     const headerOptions = options || this.getDefaultFormOptions();
+    this.interceptRequest();
     return super.put(url, body, headerOptions)
       .catch(this.onCatch)
       .do((res: Response) => {
@@ -56,6 +61,7 @@ export class WebService extends Http {
   }
   delete(url: string, options?: RequestOptionsArgs): Observable<any> {
     const headerOptions = options || this.getDefaultFormOptions();
+    this.interceptRequest();
     return super.delete(url, headerOptions)
       .catch(this.onCatch)
       .do((res: Response) => {
@@ -76,7 +82,9 @@ export class WebService extends Http {
 
   private onSubscribeError(res: any): void {}
 
-  private onFinally(): void {}
+  private onFinally(): void {
+    this.loadingMaskService.hideLoadingMask();
+  }
 
   private getServerURL(url: string) {
     return SERVER.URL.BASE + url;
@@ -96,6 +104,9 @@ export class WebService extends Http {
     });
     const options = new RequestOptions({ headers: headers });
     return options;
+  }
+  interceptRequest() {
+    this.loadingMaskService.showLoadingMask();
   }
   errorHandler(err) {
     return Observable.throw(err);

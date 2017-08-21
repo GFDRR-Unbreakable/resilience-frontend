@@ -376,6 +376,38 @@ template {
 .navbar li{
   cursor: pointer;
 }
+
+/* Loading mask */
+.loading-mask {
+  z-index: 1000;
+  font-size: 40px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: inherit;
+  height: inherit;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.load {
+  /* width: 100px; */
+  /* height: 100px; */
+  color: white;
+  /** height is required as absolute value **/
+  /* background-color: #007a00; */
+  /* border-radius: 100px; */
+  margin-left: auto;
+  margin-right: auto ;
+  margin-top: 25%;
+  position:relative;
+  /* animation: pulse 2000ms linear infinite;
+  -webkit-animation: pulse 2000ms linear infinite;
+  -moz-animation: pulse 2000ms linear infinite; */
+}
+
+
 /*viewer*/
 
  h6 span{

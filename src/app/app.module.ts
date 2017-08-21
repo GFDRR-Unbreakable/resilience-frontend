@@ -5,7 +5,6 @@ import {HttpModule, RequestOptions, XHRBackend} from '@angular/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MdSliderModule} from '@angular/material';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-
 import 'hammerjs';
 
 import { AppComponent } from './app.component';
@@ -18,14 +17,16 @@ import { ContactComponent } from './components/contact/contact.component';
 import { SpecificpolicymeasureComponent } from './components/specificpolicymeasure/specificpolicymeasure.component';
 import { PolicyprioritylistComponent } from './components/policyprioritylist/policyprioritylist.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { LoadingMaskComponent } from './components/loadingmask/loadingmask.component';
 
 import {routing} from './app.routes';
 import {store} from './app.store';
 import {MapService} from './services/map.service';
 import {ChartService} from './services/chart.service';
 import {WebService} from './services/web.service';
-export function httpServiceFactory(backend: XHRBackend, defaultOptions: RequestOptions) {
-  return new WebService(backend, defaultOptions);
+import {LoadingMaskService} from './services/loadingmask.service';
+export function httpServiceFactory(backend: XHRBackend, defaultOptions: RequestOptions, loadingMaskService: LoadingMaskService) {
+  return new WebService(backend, defaultOptions, loadingMaskService);
 }
 
 @NgModule({
@@ -39,7 +40,8 @@ export function httpServiceFactory(backend: XHRBackend, defaultOptions: RequestO
     ContactComponent,
     SpecificpolicymeasureComponent,
     PolicyprioritylistComponent,
-    FooterComponent
+    FooterComponent,
+    LoadingMaskComponent
   ],
   imports: [
     BrowserModule,
@@ -52,10 +54,11 @@ export function httpServiceFactory(backend: XHRBackend, defaultOptions: RequestO
     store
   ],
   providers: [
+    LoadingMaskService,
     {
       provide: WebService,
       useFactory: httpServiceFactory,
-      deps: [XHRBackend, RequestOptions]
+      deps: [XHRBackend, RequestOptions, LoadingMaskService]
     },
     MapService,
     ChartService
