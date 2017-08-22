@@ -323,12 +323,16 @@ export class ChartService {
       }
     });
   }
-  createPolicyListChart(policyListData: any, containerId: string, isCountryList?: boolean) {
+  createPolicyListChart(policyListData: any, containerId: string, countryList?: any) {
     jQuery(`div#${containerId}`).empty();
     // d3.select(`div#${containerId}`).remove();
     const dkTotArr = [];
     const dWTotCurrencyArr = [];
     const allData = [];
+    const isCountryListObject = typeof countryList === 'object';
+    const isCountryListCurrencyBased = isCountryListObject && countryList['type'] === 'million';
+    const isCountryListPercentageBased = isCountryListObject && countryList['type'] === 'percentage';
+
     jQuery.each(policyListData, (idx, polData) => {
       dkTotArr.push(polData.dKtot);
       dWTotCurrencyArr.push(polData.dWtot_currency);
@@ -340,7 +344,7 @@ export class ChartService {
     });
     let policyList;
     const globalObj = this.getGlobalModelData();
-    if (isCountryList) {
+    if (isCountryListObject) {
       allData.forEach(val => {
         val.label = globalObj[val.id].name;
       });
@@ -353,14 +357,15 @@ export class ChartService {
       });
     }
     console.log(allData);
+
     const allValues = dkTotArr.concat(dWTotCurrencyArr);
     let maxValue = d3.max(allValues);
     maxValue = Math.round(maxValue / 1000000);
     const minValue = d3.min(allValues);
-    const w = 750;
-    const h = isCountryList ? 10500 : 1000;
+    const w = isCountryListPercentageBased ? 510 : 750;
+    const h = isCountryListObject ? 10500 : 1000;
     const margin = {
-      left: 150,
+      left: isCountryListPercentageBased ? 30 : 150,
       right: 50,
       bottom: 50,
       top: 5
@@ -376,14 +381,7 @@ export class ChartService {
     const xLane = d3.scale.linear()
       .domain(xDomain).nice()
       .range([0, width - margin.left - spaceLblCh - margin.right]);
-    let maxValChart1 = d3.max(allData, (d) => {
-        return d.dWtot_currency;
-      });
-    maxValChart1 = Math.round(maxValChart1 / 1000000);
-    const xChart1 = d3.scale.linear()
-      .domain([0, maxValue])
-      .range([0, width - margin.left - spaceLblCh - margin.right]);
-    const yDomainList = isCountryList ? allData.map(val => val.label) : policyList.map(val => val.label);
+    const yDomainList = isCountryListObject ? allData.map(val => val.label) : policyList.map(val => val.label);
     const yLane = d3.scale.ordinal()
       .domain(yDomainList)
       .rangeBands([0, height]);
@@ -399,6 +397,9 @@ export class ChartService {
     const yAxis = d3.svg.axis()
       .scale(yLane)
       .orient('left');
+    if (isCountryListPercentageBased) {
+      yAxis.tickFormat('');
+    }
     const yRightAx = d3.svg.axis()
       .scale(yLane)
       .orient('right');
@@ -444,36 +445,37 @@ export class ChartService {
       .classed('lanes', true)
       .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ',' + (height - margin.bottom) + ')');
     // Adding X axis
-    const xLabelPos = isCountryList ? height - margin.bottom : height - margin.bottom;
     laneChart.append('g')
       .classed('x-axis', true)
-      .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', ' + xLabelPos + ')')
+      .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', ' + (height - margin.bottom) + ')')
       .call(xAxis);
     // Adding x axis descriptive label
+    const xDescLabel = isCountryListPercentageBased ?
+      'Percent % of Country GDP' : 'US$, millions per year';
     laneChart.select('.x-axis')
       .append('text')
       .attr('x', 0)
       .attr('y', 0)
       .style('text-anchor', 'middle')
-      .attr('transform', 'translate(' + (width / 3) + ', ' + (margin.bottom - spaceLblCh) + ')')
-      .text('US$, millions per year');
+      .attr('transform', 'translate(' + (isCountryListPercentageBased ? width / 2 : width / 3) + ', ' + (margin.bottom - spaceLblCh) + ')')
+      .text(xDescLabel);
     // Adding y axis labels
-    const yLabelPos = isCountryList ? -25 : -40;
+    const yLabelPos = isCountryListObject ? -25 : -40;
     laneChart.append('g')
       .classed('y-axis', true)
       .attr('transform', 'translate(' + margin.left + ', ' + yLabelPos + ')')
       .call(yAxis);
+    // if (!countryList || isCountryListCurrencyBased) {
     // Apply text wrapping in y-axis labels
-    laneChart.select('.y-axis')
-      .selectAll('.tick text')
-        .call(textWrap, margin.left);
-
+      laneChart.select('.y-axis')
+        .selectAll('.tick text')
+          .call(textWrap, margin.left);
+    // }
     // Add empty bar charts
     const barHeight = 15;
     const spaceBars = 5;
     const eBar = laneChart.append('g')
-      .classed('e-bar', true)
-      // .attr('width', width - margin.left - (spaceLblCh * 2) - margin.right);
+      .classed('e-bar', true);
 
     eBar
       .selectAll('.empty-bar1')
@@ -525,6 +527,7 @@ export class ChartService {
         .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', 0)')
         .style('fill', '#E7E9F0');
 
+    // Add bars with data
     const dataBars = laneChart.append('g')
       .classed('bar-charts', true);
 
@@ -596,6 +599,7 @@ export class ChartService {
         .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', 0)')
         .style('fill', '#C3D700');
 
+    // Add right y-position bar labels
     const barLabels = laneChart.append('g')
       .classed('bar-labels', true);
 

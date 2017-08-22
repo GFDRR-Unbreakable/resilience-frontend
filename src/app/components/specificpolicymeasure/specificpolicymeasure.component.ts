@@ -41,7 +41,8 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
       data = JSON.parse(data);
       this.chartService.setPoliciesData(data);
       const policyData = this.chartService.getMetricAllCountriesSinglePolicy(this.selectedPolicyUIList.id);
-      this.chartService.createPolicyListChart(policyData, 'policyMeasure', true);
+      this.chartService.createPolicyListChart(policyData, 'policyMeasure0', {type: 'million'});
+      this.chartService.createPolicyListChart(policyData, 'policyMeasure1', {type: 'percentage'});
     });
   }
 
@@ -49,7 +50,8 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
   onScorecardPolicyChange(policyObj) {
     this.selectedPolicyUIList = policyObj;
     const data = this.chartService.getMetricAllCountriesSinglePolicy(policyObj.id);
-    this.chartService.createPolicyListChart(data, 'policyMeasure', true);
+    this.chartService.createPolicyListChart(data, 'policyMeasure0', {type: 'million'});
+    this.chartService.createPolicyListChart(data, 'policyMeasure1', {type: 'percentage'});
   }
 
 }

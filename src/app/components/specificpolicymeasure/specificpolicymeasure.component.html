@@ -9,7 +9,7 @@
             <div class="dropdown-menu dropdown-politics-menu" aria-labelledby="dropdownPolicy">
                 <div class="list" *ngFor="let policy of policyGroupUIList; let aIndex = index">
                     <button (click)="onScorecardPolicyChange(policy)" class="dropdown-item dropdown-politics-item">{{policy.label}}</button>
-                    <div class="dropdown-divider-1"></div>
+                    <div *ngIf="aIndex !== policyGroupUIList.length - 1" class="dropdown-divider-1"></div>
                 </div>
             </div>
          </div>
@@ -53,29 +53,8 @@
          </label>
          <div class="row box-title-terms">
             <div class="col-md-12">
-                <div id="policyMeasure"></div>
+                <div id="policyMeasure0"></div>
             </div>
-            <!-- <div class="col-md-3">
-               <div class="box-text-policy">
-                  China
-               </div>
-               <div class="box-text-policy">
-                  Philipines
-               </div>
-               <div class="box-text-policy">
-                  Peru
-               </div>
-               <div class="box-text-policy">
-                  Colombia
-               </div>
-               <div class="box-text-policy">
-                  United States
-               </div>
-            </div>
-            <div class="col-md-9">
-               <h6 class="scorecard-img">US$, millions per year</h6>
-               <img src="" alt="">
-            </div> -->
          </div>
       </div>
       <div class="col-md-5">
@@ -93,9 +72,9 @@
             <img class="icon-sort">
          </label>
          <div class="row box-title-terms">
-            <div class="col-md-9">
-               <h6 class="scorecard-img">US$, millions per year</h6>
-            </div>
+                <div class="col-md-12">
+                    <div id="policyMeasure1"></div>
+                </div>
          </div>
       </div>
    </div>
