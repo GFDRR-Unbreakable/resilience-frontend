@@ -323,7 +323,7 @@ export class ChartService {
       }
     });
   }
-  createPolicyListChart(policyListData: any, containerId: string) {
+  createPolicyListChart(policyListData: any, containerId: string, isCountryList?: boolean) {
     jQuery(`div#${containerId}`).empty();
     // d3.select(`div#${containerId}`).remove();
     const dkTotArr = [];
@@ -338,19 +338,27 @@ export class ChartService {
         dWtot_currency: polData.dWtot_currency
       });
     });
-    const policyList = this.getChartsConf().policyList;
-    policyList.forEach((val, idx) => {
-      if (val.id === allData[idx].id) {
-        allData[idx].label = val.label;
-      }
-    });
+    let policyList;
+    const globalObj = this.getGlobalModelData();
+    if (isCountryList) {
+      allData.forEach(val => {
+        val.label = globalObj[val.id].name;
+      });
+    } else {
+      policyList = this.getChartsConf().policyList;
+      policyList.forEach((val, idx) => {
+        if (val.id === allData[idx].id) {
+          allData[idx].label = val.label;
+        }
+      });
+    }
     console.log(allData);
     const allValues = dkTotArr.concat(dWTotCurrencyArr);
     let maxValue = d3.max(allValues);
     maxValue = Math.round(maxValue / 1000000);
     const minValue = d3.min(allValues);
     const w = 750;
-    const h = 1000;
+    const h = isCountryList ? 10500 : 1000;
     const margin = {
       left: 150,
       right: 50,
@@ -375,10 +383,9 @@ export class ChartService {
     const xChart1 = d3.scale.linear()
       .domain([0, maxValue])
       .range([0, width - margin.left - spaceLblCh - margin.right]);
+    const yDomainList = isCountryList ? allData.map(val => val.label) : policyList.map(val => val.label);
     const yLane = d3.scale.ordinal()
-      .domain(policyList.map((val) => {
-        return val.label;
-      }))
+      .domain(yDomainList)
       .rangeBands([0, height]);
     const yRgLabel = d3.scale.ordinal()
       .domain(allData.map(val => {
@@ -437,9 +444,10 @@ export class ChartService {
       .classed('lanes', true)
       .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ',' + (height - margin.bottom) + ')');
     // Adding X axis
+    const xLabelPos = isCountryList ? height - margin.bottom : height - margin.bottom;
     laneChart.append('g')
       .classed('x-axis', true)
-      .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', ' + (height - margin.bottom) + ')')
+      .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', ' + xLabelPos + ')')
       .call(xAxis);
     // Adding x axis descriptive label
     laneChart.select('.x-axis')
@@ -450,9 +458,10 @@ export class ChartService {
       .attr('transform', 'translate(' + (width / 3) + ', ' + (margin.bottom - spaceLblCh) + ')')
       .text('US$, millions per year');
     // Adding y axis labels
+    const yLabelPos = isCountryList ? -25 : -40;
     laneChart.append('g')
       .classed('y-axis', true)
-      .attr('transform', 'translate(' + margin.left + ', -40)')
+      .attr('transform', 'translate(' + margin.left + ', ' + yLabelPos + ')')
       .call(yAxis);
     // Apply text wrapping in y-axis labels
     laneChart.select('.y-axis')
@@ -954,6 +963,9 @@ export class ChartService {
       }
     };
   }
+  getCountryGroupData() {
+    return this._countryGroupData;
+  }
   getInputData() {
     return this._inputDomains;
   }
@@ -981,6 +993,38 @@ export class ChartService {
     formData.append('m', model);
     formData.append('i_df', modelData);
     return this.webService.post(url, formData).map((res: Response) => res.json()).catch(this.webService.errorHandler);
+  }
+  getMetricAllCountriesSinglePolicy(policy) {
+    const outputInfo = {};
+    const chartConf = this.getChartsConf();
+    const outputMetric = chartConf.policyMetrics;
+    for (const key  in this._globalModelData) {
+      if (this._globalModelData.hasOwnProperty(key)) {
+        outputInfo[key] = {};
+        outputMetric.forEach(val => {
+          outputInfo[key][val] = 0.0;
+        });
+      }
+    }
+    const policyList = chartConf.policyList;
+    const selectedPol = policyList.map((val, idx) => {
+      if (val.id === policy) {
+        return idx;
+      }
+    }).filter(isFinite)[0];
+    const policyListData = this._policyInfoObj.data[selectedPol];
+    for (const key in this._globalModelData) {
+      if (this._globalModelData.hasOwnProperty(key)) {
+        for (const key2 in policyListData['id']) {
+          if (policyListData['id'].hasOwnProperty(key2) && policyListData['id'][key2] === this._globalModelData[key]['id']) {
+            outputMetric.forEach(val => {
+              outputInfo[key][val] = policyListData[val][key2];
+            });
+          }
+        }
+      }
+    }
+    return outputInfo;
   }
   getMetricAllPoliciesSingleCountry(countryCode: string) {
     const countryName = this._globalModelData[countryCode]['name'];
