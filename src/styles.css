@@ -10605,6 +10605,9 @@ fieldset {
         fill: #C1D502;
         opacity: 1;
     }
+    div#outputs-1 table, div#outputs-2 table, div#risk table, div#risk_to_assets table, div#resilience table{
+      overflow-x: hidden;
+    } 
     #outputs g.area path {
         fill: blue;
     }
