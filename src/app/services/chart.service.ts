@@ -329,6 +329,7 @@ export class ChartService {
     const dkTotArr = [];
     const dWTotCurrencyArr = [];
     let allData = [];
+    const isPolicyListObject = typeof countryList === 'object' && countryList['type'] === 'policyList';
     const isCountryListObject = typeof countryList === 'object' &&
       (countryList['type'] === 'million' || countryList['type'] === 'percentage');
     const isCountryListCurrencyBased = isCountryListObject && countryList['type'] === 'million';
@@ -364,10 +365,10 @@ export class ChartService {
     let maxValue = d3.max(allValues);
     maxValue = Math.round(maxValue / 1000000);
     const minValue = d3.min(allValues);
-    const w = isCountryListPercentageBased ? 550 : 700;
+    const w = isCountryListPercentageBased ? 550 : (isPolicyListObject ? 800 : 700);
     const h = isCountryListObject ? 10500 : 1000;
     const margin = {
-      left: isCountryListPercentageBased ? 50 : 130,
+      left: isCountryListPercentageBased ? 50 : (isPolicyListObject ? 170 : 130),
       right: 50,
       bottom: 50,
       top: 5
@@ -383,7 +384,7 @@ export class ChartService {
     const xLane = d3.scale.linear()
       .domain(xDomain).nice()
       .range([0, width - margin.left - spaceLblCh - margin.right]);
-    let yDomainList = isCountryListObject ? allData.map(val => val.label) : policyList.map(val => val.label);
+    let yDomainList = allData.map(val => val.label);
     const yLane = d3.scale.ordinal()
       .domain(yDomainList)
       .rangeBands([0, height]);
@@ -471,9 +472,9 @@ export class ChartService {
       if (isNewChart) {
         // Adding lane lines
         laneChart.append('g')
-        .call(params.gridLines.x)
-        .classed('lanes', true)
-        .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ',' + (height - margin.bottom) + ')');
+          .call(params.gridLines.x)
+          .classed('lanes', true)
+          .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ',' + (height - margin.bottom) + ')');
         // Adding X axis
         laneChart.append('g')
           .classed('x-axis', true)
@@ -500,11 +501,15 @@ export class ChartService {
           .selectAll('.tick text')
           .call(textWrap, margin.left);
       } else {
+        // Update lane lines
+        laneChart.selectAll('g.lanes')
+          .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ',' + (height - margin.bottom) + ')')
+          .call(params.gridLines.x);
         // Update x-axis labels
         laneChart.selectAll('g.x-axis')
           .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', ' + (height - margin.bottom) + ')')
           .call(params.axis.x);
-      // Update y-axis labels
+        // Update y-axis labels
         laneChart.selectAll('g.y-axis')
           .attr('transform', 'translate(' + margin.left + ', ' + yLabelPos + ')')
           .call(params.axis.y);
@@ -519,12 +524,11 @@ export class ChartService {
 
     const plotChart = (params) => {
       // Update domain
-      yDomainList = isCountryListObject ? allData.map(val => val.label) : policyList.map(val => val.label);
-      xLane.domain(xDomain).nice();
+      yDomainList = allData.map(val => val.label);
+      // xLane.domain(xDomain).nice();
       yLane.domain(yDomainList);
       // Draw axes
       plotChartAxes(params);
-      console.log(params.data);
       // Draw bar charts
       let eBar;
       let dataBars;

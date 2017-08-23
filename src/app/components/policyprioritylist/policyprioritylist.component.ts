@@ -31,6 +31,14 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
     firstCountry: '',
     secondCountry: ''
   };
+  public sortUISelectedChart1 = 0;
+  public sortUISelectedChart2 = 0;
+  public sortUISelectedLblChart11 = '';
+  public sortUISelectedLblChart12 = '';
+  public sortUISelectedLblChart21 = '';
+  public sortUISelectedLblChart22 = '';
+  public sortBtnPressedIdCh1 = '';
+  public sortBtnPressedIdCh2 = '';
   private _selectedCountryList: Array<any> = [];
   public searchCountryFn = (text$: Observable<string>) => {
     const debounceTimeFn = debounceTime.call(text$, 200);
@@ -95,7 +103,8 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
         } else {
           this.chartService.createOutputChart(outData, idOut, list[0].group, true);
         }
-        this.plotScorecardPolicyChart(list[0].code, idScList);
+        const chartChild = document.querySelector(`#${idScList}`).childNodes;
+        this.plotScorecardPolicyChart(list[0].code, idScList, chartChild.length > 0);
       }
     } else {
       const filterIndex = this._selectedCountryList.map((val, index) => {
@@ -119,10 +128,18 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
       }
     }
   }
-  plotScorecardPolicyChart(code, chartId) {
+  plotScorecardPolicyChart(code, chartId, chartExist) {
     const data = this.chartService.getMetricAllPoliciesSingleCountry(code);
-    this.chartService.createPolicyListChart(data, chartId);
+    this.chartService.createPolicyListChart(data, chartId, {type: 'policyList', isNew: !chartExist});
     console.log(data);
+  }
+  resetUISortLabelsCh1() {
+    this.sortUISelectedLblChart11 = '';
+    this.sortUISelectedLblChart12 = '';
+  }
+  resetUISortLabelsCh2() {
+    this.sortUISelectedLblChart21 = '';
+    this.sortUISelectedLblChart22 = '';
   }
   setChartsConf() {
     this.chartService.initOutputChartConf();
@@ -154,5 +171,62 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
   }
   onSecondCountryInputChangeEvent() {
     this._changeCountryInput(false);
+  }
+  onSortChartDataEvent(barType, chartId, sortLabel) {
+    const field = chartId === 'policy-list1' ? this.policyModel.firstCountry : this.policyModel.secondCountry;
+    const selectedList = this._selectedCountryList.filter(val => val.name === field);
+    const data = selectedList.length ? this.chartService.getMetricAllPoliciesSingleCountry(selectedList[0].code) : null;
+    if (data) {
+      if (chartId === 'policy-list1' && this.sortBtnPressedIdCh1 !== sortLabel) {
+        this.sortUISelectedChart1 = 0;
+      } else if (chartId === 'policy-list2' && this.sortBtnPressedIdCh2 !== sortLabel) {
+        this.sortUISelectedChart2 = 0;
+      }
+      if (chartId === 'policy-list1') {
+        this.resetUISortLabelsCh1();
+        this.sortBtnPressedIdCh1 = sortLabel;
+        this.sortUISelectedChart1++;
+      } else {
+        this.resetUISortLabelsCh2();
+        this.sortUISelectedChart2++;
+        this.sortBtnPressedIdCh2 = sortLabel;
+      }
+      const sortSel = chartId === 'policy-list1' ? this.sortUISelectedChart1 : this.sortUISelectedChart2;
+
+      let sortType;
+      if (sortSel === 2) {
+        sortType = 'DESC';
+        this.chartService.createPolicyListChart(data, chartId, {
+          type: 'policyList',
+          barType: barType,
+          sort: sortType,
+          isNew: false
+        });
+        this[sortLabel] = sortType;
+        if (chartId === 'policy-list1') {
+          this.sortUISelectedChart1 = -1;
+        } else if (chartId === 'policy-list2'){
+          this.sortUISelectedChart2 = -1;
+        }
+      } else if (sortSel === 1) {
+        sortType = 'ASC';
+        this.chartService.createPolicyListChart(data, chartId, {
+          type: 'policyList',
+          barType: barType,
+          sort: sortType,
+          isNew: false
+        });
+        this[sortLabel] = sortType;
+      } else if (sortSel === 0) {
+        sortType = 'NORMAL';
+        this.chartService.createPolicyListChart(data, chartId, {
+          type: 'policyList',
+          barType: barType,
+          sort: sortType,
+          isNew: false
+        });
+        this[sortLabel] = '';
+      }
+    }
   }
 }
