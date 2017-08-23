@@ -165,13 +165,13 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   // LIFE-CYCLE METHODS
   ngOnInit() {
     this.mapService.createMap('map');
-    this.getChartOutputData();
+    this.setMapConf();
   }
   ngOnDestroy() {
     this.getOutputDataSubs.unsubscribe();
   }
   ngAfterViewInit() {
-    this.setMapConf();
+    this.getChartOutputData();
     this.setViewerObservableConf();
     this.setViewerModel1ObservableConf();
     this.setViewerModel2ObservableConf();
