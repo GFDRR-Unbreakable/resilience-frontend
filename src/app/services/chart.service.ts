@@ -323,13 +323,14 @@ export class ChartService {
       }
     });
   }
-  createPolicyListChart(policyListData: any, containerId: string, countryList?: any) {
-    jQuery(`div#${containerId}`).empty();
+  createPolicyListChart(policyListData: any, containerId: string, countryList: any) {
+    // jQuery(`div#${containerId}`).empty();
     // d3.select(`div#${containerId}`).remove();
     const dkTotArr = [];
     const dWTotCurrencyArr = [];
-    const allData = [];
-    const isCountryListObject = typeof countryList === 'object';
+    let allData = [];
+    const isCountryListObject = typeof countryList === 'object' &&
+      (countryList['type'] === 'million' || countryList['type'] === 'percentage');
     const isCountryListCurrencyBased = isCountryListObject && countryList['type'] === 'million';
     const isCountryListPercentageBased = isCountryListObject && countryList['type'] === 'percentage';
 
@@ -356,16 +357,17 @@ export class ChartService {
         }
       });
     }
-    console.log(allData);
+    const allDataClone = Object.assign([], allData);
+    const isNewChart = countryList.hasOwnProperty('isNew') && countryList['isNew'];
 
     const allValues = dkTotArr.concat(dWTotCurrencyArr);
     let maxValue = d3.max(allValues);
     maxValue = Math.round(maxValue / 1000000);
     const minValue = d3.min(allValues);
-    const w = isCountryListPercentageBased ? 510 : 750;
+    const w = isCountryListPercentageBased ? 550 : 700;
     const h = isCountryListObject ? 10500 : 1000;
     const margin = {
-      left: isCountryListPercentageBased ? 30 : 150,
+      left: isCountryListPercentageBased ? 50 : 130,
       right: 50,
       bottom: 50,
       top: 5
@@ -381,15 +383,10 @@ export class ChartService {
     const xLane = d3.scale.linear()
       .domain(xDomain).nice()
       .range([0, width - margin.left - spaceLblCh - margin.right]);
-    const yDomainList = isCountryListObject ? allData.map(val => val.label) : policyList.map(val => val.label);
+    let yDomainList = isCountryListObject ? allData.map(val => val.label) : policyList.map(val => val.label);
     const yLane = d3.scale.ordinal()
       .domain(yDomainList)
       .rangeBands([0, height]);
-    const yRgLabel = d3.scale.ordinal()
-      .domain(allData.map(val => {
-        return val.dWtot_currency;
-      }))
-      .range([0, height]);
 
     const xAxis = d3.svg.axis()
       .scale(xLane)
@@ -409,12 +406,18 @@ export class ChartService {
       .tickSize(-height, 0, 0)
       .tickFormat('')
       .orient('bottom');
+    // Add SVG element
+    let laneChart;
+    if (isNewChart) {
+      laneChart = d3.select(`#${containerId}`)
+        .append('svg')
+        .attr('width', width)
+        .attr('height', height);
+    } else {
+      laneChart = d3.select(`#${containerId} svg`);
+    }
 
-    const laneChart = d3.select(`#${containerId}`)
-      .append('svg')
-      .attr('width', width)
-      .attr('height', height);
-      // .attr('transform', 'translate(' + margin.left + ', ' + 0 + ')');
+    // Label wrap text function
     const textWrap = (text, txtWidth) => {
       text.each(function() {
         const textEl = d3.select(this),
@@ -438,53 +441,150 @@ export class ChartService {
         }
       });
     };
+    // Sort data
+    if (countryList.hasOwnProperty('barType') && countryList.hasOwnProperty('sort')) {
+      if (countryList['barType'] === '1' && countryList['sort'] === 'ASC') {
+        allData.sort((a, b) => {
+          return a.dWtot_currency - b.dWtot_currency;
+        });
+      } else if (countryList['barType'] === '2' && countryList['sort'] === 'ASC') {
+        allData.sort((a, b) => {
+          return a.dKtot - b.dKtot;
+        });
+      }
+      if (countryList['barType'] === '1' && countryList['sort'] === 'DESC') {
+        allData.sort((a, b) => {
+          return b.dWtot_currency - a.dWtot_currency;
+        });
+      } else if (countryList['barType'] === '2' && countryList['sort'] === 'DESC') {
+        allData.sort((a, b) => {
+          return b.dKtot - a.dKtot;
+        });
+      }
+      if ((countryList['barType'] === '1' || countryList['barType'] === '2') && countryList['sort'] === 'NORMAL') {
+        allData = allDataClone;
+      }
+    }
 
-    // Adding lane lines
-    laneChart.append('g')
-      .call(xGridLines)
-      .classed('lanes', true)
-      .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ',' + (height - margin.bottom) + ')');
-    // Adding X axis
-    laneChart.append('g')
-      .classed('x-axis', true)
-      .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', ' + (height - margin.bottom) + ')')
-      .call(xAxis);
-    // Adding x axis descriptive label
-    const xDescLabel = isCountryListPercentageBased ?
-      'Percent % of Country GDP' : 'US$, millions per year';
-    laneChart.select('.x-axis')
-      .append('text')
-      .attr('x', 0)
-      .attr('y', 0)
-      .style('text-anchor', 'middle')
-      .attr('transform', 'translate(' + (isCountryListPercentageBased ? width / 2 : width / 3) + ', ' + (margin.bottom - spaceLblCh) + ')')
-      .text(xDescLabel);
-    // Adding y axis labels
-    const yLabelPos = isCountryListObject ? -25 : -40;
-    laneChart.append('g')
-      .classed('y-axis', true)
-      .attr('transform', 'translate(' + margin.left + ', ' + yLabelPos + ')')
-      .call(yAxis);
-    // if (!countryList || isCountryListCurrencyBased) {
-    // Apply text wrapping in y-axis labels
-      laneChart.select('.y-axis')
-        .selectAll('.tick text')
+    const plotChartAxes = (params) => {
+      const yLabelPos = isCountryListObject ? -25 : -40;
+      if (isNewChart) {
+        // Adding lane lines
+        laneChart.append('g')
+        .call(params.gridLines.x)
+        .classed('lanes', true)
+        .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ',' + (height - margin.bottom) + ')');
+        // Adding X axis
+        laneChart.append('g')
+          .classed('x-axis', true)
+          .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', ' + (height - margin.bottom) + ')')
+          .call(params.axis.x);
+        // Adding x axis descriptive label
+        const xDescLabel = isCountryListPercentageBased ?
+          'Percent % of Country GDP' : 'US$, millions per year';
+        laneChart.select('.x-axis')
+          .append('text')
+          .classed('x-axis-lb', true)
+          .attr('x', 0)
+          .attr('y', 0)
+          .style('text-anchor', 'middle')
+          .attr('transform', 'translate(' +
+            (isCountryListPercentageBased ? width / 2 : width / 3) + ', ' + (margin.bottom - spaceLblCh) + ')')
+          .text(xDescLabel);
+        // Adding y axis labels
+        laneChart.append('g')
+          .classed('y-axis', true)
+          .attr('transform', 'translate(' + margin.left + ', ' + yLabelPos + ')')
+          .call(params.axis.y);
+        laneChart.select('.y-axis')
+          .selectAll('.tick text')
           .call(textWrap, margin.left);
-    // }
-    // Add empty bar charts
-    const barHeight = 15;
-    const spaceBars = 5;
-    const eBar = laneChart.append('g')
-      .classed('e-bar', true);
+      } else {
+        // Update x-axis labels
+        laneChart.selectAll('g.x-axis')
+          .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', ' + (height - margin.bottom) + ')')
+          .call(params.axis.x);
+      // Update y-axis labels
+        laneChart.selectAll('g.y-axis')
+          .attr('transform', 'translate(' + margin.left + ', ' + yLabelPos + ')')
+          .call(params.axis.y);
+        laneChart.select('.y-axis')
+          .selectAll('.tick text')
+          .call(textWrap, margin.left);
+        // Update x-axis descriptive label style
+        laneChart.select('.x-axis-lb')
+          .style('text-anchor', 'middle');
+      }
+    };
 
-    eBar
-      .selectAll('.empty-bar1')
-      .data(allData)
-      .enter()
-        .append('rect')
-        .classed('empty-bar1', true)
+    const plotChart = (params) => {
+      // Update domain
+      yDomainList = isCountryListObject ? allData.map(val => val.label) : policyList.map(val => val.label);
+      xLane.domain(xDomain).nice();
+      yLane.domain(yDomainList);
+      // Draw axes
+      plotChartAxes(params);
+      console.log(params.data);
+      // Draw bar charts
+      let eBar;
+      let dataBars;
+      let barLabels;
+      if (isNewChart) {
+        // Add empty bar charts container
+        eBar = laneChart.append('g')
+          .classed('e-bar', true);
+        // Add bars with data container
+        dataBars  = laneChart.append('g')
+          .classed('bar-charts', true);
+         // Add right y-position bar labels container
+        barLabels = laneChart.append('g')
+          .classed('bar-labels', true);
+      } else {
+        eBar = laneChart.select('.e-bar');
+        dataBars = laneChart.select('.bar-charts');
+        barLabels = laneChart.select('.bar-labels');
+      }
+      const barHeight = 15;
+      const spaceBars = 5;
+      // Enter phase
+      eBar
+        .selectAll('.empty-bar1')
+        .data(params.data)
+        .enter()
+          .append('rect')
+          .classed('empty-bar1', true);
+      eBar
+        .selectAll('.empty-bar2')
+        .data(params.data)
+        .enter()
+          .append('rect')
+          .classed('empty-bar2', true);
+      dataBars.selectAll('.bar-chart1')
+        .data(params.data)
+        .enter()
+          .append('rect')
+          .classed('bar-chart1', true);
+      dataBars.selectAll('.bar-chart2')
+        .data(params.data)
+        .enter()
+          .append('rect')
+          .classed('bar-chart2', true);
+      barLabels.selectAll('.labels1')
+        .data(params.data)
+        .enter()
+          .append('text')
+          .classed('labels1', true);
+      barLabels.selectAll('.labels2')
+        .data(params.data)
+        .enter()
+          .append('text')
+          .classed('labels2', true);
+      // Update phase
+      eBar
+        .selectAll('.empty-bar1')
         .transition()
         .duration(500)
+        .ease('bounce')
         .attr('x', (d, i) => {
           return 0;
         })
@@ -501,15 +601,11 @@ export class ChartService {
         })
         .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', 0)')
         .style('fill', '#E7E9F0');
-
-    eBar
-      .selectAll('.empty-bar2')
-      .data(allData)
-      .enter()
-        .append('rect')
-        .classed('empty-bar2', true)
+      eBar
+        .selectAll('.empty-bar2')
         .transition()
         .duration(500)
+        .ease('bounce')
         .attr('x', (d, i) => {
           return 0;
         })
@@ -526,18 +622,11 @@ export class ChartService {
         })
         .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', 0)')
         .style('fill', '#E7E9F0');
-
-    // Add bars with data
-    const dataBars = laneChart.append('g')
-      .classed('bar-charts', true);
-
-    dataBars.selectAll('.bar-chart1')
-      .data(allData)
-      .enter()
-        .append('rect')
-        .classed('bar-chart1', true)
+      dataBars
+        .selectAll('.bar-chart1')
         .transition()
         .duration(500)
+        .ease('bounce')
         .attr('x', (d, i) => {
           let from = d.dWtot_currency / 1000000;
           if (d.dWtot_currency > 0) {
@@ -564,14 +653,11 @@ export class ChartService {
         })
         .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', 0)')
         .style('fill', '#0CBD8F');
-
-    dataBars.selectAll('.bar-chart2')
-      .data(allData)
-      .enter()
-        .append('rect')
-        .classed('bar-chart2', true)
+      dataBars
+        .selectAll('.bar-chart2')
         .transition()
         .duration(500)
+        .ease('bounce')
         .attr('x', (d, i) => {
           let from = d.dKtot;
           if (d.dWtot_currency > 0) {
@@ -598,18 +684,11 @@ export class ChartService {
         })
         .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', 0)')
         .style('fill', '#C3D700');
-
-    // Add right y-position bar labels
-    const barLabels = laneChart.append('g')
-      .classed('bar-labels', true);
-
-    barLabels.selectAll('.labels1')
-      .data(allData)
-      .enter()
-        .append('text')
-        .classed('labels1', true)
+      barLabels
+        .selectAll('.labels1')
         .transition()
         .duration(500)
+        .ease('bounce')
         .attr('x', (d, i) => {
           return width - 40;
         })
@@ -620,14 +699,11 @@ export class ChartService {
         .text((d) => {
           return Math.round(d.dWtot_currency / 1000000);
         });
-
-    barLabels.selectAll('.labels2')
-      .data(allData)
-      .enter()
-        .append('text')
-        .classed('labels2', true)
+      barLabels
+        .selectAll('.labels2')
         .transition()
         .duration(500)
+        .ease('bounce')
         .attr('x', (d, i) => {
           return width - 40;
         })
@@ -638,6 +714,50 @@ export class ChartService {
         .text((d) => {
           return Math.round(d.dKtot / 1000000);
         });
+      // Exit phase
+      eBar
+        .selectAll('.empty-bar1')
+        .data(params.data)
+        .exit()
+        .remove();
+      eBar
+        .selectAll('.empty-bar2')
+        .data(params.data)
+        .exit()
+        .remove();
+      dataBars
+        .selectAll('.bar-chart1')
+        .data(params.data)
+        .exit()
+        .remove();
+      dataBars
+        .selectAll('.bar-chart2')
+        .data(params.data)
+        .exit()
+        .remove();
+      barLabels
+        .selectAll('.labels1')
+        .data(params.data)
+        .exit()
+        .remove();
+      barLabels
+        .selectAll('.labels2')
+        .data(params.data)
+        .exit()
+        .remove();
+
+    };
+    plotChart({
+      data: allData,
+      axis: {
+        x: xAxis,
+        y: yAxis
+      },
+      gridLines: {
+          x: xGridLines
+      }
+    });
+
   }
   createOutputChart(outputData: any, containerId: string, groupName?: string, isScoreCardPage?: boolean) {
     jQuery(`div#${containerId}`).empty();
