@@ -131,7 +131,6 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
   plotScorecardPolicyChart(code, chartId, chartExist) {
     const data = this.chartService.getMetricAllPoliciesSingleCountry(code);
     this.chartService.createPolicyListChart(data, chartId, {type: 'policyList', isNew: !chartExist});
-    console.log(data);
   }
   resetUISortLabelsCh1() {
     this.sortUISelectedLblChart11 = '';
