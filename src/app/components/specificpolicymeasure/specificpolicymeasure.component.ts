@@ -13,6 +13,10 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
   private getOutputDataSubs: Subscription;
   private getScorecardDataSubs: Subscription;
   private chartConf = this.chartService.getChartsConf();
+  public regionUIList = [{
+    id: 'GLOBAL',
+    label: 'Region'
+  }];
   public sortUISelected = 0;
   public sortUISelectedLblChart11 = '';
   public sortUISelectedLblChart12 = '';
@@ -26,6 +30,7 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
     };
   });
   public selectedPolicyUIList = this.policyGroupUIList[0];
+  public selectedRegionUIList = this.regionUIList[0];
   constructor(private chartService: ChartService) { }
 
   ngOnInit() {
@@ -34,6 +39,26 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.getOutputDataSubs.unsubscribe();
     this.getScorecardDataSubs.unsubscribe();
+  }
+  private _onChangeInputValuesEv() {
+    const policyObj = this.selectedPolicyUIList;
+    let data = this.chartService.getMetricAllCountriesSinglePolicy(policyObj.id);
+    const regionalPolicyObj = this.chartService.getRegionalPolicyData();
+    const regionName = this.selectedRegionUIList.id;
+    const selectedRegion = regionalPolicyObj[policyObj.id][regionName];
+    const regionObj = {
+      id: regionName,
+      dKtot: selectedRegion['avg_dKtot'],
+      dWtot_currency: selectedRegion['avg_dWtot_currency'],
+      dK: selectedRegion['avg_dKtot'],
+      dWpc_currency: ['avg_dWpc_currency']
+    };
+    const finalRegionObj = {};
+    finalRegionObj[regionName] = regionObj;
+    data = Object.assign({}, finalRegionObj, data);
+    this.chartService.createPolicyListChart(data, 'policyMeasure0', {type: 'million', isNew: false});
+    this.chartService.createPolicyListChart(data, 'policyMeasure1', {type: 'percentage', isNew: false});
+    this.resetUISortLabels();
   }
   resetUISortLabels() {
     this.sortUISelectedLblChart11 = '';
@@ -52,7 +77,30 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
     this.getScorecardDataSubs = this.chartService.getScoreCardDataObs().subscribe(data => {
       data = JSON.parse(data);
       this.chartService.setPoliciesData(data);
-      const policyData = this.chartService.getMetricAllCountriesSinglePolicy(this.selectedPolicyUIList.id);
+      const globalGroupList = this.chartService.getCountryGroupData();
+      const chartConf = this.chartService.getChartsConf();
+      const regionalPolicyObj = this.chartService.getRegionalPolicyData();
+      const policyIdList = chartConf.policyList;
+      const policyMetricList = chartConf.policyMetrics;
+      jQuery.each(globalGroupList, (key, region) => {
+        this.regionUIList.push({
+          id: region,
+          label: region
+        });
+      });
+      let policyData = this.chartService.getMetricAllCountriesSinglePolicy(this.selectedPolicyUIList.id);
+      const selectedRegion = regionalPolicyObj[this.selectedPolicyUIList.id][this.selectedRegionUIList.id];
+      const regionObj = {
+        dKtot: selectedRegion['avg_dKtot'],
+        dWtot_currency: selectedRegion['avg_dWtot_currency'],
+        dK: selectedRegion['avg_dKtot'],
+        dWpc_currency: ['avg_dWpc_currency']
+      };
+      const regionName = this.selectedRegionUIList.id;
+      const finalRegionObj = {};
+      finalRegionObj[regionName] = regionObj;
+      policyData = Object.assign({}, finalRegionObj, policyData);
+      console.log(policyData);
       this.chartService.createPolicyListChart(policyData, 'policyMeasure0', {type: 'million', isNew: true});
       this.chartService.createPolicyListChart(policyData, 'policyMeasure1', {type: 'percentage', isNew: true});
     });
@@ -61,10 +109,11 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
   // EVENTS
   onScorecardPolicyChange(policyObj) {
     this.selectedPolicyUIList = policyObj;
-    const data = this.chartService.getMetricAllCountriesSinglePolicy(policyObj.id);
-    this.chartService.createPolicyListChart(data, 'policyMeasure0', {type: 'million', isNew: false});
-    this.chartService.createPolicyListChart(data, 'policyMeasure1', {type: 'percentage', isNew: false});
-    this.resetUISortLabels();
+    this._onChangeInputValuesEv();
+  }
+  onScorecardRegionChange(regionObj) {
+    this.selectedRegionUIList = regionObj;
+    this._onChangeInputValuesEv();
   }
   onSortChartDataEvent(barType, chartLbl) {
     if (this.sortBtnPressedId !== chartLbl) {
@@ -74,7 +123,20 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
     this.resetUISortLabels();
     this.sortUISelected++;
     const sortSel = this.sortUISelected;
-    const data = this.chartService.getMetricAllCountriesSinglePolicy(this.selectedPolicyUIList.id);
+    let data = this.chartService.getMetricAllCountriesSinglePolicy(this.selectedPolicyUIList.id);
+    const regionalPolicyObj = this.chartService.getRegionalPolicyData();
+    const regionName = this.selectedRegionUIList.id;
+    const selectedRegion = regionalPolicyObj[this.selectedPolicyUIList.id][regionName];
+    const regionObj = {
+      id: regionName,
+      dKtot: selectedRegion['avg_dKtot'],
+      dWtot_currency: selectedRegion['avg_dWtot_currency'],
+      dK: selectedRegion['avg_dKtot'],
+      dWpc_currency: ['avg_dWpc_currency']
+    };
+    const finalRegionObj = {};
+    finalRegionObj[regionName] = regionObj;
+    data = Object.assign({}, finalRegionObj, data);
     let sortType;
     if (sortSel === 2) {
       sortType = 'DESC';

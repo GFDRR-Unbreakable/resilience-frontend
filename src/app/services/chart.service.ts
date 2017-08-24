@@ -59,7 +59,7 @@ export class ChartService {
         }
       });
       outputMetric.forEach((val) => {
-        outputMetricAvgInfo[group][`avg_${val}`] = outputMetricAvgInfo[group][`sum_${val}`] / outputMetricAvgInfo[group][`count${val}`];
+        outputMetricAvgInfo[group][`avg_${val}`] = outputMetricAvgInfo[group][`sum_${val}`] / outputMetricAvgInfo[group][`count_${val}`];
       });
     });
     return outputMetricAvgInfo;
@@ -348,7 +348,11 @@ export class ChartService {
     const globalObj = this.getGlobalModelData();
     if (isCountryListObject) {
       allData.forEach(val => {
-        val.label = globalObj[val.id].name;
+        if (!globalObj[val.id]) {
+          val.label = val.id + ' Average';
+        } else {
+          val.label = globalObj[val.id].name;
+        }
       });
     } else {
       policyList = this.getChartsConf().policyList;

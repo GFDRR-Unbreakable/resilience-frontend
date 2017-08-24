@@ -15,9 +15,13 @@
          </div>
          by
          <div ngbDropdown class="d-inline-block">
-            <button class="btn dropdown-politics" id="dropdownBasic1" ngbDropdownToggle>Region</button>
+            <button class="btn dropdown-politics" id="dropdownBasic1" ngbDropdownToggle>{{selectedRegionUIList.label}}</button>
             <div class="dropdown-menu dropdown-politics-menu" aria-labelledby="dropdownBasic1">
-               <button class="dropdown-item dropdown-politics-item">East Asia & Pacific</button>
+                <div class="list" *ngFor="let region of regionUIList; let aIndex = index">
+                    <button (click)="onScorecardRegionChange(region)" class="dropdown-item dropdown-politics-item">{{region.label}}</button>
+                    <div *ngIf="aIndex !== regionUIList.length - 1" class="dropdown-divider-1"></div>
+                </div>
+               <!-- <button class="dropdown-item dropdown-politics-item">East Asia & Pacific</button>
                <div class="dropdown-divider-1"></div>
                <button class="dropdown-item dropdown-politics-item">Europe & Central Asia</button>
                <div class="dropdown-divider-1"></div>
@@ -29,7 +33,7 @@
                <div class="dropdown-divider-1"></div>
                <button class="dropdown-item dropdown-politics-item">South Asia</button>
                <div class="dropdown-divider-1"></div>
-               <button class="dropdown-item dropdown-politics-item">Sub-Saharan Africa</button>
+               <button class="dropdown-item dropdown-politics-item">Sub-Saharan Africa</button> -->
             </div>
          </div>
          <button type="button" class="btn btn-primary text-download box-button-pdf"><img class="img-download" src="assets/image/ic-download.png" alt="">PDF</button>

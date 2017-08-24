@@ -167,7 +167,6 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
   setChartsConf() {
     this.chartService.initOutputChartConf();
     this.getOutputDataSubs = this.chartService.getOutputDataObs().subscribe(data => {
-      console.log(data);
       this.chartService.createOutputChart(data._outputDomains, 'outputs-1', 'GLOBAL', true);
       this.chartService.createOutputChart(data._outputDomains, 'outputs-2', 'GLOBAL', true);
       this.countryUIList = this.chartService.getOutputDataUIList();
