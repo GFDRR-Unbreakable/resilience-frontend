@@ -141,6 +141,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   public viewerModel1$: Observable<ViewerModel>;
   public viewerModel2$: Observable<ViewerModel>;
   public viewerSubs: Subscription;
+  public viewerModel1Subs: Subscription;
+  public viewerModel2Subs: Subscription;
   public searchCountryFn = (text$: Observable<string>) => {
     const debounceTimeFn = debounceTime.call(text$, 200);
     const distinctUntilChangedFn = distinctUntilChanged.call(debounceTimeFn);
@@ -169,6 +171,9 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   ngOnDestroy() {
     this.getOutputDataSubs.unsubscribe();
+    this.viewerSubs.unsubscribe();
+    this.viewerModel1Subs.unsubscribe();
+    this.viewerModel2Subs.unsubscribe();
   }
   ngAfterViewInit() {
     this.setViewerObservableConf();
@@ -390,9 +395,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   getChartOutputData() {
     this.chartService.initOutputChartConf();
     this.getOutputDataSubs = this.chartService.getOutputDataObs().subscribe(data => {
-      console.log(data);
       this.chartService.setInputData(data._globalModelData).then((inputData) => {
-        console.log(inputData);
         this.chartService.createInputCharts(inputData, 'inputSoc-1', this.sliderValues1);
         this.chartService.createInputCharts(inputData, 'inputSoc-2', this.sliderValues2);
         this.chartService.createInputCharts(inputData, 'inputEco-1', this.sliderValues1);
@@ -473,7 +476,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         const features = self.mapService.getMap().queryRenderedFeatures(ev.point, {layers: [self.mapService.getViewerFillLayer()]});
         if (features.length) {
           const isoCode = features[0].properties['ISO_Code'];
-          if (this.countryListIsoCodes.filter(val => val === isoCode).length) {
+          const isoCodeList = this.countryListIsoCodes.filter(val => val === isoCode);
+          if (isoCodeList.length) {
             self.changeCountryInputsByClick(isoCode);
             self.mapService.setMapFilterByISOCode(isoCode);
           }
