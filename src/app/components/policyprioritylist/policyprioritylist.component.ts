@@ -1,4 +1,5 @@
 import { OnDestroy, Component, OnInit } from '@angular/core';
+import { CurrencyPipe, DecimalPipe } from '@angular/common';
 import {Store} from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import {Subscription} from 'rxjs/Subscription';
@@ -22,6 +23,8 @@ import {ChartService} from '../../services/chart.service';
 export class PolicyprioritylistComponent implements OnInit, OnDestroy {
   public countryListComp: Array<any> = [];
   public countryUIList: Array<any> = [];
+  public firstCountryGDP: number = 0;
+  public firstCountryPopulation: number = 0;
   public getOutputDataSubs: Subscription;
   public getScorecardDataSubs: Subscription;
   public isSetUIGlobal: boolean = true;
@@ -31,15 +34,18 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
     firstCountry: '',
     secondCountry: ''
   };
+  public secondCountryGDP: number = 0;
+  public secondCountryPopulation: number = 0;
+  private _selectedCountryList: Array<any> = [];
+  public sortBtnPressedIdCh1 = '';
+  public sortBtnPressedIdCh2 = '';
   public sortUISelectedChart1 = 0;
   public sortUISelectedChart2 = 0;
   public sortUISelectedLblChart11 = '';
   public sortUISelectedLblChart12 = '';
   public sortUISelectedLblChart21 = '';
   public sortUISelectedLblChart22 = '';
-  public sortBtnPressedIdCh1 = '';
-  public sortBtnPressedIdCh2 = '';
-  private _selectedCountryList: Array<any> = [];
+
   public searchCountryFn = (text$: Observable<string>) => {
     const debounceTimeFn = debounceTime.call(text$, 200);
     const distinctUntilChangedFn = distinctUntilChanged.call(debounceTimeFn);
@@ -103,6 +109,17 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
         } else {
           this.chartService.createOutputChart(outData, idOut, list[0].group, true);
         }
+        const globalModelObj = this.chartService.getGlobalModelData();
+        const countryGDP = globalModelObj[list[0].code]['macro_gdp_pc_pp'];
+        const countryPopulation = globalModelObj[list[0].code]['macro_pop'];
+        const totalGDP = countryGDP * countryPopulation;
+        if (selectedIdx === 0) {
+          this.firstCountryGDP = totalGDP;
+          this.firstCountryPopulation = countryPopulation;
+        } else {
+          this.secondCountryGDP = totalGDP;
+          this.secondCountryPopulation = countryPopulation;
+        }
         const chartChild = document.querySelector(`#${idScList}`).childNodes;
         this.plotScorecardPolicyChart(list[0].code, idScList, chartChild.length > 0);
       }
@@ -124,6 +141,13 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
             this.chartService.createOutputChart(outData, idOut, 'GLOBAL', true);
           }
           this._selectedCountryList.splice(filterIndex[0], 1);
+          if (selectedIdx === 0) {
+            this.firstCountryGDP = 0;
+            this.firstCountryPopulation = 0;
+          } else {
+            this.secondCountryGDP = 0;
+            this.secondCountryPopulation = 0;
+          }
         }
       }
     }
@@ -143,6 +167,7 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
   setChartsConf() {
     this.chartService.initOutputChartConf();
     this.getOutputDataSubs = this.chartService.getOutputDataObs().subscribe(data => {
+      console.log(data);
       this.chartService.createOutputChart(data._outputDomains, 'outputs-1', 'GLOBAL', true);
       this.chartService.createOutputChart(data._outputDomains, 'outputs-2', 'GLOBAL', true);
       this.countryUIList = this.chartService.getOutputDataUIList();
