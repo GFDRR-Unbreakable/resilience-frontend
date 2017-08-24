@@ -171,7 +171,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getOutputDataSubs.unsubscribe();
   }
   ngAfterViewInit() {
-    this.getChartOutputData();
     this.setViewerObservableConf();
     this.setViewerModel1ObservableConf();
     this.setViewerModel2ObservableConf();
@@ -469,6 +468,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       this.mapService.addBasemap();
       this.legends = this.mapService.getMapLegendConf('socio');
       this.mapService.setMapFilterByISOCodes(this.countryListIsoCodes);
+      this.getChartOutputData();
       this.mapService.setClickFnMapEvent((ev) => {
         const features = self.mapService.getMap().queryRenderedFeatures(ev.point, {layers: [self.mapService.getViewerFillLayer()]});
         if (features.length) {
