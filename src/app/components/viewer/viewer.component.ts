@@ -493,14 +493,14 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
   setViewerModel1ObservableConf() {
-    this.viewerSubs = this.viewerModel1$.subscribe(state => {
+    this.viewerModel1Subs = this.viewerModel1$.subscribe(state => {
       if (state) {
         this.viewerP1 = state;
       }
     });
   }
   setViewerModel2ObservableConf() {
-    this.viewerSubs = this.viewerModel2$.subscribe(state => {
+    this.viewerModel2Subs = this.viewerModel2$.subscribe(state => {
       if (state) {
         this.viewerP2 = state;
       }
