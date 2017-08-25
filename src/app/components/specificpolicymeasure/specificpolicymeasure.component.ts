@@ -96,6 +96,9 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
         dK: selectedRegion['avg_dKtot'],
         dWpc_currency: ['avg_dWpc_currency']
       };
+      console.log(regionalPolicyObj[this.selectedPolicyUIList.id]);
+      console.log(selectedRegion);
+      console.log(policyData);
       const regionName = this.selectedRegionUIList.id;
       const finalRegionObj = {};
       finalRegionObj[regionName] = regionObj;

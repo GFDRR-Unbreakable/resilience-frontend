@@ -328,6 +328,8 @@ export class ChartService {
     // d3.select(`div#${containerId}`).remove();
     const dkTotArr = [];
     const dWTotCurrencyArr = [];
+    const dKTotPercentageArr = [];
+    const dWTotPercentageArr = [];
     let allData = [];
     const isPolicyListObject = typeof countryList === 'object' && countryList['type'] === 'policyList';
     const isCountryListObject = typeof countryList === 'object' &&
@@ -346,7 +348,6 @@ export class ChartService {
     });
     let policyList;
     const globalObj = this.getGlobalModelData();
-    // console.log(globalObj);
     if (isCountryListObject) {
       const dataClone = [];
       allData.forEach(val => {
@@ -377,6 +378,26 @@ export class ChartService {
         }
         allData = dataClone;
       }
+      if (isCountryListPercentageBased) {
+        let macroGDPSum = 0;
+        allData.forEach((val, idx) => {
+          if (idx > 0) {
+            macroGDPSum += globalObj[val.id]['macro_gdp_pc_pp'];
+          }
+        });
+        const macroGDPAvg = macroGDPSum / (allData.length - 1);
+        allData[0].dKTotPercentage = Math.round(((allData[0].dKtot / 1000000) * 100) / macroGDPAvg);
+        allData[0].dWTotPercentage = Math.round(((allData[0].dWtot_currency / 1000000) * 100) / macroGDPAvg);
+        allData.forEach((val, idx) => {
+          if (idx > 0) {
+            const countryGDP = globalObj[val.id]['macro_gdp_pc_pp'];
+            val.dKTotPercentage = Math.round(((val.dKtot / 1000000) * 100) / countryGDP);
+            val.dWTotPercentage = Math.round(((val.dWtot_currency / 1000000) * 100) / countryGDP);
+            dKTotPercentageArr.push(val.dKTotPercentage);
+            dWTotPercentageArr.push(val.dWTotPercentage);
+          }
+        });
+      }
     } else {
       policyList = this.getChartsConf().policyList;
       policyList.forEach((val, idx) => {
@@ -385,13 +406,12 @@ export class ChartService {
         }
       });
     }
-    // console.log(allData);
     const allDataClone = Object.assign([], allData);
     const isNewChart = countryList.hasOwnProperty('isNew') && countryList['isNew'];
 
-    const allValues = dkTotArr.concat(dWTotCurrencyArr);
+    const allValues = isCountryListPercentageBased ? dKTotPercentageArr.concat(dWTotPercentageArr) : dkTotArr.concat(dWTotCurrencyArr);
     let maxValue = d3.max(allValues);
-    maxValue = Math.round(maxValue / 1000000);
+    maxValue = isCountryListPercentageBased ? maxValue : Math.round(maxValue / 1000000);
     const minValue = d3.min(allValues);
     const recalculateChartHeight = () => {
       const region = allData[0].id;
@@ -427,6 +447,8 @@ export class ChartService {
     const xDomain = [];
     if (minValue > 0) {
       xDomain.push(-5, maxValue);
+    } else {
+      xDomain.push(0, maxValue);
     }
 
     const xLane = d3.scale.linear()
@@ -497,20 +519,20 @@ export class ChartService {
     if (countryList.hasOwnProperty('barType') && countryList.hasOwnProperty('sort')) {
       if (countryList['barType'] === '1' && countryList['sort'] === 'ASC') {
         allData.sort((a, b) => {
-          return a.dWtot_currency - b.dWtot_currency;
+          return isCountryListPercentageBased ? a.dWTotPercentage - b.dWTotPercentage : a.dWtot_currency - b.dWtot_currency;
         });
       } else if (countryList['barType'] === '2' && countryList['sort'] === 'ASC') {
         allData.sort((a, b) => {
-          return a.dKtot - b.dKtot;
+          return isCountryListPercentageBased ? a.dKTotPercentage - b.dKTotPercentage : a.dKtot - b.dKtot;
         });
       }
       if (countryList['barType'] === '1' && countryList['sort'] === 'DESC') {
         allData.sort((a, b) => {
-          return b.dWtot_currency - a.dWtot_currency;
+          return isCountryListPercentageBased ? b.dWTotPercentage - a.dWTotPercentage : b.dWtot_currency - a.dWtot_currency;
         });
       } else if (countryList['barType'] === '2' && countryList['sort'] === 'DESC') {
         allData.sort((a, b) => {
-          return b.dKtot - a.dKtot;
+          return isCountryListPercentageBased ? b.dKTotPercentage - a.dKTotPercentage : b.dKtot - a.dKtot;
         });
       }
       if ((countryList['barType'] === '1' || countryList['barType'] === '2') && countryList['sort'] === 'NORMAL') {
@@ -575,7 +597,7 @@ export class ChartService {
 
     const plotChart = (params) => {
       // Update domain
-      yDomainList = allData.map(val => val.label);
+      yDomainList = params.data.map(val => val.label);
       // xLane.domain(xDomain).nice();
       yLane.domain(yDomainList);
       // Draw axes
@@ -714,8 +736,9 @@ export class ChartService {
         .duration(500)
         .ease('bounce')
         .attr('x', (d, i) => {
-          let from = d.dWtot_currency / 1000000;
-          if (d.dWtot_currency > 0) {
+          const data = isCountryListPercentageBased ? d.dWTotPercentage : d.dWtot_currency;
+          let from = isCountryListPercentageBased ? data : data / 1000000;
+          if (data > 0) {
             from = 0;
           }
           return xLane(from);
@@ -726,10 +749,10 @@ export class ChartService {
         .attr('rx', 10)
         .attr('ry', 30)
         .attr('width', (d) => {
-          let total = xLane(d.dWtot_currency / 1000000);
+          const data = isCountryListPercentageBased ? d.dWTotPercentage : d.dWtot_currency;
+          const total = xLane(isCountryListPercentageBased ? data : data / 1000000);
           let fromZero = 0;
-          if (d.dWtot_currency > 0) {
-            total = xLane(d.dWtot_currency / 1000000);
+          if (data > 0) {
             fromZero = xLane(0);
           }
           return total - fromZero;
@@ -745,8 +768,9 @@ export class ChartService {
         .duration(500)
         .ease('bounce')
         .attr('x', (d, i) => {
-          let from = d.dKtot;
-          if (d.dWtot_currency > 0) {
+          let from = isCountryListPercentageBased ? d.dKTotPercentage : d.dKtot;
+          // const otherBarData = isCountryListPercentageBased ? d.dWTotPercentage : d.dWtot_currency;
+          if (from > 0) {
             from = 0;
           }
           return xLane(from);
@@ -757,10 +781,12 @@ export class ChartService {
         .attr('rx', 10)
         .attr('ry', 30)
         .attr('width', (d) => {
-          let total = xLane(d.dKtot / 1000000);
+          const data = isCountryListPercentageBased ? d.dKTotPercentage : d.dKtot;
+          const total = xLane(isCountryListPercentageBased ? data : data / 1000000);
           let fromZero = 0;
-          if (d.dKtot > 0) {
-            total = xLane(d.dKtot / 1000000);
+          // const otherBarData = isCountryListPercentageBased ? d.dkTotPercentage : d.dKtot;
+          if (data > 0) {
+            // total = xLane(isCountryListPercentageBased ? data : data / 1000000);
             fromZero = xLane(0);
           }
           return total - fromZero;
@@ -783,7 +809,8 @@ export class ChartService {
         })
         .style('fill', '#0CBD8F')
         .text((d) => {
-          return Math.round(d.dWtot_currency / 1000000);
+          const data = isCountryListPercentageBased ? d.dWTotPercentage + '%' : Math.round(d.dWtot_currency / 1000000);
+          return data;
         });
       barLabels
         .selectAll('.labels2')
@@ -798,7 +825,8 @@ export class ChartService {
         })
         .style('fill', '#C3D700')
         .text((d) => {
-          return Math.round(d.dKtot / 1000000);
+          const data = isCountryListPercentageBased ? d.dKTotPercentage + '%' : Math.round(d.dKtot / 1000000);
+          return data;
         });
     };
     plotChart({
