@@ -100,7 +100,6 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
       const finalRegionObj = {};
       finalRegionObj[regionName] = regionObj;
       policyData = Object.assign({}, finalRegionObj, policyData);
-      console.log(policyData);
       this.chartService.createPolicyListChart(policyData, 'policyMeasure0', {type: 'million', isNew: true});
       this.chartService.createPolicyListChart(policyData, 'policyMeasure1', {type: 'percentage', isNew: true});
     });

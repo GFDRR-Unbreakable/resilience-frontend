@@ -346,14 +346,37 @@ export class ChartService {
     });
     let policyList;
     const globalObj = this.getGlobalModelData();
+    // console.log(globalObj);
     if (isCountryListObject) {
+      const dataClone = [];
       allData.forEach(val => {
         if (!globalObj[val.id]) {
-          val.label = val.id + ' Average';
+          val.label = val.id + ' AVERAGE';
         } else {
           val.label = globalObj[val.id].name;
         }
       });
+      if (allData[0].id !== 'GLOBAL') {
+        let regionName;
+        const regionList = {};
+        for (const key in globalObj) {
+          if (globalObj.hasOwnProperty(key) ) {
+            if (!regionName && globalObj[key]['group_name'] === allData[0].id) {
+              regionName = allData[0].id;
+            }
+            if (globalObj[key]['group_name'] === regionName && !regionList[key]) {
+              regionList[key] = key;
+            }
+          }
+        }
+        dataClone.push(allData[0]);
+        for (let i = 1; i < allData.length; i++) {
+          if (allData[i].id === regionList[allData[i].id]) {
+            dataClone.push(allData[i]);
+          }
+        }
+        allData = dataClone;
+      }
     } else {
       policyList = this.getChartsConf().policyList;
       policyList.forEach((val, idx) => {
@@ -362,6 +385,7 @@ export class ChartService {
         }
       });
     }
+    // console.log(allData);
     const allDataClone = Object.assign([], allData);
     const isNewChart = countryList.hasOwnProperty('isNew') && countryList['isNew'];
 
@@ -369,8 +393,28 @@ export class ChartService {
     let maxValue = d3.max(allValues);
     maxValue = Math.round(maxValue / 1000000);
     const minValue = d3.min(allValues);
+    const recalculateChartHeight = () => {
+      const region = allData[0].id;
+      if (region === 'GLOBAL') {
+        return 10500;
+      } else if (region === 'Europe & Central Asia') {
+        return 3500;
+      } else if (region === 'Sub-Saharan Africa') {
+        return 3000;
+      } else if (region === 'Latin America & Caribbean') {
+        return 1700;
+      } else if (region === 'East Asia & Pacific') {
+        return 1400;
+      } else if (region === 'South Asia') {
+        return 600;
+      } else if (region === 'North America') {
+        return 320;
+      } else if (region === 'Middle East & North Africa') {
+        return 920;
+      }
+    };
     const w = isCountryListPercentageBased ? 550 : (isPolicyListObject ? 800 : 700);
-    const h = isCountryListObject ? 10500 : 1000;
+    const h = isCountryListObject ? recalculateChartHeight() : 1000;
     const margin = {
       left: isCountryListPercentageBased ? 50 : (isPolicyListObject ? 170 : 130),
       right: 50,
@@ -420,6 +464,9 @@ export class ChartService {
         .attr('height', height);
     } else {
       laneChart = d3.select(`#${containerId} svg`);
+      if (height !== laneChart.attr('height')) {
+        laneChart.attr('height', height);
+      }
     }
 
     // Label wrap text function
@@ -554,6 +601,37 @@ export class ChartService {
       }
       const barHeight = 15;
       const spaceBars = 5;
+      // Exit phase
+      eBar
+        .selectAll('.empty-bar1')
+        .data(params.data)
+        .exit()
+        .remove();
+      eBar
+        .selectAll('.empty-bar2')
+        .data(params.data)
+        .exit()
+        .remove();
+      dataBars
+        .selectAll('.bar-chart1')
+        .data(params.data)
+        .exit()
+        .remove();
+      dataBars
+        .selectAll('.bar-chart2')
+        .data(params.data)
+        .exit()
+        .remove();
+      barLabels
+        .selectAll('.labels1')
+        .data(params.data)
+        .exit()
+        .remove();
+      barLabels
+        .selectAll('.labels2')
+        .data(params.data)
+        .exit()
+        .remove();
       // Enter phase
       eBar
         .selectAll('.empty-bar1')
@@ -722,38 +800,6 @@ export class ChartService {
         .text((d) => {
           return Math.round(d.dKtot / 1000000);
         });
-      // Exit phase
-      eBar
-        .selectAll('.empty-bar1')
-        .data(params.data)
-        .exit()
-        .remove();
-      eBar
-        .selectAll('.empty-bar2')
-        .data(params.data)
-        .exit()
-        .remove();
-      dataBars
-        .selectAll('.bar-chart1')
-        .data(params.data)
-        .exit()
-        .remove();
-      dataBars
-        .selectAll('.bar-chart2')
-        .data(params.data)
-        .exit()
-        .remove();
-      barLabels
-        .selectAll('.labels1')
-        .data(params.data)
-        .exit()
-        .remove();
-      barLabels
-        .selectAll('.labels2')
-        .data(params.data)
-        .exit()
-        .remove();
-
     };
     plotChart({
       data: allData,
