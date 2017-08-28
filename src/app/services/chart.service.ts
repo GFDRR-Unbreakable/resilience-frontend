@@ -709,7 +709,7 @@ export class ChartService {
           return barHeight;
         })
         .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', 0)')
-        .style('fill', '#E7E9F0');
+        .style('fill', '#485050');
       eBar
         .selectAll('.empty-bar2')
         .transition()
@@ -730,7 +730,7 @@ export class ChartService {
           return barHeight;
         })
         .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', 0)')
-        .style('fill', '#E7E9F0');
+        .style('fill', '#485050');
       dataBars
         .selectAll('.bar-chart1')
         .transition()
@@ -762,7 +762,7 @@ export class ChartService {
           return barHeight;
         })
         .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', 0)')
-        .style('fill', '#0CBD8F');
+        .style('fill', '#6DCCDC');
       dataBars
         .selectAll('.bar-chart2')
         .transition()
@@ -805,7 +805,7 @@ export class ChartService {
         .attr('y', (d, i) => {
           return yLane(d.label) + barHeight - spaceBars;
         })
-        .style('fill', '#0CBD8F')
+        .style('fill', '#6DCCDC')
         .text((d) => {
           const data = isCountryListPercentageBased ? d.dWTotPercentage + '%' : Math.round(d.dWtot_currency / aMillion);
           return data;

@@ -644,7 +644,7 @@ template {
     display: -webkit-box;
   }
   .icon-hazard{
-    background: #f4f5fa !important;
+    background: #E4F3F3 !important;
     padding: 3% 4.5%;
     border-radius: 5px;
     border: 1px solid #eaecf2 !important;
@@ -839,7 +839,7 @@ template {
 }
 .box-icon-a{
   padding-right: 5px;
-  color:#0cbd8f;
+  color:#6DCCDC;
 }
 .box-text-policies{
   padding: 20px 0;
@@ -883,25 +883,26 @@ template {
   font-size: 17px;
 }
 .dropdown-politics{
-  border: 1px solid #353a48 !important;
-  background: #fff;
+  border: 1px solid #7D8F8F !important;
+  background: #4b5757;
+  color: #fff;
   margin: 0 15px;
 }
 .dropdown-politics:hover{
-  border: 1px solid #0cbd8f !important;
-  background: #fff;
+  border: 1px solid #7D8F8F !important;
+  background: #4b5757;
   box-shadow:0 5px 14px rgba(0,0,0,.1);
 }
 .dropdown-politics-menu{
-  background: #fff !important;
+  background: #4b5757 !important;
   margin-left: 15px !important;
 }
 .dropdown-politics-item{
-  background: #fff;
+  background: #4b5757;
 }
 .dropdown-politics-item:hover{
-  background: #fff !important;
-  color: #0cbd8f !important;
+  background: transparent !important;
+  color: #C3D700 !important;
 }
 .dropdown-divider-1 {
   height: 1px;
@@ -10671,7 +10672,7 @@ fieldset {
         padding-right: 0;
     }
 .tab .mat-accent {
-  min-width: 115px;
+  min-width: 110px;
 }
 .tab .mat-accent .mat-slider-wrapper,
 .tab .mat-accent .mat-slider-wrapper .mat-slider-ticks-container,
@@ -10755,9 +10756,14 @@ fieldset {
 	shape-rendering: crispEdges;	
 }
 .x-axis text {
+  fill: #fff;
   font-weight: bold;
 }
+.y-axis g.tick {
+  fill: #fff;
+}
 .x-axis g.tick text{
+  fill: #fff;
   font-size: 11px !important;
   font-weight: bold;
   text-anchor: start !important;
@@ -10765,7 +10771,7 @@ fieldset {
 .lanes path,
 .lanes line {
 	fill: none;
-  stroke: #E7E9F0;
+  stroke: #485050;
   stroke-dasharray: 2;
 	shape-rendering: crispEdges;	
 }
