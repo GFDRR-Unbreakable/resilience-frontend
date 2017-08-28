@@ -346,6 +346,7 @@ export class ChartService {
         dWtot_currency: polData.dWtot_currency
       });
     });
+    const aMillion = 1000000;
     let policyList;
     const globalObj = this.getGlobalModelData();
     if (isCountryListObject) {
@@ -386,13 +387,13 @@ export class ChartService {
           }
         });
         const macroGDPAvg = macroGDPSum / (allData.length - 1);
-        allData[0].dKTotPercentage = Math.round(((allData[0].dKtot / 1000000) * 100) / macroGDPAvg);
-        allData[0].dWTotPercentage = Math.round(((allData[0].dWtot_currency / 1000000) * 100) / macroGDPAvg);
+        allData[0].dKTotPercentage = Math.round(((allData[0].dKtot / aMillion) * 100) / macroGDPAvg);
+        allData[0].dWTotPercentage = Math.round(((allData[0].dWtot_currency / aMillion) * 100) / macroGDPAvg);
         allData.forEach((val, idx) => {
           if (idx > 0) {
             const countryGDP = globalObj[val.id]['macro_gdp_pc_pp'];
-            val.dKTotPercentage = Math.round(((val.dKtot / 1000000) * 100) / countryGDP);
-            val.dWTotPercentage = Math.round(((val.dWtot_currency / 1000000) * 100) / countryGDP);
+            val.dKTotPercentage = Math.round(((val.dKtot / aMillion) * 100) / countryGDP);
+            val.dWTotPercentage = Math.round(((val.dWtot_currency / aMillion) * 100) / countryGDP);
             dKTotPercentageArr.push(val.dKTotPercentage);
             dWTotPercentageArr.push(val.dWTotPercentage);
           }
@@ -411,7 +412,7 @@ export class ChartService {
 
     const allValues = isCountryListPercentageBased ? dKTotPercentageArr.concat(dWTotPercentageArr) : dkTotArr.concat(dWTotCurrencyArr);
     let maxValue = d3.max(allValues);
-    maxValue = isCountryListPercentageBased ? maxValue : Math.round(maxValue / 1000000);
+    maxValue = isCountryListPercentageBased ? maxValue : Math.round(maxValue / aMillion);
     const minValue = d3.min(allValues);
     const recalculateChartHeight = () => {
       const region = allData[0].id;
@@ -737,7 +738,7 @@ export class ChartService {
         .ease('bounce')
         .attr('x', (d, i) => {
           const data = isCountryListPercentageBased ? d.dWTotPercentage : d.dWtot_currency;
-          let from = isCountryListPercentageBased ? data : data / 1000000;
+          let from = isCountryListPercentageBased ? data : data / aMillion;
           if (data > 0) {
             from = 0;
           }
@@ -750,7 +751,7 @@ export class ChartService {
         .attr('ry', 30)
         .attr('width', (d) => {
           const data = isCountryListPercentageBased ? d.dWTotPercentage : d.dWtot_currency;
-          const total = xLane(isCountryListPercentageBased ? data : data / 1000000);
+          const total = xLane(isCountryListPercentageBased ? data : data / aMillion);
           let fromZero = 0;
           if (data > 0) {
             fromZero = xLane(0);
@@ -769,7 +770,6 @@ export class ChartService {
         .ease('bounce')
         .attr('x', (d, i) => {
           let from = isCountryListPercentageBased ? d.dKTotPercentage : d.dKtot;
-          // const otherBarData = isCountryListPercentageBased ? d.dWTotPercentage : d.dWtot_currency;
           if (from > 0) {
             from = 0;
           }
@@ -782,11 +782,9 @@ export class ChartService {
         .attr('ry', 30)
         .attr('width', (d) => {
           const data = isCountryListPercentageBased ? d.dKTotPercentage : d.dKtot;
-          const total = xLane(isCountryListPercentageBased ? data : data / 1000000);
+          const total = xLane(isCountryListPercentageBased ? data : data / aMillion);
           let fromZero = 0;
-          // const otherBarData = isCountryListPercentageBased ? d.dkTotPercentage : d.dKtot;
           if (data > 0) {
-            // total = xLane(isCountryListPercentageBased ? data : data / 1000000);
             fromZero = xLane(0);
           }
           return total - fromZero;
@@ -809,7 +807,7 @@ export class ChartService {
         })
         .style('fill', '#0CBD8F')
         .text((d) => {
-          const data = isCountryListPercentageBased ? d.dWTotPercentage + '%' : Math.round(d.dWtot_currency / 1000000);
+          const data = isCountryListPercentageBased ? d.dWTotPercentage + '%' : Math.round(d.dWtot_currency / aMillion);
           return data;
         });
       barLabels
@@ -825,7 +823,7 @@ export class ChartService {
         })
         .style('fill', '#C3D700')
         .text((d) => {
-          const data = isCountryListPercentageBased ? d.dKTotPercentage + '%' : Math.round(d.dKtot / 1000000);
+          const data = isCountryListPercentageBased ? d.dKTotPercentage + '%' : Math.round(d.dKtot / aMillion);
           return data;
         });
     };

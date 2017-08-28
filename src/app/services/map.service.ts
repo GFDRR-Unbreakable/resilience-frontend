@@ -20,55 +20,55 @@ export class MapService {
     asset: {
       property: '1_Assets',
       stops: [
-        [0, '#deebf7'],
-        [0.051, '#9ecae1'],
-        [0.11, '#4292c6'],
-        [0.151, '#2171b5'],
-        [0.21, '#08306b'],
+        [0, '#f1fbd5'],
+        [0.051, '#e4f9aa'],
+        [0.11, '#c3dd89'],
+        [0.151, '#8b9d61'],
+        [0.21, '#5c6642'],
       ]
     },
     socio: {
       property: '2_SocEcon',
       stops: [
-        [0, '#deebf7'],
-        [0.21, '#9ecae1'],
-        [0.41, '#4292c6'],
-        [0.61, '#2171b5'],
-        [0.81, '#08306b'],
+        [0, '#faddcd'],
+        [0.21, '#f5b79a'],
+        [0.41, '#f89e6c'],
+        [0.61, '#b8754e'],
+        [0.81, '#784d35'],
       ]
     },
     well: {
       property: '3_WeBeing',
       stops: [
-        [0, '#deebf7'],
-        [0.11, '#9ecae1'],
-        [0.21, '#4292c6'],
-        [0.31, '#2171b5'],
-        [0.41, '#08306b'],
+        [0, '#c1e7ed'],
+        [0.11, '#82d0d6'],
+        [0.21, '#50c4ce'],
+        [0.31, '#358a91'],
+        [0.41, '#1d4c4f'],
       ]
     }
   };
   private _getViewerMapLegendConf = {
     asset: [
-      [0, 5, '#deebf7'],
-      [5, 10, '#9ecae1'],
-      [10, 15, '#4292c6'],
-      [15, 20, '#2171b5'],
-      [20, 30, '#08306b'],
+      [0, 5, '#f1fbd5'],
+      [5, 10, '#e4f9aa'],
+      [10, 15, '#c3dd89'],
+      [15, 20, '#8b9d61'],
+      [20, 30, '#5c6642'],
     ],
     socio: [
-      [0, 20, '#deebf7'],
-      [20, 40, '#9ecae1'],
-      [40, 60, '#4292c6'],
-      [60, 80, '#2171b5'],
-      [80, 100, '#08306b'],
+      [0, 20, '#faddcd'],
+      [20, 40, '#f5b79a'],
+      [40, 60, '#f89e6c'],
+      [60, 80, '#b8754e'],
+      [80, 100, '#784d35'],
     ],
     well: [
-      [0, 10, '#deebf7'],
-      [10, 20, '#9ecae1'],
-      [20, 30, '#4292c6'],
-      [30, 40, '#2171b5'],
-      [40, 50, '#08306b'],
+      [0, 10, '#c1e7ed'],
+      [10, 20, '#82d0d6'],
+      [20, 30, '#50c4ce'],
+      [30, 40, '#358a91'],
+      [40, 50, '#1d4c4f'],
     ]
   };
   constructor() {
@@ -193,7 +193,8 @@ export class MapService {
   createMap(mapId: string) {
     this.map = new Map({
       container: mapId,
-      style: 'mapbox://styles/gfdrr-dashboard/cj59tfxrb686y2sp97c40f56d',
+      // style: 'mapbox://styles/gfdrr-dashboard/cj59tfxrb686y2sp97c40f56d',
+      style: 'mapbox://styles/gfdrr-dashboard/cj6qvntcf3umq2snyd8se5xir',
       center: [10, 35],
       zoom: 0.55
     });
