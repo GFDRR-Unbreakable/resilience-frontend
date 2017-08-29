@@ -54,6 +54,9 @@ nav,
 section {
   display: block;
 }
+footer .footer-logo {
+  margin-right: 15px;
+}
 
 h1 {
   font-size: 2em;
@@ -632,7 +635,7 @@ template {
    input[type=checkbox]:checked + label::after {
      -webkit-transform: rotate(180deg);
              transform: rotate(180deg);
-             color: #0dbd90;
+             color: #c3d700;
    }
    input[type=radio]:checked + label::after {
      -webkit-transform: rotateX(180deg);
@@ -644,10 +647,10 @@ template {
     display: -webkit-box;
   }
   .icon-hazard{
-    background: #E4F3F3 !important;
+    background: #7D8F8F !important;
     padding: 3% 4.5%;
     border-radius: 5px;
-    border: 1px solid #eaecf2 !important;
+    border: 1px solid #7D8F8F !important;
     margin-bottom: 12px;
     margin-right: 3px;
   }
@@ -819,8 +822,8 @@ template {
   padding: 0 23%;
 }
 .button-map {
-  background: #8691b4;
-  border-color: #8691b4;
+  background: #7D8F8F;
+  border-color: #7D8F8F;
   font-size: 11px !important;
   padding: 5px 10px !important;
   cursor: pointer;
@@ -829,8 +832,9 @@ template {
   margin-right: 17px;
 }
 .button-map:hover {
-  background: #353a48;
-  border-color: #353a48;
+  background: #f4f5fa;
+  color: #000;
+  border-color: #fff;
 }
 .box-button-pdf{
   position: absolute;
@@ -4889,6 +4893,7 @@ tbody.collapse.show {
 .navbar-inverse .navbar-brand,
 .navbar-inverse .navbar-toggler {
   color: white;
+  margin-top: 15px;
 }
 .navbar-inverse .navbar-brand:focus, .navbar-inverse .navbar-brand:hover,
 .navbar-inverse .navbar-toggler:focus,
@@ -10300,7 +10305,7 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
     margin-left: 22px;
 }
 .icon-img{
-  padding-right: 6px;
+  /* padding-right: 6px; */
   margin-top: -4px;
 }
 .navbar-nav .nav-item + .nav-item {
@@ -10539,7 +10544,13 @@ fieldset {
         fill: #666;
         fill-opacity: .8;
         stroke: #000;
-        stroke-width: 2px;
+        stroke-width: 4px;
+    }
+    #inputSoc-1 .resize.e path, #inputSoc-2 .resize.e path,
+    #inputVul-1 .resize.e path, #inputVul-2 .resize.e path,    
+    #inputEco-1 .resize.e path, #inputEco-2 .resize.e path,
+    #inputExp-1 .resize.e path, #inputExp-2 .resize.e path {
+      stroke: #7D8F8F;
     }
     #outputs-1 .resize.e path, #outputs-2 .resize.e path {
       stroke: #C3D700;
@@ -10635,7 +10646,7 @@ fieldset {
     #inputEco-1 g.mask path, #inputEco-2 g.mask path,
     #inputVul-1 g.mask path, #inputVul-2 g.mask path,    
     #inputExp-1 g.mask path, #inputExp-2 g.mask path {
-        fill: #C1D502;
+        fill: #50C4CF;
         opacity: 1;
     }
     div#outputs-1 table, div#outputs-2 table, div#risk table, div#risk_to_assets table, div#resilience table{
@@ -10738,7 +10749,14 @@ fieldset {
 }
 .about.modal-header {
   color: white;
-  background-color: #353A48
+  background-color: #485050
+}
+.about.modal-body {
+  color: white;
+  background-color: #4b5757;
+}
+.about .link {
+  color: #C3D700;
 }
 .pad-botTop10{
   padding: 10px 0;
