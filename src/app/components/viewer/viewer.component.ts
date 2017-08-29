@@ -36,6 +36,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   };
   public legends: Array<any> = [];
   private _selectedCountryList: Array<any> = [];
+  public sliderValues1Default = {};
+  public sliderValues2Default = {};
   public sliderValues1 = {};
   public sliderValues2 = {};
   public viewerDisplay = true;
@@ -43,6 +45,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     firstCountry: '',
     secondCountry: ''
   };
+  public viewerP1Default: any = {};
+  public viewerP2Default: any = {};
   public viewerP1: ViewerModel = {
     name: '',
     macro_gdp_pc_pp: 0,
@@ -454,6 +458,10 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
             };
           }
         }
+        this.viewerP1Default = Object.assign({}, this.viewerP1);
+        this.viewerP2Default = Object.assign({}, this.viewerP2);
+        this.sliderValues1Default = Object.assign({}, this.sliderValues1);
+        this.sliderValues2Default = Object.assign({}, this.sliderValues2);
       });
       this.chartService.createOutputChart(data._outputDomains, 'outputs-1');
       this.chartService.createOutputChart(data._outputDomains, 'outputs-2');
@@ -509,6 +517,31 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   // EVENTS
   onFirstCountryInputChangeEvent() {
     this._changeCountryInput(true);
+  }
+  onResetTechDataEvent() {
+    // Reset values
+    this.viewerModel.firstCountry = '';
+    this.viewerModel.secondCountry = '';
+    this.viewerP1 = Object.assign({}, this.viewerP1Default);
+    this.viewerP2 = Object.assign({}, this.viewerP2Default);
+    this.sliderValues1 = Object.assign({}, this.sliderValues1Default);
+    this.sliderValues2 = Object.assign({}, this.sliderValues2Default);
+    console.log(this.sliderValues1Default);
+    console.log(this.sliderValues2Default);
+    // Update states
+    this.store.dispatch({type: ViewerAction.EDIT_VIEWER, payload: this.viewerModel});
+    this.store.dispatch({type: ViewerAction.EDIT_VIEWER_MODEL_1, payload: this.viewerP1});
+    this.store.dispatch({type: ViewerAction.EDIT_VIEWER_MODEL_2, payload: this.viewerP2});
+    // Update charts
+    this.chartService.updateOutputCharts('outputs-1', 'global');
+    this.chartService.updateOutputCharts('outputs-2', 'global');
+    // Update map data
+    if (this._selectedCountryList.length) {
+      this._selectedCountryList.forEach(val => {
+        this.mapService.setMapFilterByISOCode(val.code);
+      });
+      this._selectedCountryList = [];
+    }
   }
   onSecondCountryInputChangeEvent() {
     this._changeCountryInput(false);
