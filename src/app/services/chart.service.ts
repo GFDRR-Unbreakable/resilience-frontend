@@ -1008,7 +1008,7 @@ export class ChartService {
         .on('brushend', brushend);
 
       const textFn = () => {
-        const percent = output.number_type === ('percent') ? ' % of GDP per Year' : '';
+        const percent = output.number_type === ('percent') ? ' %' : '';
         const precision = +output.precision;
         return (+brush.extent()[1] * 100).toFixed(precision) + percent;
       };
@@ -1541,7 +1541,7 @@ export class ChartService {
       const extent = +model[idx];
       brush.extent([0, extent]);
       const output = domains[idx];
-      const percent = output.number_type === ('percent') ? ' % of GDP per Year' : '';
+      const percent = output.number_type === ('percent') ? ' %' : '';
       const precision = +output.precision;
       jQuery(`#${containerId} #${idx} .text-number`).html((brush.extent()[1] * 100).toFixed(precision) + percent);
       const brushg = d3.selectAll(`#${containerId} svg#${idx} g.brush`);
