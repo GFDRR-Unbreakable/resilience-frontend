@@ -54,6 +54,9 @@ nav,
 section {
   display: block;
 }
+nav .logo-img{
+  width: 85%;
+}
 footer .footer-logo {
   margin-right: 15px;
 }
@@ -551,6 +554,9 @@ template {
   }
   .box-tab-gc{
     padding-bottom: 15px;
+  }
+  .slider-text {
+    font-size: 12px;
   }
 
  /* Acordeon styles viewer */
@@ -3941,10 +3947,10 @@ tbody.collapse.show {
   display: none;
   /*float: left;*/
   min-width: 8rem;
-  padding: 0.5rem 0;
+  padding: 0;
   margin: 0.125rem 0 0;
   font-size: 0.9375rem;
-  color: #373a3c;
+  color: #fff;
   text-align: left;
   list-style: none;
   background-color: #4b5757;
@@ -3965,7 +3971,7 @@ tbody.collapse.show {
 .dropdown-item {
   display: block;
   width: 100%;
-  padding: 3px 16px;
+  padding: 7px 16px;
   clear: both;
   font-weight: bold;
   color: #fff;
