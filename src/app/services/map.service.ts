@@ -12,19 +12,19 @@ export class MapService {
   private _layerId = 'all-country';
   private _layerHoverId = 'all-country-hover';
   private _layerFillId = 'all-country-fill';
-  private _layerSource = 'WB_Country_Polygons_2017';
-  private _sourceMapUrl = 'mapbox://gfdrr-dashboard.bccf048a';
+  private _layerSource = 'CountryPolygons2017';
+  private _sourceMapUrl = 'mapbox://gfdrr-dashboard.92jlkcug';
   private _MAX_COUNTRIES_SELECTED = 2;
   private _isoCodesArr = [];
   private _getViewerStyleConf = {
     asset: {
       property: '1_Assets',
       stops: [
-        [0, '#f1fbd5'],
-        [0.051, '#e4f9aa'],
-        [0.11, '#c3dd89'],
-        [0.151, '#8b9d61'],
-        [0.21, '#5c6642'],
+        [0.00005, '#f1fbd5'],
+        [0.00186, '#e4f9aa'],
+        [0.00267, '#c3dd89'],
+        [0.00506, '#8b9d61'],
+        [0.00869, '#5c6642']
       ]
     },
     socio: {
@@ -34,41 +34,41 @@ export class MapService {
         [0.21, '#f5b79a'],
         [0.41, '#f89e6c'],
         [0.61, '#b8754e'],
-        [0.81, '#784d35'],
+        [0.81, '#784d35']
       ]
     },
     well: {
       property: '3_WeBeing',
       stops: [
         [0, '#c1e7ed'],
-        [0.11, '#82d0d6'],
-        [0.21, '#50c4ce'],
-        [0.31, '#358a91'],
-        [0.41, '#1d4c4f'],
+        [0.011, '#82d0d6'],
+        [0.31, '#50c4ce'],
+        [0.61, '#358a91'],
+        [0.91, '#1d4c4f']
       ]
     }
   };
   private _getViewerMapLegendConf = {
     asset: [
-      [0, 5, '#f1fbd5'],
-      [5, 10, '#e4f9aa'],
-      [10, 15, '#c3dd89'],
-      [15, 20, '#8b9d61'],
-      [20, 30, '#5c6642'],
+      [0, 0.1, '#f1fbd5'],
+      [0.1, 0.25, '#e4f9aa'],
+      [0.25, 0.5, '#c3dd89'],
+      [0.5, 1, '#8b9d61'],
+      [1, 5, '#5c6642']
     ],
     socio: [
       [0, 20, '#faddcd'],
       [20, 40, '#f5b79a'],
       [40, 60, '#f89e6c'],
       [60, 80, '#b8754e'],
-      [80, 100, '#784d35'],
+      [80, 100, '#784d35']
     ],
     well: [
-      [0, 10, '#c1e7ed'],
-      [10, 20, '#82d0d6'],
-      [20, 30, '#50c4ce'],
-      [30, 40, '#358a91'],
-      [40, 50, '#1d4c4f'],
+      [0, 0.01, '#c1e7ed'],
+      [0.01, 0.3, '#82d0d6'],
+      [0.3, 0.6, '#50c4ce'],
+      [0.6, 0.9, '#358a91'],
+      [0.9, 1.8, '#1d4c4f']
     ]
   };
   constructor() {
@@ -99,7 +99,7 @@ export class MapService {
         'fill-color': '#ffe502',
         'fill-opacity': 1,
       },
-      filter: ['==', 'ISO_Code', ''],
+      filter: ['==', 'ISO_Codes', ''],
     });
     // Click-based country layer
     this.addVectorFillFromUrl({
@@ -249,12 +249,12 @@ export class MapService {
     return this._layerFillId;
   }
   setMapFilterByISOCode(isoCode) {
-    const defaultArr = ['in', 'ISO_Code'];
+    const defaultArr = ['in', 'ISO_Codes'];
     this.changeIsoCodeFilter(isoCode);
     this.map.setFilter(this._layerHoverId, [...defaultArr, ...this._isoCodesArr]);
   }
   setMapFilterByISOCodes(isoCodes) {
-    const defaultArr = ['in', 'ISO_Code'];
+    const defaultArr = ['in', 'ISO_Codes'];
     this.map.setFilter(this._layerId, [...defaultArr, ...isoCodes]);
     this.map.setFilter(this._layerFillId, [...defaultArr, ...isoCodes]);
   }

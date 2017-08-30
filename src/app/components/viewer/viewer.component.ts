@@ -483,7 +483,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       this.mapService.setClickFnMapEvent((ev) => {
         const features = self.mapService.getMap().queryRenderedFeatures(ev.point, {layers: [self.mapService.getViewerFillLayer()]});
         if (features.length) {
-          const isoCode = features[0].properties['ISO_Code'];
+          const isoCode = features[0].properties['ISO_Codes'];
+          console.log(features[0].properties['1_Assets']);
           const isoCodeList = this.countryListIsoCodes.filter(val => val === isoCode);
           if (isoCodeList.length) {
             self.changeCountryInputsByClick(isoCode);
