@@ -31,10 +31,11 @@
                <div class="map-legend">
                  <div *ngFor="let legend of legends">
                    <i class="mdi mdi-checkbox-blank float-left" [ngStyle]="{color: legend[2]}"></i>
-                   <span class="map-legend-text-first">{{legend[0]}}</span>
-                   <span class="map-legend-text-middle">-</span>
-                   <span class="map-legend-text-last">{{legend[1]}}</span>
-                   <span class="map-legend-text-percent">%</span>
+                   <span class="map-legend-text" *ngIf="legend[0] === 'No data'">{{legend[0]}}</span>
+                   <span class="map-legend-text-first" [hidden]="legend[0] === 'No data'">{{legend[0]}}</span>
+                   <span class="map-legend-text-middle" [hidden]="legend[0] === 'No data'">-</span>
+                   <span class="map-legend-text-last" [hidden]="legend[0] === 'No data'">{{legend[1]}}</span>
+                   <span class="map-legend-text-percent" [hidden]="legend[0] === 'No data'">%</span>
                    <br />
                  </div>
                </div>

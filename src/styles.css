@@ -10729,7 +10729,9 @@ fieldset {
   background-color: #4B5757;
   border: solid 5px #4B5757;
 }
-
+.map-legend-text {
+  padding: 0 6px;
+}
 .map-legend-text-first {
   width: 28px;
   text-align: center;
