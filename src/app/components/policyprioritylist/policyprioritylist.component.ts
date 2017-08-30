@@ -218,7 +218,7 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
 
       let sortType;
       if (sortSel === 2) {
-        sortType = 'DESC';
+        sortType = 'Descending';
         this.chartService.createPolicyListChart(data, chartId, {
           type: 'policyList',
           barType: barType,
@@ -232,7 +232,7 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
           this.sortUISelectedChart2 = -1;
         }
       } else if (sortSel === 1) {
-        sortType = 'ASC';
+        sortType = 'Ascending';
         this.chartService.createPolicyListChart(data, chartId, {
           type: 'policyList',
           barType: barType,

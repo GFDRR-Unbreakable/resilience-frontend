@@ -434,11 +434,11 @@ export class ChartService {
         return 920;
       }
     };
-    const w = isCountryListPercentageBased ? 550 : (isPolicyListObject ? 800 : 700);
+    const w = isCountryListPercentageBased ? 530 : (isPolicyListObject ? 800 : 700);
     const h = isCountryListObject ? recalculateChartHeight() : 1000;
     const margin = {
       left: isCountryListPercentageBased ? 50 : (isPolicyListObject ? 170 : 130),
-      right: 50,
+      right: 60,
       bottom: 50,
       top: 5
     };
@@ -518,20 +518,20 @@ export class ChartService {
     };
     // Sort data
     if (countryList.hasOwnProperty('barType') && countryList.hasOwnProperty('sort')) {
-      if (countryList['barType'] === '1' && countryList['sort'] === 'ASC') {
+      if (countryList['barType'] === '1' && countryList['sort'] === 'Ascending') {
         allData.sort((a, b) => {
           return isCountryListPercentageBased ? a.dWTotPercentage - b.dWTotPercentage : a.dWtot_currency - b.dWtot_currency;
         });
-      } else if (countryList['barType'] === '2' && countryList['sort'] === 'ASC') {
+      } else if (countryList['barType'] === '2' && countryList['sort'] === 'Ascending') {
         allData.sort((a, b) => {
           return isCountryListPercentageBased ? a.dKTotPercentage - b.dKTotPercentage : a.dKtot - b.dKtot;
         });
       }
-      if (countryList['barType'] === '1' && countryList['sort'] === 'DESC') {
+      if (countryList['barType'] === '1' && countryList['sort'] === 'Descending') {
         allData.sort((a, b) => {
           return isCountryListPercentageBased ? b.dWTotPercentage - a.dWTotPercentage : b.dWtot_currency - a.dWtot_currency;
         });
-      } else if (countryList['barType'] === '2' && countryList['sort'] === 'DESC') {
+      } else if (countryList['barType'] === '2' && countryList['sort'] === 'Descending') {
         allData.sort((a, b) => {
           return isCountryListPercentageBased ? b.dKTotPercentage - a.dKTotPercentage : b.dKtot - a.dKtot;
         });
@@ -564,7 +564,7 @@ export class ChartService {
           .attr('y', 0)
           .style('text-anchor', 'middle')
           .attr('transform', 'translate(' +
-            (isCountryListPercentageBased ? width / 2 : width / 3) + ', ' + (margin.bottom - spaceLblCh) + ')')
+            (isCountryListPercentageBased ? width / 2.5 : width / 3) + ', ' + (margin.bottom - spaceLblCh) + ')')
           .text(xDescLabel);
         // Adding y axis labels
         laneChart.append('g')
@@ -689,6 +689,14 @@ export class ChartService {
           .append('text')
           .classed('labels2', true);
       // Update phase
+      const formatNumericData = (data) => {
+        let value: any = Math.round(data / aMillion);
+        const aThousand = 1000;
+        if (value >= aThousand && value % aThousand !== 0) {
+          value = (value / aThousand).toString().replace('.', ',');
+        }
+        return value;
+      };
       eBar
         .selectAll('.empty-bar1')
         .transition()
@@ -800,14 +808,14 @@ export class ChartService {
         .duration(500)
         .ease('bounce')
         .attr('x', (d, i) => {
-          return width - 40;
+          return width - 50;
         })
         .attr('y', (d, i) => {
           return yLane(d.label) + barHeight - spaceBars;
         })
         .style('fill', '#6DCCDC')
         .text((d) => {
-          const data = isCountryListPercentageBased ? d.dWTotPercentage + '%' : Math.round(d.dWtot_currency / aMillion);
+          const data = isCountryListPercentageBased ? d.dWTotPercentage + '%' : '$' + formatNumericData(d.dWtot_currency);
           return data;
         });
       barLabels
@@ -816,14 +824,14 @@ export class ChartService {
         .duration(500)
         .ease('bounce')
         .attr('x', (d, i) => {
-          return width - 40;
+          return width - 50;
         })
         .attr('y', (d, i) => {
           return yLane(d.label) + (barHeight * 2) + spaceBars;
         })
         .style('fill', '#C3D700')
         .text((d) => {
-          const data = isCountryListPercentageBased ? d.dKTotPercentage + '%' : Math.round(d.dKtot / aMillion);
+          const data = isCountryListPercentageBased ? d.dKTotPercentage + '%' : '$' + formatNumericData(d.dKtot);
           return data;
         });
     };
@@ -926,21 +934,6 @@ export class ChartService {
           'translate(' + margin.left + ',' + margin.top + ')')
         .style('pointer-events', 'none')
         .style('border-bottom', '1px solid lightgrey');
-      // const gradient = svg.append('defs')
-      //   .append('linearGradient')
-      //   .attr('id', 'gradient-' + idx)
-      //   .attr('x1', '0%')
-      //   .attr('y1', '0%')
-      //   .attr('x2', '100%')
-      //   .attr('y2', '0%');
-      // gradient.append('stop')
-      //   .attr('offset', '0%')
-      //   .attr('stop-color', s1)
-      //   .attr('stop-opacity', 1);
-      // gradient.append('stop')
-      //   .attr('offset', '100%')
-      //   .attr('stop-color', s2)
-      //   .attr('stop-opacity', 1);
       // add gaussian curve
       const gaus = svg.append('g')
         .attr('id', idx)
@@ -977,8 +970,8 @@ export class ChartService {
         infoEl = tr.append('td')
           .attr('width', '100%');
         infoEl.append('p')
-        .attr('class', 'text-results')
-        .text(output.descriptor.toUpperCase());
+          .attr('class', 'text-results')
+          .text(output.descriptor.toUpperCase());
       } else {
         infoEl = table.append('tr');
         const tdEl = infoEl.append('td')
@@ -1008,9 +1001,11 @@ export class ChartService {
         .on('brushend', brushend);
 
       const textFn = () => {
-        const percent = output.number_type === ('percent') ? ' %' : '';
+        const isSocioEcoKey = idx === 'resilience' ? ' %' : ' % of GDP per Year';
+        const percent = output.number_type === ('percent') ? isSocioEcoKey : '';
         const precision = +output.precision;
-        return (+brush.extent()[1] * 100).toFixed(precision) + percent;
+        const value = (+brush.extent()[1] * 100).toFixed(precision) + percent;
+        return value;
       };
 
       if (!isScoreCardPage) {
@@ -1541,9 +1536,11 @@ export class ChartService {
       const extent = +model[idx];
       brush.extent([0, extent]);
       const output = domains[idx];
-      const percent = output.number_type === ('percent') ? ' %' : '';
+      const isSocioEcoKey = idx === 'resilience' ? ' %' : ' % of GDP per Year';
+      const percent = output.number_type === ('percent') ? isSocioEcoKey : '';
       const precision = +output.precision;
-      jQuery(`#${containerId} #${idx} .text-number`).html((brush.extent()[1] * 100).toFixed(precision) + percent);
+      const value = (brush.extent()[1] * 100).toFixed(precision) + percent;
+      jQuery(`#${containerId} #${idx} .text-number`).html(value);
       const brushg = d3.selectAll(`#${containerId} svg#${idx} g.brush`);
       brushg.transition()
         .duration(750)

@@ -138,7 +138,7 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
     data = Object.assign({}, finalRegionObj, data);
     let sortType;
     if (sortSel === 2) {
-      sortType = 'DESC';
+      sortType = 'Descending';
       this.chartService.createPolicyListChart(data, 'policyMeasure0', {
         type: 'million',
         barType: barType,
@@ -154,7 +154,7 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
       this[chartLbl] = sortType;
       this.sortUISelected = -1;
     } else if (sortSel === 1) {
-      sortType = 'ASC';
+      sortType = 'Ascending';
       this.chartService.createPolicyListChart(data, 'policyMeasure0', {
         type: 'million',
         barType: barType,

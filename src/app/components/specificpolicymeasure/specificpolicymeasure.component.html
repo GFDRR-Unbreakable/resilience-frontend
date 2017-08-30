@@ -9,7 +9,7 @@
             <div class="dropdown-menu dropdown-politics-menu" aria-labelledby="dropdownPolicy">
                 <div class="list" *ngFor="let policy of policyGroupUIList; let aIndex = index">
                     <button (click)="onScorecardPolicyChange(policy)" class="dropdown-item dropdown-politics-item">{{policy.label}}</button>
-                    <div *ngIf="aIndex !== policyGroupUIList.length - 1" class="dropdown-divider-1"></div>
+                    <!-- <div *ngIf="aIndex !== policyGroupUIList.length - 1" class="dropdown-divider-1"></div> -->
                 </div>
             </div>
          </div>
@@ -19,21 +19,8 @@
             <div class="dropdown-menu dropdown-politics-menu" aria-labelledby="dropdownBasic1">
                 <div class="list" *ngFor="let region of regionUIList; let aIndex = index">
                     <button (click)="onScorecardRegionChange(region)" class="dropdown-item dropdown-politics-item">{{region.label}}</button>
-                    <div *ngIf="aIndex !== regionUIList.length - 1" class="dropdown-divider-1"></div>
+                    <!-- <div *ngIf="aIndex !== regionUIList.length - 1" class="dropdown-divider-1"></div> -->
                 </div>
-               <!-- <button class="dropdown-item dropdown-politics-item">East Asia & Pacific</button>
-               <div class="dropdown-divider-1"></div>
-               <button class="dropdown-item dropdown-politics-item">Europe & Central Asia</button>
-               <div class="dropdown-divider-1"></div>
-               <button class="dropdown-item dropdown-politics-item">Latin America & Caribbean</button>
-               <div class="dropdown-divider-1"></div>
-               <button class="dropdown-item dropdown-politics-item">Middle East & North Africa</button>
-               <div class="dropdown-divider-1"></div>
-               <button class="dropdown-item dropdown-politics-item">North America</button>
-               <div class="dropdown-divider-1"></div>
-               <button class="dropdown-item dropdown-politics-item">South Asia</button>
-               <div class="dropdown-divider-1"></div>
-               <button class="dropdown-item dropdown-politics-item">Sub-Saharan Africa</button> -->
             </div>
          </div>
          <button type="button" class="btn btn-primary text-download box-button-pdf"><img class="img-download" src="assets/image/ic-download.png" alt="">PDF</button>
