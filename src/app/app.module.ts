@@ -28,6 +28,7 @@ import {LoadingMaskService} from './services/loadingmask.service';
 export function httpServiceFactory(backend: XHRBackend, defaultOptions: RequestOptions, loadingMaskService: LoadingMaskService) {
   return new WebService(backend, defaultOptions, loadingMaskService);
 }
+import {FileService} from './services/files.service';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ export function httpServiceFactory(backend: XHRBackend, defaultOptions: RequestO
       deps: [XHRBackend, RequestOptions, LoadingMaskService]
     },
     MapService,
-    ChartService
+    ChartService,
+    FileService
   ],
   bootstrap: [AppComponent]
 })

@@ -162,24 +162,6 @@ export class ChartService {
       const tr = table.append('tr')
         .style('pointer-events', 'none');
 
-      // tr.append('td')
-      //   .attr('width', '55%')
-      //   .append('span')
-      //   .attr('class', 'descriptor')
-      //   .style('pointer-events', 'all')
-      //   .text(input.descriptor);
-
-      // tr.append('td')
-      //   .attr('width', '15%')
-      //   .append('span')
-      //   .attr('class', 'value')
-      //   .style('pointer-events', 'none')
-        // .text(' ');
-
-      // const td = tr.append('td')
-      //   .attr('width', '30%')
-      //   .style('pointer-events', 'none');
-
         const td = tr.append('td')
         .attr('width', '50%')
         .style('padding-left', '5px')
@@ -853,6 +835,12 @@ export class ChartService {
     jQuery.each(finalOutput, (idx, output) => {
       const s1 = output.gradient[0];
       const s2 = output.gradient[1];
+      if (!this._outputDomains[idx]['chart']) {
+        this._outputDomains[idx]['chart'] = {};
+      }
+      if (!this._outputDomains[idx]['chart'][containerId]) {
+        this._outputDomains[idx]['chart'][containerId] = '';
+      }
       // sort the distribution
       const data: Array<number> = output.domain.sort((a, b) => {
         return a - b;
@@ -958,7 +946,6 @@ export class ChartService {
         .attr('d', (d) => {
           return a(kde.bandwidth(d)(data));
         });
-        // .style('fill', 'url(#gradient-' + idx + ')');
       // add placeholder for initial model value
       const initial = svg.append('g')
         .attr('id', 'initial-' + idx)
@@ -1004,7 +991,9 @@ export class ChartService {
         const isSocioEcoKey = idx === 'resilience' ? ' %' : ' % of GDP per Year';
         const percent = output.number_type === ('percent') ? isSocioEcoKey : '';
         const precision = +output.precision;
-        const value = (+brush.extent()[1] * 100).toFixed(precision) + percent;
+        const numericValue = (+brush.extent()[1] * 100).toFixed(precision);
+        const value = numericValue + percent;
+        this._outputDomains[idx]['chart'][containerId] = numericValue;
         return value;
       };
 
@@ -1132,6 +1121,13 @@ export class ChartService {
         'k_cat_info__poor', 'k_cat_info__nonpoor', 'hazard_ratio_flood_poor', 'hazard_ratio_fa__flood',
         'v_cat_info__poor', 'v_cat_info__nonpoor', 'hazard_ratio_fa__earthquake', 'hazard_ratio_fa__tsunami', 'hazard_ratio_fa__wind'
       ],
+      'inputTypes' : {
+        'inputSoc': ['gamma_SP_cat_info__poor', 'macro_tau_tax', 'macro_borrow_abi', 'macro_prepare_scaleup', 'macro_T_rebuild_K'],
+        'inputEco': ['axfin_cat_info__poor', 'axfin_cat_info__nonpoor', 'k_cat_info__poor', 'k_cat_info__nonpoor'],
+        'inputVul': ['v_cat_info__poor', 'v_cat_info__nonpoor', 'shew_for_hazard_ratio'],
+        'inputExp': ['hazard_ratio_flood_poor', 'hazard_ratio_fa__flood', 'hazard_ratio_fa__earthquake', 'hazard_ratio_fa__tsunami',
+          'hazard_ratio_fa__wind']
+      },
       'policyList': [
         {'id': '_exp095', 'label': 'Reduce vulnerability of the poor by 5% of their current exposure', 'mapping': 'v_cat_info__poor'},
         {'id': '_exr095', 'label': 'Reduce vulnerability of the rich by 5% of their current exposure', 'mapping': 'v_cat_info__nonpoor'},
@@ -1172,14 +1168,8 @@ export class ChartService {
     return this._inputDataProm$;
   }
   getInputIdChartByType(type: string) {
-    const inputType = {
-      inputSoc: ['gamma_SP_cat_info__poor', 'macro_tau_tax', 'macro_borrow_abi', 'macro_prepare_scaleup', 'macro_T_rebuild_K'],
-      inputEco: ['axfin_cat_info__poor', 'axfin_cat_info__nonpoor', 'k_cat_info__poor', 'k_cat_info__nonpoor'],
-      inputVul: ['v_cat_info__poor', 'v_cat_info__nonpoor', 'shew_for_hazard_ratio'],
-      inputExp: ['hazard_ratio_flood_poor', 'hazard_ratio_fa__flood', 'hazard_ratio_fa__earthquake', 'hazard_ratio_fa__tsunami',
-        'hazard_ratio_fa__wind']
-    };
-    return inputType[type];
+    const inputTypes = this.getChartsConf().inputTypes;
+    return inputTypes[type];
   }
   getInputPModelData(data: ViewerModel): Observable<Response> {
     const url = SERVER.URL.BASE_SERVER_PY + SERVER.URL.SERVER_INPUT_PY;
@@ -1539,7 +1529,9 @@ export class ChartService {
       const isSocioEcoKey = idx === 'resilience' ? ' %' : ' % of GDP per Year';
       const percent = output.number_type === ('percent') ? isSocioEcoKey : '';
       const precision = +output.precision;
-      const value = (brush.extent()[1] * 100).toFixed(precision) + percent;
+      const numericValue = (brush.extent()[1] * 100).toFixed(precision);
+      const value = numericValue + percent;
+      this._outputDomains[idx]['chart'][containerId] = numericValue;
       jQuery(`#${containerId} #${idx} .text-number`).html(value);
       const brushg = d3.selectAll(`#${containerId} svg#${idx} g.brush`);
       brushg.transition()

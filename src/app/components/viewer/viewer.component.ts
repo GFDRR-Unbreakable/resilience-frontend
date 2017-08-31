@@ -10,6 +10,7 @@ import {map} from 'rxjs/operator/map';
 import {debounceTime} from 'rxjs/operator/debounceTime';
 import {distinctUntilChanged} from 'rxjs/operator/distinctUntilChanged';
 import {MapService} from '../../services/map.service';
+import {FileService} from '../../services/files.service';
 // import {NgbSlideEvent} from '@ng-bootstrap/ng-bootstrap';
 import {ChartService} from '../../services/chart.service';
 import {Subscription} from 'rxjs/Subscription';
@@ -163,7 +164,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     private mapService: MapService,
     private chartService: ChartService,
-    private store: Store<AppStore>) {
+    private store: Store<AppStore>,
+    private fileService: FileService) {
       this.viewer$ = store.select('viewer');
       this.viewerModel1$ = store.select('viewerModel1');
       this.viewerModel2$ = store.select('viewerModel2');
@@ -473,6 +475,70 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       console.log(err);
     });
   }
+  private processCSVJSONData() {
+    const outputData = this.chartService.getOutputData();
+    const chartConf = this.chartService.getChartsConf();
+    const inputData = this.chartService.getInputData();
+    const inputTypes = chartConf.inputTypes;
+    const firstInput = this.viewerModel.firstCountry;
+    const secondInput = this.viewerModel.secondCountry;
+    const data = {
+      country1: {
+        name: '',
+        outputs: {},
+        inputs: {}
+      },
+      country2: {
+        name: '',
+        outputs: {},
+        inputs: {}
+      }
+    };
+    const countryFInput = this._selectedCountryList.filter(val => {
+      return val.name.toLowerCase() === firstInput.toLowerCase();
+    });
+    const countrySInput = this._selectedCountryList.filter(val => {
+      return val.name.toLowerCase() === secondInput.toLowerCase();
+    });
+    data.country1.name = !firstInput || countryFInput.length === 0 ? 'Global' : firstInput;
+    data.country2.name = !secondInput || countrySInput.length === 0 ? 'Global' : secondInput;
+    jQuery.each(outputData, (key, out) => {
+      if (!data.country1.outputs[key]) {
+        data.country1.outputs[key] = {};
+      }
+      if (!data.country2.outputs[key]) {
+        data.country2.outputs[key] = {};
+      }
+      data.country1.outputs[key]['value'] = out.chart['outputs-1'];
+      data.country1.outputs[key]['label'] = out.descriptor;
+      data.country2.outputs[key]['value'] = out.chart['outputs-2'];
+      data.country2.outputs[key]['label'] = out.descriptor;
+    });
+    jQuery.each(inputTypes, (key, inputT) => {
+      if (!data.country1.inputs[key]) {
+        data.country1.inputs[key] = {};
+      }
+      if (!data.country2.inputs[key]) {
+        data.country2.inputs[key] = {};
+      }
+      inputT.forEach(inpKey => {
+        const label = inputData.filter(val => {
+          return val.key === inpKey;
+        })[0].descriptor;
+        if (!data.country1.inputs[key][inpKey]) {
+          data.country1.inputs[key][inpKey] = {};
+        }
+        if (!data.country2.inputs[key][inpKey]) {
+          data.country2.inputs[key][inpKey] = {};
+        }
+        data.country1.inputs[key][inpKey]['label'] = label;
+        data.country1.inputs[key][inpKey]['value'] = this.sliderValues1[inpKey].value;
+        data.country2.inputs[key][inpKey]['label'] = label;
+        data.country2.inputs[key][inpKey]['value'] = this.sliderValues2[inpKey].value;
+      });
+    });
+    return data;
+  }
   setMapConf() {
     const self = this;
     this.mapService.addStylesOnMapLoading(() => {
@@ -484,7 +550,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         const features = self.mapService.getMap().queryRenderedFeatures(ev.point, {layers: [self.mapService.getViewerFillLayer()]});
         if (features.length) {
           const isoCode = features[0].properties['ISO_Codes'];
-          console.log(features[0].properties['1_Assets']);
           const isoCodeList = this.countryListIsoCodes.filter(val => val === isoCode);
           if (isoCodeList.length) {
             self.changeCountryInputsByClick(isoCode);
@@ -516,6 +581,21 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
   // EVENTS
+  onDownloadCSVViewerReportEvent() {
+    const data = this.processCSVJSONData();
+    this.fileService.getViewerCSVFile(data).subscribe(csvData => {
+      const blob = new Blob([csvData]);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.setAttribute('href', url);
+      a.setAttribute('download', 'viewer_report.csv');
+      document.body.appendChild(a);
+      a.click();
+    });
+  }
+  onDownloadPDFViewerReportEvent() {
+    //
+  }
   onFirstCountryInputChangeEvent() {
     this._changeCountryInput(true);
   }
@@ -527,8 +607,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.viewerP2 = Object.assign({}, this.viewerP2Default);
     this.sliderValues1 = Object.assign({}, this.sliderValues1Default);
     this.sliderValues2 = Object.assign({}, this.sliderValues2Default);
-    console.log(this.sliderValues1Default);
-    console.log(this.sliderValues2Default);
     // Update states
     this.store.dispatch({type: ViewerAction.EDIT_VIEWER, payload: this.viewerModel});
     this.store.dispatch({type: ViewerAction.EDIT_VIEWER_MODEL_1, payload: this.viewerP1});

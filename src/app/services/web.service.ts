@@ -89,7 +89,11 @@ export class WebService extends Http {
   private getServerURL(url: string) {
     return SERVER.URL.BASE + url;
   }
-
+  getJSONOptions() {
+    const headers = new Headers({'Content-Type': 'application/json'});
+    const options = new RequestOptions({headers: headers});
+    return options;
+  }
   getDefaultFormOptions() {
     const headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
     const options = new RequestOptions({headers: headers});
