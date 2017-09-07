@@ -196,7 +196,7 @@ export class MapService {
   createMap(mapId: string) {
     this.map = new Map({
       container: mapId,
-      // style: 'mapbox://styles/gfdrr-dashboard/cj59tfxrb686y2sp97c40f56d',
+      preserveDrawingBuffer: true,
       style: 'mapbox://styles/gfdrr-dashboard/cj6qvntcf3umq2snyd8se5xir',
       center: [10, 35],
       zoom: 0.55

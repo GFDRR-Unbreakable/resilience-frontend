@@ -74,6 +74,13 @@ export class ChartService {
         return val.key === type;
       })[0];
     });
+    // Reorder input properties
+    jQuery.each(filterInputType, (key, val) => {
+      val.propInd = inputTypes.indexOf(val.key);
+    });
+    filterInputType.sort((a, b) => {
+      return a.propInd - b.propInd;
+    });
     jQuery.each(filterInputType, (idx, input) => {
       const dataArr = [];
       for (let k = 0; k < input.distribGroupArr.length; k++) {
@@ -167,37 +174,44 @@ export class ChartService {
         .style('padding-left', '5px')
         .style('pointer-events', 'none');
 
-        tr.append('td')
+      tr.append('td')
           .attr('width', '50%')
           .style('padding', '0')
           .style('vertical-align', 'middle')
           .append('span')
-          .attr('class', 'value')
-          .style('pointer-events', 'none')
-          .text(' ');
+            .attr('class', 'value')
+            .style('pointer-events', 'none')
+            .text(' ');
 
-        const svg = td.append('svg')
-          .attr('width', width + margin.left + margin.right)
-          .attr('height', height + margin.top + margin.bottom)
-          .attr('id', input.key)
-          .style('pointer-events', 'none')
-          .append('g')
+      const svg = td.append('svg')
+        .attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom)
+        .attr('id', input.key)
+        .attr('xmlns', 'http://www.w3.org/2000/svg')
+        .style('pointer-events', 'none')
+        .append('g')
           .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
 		  // add gaussian curve
-        const gaus = svg.append('g')
-          .attr('id', input.key)
-          .attr('class', 'gaussian');
+      const gaus = svg.append('g')
+        .attr('id', input.key)
+        .attr('class', 'gaussian');
 
-        gaus.selectAll('#' + containerId + ' g#' + input.key + '.gaussian')
+      gaus.selectAll('#' + containerId + ' g#' + input.key + '.gaussian')
         // Multivariant Density Estimation
         // http://bit.ly/1Y3jEcD
         .data([science.stats.bandwidth.nrd0])
         .enter()
         .append('path')
-        .attr('d', (d) => {
-          return l(kde.bandwidth(d)(data));
-        });
+          .attr('d', (d) => {
+            return l(kde.bandwidth(d)(data));
+          });
+
+      gaus.selectAll('path')
+        .style('stroke', '#000')
+        .style('stroke-width', '3px')
+        .style('fill', 'none')
+        .style('shape-rendering', 'auto');
 
       // add gaussian curve
       const area = svg.append('g')
@@ -208,10 +222,12 @@ export class ChartService {
         .data([science.stats.bandwidth.nrd0])
         .enter()
         .append('path')
-        .attr('d', (d) => {
-          const dd = kde.bandwidth(d)(data);
-          return a(dd);
-        });
+          .attr('d', (d) => {
+            const dd = kde.bandwidth(d)(data);
+            return a(dd);
+          });
+      area.selectAll('path')
+        .style('fill', '#E6E8EF');
 
       const mask = svg.append('g')
         .attr('id', 'mask-' + input.key)
@@ -266,10 +282,19 @@ export class ChartService {
       brushg.selectAll('#' + containerId + ' g.resize.w').remove();
 
       brushg.select('#' + containerId + ' #' + input.key + ' g.resize.e').append('path')
-        .attr('d', line);
+        .attr('d', line)
+        .style('fill', '#666')
+        .style('fill-opacity', '0.8')
+        .style('stroke-width', '4px')
+        .style('stroke', '#7D8F8F')
+        .style('pointer-events', 'none');
 
       brushg.selectAll('#' + containerId + ' rect')
         .attr('height', height);
+
+      brushg.select('rect.extent')
+        .style('fill-opacity', '0')
+        .style('shape-rendering', 'crispEdges');
 
       brushg.style('pointer-events', 'none');
       const brushEl = brushg[0][0];
@@ -916,12 +941,14 @@ export class ChartService {
       const svg = td.append('svg')
         .attr('width', width + margin.left + margin.right)
         .attr('height', height + margin.top + margin.bottom)
+        // xmlns="http://www.w3.org/2000/svg"
+        .attr('xmlns', 'http://www.w3.org/2000/svg')
         .attr('id', idx)
-        .append('g')
-        .attr('transform',
-          'translate(' + margin.left + ',' + margin.top + ')')
-        .style('pointer-events', 'none')
-        .style('border-bottom', '1px solid lightgrey');
+          .append('g')
+            .attr('transform',
+              'translate(' + margin.left + ',' + margin.top + ')')
+            .style('pointer-events', 'none')
+            .style('border-bottom', '1px solid lightgrey');
       // add gaussian curve
       const gaus = svg.append('g')
         .attr('id', idx)
@@ -935,6 +962,12 @@ export class ChartService {
         .attr('d', (d) => {
           return l(kde.bandwidth(d)(data));
         });
+      // Add manually chart styles to be integrated when converting to base64 string
+      gaus.selectAll('path')
+        .style('stroke', '#000')
+        .style('stroke-width', '3px')
+        .style('fill', 'none')
+        .style('shape-rendering', 'auto');
       // add gaussian curve
       const area = svg.append('g')
         .attr('id', 'area-' + idx)
@@ -946,11 +979,20 @@ export class ChartService {
         .attr('d', (d) => {
           return a(kde.bandwidth(d)(data));
         });
+      // Add manually chart styles to be integrated when converting to base64 string
+      area.selectAll('path')
+        .style('fill', '#5E6A6A');
       // add placeholder for initial model value
       const initial = svg.append('g')
         .attr('id', 'initial-' + idx)
         .attr('class', 'initial')
         .append('line');
+      // Add manually chart styles to be integrated when converting to base64 string
+      svg.selectAll('g.initial line')
+        .style('fill', 'none')
+        .style('stroke', '#2f4f4f')
+        .style('stroke-width', '2px')
+        .style('opacity', '0.8');
 
       let infoEl;
       if (!isScoreCardPage) {
@@ -983,9 +1025,9 @@ export class ChartService {
       const brush = d3.svg.brush()
         .x(x)
         .extent([0, d3.mean(data)])
-        .on('brushstart', brushstart)
+        // .on('brushstart', brushstart)
         .on('brush', brushmove)
-        .on('brushend', brushend);
+        // .on('brushend', brushend);
 
       const textFn = () => {
         const isSocioEcoKey = idx === 'resilience' ? ' %' : ' % of GDP per Year';
@@ -1037,10 +1079,18 @@ export class ChartService {
         .call(brush.event);
 
       brushg.selectAll('#' + containerId + ' g.resize.w').remove();
-
+      // Add manually chart styles to be integrated when converting to base64 string
       brushg.select('#' + containerId + ' #' + idx + ' g.resize.e').append('path')
         .attr('d', line)
+        .style('fill', '#666')
+        .style('fill-opacity', '0.8')
+        .style('stroke-width', '4px')
+        .style('stroke', '#C3D700')
         .style('pointer-events', 'none');
+      // Add manually chart styles to be integrated when converting to base64 string
+      brushg.select('rect.extent')
+        .style('fill-opacity', '0')
+        .style('shape-rendering', 'crispEdges');
 
       brushg.selectAll('#' + containerId + ' rect')
         .attr('height', height)
@@ -1090,6 +1140,31 @@ export class ChartService {
       }
     }
     return filteredInputDomains;
+  }
+  formatSVGChartBase64Strings(chartId, isFromOutputChart, inChartId?) {
+    const id1 = isFromOutputChart ? 'outputs-1' : `${chartId}-1`;
+    const id2 = isFromOutputChart ? 'outputs-2' : `${chartId}-2`;
+    const chartCtn1 = jQuery(`#${id1}`);
+    const chartCtn2 = jQuery(`#${id2}`);
+    const chart1 = chartCtn1.find('svg');
+    const chart2 = chartCtn2.find('svg');
+    const filterFn = (idx, svg) => {
+      const id = isFromOutputChart ? chartId : inChartId;
+      return svg.id === id;
+    };
+    const ch1 = chart1.filter(filterFn)[0];
+    const ch2 = chart2.filter(filterFn)[0];
+    const svgPrefixStr = "data:image/svg+xml;base64,";
+    const ch1XMLStr = new XMLSerializer().serializeToString(ch1);
+    const ch1Fmt = window.btoa(ch1XMLStr);
+    const ch1Str = svgPrefixStr + ch1Fmt;
+    const ch2XMLStr = new XMLSerializer().serializeToString(ch2);
+    const ch2Fmt = window.btoa(ch2XMLStr);
+    const ch2Str = svgPrefixStr + ch2Fmt;
+    return {
+      chart1: <string> ch1Str,
+      chart2: <string> ch2Str
+    };
   }
   getGlobalModelData() {
     return this._globalModelData;
@@ -1294,10 +1369,12 @@ export class ChartService {
       mask.selectAll('#' + containerId + ' g#mask-' + input.key + '.mask')
         .data([science.stats.bandwidth.nrd0])
         .enter()
-        .append('path')
-        .attr('d', (d) => {
-          return toUpd.a(toUpd.kde.bandwidth(d)(selected));
-        });
+          .append('path')
+          .style('fill', '#50C4CF')
+          .style('opacity', '1')
+          .attr('d', (d) => {
+            return toUpd.a(toUpd.kde.bandwidth(d)(selected));
+          });
       d3.select('#' + containerId + ' #' + input.key + ' g.resize.e path')
         .attr('d', 'M 0, 0 ' + ' L 0 ' + input.height);
       const span = jQuery('#' + containerId + ' #table-' + input.key + ' span.value');

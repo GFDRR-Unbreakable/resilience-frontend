@@ -36,6 +36,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     hazard4: true
   };
   public legends: Array<any> = [];
+  public mapSlideUISelected = 'socio';
   private _selectedCountryList: Array<any> = [];
   public sliderValues1Default = {};
   public sliderValues2Default = {};
@@ -475,14 +476,14 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       console.log(err);
     });
   }
-  private processCSVJSONData() {
+  private processForFileJSONData(isPDF?: boolean): any {
     const outputData = this.chartService.getOutputData();
     const chartConf = this.chartService.getChartsConf();
     const inputData = this.chartService.getInputData();
     const inputTypes = chartConf.inputTypes;
     const firstInput = this.viewerModel.firstCountry;
     const secondInput = this.viewerModel.secondCountry;
-    const data = {
+    const data: any = {
       country1: {
         name: '',
         outputs: {},
@@ -494,6 +495,13 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         inputs: {}
       }
     };
+    if (isPDF) {
+      data.map = {
+        chart: document.querySelector('canvas').toDataURL(),
+        type: this.mapSlideUISelected
+      };
+    }
+    data.page = this.viewerDisplay ? 'viewer' : 'tech';
     const countryFInput = this._selectedCountryList.filter(val => {
       return val.name.toLowerCase() === firstInput.toLowerCase();
     });
@@ -513,6 +521,11 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       data.country1.outputs[key]['label'] = out.descriptor;
       data.country2.outputs[key]['value'] = out.chart['outputs-2'];
       data.country2.outputs[key]['label'] = out.descriptor;
+      if (isPDF) {
+        const chObj = this.chartService.formatSVGChartBase64Strings(key, true);
+        data.country1.outputs[key]['chart'] = chObj.chart1;
+        data.country2.outputs[key]['chart'] = chObj.chart2;
+      }
     });
     jQuery.each(inputTypes, (key, inputT) => {
       if (!data.country1.inputs[key]) {
@@ -532,9 +545,27 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           data.country2.inputs[key][inpKey] = {};
         }
         data.country1.inputs[key][inpKey]['label'] = label;
-        data.country1.inputs[key][inpKey]['value'] = this.sliderValues1[inpKey].value;
         data.country2.inputs[key][inpKey]['label'] = label;
-        data.country2.inputs[key][inpKey]['value'] = this.sliderValues2[inpKey].value;
+
+        data.country1.inputs[key][inpKey]['value'] = this.sliderValues1[inpKey + '_display_value'];
+        data.country2.inputs[key][inpKey]['value'] = this.sliderValues2[inpKey + '_display_value'];
+        if (data.page === 'viewer') {
+          data.country1.inputs[key][inpKey]['value'] = this.sliderValues1[inpKey].value;
+          data.country2.inputs[key][inpKey]['value'] = this.sliderValues2[inpKey].value;
+        }
+
+        if (isPDF) {
+          if (data.page === 'viewer') {
+            const chObj = this.chartService.formatSVGChartBase64Strings(key, false, inpKey);
+            data.country1.inputs[key][inpKey]['chart'] = chObj.chart1;
+            data.country2.inputs[key][inpKey]['chart'] = chObj.chart2;
+          } else {
+            data.country1.inputs[key][inpKey]['min'] = this.sliderValues1[inpKey]['min'];
+            data.country1.inputs[key][inpKey]['max'] = this.sliderValues1[inpKey]['max'];
+            data.country2.inputs[key][inpKey]['min'] = this.sliderValues2[inpKey]['min'];
+            data.country2.inputs[key][inpKey]['max'] = this.sliderValues2[inpKey]['max'];
+          }
+        }
       });
     });
     return data;
@@ -582,19 +613,45 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   // EVENTS
   onDownloadCSVViewerReportEvent() {
-    const data = this.processCSVJSONData();
+    const data = this.processForFileJSONData();
     this.fileService.getViewerCSVFile(data).subscribe(csvData => {
-      const blob = new Blob([csvData]);
+      const blob = new Blob(['\ufeff', csvData]);
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.setAttribute('href', url);
       a.setAttribute('download', 'viewer_report.csv');
       document.body.appendChild(a);
       a.click();
+      setTimeout(() => {
+        window.URL.revokeObjectURL(url);
+      }, 1000);
     });
   }
   onDownloadPDFViewerReportEvent() {
-    //
+    const data = this.processForFileJSONData(true);
+    console.log(data);
+    this.fileService.getViewerPDFFile(data).subscribe(pdfData => {
+      const byteString = window.atob(pdfData);
+      // Convert that text into a byte array.
+      const ab = new ArrayBuffer(byteString.length);
+      const ia = new Uint8Array(ab);
+      for (let i = 0; i < byteString.length; i++) {
+          ia[i] = byteString.charCodeAt(i);
+      }
+      const blob = new Blob([ia], {
+        type: 'application/octet-stream;'
+      });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      console.log('url', url);
+      document.body.appendChild(a);
+      a.href = url;
+      a.download = 'viewer_report.pdf';
+      a.click();
+      setTimeout(() => {
+        window.URL.revokeObjectURL(url);
+      }, 1000);
+    });
   }
   onFirstCountryInputChangeEvent() {
     this._changeCountryInput(true);
@@ -628,6 +685,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   onSlideChangeEvent($event) {
     let currentSlideId = $event.current;
     currentSlideId = currentSlideId.split('-')[0];
+    this.mapSlideUISelected = currentSlideId;
     const layerPaintProp = 'fill-color';
     this.mapService.changeLayerStyle({
       property: layerPaintProp,
