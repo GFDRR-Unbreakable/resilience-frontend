@@ -16,6 +16,7 @@ import {ChartService} from '../../services/chart.service';
 import {Subscription} from 'rxjs/Subscription';
 import {Store} from '@ngrx/store';
 import {AppStore} from '../../store/default.store';
+import * as enablePassiveEvent from 'default-passive-events/default-passive-events.js';
 
 @Component({
   selector: 'app-viewer',
@@ -149,6 +150,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   public viewerSubs: Subscription;
   public viewerModel1Subs: Subscription;
   public viewerModel2Subs: Subscription;
+  private onPassEv = e => { /*e.preventDefault();*/ };
   public searchCountryFn = (text$: Observable<string>) => {
     const debounceTimeFn = debounceTime.call(text$, 200);
     const distinctUntilChangedFn = distinctUntilChanged.call(debounceTimeFn);
@@ -175,12 +177,14 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     this.mapService.createMap('map');
     this.setMapConf();
+    // this.addElPassiveEvents();
   }
   ngOnDestroy() {
     this.getOutputDataSubs.unsubscribe();
     this.viewerSubs.unsubscribe();
     this.viewerModel1Subs.unsubscribe();
     this.viewerModel2Subs.unsubscribe();
+    // this.removeElPassiveEvents();
   }
   ngAfterViewInit() {
     this.setViewerObservableConf();
@@ -301,6 +305,13 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     }
+  }
+  addElPassiveEvents() {
+    const options: any = {passive: true};
+    document.addEventListener('touchstart', this.onPassEv, options);
+    document.addEventListener('touchmove', this.onPassEv, options);
+    document.addEventListener('wheel', this.onPassEv, options);
+    document.addEventListener('wheelmove', this.onPassEv, options);
   }
   changeCountryInputsByClick(isoCode) {
     const filterISOCode = this.countryListComp.filter(val => val.code === isoCode);
@@ -493,6 +504,12 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         name: '',
         outputs: {},
         inputs: {}
+      },
+      selectedHazards: {
+        hazard1: this.hazards.hazard1,
+        hazard2: this.hazards.hazard2,
+        hazard3: this.hazards.hazard3,
+        hazard4: this.hazards.hazard4
       }
     };
     if (isPDF) {
@@ -569,6 +586,12 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       });
     });
     return data;
+  }
+  private removeElPassiveEvents() {
+    document.removeEventListener('touchstart', this.onPassEv);
+    document.removeEventListener('touchmove', this.onPassEv);
+    document.removeEventListener('wheel', this.onPassEv);
+    document.removeEventListener('wheelmove', this.onPassEv);
   }
   setMapConf() {
     const self = this;

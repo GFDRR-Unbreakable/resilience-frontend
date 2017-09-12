@@ -24,7 +24,8 @@
       "scripts": [
         "../node_modules/science/science.v1.js",
         "../node_modules/jquery/dist/jquery.min.js",
-        "../node_modules/d3/d3.js"
+        "../node_modules/d3/d3.js",
+        "../node_modules/default-passive-events/default-passive-events.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
