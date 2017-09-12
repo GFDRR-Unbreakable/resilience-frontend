@@ -86,7 +86,7 @@ export class ChartService {
       for (let k = 0; k < input.distribGroupArr.length; k++) {
         dataArr.push(input.distribGroupArr[k]['distribution']);
       }
-      const data = dataArr;
+      const data = Object.assign([], dataArr);
 
       const dataMean = d3.mean(data);
       sliderValues[input.key + '_display_value'] = dataMean;
@@ -238,28 +238,37 @@ export class ChartService {
         .attr('id', 'initial-' + input.key)
         .attr('class', 'initial')
         .append('line');
-
+      // add the brush to the input config so 
+      // we can access it later
       input.forUpdate = {
         b,
         a,
         distribData: data,
         kde
       };
-
-      const brush = d3.svg.brush()
-        .x(x)
-        .extent([0, d3.mean(data)])
-        .on('brushstart', brushstart)
-        .on('brushend', brushend);
-      const me = this;
-      brush.on('brush', me._inputBrushMoveEv.call(me, containerId, input, brush));
-      // add the brush to the input config so
-      // we can access it later
-      input.brush = brush;
       input.x = x;
       input.width = width;
       input.height = height;
-      this._inputConfig[input.key] = input;
+      if (!this._inputConfig[input.key]) {
+        this._inputConfig[input.key] = {};
+      }
+      const inputId = containerId.indexOf('1') >= 0 ? 'input1' : 'input2';
+      if (!this._inputConfig[input.key][inputId]) {
+        this._inputConfig[input.key][inputId] = Object.assign({}, input);
+      } else {
+        this._inputConfig[input.key][inputId] = Object.assign(this._inputConfig[input.key][inputId], input);
+      }
+
+      const brush = d3.svg.brush()
+        .x(x)
+        .on('brushstart', brushstart)
+        .on('brushend', brushend);
+      const me = this;
+      if (groupName === 'GLOBAL' || !groupName) {
+        this._inputConfig[input.key][inputId].brush = brush;
+      }
+      brush.extent([0, this._inputConfig[input.key][inputId].brush.extent()[1]]);
+      brush.on('brush', me._inputBrushMoveEv.call(me, containerId, input));
 
       const line = d3.svg.line()
         .x((d) => {
@@ -1127,14 +1136,18 @@ export class ChartService {
 
     for (const g in filteredInputDomains) {
       if (filteredInputDomains.hasOwnProperty(g)) {
-        filteredInputDomains[g]['distribGroupArr'] = [];
+        if (filteredInputDomains[g]) {
+          filteredInputDomains[g]['distribGroupArr'] = [];
+        }
       }
     }
     for (const g in inputData) {
       if (inputData.hasOwnProperty(g)) {
-        for (let m = 0; m < inputData[g]['distribGroupArr'].length; m++) {
-          if (inputData[g]['distribGroupArr'][m]['group'] === groupName) {
-            filteredInputDomains[g]['distribGroupArr'].push(inputData[g]['distribGroupArr'][m]);
+        if (inputData[g]) {
+          for (let m = 0; m < inputData[g]['distribGroupArr'].length; m++) {
+            if (inputData[g]['distribGroupArr'][m]['group'] === groupName) {
+              filteredInputDomains[g]['distribGroupArr'].push(inputData[g]['distribGroupArr'][m]);
+            }
           }
         }
       }
@@ -1235,6 +1248,9 @@ export class ChartService {
   }
   getCountryGroupData() {
     return this._countryGroupData;
+  }
+  getInputDataObj() {
+    return this._inputConfig;
   }
   getInputData() {
     return this._inputDomains;
@@ -1356,12 +1372,13 @@ export class ChartService {
   initScorecardChartConf() {
     this.getScorecardData();
   }
-  _inputBrushMoveEv(containerId, input, brush) {
+  _inputBrushMoveEv(containerId, input) {
+    const me = this;
     return () => {
-      if (brush) { input.brush = brush; }
-      const toUpd = input.forUpdate;
+      const inputId = containerId.indexOf('1') >= 0 ? 'input1' : 'input2';
+      const toUpd =  me._inputConfig[input.key][inputId].forUpdate;
       jQuery('#' + containerId + ' svg#' + input.key + ' #mask-' + input.key).empty();
-      const s = input.brush.extent();
+      const s = me._inputConfig[input.key][inputId].brush.extent();
       const clip = toUpd.b(toUpd.distribData, s[1]);
       const selected = toUpd.distribData.slice(0, clip);
       selected.push(s[1]);
@@ -1381,9 +1398,10 @@ export class ChartService {
       span.empty();
       span.html(() => {
         const percent = input.number_type === ('percent' || 'small_percent') ? ' %' : '';
-        let ext = +input.brush.extent()[1];
+        const persistedBrush = me._inputConfig[input.key][inputId].brush;
+        let ext = +persistedBrush.extent()[1];
         if (percent !== '') {
-          ext = +input.brush.extent()[1] * 100;
+          ext = +persistedBrush.extent()[1] * 100;
           return ext.toFixed(1) + percent;
         }
         return ext.toFixed(3);
@@ -1523,10 +1541,12 @@ export class ChartService {
       const iniEl = ini[0][0];
       if (iniEl) {
         let model;
+        const inputId = containerId.indexOf('1') >= 0 ? 'input1' : 'input2';
+        const input = inpObj[inputId];
         if (selectedId === 'global') {
           const data: Array<number> = [];
-          this._sortByKey(inpObj.distribGroupArr, 'distribution');
-          inpObj.distribGroupArr.forEach(val => data.push(val.distribution));
+          this._sortByKey(input.distribGroupArr, 'distribution');
+          input.distribGroupArr.forEach(val => data.push(val.distribution));
           const globalData = d3.mean(data);
           model = {};
           model[conf] = globalData;
@@ -1536,7 +1556,6 @@ export class ChartService {
         sliderValues[conf + '_display_value'] = model[conf];
         sliderValues[conf].value = model[conf];
         sliderValues[conf + '_value'] = model[conf] / (sliderValues[conf].max + sliderValues[conf].min) * 100;
-        const input = inpObj;
         ini.attr('x1', function(d) {
             return input.x(+model[conf]);
           })
@@ -1550,11 +1569,14 @@ export class ChartService {
         const toUpd = input.forUpdate;
         // get the value of the current input from the model
         // and update the brush extent
-        const extent = +model[conf];
+        let extent = brush.extent()[1];
+        if (groupName === 'GLOBAL' || !groupName) {
+          extent = +model[conf];
+        }
         brush.extent([0, extent]);
         const brushg = d3.selectAll(`#${containerId} svg#${conf} g.brush`);
         const me = this;
-        brush.on('brush', me._inputBrushMoveEv.call(me, containerId, input, brush));
+        brush.on('brush', me._inputBrushMoveEv.call(me, containerId, input));
         brushg.transition()
           .duration(750)
           .call(brush)
