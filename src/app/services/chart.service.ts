@@ -64,6 +64,93 @@ export class ChartService {
     });
     return outputMetricAvgInfo;
   }
+  private calculateAVGGDPValue(idx, groupName?) {
+    const globalObj = this.getGlobalModelData();
+    let sumGDP = 0;
+    let sumPop = 0;
+    let count = 0;
+    let avgGDP = 0;
+    let avgDoll = 0;
+    let avgPop = 0;
+    if (idx === 'risk' || idx === 'risk_to_assets') {
+      if (groupName === 'GLOBAL' || !groupName) {
+        jQuery.each(globalObj, (key, global) => {
+          sumGDP += (+global['macro_gdp_pc_pp']);
+          sumPop += (+global['macro_pop']);
+          count++;
+        });
+        avgGDP = sumGDP / count;
+        avgPop = sumPop / count;
+        avgDoll = Math.round(avgGDP * avgPop);
+      } else {
+        jQuery.each(globalObj, (key, global) => {
+          if (groupName === global['group_name']) {
+            sumGDP += (+global['macro_gdp_pc_pp']);
+            sumPop += (+global['macro_pop']);
+            count++;
+          }
+        });
+        avgGDP = sumGDP / count;
+        avgPop = sumPop / count;
+        avgDoll = Math.round(avgGDP * avgPop);
+      }
+    }
+    return avgDoll;
+  }
+  private calculateGDPValues (containerId, key, numericValue, gdpDollars) {
+    let percent;
+    let value;
+    let moreValues;
+    const calculateRiskGDPValues = (percentageValue) => {
+      let dollarLossGDP = (gdpDollars * (+percentageValue)) / 100;
+      const aThousand = 1000;
+      const aMillion = 1000000;
+      let asString;
+      let extraInfo;
+      let aValue;
+      if (dollarLossGDP >= aMillion) {
+        dollarLossGDP /= aMillion;
+        dollarLossGDP = Math.round(dollarLossGDP);
+        asString = dollarLossGDP;
+        if (dollarLossGDP >= aThousand) {
+          asString = dollarLossGDP / aThousand;
+          if (asString % aThousand === 0) {
+            asString += '.000';
+          }
+          asString = asString.toString().split('.').join(',');
+          asString = asString.split(',')[1].length === 2 ? asString + '0' : asString;
+        }
+        extraInfo = 'Million';
+        aValue = `$${asString} ${extraInfo} (${percentageValue} % of GDP)`;
+      } else {
+        dollarLossGDP = Math.round(dollarLossGDP);
+        asString = dollarLossGDP;
+        if (dollarLossGDP >= aThousand) {
+          asString = dollarLossGDP / aThousand;
+          asString = asString.toString().split('.').join(',');
+          asString = asString.split(',')[1].length === 2 ? asString + '0' : asString;
+        }
+        aValue = `$${asString} (${percentageValue} % of GDP)`;
+      }
+      return {
+        dollarGDP: dollarLossGDP,
+        text: aValue
+      };
+    };
+    if (key === 'risk' || key === 'risk_to_assets') {
+      moreValues = calculateRiskGDPValues(numericValue);
+      value = moreValues.text;
+      this._outputDomains[key]['chart'][containerId] = {
+        dollarGDP: moreValues.dollarGDP,
+        valueGDP: numericValue
+      };
+    } else {
+      percent = ' %';
+      value = numericValue + percent;
+      this._outputDomains[key]['chart'][containerId] = numericValue;
+    }
+    return value;
+  }
   createInputCharts(inputData: any, containerId: string, sliderValues: any, groupName?: string) {
     jQuery(`div#${containerId}`).empty();
     const filteredInputData = this.filterInputDataByGroup(inputData, groupName);
@@ -866,6 +953,7 @@ export class ChartService {
   createOutputChart(outputData: any, containerId: string, groupName?: string, isScoreCardPage?: boolean) {
     jQuery(`div#${containerId}`).empty();
     const finalOutput = this.filterOutputDataByGroup(outputData, groupName);
+    const me = this;
     jQuery.each(finalOutput, (idx, output) => {
       const s1 = output.gradient[0];
       const s2 = output.gradient[1];
@@ -879,6 +967,7 @@ export class ChartService {
       const data: Array<number> = output.domain.sort((a, b) => {
         return a - b;
       });
+      const avgDoll = me.calculateAVGGDPValue(idx, groupName);
       const bounds = d3.extent(data);
       const margin = {
         top: 5,
@@ -928,18 +1017,8 @@ export class ChartService {
         .attr('class', 'col-sm-4')
         .attr('data-output', idx)
         .attr('data-output-title', output.descriptor)
-        .style('pointer-events', 'all')
-        .on('click', () => {
-          // TODO verify if this event will be needed
-          const divEl = jQuery(`div#${containerId}`).find('div')[0];
-          const chloroplethField = divEl.getAttribute('data-output');
-          const chloroplethTitle = divEl.getAttribute('data-output-title');
-          // jQuery.event.trigger({
-          //   type: 'mapselect',
-          //   chloropleth_field: chloroplethField,
-          //   chloropleth_title: chloroplethTitle
-          // });
-        });
+        .style('pointer-events', 'all');
+
       const table = div.append('table')
         .attr('width', '100%')
         .attr('class', 'table table-responsive')
@@ -950,7 +1029,6 @@ export class ChartService {
       const svg = td.append('svg')
         .attr('width', width + margin.left + margin.right)
         .attr('height', height + margin.top + margin.bottom)
-        // xmlns="http://www.w3.org/2000/svg"
         .attr('xmlns', 'http://www.w3.org/2000/svg')
         .attr('id', idx)
           .append('g')
@@ -1039,12 +1117,9 @@ export class ChartService {
         // .on('brushend', brushend);
 
       const textFn = () => {
-        const isSocioEcoKey = idx === 'resilience' ? ' %' : ' % of GDP per Year';
-        const percent = output.number_type === ('percent') ? isSocioEcoKey : '';
         const precision = +output.precision;
         const numericValue = (+brush.extent()[1] * 100).toFixed(precision);
-        const value = numericValue + percent;
-        this._outputDomains[idx]['chart'][containerId] = numericValue;
+        const value = me.calculateGDPValues(containerId, idx, numericValue, avgDoll);
         return value;
       };
 
@@ -1189,7 +1264,7 @@ export class ChartService {
           'descriptor': 'Risk to assets',
           'gradient': ['#f0f9e8', '#08589e'],
           'number_type': 'percent',
-          'precision': 3
+          'precision': 2
         },
         'resilience': {
           'descriptor': 'Socio-economic capacity',
@@ -1201,7 +1276,7 @@ export class ChartService {
           'descriptor': 'Risk to well-being',
           'gradient': ['#edf8fb', '#6e016b'],
           'number_type': 'percent',
-          'precision': 3
+          'precision': 2
         }
       },
       'inputs': ['gamma_SP_cat_info__poor', 'macro_tau_tax', 'macro_borrow_abi', 'macro_prepare_scaleup',
@@ -1593,13 +1668,16 @@ export class ChartService {
   }
   updateOutputCharts(containerId: string, selectedId?: any, groupName?: string) {
     const domains = this.filterOutputDataByGroup(this._outputDomains, groupName);
+    const me = this;
     jQuery.each(domains, (idx, outputData) => {
       const ini = d3.select(`#${containerId} svg#${idx} g.initial line`);
       const x = domains[idx].x;
       const height = domains[idx].height;
       let model;
+      let avgDoll = 0;
       if (typeof selectedId === 'object') {
         model = selectedId['model'];
+        avgDoll = this.calculateAVGGDPValue(idx, groupName);
       } else if (selectedId === 'global') {
         const data: Array<number> = outputData.domain.sort((a, b) => {
           return a - b;
@@ -1607,8 +1685,10 @@ export class ChartService {
         const globalData = d3.mean(data);
         model = {};
         model[idx] = globalData;
+        avgDoll = this.calculateAVGGDPValue(idx);
       } else {
-         model = this._globalModelData[selectedId];
+        model = this._globalModelData[selectedId];
+        avgDoll = Math.round((+model['macro_gdp_pc_pp']) * (+model['macro_pop']));
       }
       ini.attr('x1', (d) => {
           return x(+model[idx]);
@@ -1625,11 +1705,9 @@ export class ChartService {
       const extent = +model[idx];
       brush.extent([0, extent]);
       const output = domains[idx];
-      const isSocioEcoKey = idx === 'resilience' ? ' %' : ' % of GDP per Year';
-      const percent = output.number_type === ('percent') ? isSocioEcoKey : '';
       const precision = +output.precision;
       const numericValue = (brush.extent()[1] * 100).toFixed(precision);
-      const value = numericValue + percent;
+      const value = me.calculateGDPValues(containerId, idx, numericValue, avgDoll);
       this._outputDomains[idx]['chart'][containerId] = numericValue;
       jQuery(`#${containerId} #${idx} .text-number`).html(value);
       const brushg = d3.selectAll(`#${containerId} svg#${idx} g.brush`);
