@@ -1472,14 +1472,16 @@ export class ChartService {
       const span = jQuery('#' + containerId + ' #table-' + input.key + ' span.value');
       span.empty();
       span.html(() => {
-        const percent = input.number_type === ('percent' || 'small_percent') ? ' %' : '';
+        let percent = input.number_type === ('percent' || 'small_percent') ? '%' : '';
         const persistedBrush = me._inputConfig[input.key][inputId].brush;
         let ext = +persistedBrush.extent()[1];
+        percent = input.key === 'macro_T_rebuild_K' ? ' Yrs' : percent;
+        let value = ext.toFixed(1);
         if (percent !== '') {
-          ext = +persistedBrush.extent()[1] * 100;
-          return ext.toFixed(1) + percent;
+          ext = input.key === 'macro_T_rebuild_K' ? ext : (+persistedBrush.extent()[1]) * 100;
+          value = ext.toFixed(1) + percent;
         }
-        return ext.toFixed(3);
+        return value;
       });
     };
   }
