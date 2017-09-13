@@ -1477,6 +1477,7 @@ export class ChartService {
         let ext = +persistedBrush.extent()[1];
         let value: any = ext.toFixed(1);
         percent = input.key === 'macro_T_rebuild_K' ? ' Yrs' : percent;
+        percent = input.key.indexOf('hazard') >= 0 ? '%' : percent;
         if (input.key === 'k_cat_info__poor' || input.key === 'k_cat_info__nonpoor') {
           const aThousand = 1000;
           value = Math.round(+value);
@@ -1691,7 +1692,7 @@ export class ChartService {
       let avgDoll = 0;
       if (typeof selectedId === 'object') {
         model = selectedId['model'];
-        avgDoll = this.calculateAVGGDPValue(idx, groupName);
+        avgDoll = Math.round((+model['macro_gdp_pc_pp']) * (+model['macro_pop']));
       } else if (selectedId === 'global') {
         const data: Array<number> = outputData.domain.sort((a, b) => {
           return a - b;
