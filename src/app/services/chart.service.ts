@@ -1475,12 +1475,24 @@ export class ChartService {
         let percent = input.number_type === ('percent' || 'small_percent') ? '%' : '';
         const persistedBrush = me._inputConfig[input.key][inputId].brush;
         let ext = +persistedBrush.extent()[1];
+        let value: any = ext.toFixed(1);
         percent = input.key === 'macro_T_rebuild_K' ? ' Yrs' : percent;
-        let value = ext.toFixed(1);
-        if (percent !== '') {
+        if (input.key === 'k_cat_info__poor' || input.key === 'k_cat_info__nonpoor') {
+          const aThousand = 1000;
+          value = Math.round(+value);
+          if (value >= aThousand) {
+            value /= aThousand;
+            if (value % aThousand === 0) {
+              value = value + '.000';
+            }
+            value = '$' + value.toString().replace('.', ',');
+            value = value.split(',')[1].length === 2 ? value + '0' : value;
+          }
+        } else if (percent !== '') {
           ext = input.key === 'macro_T_rebuild_K' ? ext : (+persistedBrush.extent()[1]) * 100;
           value = ext.toFixed(1) + percent;
         }
+
         return value;
       });
     };
