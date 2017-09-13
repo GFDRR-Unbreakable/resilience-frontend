@@ -199,7 +199,8 @@ export class MapService {
       preserveDrawingBuffer: true,
       style: 'mapbox://styles/gfdrr-dashboard/cj6qvntcf3umq2snyd8se5xir',
       center: [10, 35],
-      zoom: 0.55
+      zoom: 0.55,
+      maxBounds: [[-180, -80], [180, 80]]
     });
   }
   getMap() {
