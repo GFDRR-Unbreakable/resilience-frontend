@@ -1546,6 +1546,12 @@ pre code {
     padding-left: 15px;
   }
 }
+@media (min-width: 1600px) {
+  .container {
+      width: 90%;
+      max-width: 100%;
+    }
+  }
 
 .row {
   display: -webkit-box;
