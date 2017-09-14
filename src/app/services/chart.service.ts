@@ -1229,6 +1229,28 @@ export class ChartService {
     }
     return filteredInputDomains;
   }
+  formatInputChartValues(data, input, persistedBrush?) {
+    let percent = input.number_type === ('percent' || 'small_percent') ? '%' : '';
+    let value: any = data.toFixed(1);
+    percent = input.key === 'macro_T_rebuild_K' ? ' Yrs' : percent;
+    percent = input.key.indexOf('hazard') >= 0 ? '%' : percent;
+    if (input.key === 'k_cat_info__poor' || input.key === 'k_cat_info__nonpoor') {
+      const aThousand = 1000;
+      value = Math.round(+value);
+      if (value >= aThousand) {
+        value /= aThousand;
+        if (value % aThousand === 0) {
+          value = value + '.000';
+        }
+        value = '$' + value.toString().replace('.', ',');
+        value = value.split(',')[1].length === 2 ? value + '0' : value;
+      }
+    } else if (percent !== '') {
+      data = input.key === 'macro_T_rebuild_K' ? data : (persistedBrush ? (+persistedBrush.extent()[1]) * 100 : data * 100);
+      value = data.toFixed(1) + percent;
+    }
+    return value;
+  }
   formatSVGChartBase64Strings(chartId, isFromOutputChart, inChartId?) {
     const id1 = isFromOutputChart ? 'outputs-1' : `${chartId}-1`;
     const id2 = isFromOutputChart ? 'outputs-2' : `${chartId}-2`;
@@ -1472,28 +1494,9 @@ export class ChartService {
       const span = jQuery('#' + containerId + ' #table-' + input.key + ' span.value');
       span.empty();
       span.html(() => {
-        let percent = input.number_type === ('percent' || 'small_percent') ? '%' : '';
         const persistedBrush = me._inputConfig[input.key][inputId].brush;
-        let ext = +persistedBrush.extent()[1];
-        let value: any = ext.toFixed(1);
-        percent = input.key === 'macro_T_rebuild_K' ? ' Yrs' : percent;
-        percent = input.key.indexOf('hazard') >= 0 ? '%' : percent;
-        if (input.key === 'k_cat_info__poor' || input.key === 'k_cat_info__nonpoor') {
-          const aThousand = 1000;
-          value = Math.round(+value);
-          if (value >= aThousand) {
-            value /= aThousand;
-            if (value % aThousand === 0) {
-              value = value + '.000';
-            }
-            value = '$' + value.toString().replace('.', ',');
-            value = value.split(',')[1].length === 2 ? value + '0' : value;
-          }
-        } else if (percent !== '') {
-          ext = input.key === 'macro_T_rebuild_K' ? ext : (+persistedBrush.extent()[1]) * 100;
-          value = ext.toFixed(1) + percent;
-        }
-
+        const ext = +persistedBrush.extent()[1];
+        const value = me.formatInputChartValues(ext, input, persistedBrush);
         return value;
       });
     };
@@ -1643,7 +1646,7 @@ export class ChartService {
         } else {
           model = this._globalModelData[selectedId];
         }
-        sliderValues[conf + '_display_value'] = model[conf];
+        sliderValues[conf + '_display_value'] = this.formatInputChartValues(model[conf], input);
         sliderValues[conf].value = model[conf];
         sliderValues[conf + '_value'] = model[conf] / (sliderValues[conf].max + sliderValues[conf].min) * 100;
         ini.attr('x1', function(d) {

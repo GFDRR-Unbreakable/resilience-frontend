@@ -445,21 +445,37 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
             this.sliderValues1[key + '_step'] = 1;
             if (this.sliderValues1[key + '_display_value'] != null) {
               this.sliderValues1[key + '_value'] = this.sliderValues1[key + '_display_value'] / (max + min) * 100;
+              this.sliderValues1[key + '_display_value'] =
+                this.chartService.formatInputChartValues(this.sliderValues1[key + '_display_value'], inputData[inputDataIndex]);
+              this.sliderValues1[key + '_original_value'] =
+                parseFloat(this.sliderValues1[key + '_display_value'].replace('$', '').replace(',', ''));
             } else {
               this.sliderValues1[key + '_value'] = 50;
-              this.sliderValues1[key + '_display_value'] = (max + min) / 2;
+              this.sliderValues1[key + '_original_value'] = 50;
+              this.sliderValues1[key + '_display_value'] =
+                this.chartService.formatInputChartValues((max + min) / 2, inputData[inputDataIndex]);
             }
             this.sliderValues2[key + '_min'] = 1;
             this.sliderValues2[key + '_max'] = 100;
             this.sliderValues2[key + '_step'] = 1;
             if (this.sliderValues2[key + '_display_value'] != null) {
               this.sliderValues2[key + '_value'] = this.sliderValues2[key + '_display_value'] / (max + min) * 100;
+              this.sliderValues2[key + '_display_value'] =
+                this.chartService.formatInputChartValues(this.sliderValues2[key + '_display_value'], inputData[inputDataIndex]);
+              this.sliderValues2[key + '_original_value'] =
+                parseFloat(this.sliderValues2[key + '_display_value'].replace('$', '').replace(',', ''));
             } else {
               this.sliderValues2[key + '_value'] = 50;
-              this.sliderValues2[key + '_display_value'] = (max + min) / 2;
+              this.sliderValues2[key + '_original_value'] = 50;
+              this.sliderValues2[key + '_display_value'] =
+                this.chartService.formatInputChartValues((max + min) / 2, inputData[inputDataIndex]);
             }
-            this.viewerP1[key] = this.sliderValues1[key + '_display_value'];
-            this.viewerP2[key] = this.sliderValues2[key + '_display_value'];
+            this.viewerP1[key] =
+              (key === 'macro_T_rebuild_K' || key === 'k_cat_info__poor' || key === 'k_cat_info__nonpoor') ?
+                this.sliderValues1[key + '_original_value'] : this.sliderValues1[key + '_original_value'] / 100;
+            this.viewerP2[key] =
+              (key === 'macro_T_rebuild_K' || key === 'k_cat_info__poor' || key === 'k_cat_info__nonpoor') ?
+                this.sliderValues2[key + '_original_value'] : this.sliderValues2[key + '_original_value'] / 100;
             this.sliderValues1[key] = {
               min: min,
               max: max,
@@ -666,7 +682,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
-      console.log('url', url);
       document.body.appendChild(a);
       a.href = url;
       a.download = 'viewer_report.pdf';
@@ -772,8 +787,12 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.onSwitchExposure();
   }
   onSliderChangeEvent(sliderValues, key) {
+    const inputObj = this.chartService.getInputData();
+    const input = inputObj.filter(val => val.key === key)[0];
     const newValue = (sliderValues[key].max + sliderValues[key].min) / 100 * sliderValues[key + '_value'];
-    sliderValues[key + '_display_value'] = newValue;
+    sliderValues[key + '_display_value'] = this.chartService.formatInputChartValues(newValue, input);
+    sliderValues[key + '_original_value'] =
+      parseFloat(sliderValues[key + '_display_value'].replace('$', '').replace(',', ''));
     sliderValues[key].value = newValue;
   }
   onSliderChangeEvent1(key) {
