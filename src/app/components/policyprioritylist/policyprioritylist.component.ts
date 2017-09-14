@@ -23,8 +23,8 @@ import {ChartService} from '../../services/chart.service';
 export class PolicyprioritylistComponent implements OnInit, OnDestroy {
   public countryListComp: Array<any> = [];
   public countryUIList: Array<any> = [];
-  public firstCountryGDP: number = 0;
-  public firstCountryPopulation: number = 0;
+  public firstCountryGDP: string = '0';
+  public firstCountryPopulation: string = '0';
   public getOutputDataSubs: Subscription;
   public getScorecardDataSubs: Subscription;
   public isSetUIGlobal: boolean = true;
@@ -34,8 +34,8 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
     firstCountry: '',
     secondCountry: ''
   };
-  public secondCountryGDP: number = 0;
-  public secondCountryPopulation: number = 0;
+  public secondCountryGDP: string = '0';
+  public secondCountryPopulation: string = '0';
   private _selectedCountryList: Array<any> = [];
   public sortBtnPressedIdCh1 = '';
   public sortBtnPressedIdCh2 = '';
@@ -111,14 +111,43 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
         }
         const globalModelObj = this.chartService.getGlobalModelData();
         const countryGDP = globalModelObj[list[0].code]['macro_gdp_pc_pp'];
-        const countryPopulation = globalModelObj[list[0].code]['macro_pop'];
-        const totalGDP = countryGDP * countryPopulation;
+        let countryPopulation = globalModelObj[list[0].code]['macro_pop'];
+        let totalGDP: any = countryGDP * countryPopulation;
+        const aBillion = 1000000000;
+        const aMillion = 1000000;
+        const aThousand = 1000;
+        let extraBInfo = '';
+        let extraMInfo = '';
+        if (totalGDP >= aBillion) {
+          totalGDP = Math.round(totalGDP / aBillion);
+          if (totalGDP >= aThousand) {
+            totalGDP = totalGDP / aThousand;
+            if (totalGDP % aThousand === 0) {
+              totalGDP += '.000';
+            }
+            totalGDP = totalGDP.toString().split('.').join(',');
+            totalGDP = totalGDP.split(',')[1].length === 2 ? totalGDP + '0' : totalGDP;
+          }
+          extraBInfo = 'Billion';
+        }
+        if (countryPopulation >= aMillion) {
+          countryPopulation = Math.round(countryPopulation / aMillion);
+          if (countryPopulation >= aThousand) {
+            countryPopulation = countryPopulation / aThousand;
+            if (countryPopulation % aThousand === 0) {
+              countryPopulation += '.000';
+            }
+            countryPopulation = countryPopulation.toString().split('.').join(',');
+            countryPopulation = countryPopulation.split(',')[1].length === 2 ? countryPopulation + '0' : countryPopulation;
+          }
+          extraMInfo = 'Million';
+        }
         if (selectedIdx === 0) {
-          this.firstCountryGDP = totalGDP;
-          this.firstCountryPopulation = countryPopulation;
+          this.firstCountryGDP = `${totalGDP} ${extraBInfo}`;
+          this.firstCountryPopulation = `${countryPopulation} ${extraMInfo}`;
         } else {
-          this.secondCountryGDP = totalGDP;
-          this.secondCountryPopulation = countryPopulation;
+          this.secondCountryGDP = `${totalGDP} ${extraBInfo}`;
+          this.secondCountryPopulation = `${countryPopulation} ${extraMInfo}`;
         }
         const chartChild = document.querySelector(`#${idScList}`).childNodes;
         this.plotScorecardPolicyChart(list[0].code, idScList, chartChild.length > 0);
@@ -142,11 +171,11 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
           }
           this._selectedCountryList.splice(filterIndex[0], 1);
           if (selectedIdx === 0) {
-            this.firstCountryGDP = 0;
-            this.firstCountryPopulation = 0;
+            this.firstCountryGDP = '0';
+            this.firstCountryPopulation = '0';
           } else {
-            this.secondCountryGDP = 0;
-            this.secondCountryPopulation = 0;
+            this.secondCountryGDP = '0';
+            this.secondCountryPopulation = '0';
           }
         }
       }
