@@ -28,11 +28,19 @@ html {
   font-size: 14px;
   min-height: 100%;
   position: relative;
+  height: 100%;
 }
 
 body {
   margin: 0;
-  margin-bottom: 60px;
+  /*margin-bottom: 60px;*/
+  height: 100%;
+}
+.ct-height{
+  height: 93%;
+}
+.rw-height{
+  height: 94%;
 }
 footer {
   position: absolute;
@@ -527,11 +535,11 @@ template {
     color: #000 !important;
   }
   .dropdown-global:hover span {
-    color: #000 !important; 
+    color: #000 !important;
   }
   .box-item{
     margin-top: -4px !important;
-    margin-left: 26px !important;
+    margin-left: 31px !important;
     padding: 0px !important;
     min-width: 4rem !important;
   }
@@ -1052,7 +1060,7 @@ h1, h2, h3, h4, h5, h6, p, span, label {
 input.form-control {
   color: #fff !important;
   border-color: #7D8F8F !important;
-  background-color: #4B5757 !important; 
+  background-color: #4B5757 !important;
 }
 
 [tabindex="-1"]:focus {
@@ -3971,7 +3979,7 @@ tbody.collapse.show {
 .dropdown-item {
   display: block;
   width: 100%;
-  padding: 7px 16px;
+  padding: 7px 8px;
   clear: both;
   font-weight: bold;
   color: #fff;
@@ -10553,7 +10561,7 @@ fieldset {
         stroke-width: 4px;
     }
     #inputSoc-1 .resize.e path, #inputSoc-2 .resize.e path,
-    #inputVul-1 .resize.e path, #inputVul-2 .resize.e path,    
+    #inputVul-1 .resize.e path, #inputVul-2 .resize.e path,
     #inputEco-1 .resize.e path, #inputEco-2 .resize.e path,
     #inputExp-1 .resize.e path, #inputExp-2 .resize.e path {
       stroke: #7D8F8F;
@@ -10640,7 +10648,7 @@ fieldset {
     }
     #outputs-1 g.area path, #outputs-2 g.area path,
     #inputSoc-1 g.area path, #inputSoc-2 g.area path,
-    #inputVul-1 g.area path, #inputVul-2 g.area path,    
+    #inputVul-1 g.area path, #inputVul-2 g.area path,
     #inputEco-1 g.area path, #inputEco-2 g.area path,
     #inputExp-1 g.area path, #inputExp-2 g.area path {
         fill: #E6E8EF;
@@ -10650,14 +10658,14 @@ fieldset {
     }
     #inputSoc-1 g.mask path, #inputSoc-2 g.mask path,
     #inputEco-1 g.mask path, #inputEco-2 g.mask path,
-    #inputVul-1 g.mask path, #inputVul-2 g.mask path,    
+    #inputVul-1 g.mask path, #inputVul-2 g.mask path,
     #inputExp-1 g.mask path, #inputExp-2 g.mask path {
         fill: #50C4CF;
         opacity: 1;
     }
     div#outputs-1 table, div#outputs-2 table, div#risk table, div#risk_to_assets table, div#resilience table{
       overflow-x: hidden;
-    } 
+    }
     #outputs g.area path {
         fill: blue;
     }
@@ -10773,13 +10781,13 @@ fieldset {
 .x-axis line {
   fill: none;
   stroke: #626262;
-	shape-rendering: crispEdges;	
+	shape-rendering: crispEdges;
 }
 .y-axis path,
 .y-axis line {
   fill: none;
   stroke: transparent;
-	shape-rendering: crispEdges;	
+	shape-rendering: crispEdges;
 }
 .x-axis text {
   fill: #fff;
@@ -10799,5 +10807,5 @@ fieldset {
 	fill: none;
   stroke: #485050;
   stroke-dasharray: 2;
-	shape-rendering: crispEdges;	
+	shape-rendering: crispEdges;
 }
