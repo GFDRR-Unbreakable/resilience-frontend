@@ -1,82 +1,6 @@
 <app-navbar></app-navbar>
 <div class="container ct-height">
    <div class="row rw-height">
-      <div class="col-md-8 vertical-border">
-         <div class="row">
-            <div class="col-md-12 map-background">
-                <ngb-carousel [interval]="0" class="carousel-ctn" (slide)="onSlideChangeEvent($event)">
-                  <ng-template ngbSlide id="socio-sl">
-                    <br/>
-                    <br/>
-                     <div class="carousel-caption">
-                        <h6 class="text-carousel">SOCIO-ECONOMIC CAPACITY (%)</h6>
-                     </div>
-                  </ng-template>
-                  <ng-template ngbSlide id="well-sl">
-                    <br/>
-                    <br/>
-                     <div class="carousel-caption">
-                        <h6 class="text-carousel">EXPECTED WELL-BEING LOSSES (% of GDP per Year)</h6>
-                     </div>
-                  </ng-template>
-                   <ng-template ngbSlide id="asset-sl">
-                       <br/>
-                       <br/>
-                       <div class="carousel-caption">
-                          <h6 class="text-carousel">EXPECTED ASSET LOSSES (% of GDP per Year)</h6>
-                       </div>
-                   </ng-template>
-               </ngb-carousel>
-               <div id="map"></div>
-               <div class="map-legend">
-                 <div *ngFor="let legend of legends">
-                   <i class="mdi mdi-checkbox-blank float-left" [ngStyle]="{color: legend[2]}"></i>
-                   <span class="map-legend-text" *ngIf="legend[0] === 'No data'">{{legend[0]}}</span>
-                   <span class="map-legend-text-first" [hidden]="legend[0] === 'No data'">{{legend[0]}}</span>
-                   <span class="map-legend-text-middle" [hidden]="legend[0] === 'No data'">-</span>
-                   <span class="map-legend-text-last" [hidden]="legend[0] === 'No data'">{{legend[1]}}</span>
-                   <span class="map-legend-text-percent" [hidden]="legend[0] === 'No data'">%</span>
-                   <br />
-                 </div>
-               </div>
-            </div>
-         </div>
-         <div class="row border-content">
-            <div class="col-md-12">
-               <h6 class="title-results">RESULTS
-                  <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                  <i class="mdi mdi-information-outline"></i>
-                  </button>
-                  <span><i class="mdi mdi-checkbox-blank-circle box-icon-c"></i> Country</span>
-                  <span><img src="assets/image/icon-map.png" alt=""> Global Average</span>
-               </h6>
-            </div>
-         </div>
-         <div class="row border-content">
-            <div class="col-md-12">
-               <div class="form-group bottom-results" [class.has-danger]="searchFailed">
-                  <input type="text" class="form-control" [(ngModel)]="viewerModel.firstCountry" disabled placeholder="Country 1" />
-                  <span *ngIf="searching">searching...</span>
-                  <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
-               </div>
-            </div>
-            <div class="col-md-12">
-              <div class="row" id="outputs-1"></div>
-            </div>
-         </div>
-         <div class="row border-content">
-            <div class="col-md-12">
-               <div class="form-group bottom-results" [class.has-danger]="searchFailed">
-                  <input type="text" class="form-control" [(ngModel)]="viewerModel.secondCountry" disabled placeholder="Country 2" />
-                  <span *ngIf="searching">searching...</span>
-                  <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
-               </div>
-            </div>
-            <div class="col-md-12">
-              <div class="row" id="outputs-2"></div>
-            </div>
-         </div>
-      </div>
       <div class="col-md-4" style="overflow-x: auto;">
          <div class="row box-general border-content">
             <div class="col-md-12 box-factor">
@@ -897,6 +821,82 @@
                   <!-- </ng-template>
                </ngb-tab>
             </ngb-tabset> -->
+         </div>
+      </div>
+      <div class="col-md-8 vertical-border col-mg">
+         <div class="row">
+            <div class="col-md-12 map-background">
+                <ngb-carousel [interval]="0" class="carousel-ctn" (slide)="onSlideChangeEvent($event)">
+                  <ng-template ngbSlide id="socio-sl">
+                    <br/>
+                    <br/>
+                     <div class="carousel-caption">
+                        <h6 class="text-carousel">SOCIO-ECONOMIC CAPACITY (%)</h6>
+                     </div>
+                  </ng-template>
+                  <ng-template ngbSlide id="well-sl">
+                    <br/>
+                    <br/>
+                     <div class="carousel-caption">
+                        <h6 class="text-carousel">EXPECTED WELL-BEING LOSSES (% of GDP per Year)</h6>
+                     </div>
+                  </ng-template>
+                   <ng-template ngbSlide id="asset-sl">
+                       <br/>
+                       <br/>
+                       <div class="carousel-caption">
+                          <h6 class="text-carousel">EXPECTED ASSET LOSSES (% of GDP per Year)</h6>
+                       </div>
+                   </ng-template>
+               </ngb-carousel>
+               <div id="map"></div>
+               <div class="map-legend">
+                 <div *ngFor="let legend of legends">
+                   <i class="mdi mdi-checkbox-blank float-left" [ngStyle]="{color: legend[2]}"></i>
+                   <span class="map-legend-text" *ngIf="legend[0] === 'No data'">{{legend[0]}}</span>
+                   <span class="map-legend-text-first" [hidden]="legend[0] === 'No data'">{{legend[0]}}</span>
+                   <span class="map-legend-text-middle" [hidden]="legend[0] === 'No data'">-</span>
+                   <span class="map-legend-text-last" [hidden]="legend[0] === 'No data'">{{legend[1]}}</span>
+                   <span class="map-legend-text-percent" [hidden]="legend[0] === 'No data'">%</span>
+                   <br />
+                 </div>
+               </div>
+            </div>
+         </div>
+         <div class="row border-content">
+            <div class="col-md-12">
+               <h6 class="title-results">RESULTS
+                  <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
+                  <i class="mdi mdi-information-outline"></i>
+                  </button>
+                  <span><i class="mdi mdi-checkbox-blank-circle box-icon-c"></i> Country</span>
+                  <span><img src="assets/image/icon-map.png" alt=""> Global Average</span>
+               </h6>
+            </div>
+         </div>
+         <div class="row border-content">
+            <div class="col-md-12">
+               <div class="form-group bottom-results" [class.has-danger]="searchFailed">
+                  <input type="text" class="form-control" [(ngModel)]="viewerModel.firstCountry" disabled placeholder="Country 1" />
+                  <span *ngIf="searching">searching...</span>
+                  <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
+               </div>
+            </div>
+            <div class="col-md-12">
+              <div class="row" id="outputs-1"></div>
+            </div>
+         </div>
+         <div class="row border-content">
+            <div class="col-md-12">
+               <div class="form-group bottom-results" [class.has-danger]="searchFailed">
+                  <input type="text" class="form-control" [(ngModel)]="viewerModel.secondCountry" disabled placeholder="Country 2" />
+                  <span *ngIf="searching">searching...</span>
+                  <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
+               </div>
+            </div>
+            <div class="col-md-12">
+              <div class="row" id="outputs-2"></div>
+            </div>
          </div>
       </div>
    </div>
