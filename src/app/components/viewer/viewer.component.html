@@ -30,28 +30,12 @@
                   <div id="viewerContent" [hidden]="!viewerDisplay">
                      <div class="row">
                         <div class="col-md-12 box-select">
-                           <p>Select two countries from the map or type the country's name:</p>
+                           <p>1. Select two countries from the map or type its name:</p>
                         </div>
                      </div>
-                     <div class="row box-general border-content box-tab-gc">
+                     <div class="row box-general">
                         <div class="col-md-12">
-                           <div ngbDropdown class="option-global">
-                              <img src="assets/image/icon-map.png" alt="">
-                              <button class="btn btn-outline-primary btn-sm dropdown-global" id="dropdownBasic1" ngbDropdownToggle>
-                                <span *ngIf="global">Global</span>
-                                <span *ngIf="!global">Regional</span>
-                              </button>
-                              <div class="dropdown-menu box-item" aria-labelledby="dropdownBasic1">
-                                 <button class="dropdown-item" (click)="onSwitchGlobal()">
-                                   <span *ngIf="!global">Global</span>
-                                   <span *ngIf="global">Regional</span>
-                                 </button>
-                              </div>
-                              <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                              <i class="mdi mdi-information-outline"></i>
-                              </button>
-                           </div>
-                           <div><i class="mdi mdi-checkbox-blank-circle box-icon-c"></i> <span class="text-country">Country</span></div>
+                           <!-- <div><i class="mdi mdi-checkbox-blank-circle box-icon-c"></i> <span class="text-country">Country</span></div> -->
                            <div class="box-dropdown">
                               <div class="form-group" [class.has-danger]="searchFailed">
                                  <input id="country-1Txt" type="text" class="form-control" [(ngModel)]="viewerModel.firstCountry" [ngbTypeahead]="searchCountryFn" #country1="ngModel" (ngModelChange)="onFirstCountryInputChangeEvent()" placeholder="Country 1"/>
@@ -64,6 +48,31 @@
                                  <span *ngIf="searching">searching...</span>
                                  <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
                               </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-12 box-select">
+                           <p>2. Compare resilience factors among each country's peers:</p>
+                        </div>
+                     </div>
+                     <div class="row box-general border-content box-tab-gc">
+                        <div class="col-md-12">
+                           <div ngbDropdown class="option-global">
+                              <!-- <img src="assets/image/icon-map.png" alt=""> -->
+                              <button class="btn btn-outline-primary btn-sm dropdown-global" id="dropdownBasic1" ngbDropdownToggle>
+                                <span *ngIf="global">Globally</span>
+                                <span *ngIf="!global">Regional</span>
+                              </button>
+                              <div class="dropdown-menu box-item" aria-labelledby="dropdownBasic1">
+                                 <button class="dropdown-item" (click)="onSwitchGlobal()">
+                                   <span *ngIf="!global">Global</span>
+                                   <span *ngIf="global">Regional</span>
+                                 </button>
+                              </div>
+                              <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
+                              <i class="mdi mdi-information-outline"></i>
+                              </button>
                            </div>
                         </div>
                      </div>
