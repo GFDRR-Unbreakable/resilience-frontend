@@ -39,12 +39,10 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
   private _selectedCountryList: Array<any> = [];
   public sortBtnPressedIdCh1 = '';
   public sortBtnPressedIdCh2 = '';
-  public sortUISelectedChart1 = 0;
-  public sortUISelectedChart2 = 0;
-  public sortUISelectedLblChart11 = '';
-  public sortUISelectedLblChart12 = '';
-  public sortUISelectedLblChart21 = '';
-  public sortUISelectedLblChart22 = '';
+  public sortUISelected1 = 0;
+  public sortUISelected2 = 0;
+  public sortUISelectedLbl1 = '';
+  public sortUISelectedLbl2 = '';
 
   public searchCountryFn = (text$: Observable<string>) => {
     const debounceTimeFn = debounceTime.call(text$, 200);
@@ -183,15 +181,33 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
   }
   plotScorecardPolicyChart(code, chartId, chartExist) {
     const data = this.chartService.getMetricAllPoliciesSingleCountry(code);
-    this.chartService.createPolicyListChart(data, chartId, {type: 'policyList', isNew: !chartExist});
+    let extraOpts: any = null;
+    if (this.sortUISelected1 >= -1 && this.sortUISelected1 !== 0) {
+      extraOpts = {};
+      extraOpts.barType = '1';
+      if (this.sortUISelected1 === 1) {
+        extraOpts.sort = 'Ascending';
+      } else if (this.sortUISelected1 === -1) {
+        extraOpts.sort = 'Descending';
+      }
+    } else if (this.sortUISelected2 > 0 && this.sortUISelected2 !== 0) {
+      extraOpts = {};
+      extraOpts.barType = '2';
+      if (this.sortUISelected2 === 1) {
+        extraOpts.sort = 'Ascending';
+      } else if (this.sortUISelected2 === -1) {
+        extraOpts.sort = 'Descending';
+      }
+    }
+    const defaultOpts = {type: 'policyList', isNew: !chartExist };
+    const opts = extraOpts ? Object.assign({}, defaultOpts, extraOpts) : defaultOpts;
+    this.chartService.createPolicyListChart(data, chartId, opts);
   }
-  resetUISortLabelsCh1() {
-    this.sortUISelectedLblChart11 = '';
-    this.sortUISelectedLblChart12 = '';
+  resetUISortLabel1() {
+    this.sortUISelectedLbl1 = '';
   }
-  resetUISortLabelsCh2() {
-    this.sortUISelectedLblChart21 = '';
-    this.sortUISelectedLblChart22 = '';
+  resetUISortLabel2() {
+    this.sortUISelectedLbl2 = '';
   }
   setChartsConf() {
     this.chartService.initOutputChartConf();
@@ -224,59 +240,92 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
   onSecondCountryInputChangeEvent() {
     this._changeCountryInput(false);
   }
-  onSortChartDataEvent(barType, chartId, sortLabel) {
-    const field = chartId === 'policy-list1' ? this.policyModel.firstCountry : this.policyModel.secondCountry;
-    const selectedList = this._selectedCountryList.filter(val => val.name === field);
-    const data = selectedList.length ? this.chartService.getMetricAllPoliciesSingleCountry(selectedList[0].code) : null;
-    if (data) {
-      if (chartId === 'policy-list1' && this.sortBtnPressedIdCh1 !== sortLabel) {
-        this.sortUISelectedChart1 = 0;
-      } else if (chartId === 'policy-list2' && this.sortBtnPressedIdCh2 !== sortLabel) {
-        this.sortUISelectedChart2 = 0;
+  onSortChartDataEvent(params: any) {
+    const {barType} = params;
+    const chartIds = params.charts;
+    const field1 = this.policyModel.firstCountry;
+    const field2 = this.policyModel.secondCountry;
+    const selectedList1 = this._selectedCountryList.filter(val => val.name === field1);
+    const selectedList2 = this._selectedCountryList.filter(val => val.name === field2);
+    const data1 = selectedList1.length ? this.chartService.getMetricAllPoliciesSingleCountry(selectedList1[0].code) : null;
+    const data2 = selectedList2.length ? this.chartService.getMetricAllPoliciesSingleCountry(selectedList2[0].code) : null;
+    if (data1 || data2) {
+      if (barType === '1' && this.sortUISelected2 >= -1) {
+        this.resetUISortLabel2();
+        this.sortUISelected2 = 0;
+      } else if (barType === '2' && this.sortUISelected1 >= -1) {
+        this.resetUISortLabel1();
+        this.sortUISelected1 = 0;
       }
-      if (chartId === 'policy-list1') {
-        this.resetUISortLabelsCh1();
-        this.sortBtnPressedIdCh1 = sortLabel;
-        this.sortUISelectedChart1++;
-      } else {
-        this.resetUISortLabelsCh2();
-        this.sortUISelectedChart2++;
-        this.sortBtnPressedIdCh2 = sortLabel;
+      if (barType === '1') {
+        this.sortUISelected1++;
+      } else if (barType === '2') {
+        this.sortUISelected2++;
       }
-      const sortSel = chartId === 'policy-list1' ? this.sortUISelectedChart1 : this.sortUISelectedChart2;
-
+      const sortSel = barType === '1' ? this.sortUISelected1 : this.sortUISelected2;
+      const sortLabel = barType === '1' ? 'sortUISelectedLbl1' : 'sortUISelectedLbl2';
       let sortType;
       if (sortSel === 2) {
         sortType = 'Descending';
-        this.chartService.createPolicyListChart(data, chartId, {
-          type: 'policyList',
-          barType: barType,
-          sort: sortType,
-          isNew: false
-        });
+        if (data1) {
+          this.chartService.createPolicyListChart(data1, chartIds[0], {
+            type: 'policyList',
+            barType: barType,
+            sort: sortType,
+            isNew: false
+          });
+        }
+        if (data2) {
+          this.chartService.createPolicyListChart(data2, chartIds[1], {
+            type: 'policyList',
+            barType: barType,
+            sort: sortType,
+            isNew: false
+          });
+        }
         this[sortLabel] = sortType;
-        if (chartId === 'policy-list1') {
-          this.sortUISelectedChart1 = -1;
-        } else if (chartId === 'policy-list2'){
-          this.sortUISelectedChart2 = -1;
+        if (barType === '1') {
+          this.sortUISelected1 = -1;
+        } else {
+          this.sortUISelected2 = -1;
         }
       } else if (sortSel === 1) {
         sortType = 'Ascending';
-        this.chartService.createPolicyListChart(data, chartId, {
-          type: 'policyList',
-          barType: barType,
-          sort: sortType,
-          isNew: false
-        });
+        if (data1) {
+          this.chartService.createPolicyListChart(data1, chartIds[0], {
+            type: 'policyList',
+            barType: barType,
+            sort: sortType,
+            isNew: false
+          });
+        }
+        if (data2) {
+          this.chartService.createPolicyListChart(data2, chartIds[1], {
+            type: 'policyList',
+            barType: barType,
+            sort: sortType,
+            isNew: false
+          });
+        }
         this[sortLabel] = sortType;
       } else if (sortSel === 0) {
         sortType = 'NORMAL';
-        this.chartService.createPolicyListChart(data, chartId, {
-          type: 'policyList',
-          barType: barType,
-          sort: sortType,
-          isNew: false
-        });
+        if (data1) {
+          this.chartService.createPolicyListChart(data1, chartIds[0], {
+            type: 'policyList',
+            barType: barType,
+            sort: sortType,
+            isNew: false
+          });
+        }
+        if (data2) {
+          this.chartService.createPolicyListChart(data2, chartIds[1], {
+            type: 'policyList',
+            barType: barType,
+            sort: sortType,
+            isNew: false
+          });
+        }
         this[sortLabel] = '';
       }
     }
