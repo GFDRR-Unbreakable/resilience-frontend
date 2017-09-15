@@ -1068,9 +1068,8 @@ h1, h2, h3, h4, h5, h6, p, span, label {
 }
 .form-control-01{
   border-color: #4B5757 !important;
-  /* margin-left: -20px; */
   padding-left: 0px !important;
-  width: 75px !important;
+  text-align: left !important;
 }
 [tabindex="-1"]:focus {
   outline: none !important;
@@ -3146,7 +3145,7 @@ pre code {
   padding: 0.7rem 0.75rem;
   font-size: 0.9375rem;
   line-height: 1.25;
-  color: #373a3c !important;
+  color: #7D8F8F !important;
   background-color: rgba(255, 255, 255, 0.8);
   background-image: none;
   -webkit-background-clip: padding-box;
