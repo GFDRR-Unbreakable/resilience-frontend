@@ -874,19 +874,19 @@
          </div>
          <div class="row border-content">
             <div class="col-md-12">
-               <h6 class="title-results">RESULTS
+               <h6 class="title-results">3. View effects on Country Risk.
                   <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
                   <i class="mdi mdi-information-outline"></i>
                   </button>
-                  <span><i class="mdi mdi-checkbox-blank-circle box-icon-c"></i> Country</span>
-                  <span><img src="assets/image/icon-map.png" alt=""> Global Average</span>
+                  <!-- <span><i class="mdi mdi-checkbox-blank-circle box-icon-c"></i> Country</span>
+                  <span><img src="assets/image/icon-map.png" alt=""> Global Average</span> -->
                </h6>
             </div>
          </div>
          <div class="row border-content">
             <div class="col-md-12">
                <div class="form-group bottom-results" [class.has-danger]="searchFailed">
-                  <input type="text" class="form-control" [(ngModel)]="viewerModel.firstCountry" disabled placeholder="Country 1" />
+                  <input type="text" class="form-control form-control-01" [(ngModel)]="viewerModel.firstCountry" disabled placeholder="Country 1" />
                   <span *ngIf="searching">searching...</span>
                   <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
                </div>
@@ -898,7 +898,7 @@
          <div class="row border-content">
             <div class="col-md-12">
                <div class="form-group bottom-results" [class.has-danger]="searchFailed">
-                  <input type="text" class="form-control" [(ngModel)]="viewerModel.secondCountry" disabled placeholder="Country 2" />
+                  <input type="text" class="form-control form-control-01" [(ngModel)]="viewerModel.secondCountry" disabled placeholder="Country 2" />
                   <span *ngIf="searching">searching...</span>
                   <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
                </div>
