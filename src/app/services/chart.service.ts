@@ -451,6 +451,7 @@ export class ChartService {
     });
     const aMillion = 1000000;
     let policyList;
+    let maxNum = 0;
     const globalObj = this.getGlobalModelData();
     if (isCountryListObject) {
       const dataClone = [];
@@ -503,6 +504,16 @@ export class ChartService {
         });
       }
     } else {
+      allData.forEach((val, idx) => {
+        const countriesPerPol = this.getMetricAllCountriesSinglePolicy(val.id);
+        jQuery.each(countriesPerPol, (key, country) => {
+          if (country['dKtot'] > maxNum) {
+            maxNum = country['dKtot'];
+          } else if (country['dWtot_currency'] > maxNum) {
+            maxNum = country['dWtot_currency'];
+          }
+        });
+      });
       policyList = this.getChartsConf().policyList;
       policyList.forEach((val, idx) => {
         if (val.id === allData[idx].id) {
@@ -514,7 +525,7 @@ export class ChartService {
     const isNewChart = countryList.hasOwnProperty('isNew') && countryList['isNew'];
 
     const allValues = isCountryListPercentageBased ? dKTotPercentageArr.concat(dWTotPercentageArr) : dkTotArr.concat(dWTotCurrencyArr);
-    let maxValue = d3.max(allValues);
+    let maxValue = isPolicyListObject ? maxNum : d3.max(allValues);
     maxValue = isCountryListPercentageBased ? maxValue : Math.round(maxValue / aMillion);
     const minValue = d3.min(allValues);
     const recalculateChartHeight = () => {
