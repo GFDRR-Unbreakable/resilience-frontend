@@ -14,6 +14,8 @@ export class ChartService {
   private _outputDataProm$: Observable<any>;
   private _inputDataProm$: Observable<any>;
   private _baseURL = SERVER.URL.BASE;
+  private _maxGDPNum = 0;
+  private _maxCountryXValues: Array<any> = [];
   private _outputDataURL = SERVER.URL.OUTPUT_DATA;
   private _inputInfoURL = SERVER.URL.INPUTS_INFO;
   private _inputDomains: any;
@@ -150,6 +152,13 @@ export class ChartService {
       this._outputDomains[key]['chart'][containerId] = numericValue;
     }
     return value;
+  }
+  countPolicyListCharts() {
+    const svgEls = jQuery.find('div.scorecard-prioritylist svg');
+    if (svgEls.length) {
+      return svgEls.length;
+    }
+    return 0;
   }
   createInputCharts(inputData: any, containerId: string, sliderValues: any, groupName?: string) {
     jQuery(`div#${containerId}`).empty();
@@ -401,29 +410,243 @@ export class ChartService {
         svg.classed('selecting-input', true);
       }
       function brushend() {
-        // if (d3.event.sourceEvent) {
-        //   // source is a MouseEvent
-        //   // user is updating the input manually
-        //   const node = d3.select(d3.event.sourceEvent.target).node();
-        //   const s = jQuery(node).closest('svg');
-        //   const id = jQuery(s).attr('id');
-        //   // redraw the input plot
-        //   if (id) {
-        //     _redrawInputPlot.call(self, id);
-        //   } else {
-        //     console.warn('Cant get input id from:' + node);
-        //   }
-        // }
         svg.classed('selecting-input', !d3.event.target.empty());
       }
       function _redrawInputPlot(id) {
         const config = this._inputConfig;
         const inputD = config[id];
-        // jQuery.event.trigger({
-        //   type: 'inputchanged',
-        //   input: input
-        // });
       }
+    });
+  }
+  createOutputChart(outputData: any, containerId: string, groupName?: string, isScoreCardPage?: boolean) {
+    jQuery(`div#${containerId}`).empty();
+    const finalOutput = this.filterOutputDataByGroup(outputData, groupName);
+    const me = this;
+    jQuery.each(finalOutput, (idx, output) => {
+      const s1 = output.gradient[0];
+      const s2 = output.gradient[1];
+      if (!this._outputDomains[idx]['chart']) {
+        this._outputDomains[idx]['chart'] = {};
+      }
+      if (!this._outputDomains[idx]['chart'][containerId]) {
+        this._outputDomains[idx]['chart'][containerId] = '';
+      }
+      // sort the distribution
+      const data: Array<number> = output.domain.sort((a, b) => {
+        return a - b;
+      });
+      const avgDoll = me.calculateAVGGDPValue(idx, groupName);
+      const bounds = d3.extent(data);
+      const margin = {
+        top: 5,
+        right: 2,
+        bottom: 0,
+        left: 2
+      };
+      const width = (isScoreCardPage ? 140 : 110) - margin.left - margin.right;
+      const height = (isScoreCardPage ? 50 : 40) - margin.top - margin.bottom;
+
+      const kde = science['stats'].kde().sample(data);
+      const bw = kde.bandwidth(science['stats'].bandwidth.nrd0)(data);
+      const x = d3.scale.linear()
+        .domain(bounds)
+        .range([0, width])
+        .clamp(true);
+      const d1Y = d3.max(bw, (d) => {
+        return d[1];
+      });
+      const y = d3.scale.linear()
+        .domain([0, d1Y])
+        .range([height, 0]);
+      // gaussian curve
+      const l = d3.svg.line()
+        .x((d) => {
+          return x(d[0]);
+        })
+        .y((d) => {
+          return y(d[1]);
+        });
+      // area under gaussian curve
+      const a = d3.svg.area()
+        .x((d) => {
+          return x(d[0]);
+        })
+        .y0(height)
+        .y1((d) => {
+          return y(d[1]);
+        });
+      // bisect data array at brush selection point
+      const b = d3.bisector((d) => {
+        return d;
+      }).left;
+      const div = d3.select(`#${containerId}`)
+        .append('div')
+        .attr('id', idx)
+        .attr('class', 'col-sm-4')
+        .attr('data-output', idx)
+        .attr('data-output-title', output.descriptor)
+        .style('pointer-events', 'all');
+
+      const table = div.append('table')
+        .attr('width', '100%')
+        .attr('class', 'table table-responsive')
+        .attr('id', 'table-' + idx);
+      const tr = table.append('tr');
+      const td = tr.append('td')
+        .attr('width', '100%');
+      const svg = td.append('svg')
+        .attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom)
+        .attr('xmlns', 'http://www.w3.org/2000/svg')
+        .attr('id', idx)
+          .append('g')
+            .attr('transform',
+              'translate(' + margin.left + ',' + margin.top + ')')
+            .style('pointer-events', 'none')
+            .style('border-bottom', '1px solid lightgrey');
+      // add gaussian curve
+      const gaus = svg.append('g')
+        .attr('id', idx)
+        .attr('class', 'gaussian');
+      gaus.selectAll('#' + containerId + ' g#' + idx + ' .gaussian')
+      // Multivariant Density Estimation
+      // http://bit.ly/1Y3jEcD
+        .data([science['stats'].bandwidth.nrd0])
+          .enter()
+        .append('path')
+        .attr('d', (d) => {
+          return l(kde.bandwidth(d)(data));
+        });
+      // Add manually chart styles to be integrated when converting to base64 string
+      gaus.selectAll('path')
+        .style('stroke', '#000')
+        .style('stroke-width', '3px')
+        .style('fill', 'none')
+        .style('shape-rendering', 'auto');
+      // add gaussian curve
+      const area = svg.append('g')
+        .attr('id', 'area-' + idx)
+        .attr('class', 'area');
+      area.selectAll('#' + containerId + ' g#area-' + idx + ' .area')
+        .data([science['stats'].bandwidth.nrd0])
+        .enter()
+        .append('path')
+        .attr('d', (d) => {
+          return a(kde.bandwidth(d)(data));
+        });
+      // Add manually chart styles to be integrated when converting to base64 string
+      area.selectAll('path')
+        .style('fill', '#5E6A6A');
+      // add placeholder for initial model value
+      const initial = svg.append('g')
+        .attr('id', 'initial-' + idx)
+        .attr('class', 'initial')
+        .append('line');
+      // Add manually chart styles to be integrated when converting to base64 string
+      svg.selectAll('g.initial line')
+        .style('fill', 'none')
+        .style('stroke', '#2f4f4f')
+        .style('stroke-width', '2px')
+        .style('opacity', '0.8');
+
+      let infoEl;
+      if (!isScoreCardPage) {
+        infoEl = tr.append('td')
+          .attr('width', '100%');
+        infoEl.append('p')
+          .attr('class', 'text-results')
+          .text(output.descriptor.toUpperCase());
+      } else {
+        infoEl = table.append('tr');
+        const tdEl = infoEl.append('td')
+          .attr('width', '100%');
+        const divData = tdEl.append('div')
+          .attr('class', 'box-text-results text-center');
+        divData.append('p')
+          .attr('class', 'scorecard-title-result')
+          .text(output.descriptor);
+      }
+
+      const brushstart = () => {
+        svg.classed('selecting-output', true);
+      };
+      const brushmove = () => {
+        d3.select('#' + containerId + ' #' + idx + ' g.resize.e path')
+          .attr('d', 'M 0, 0 ' + ' L 0 ' + height);
+      };
+      const brushend = () => {
+        svg.classed('selecting', !d3.event.target.empty());
+      };
+      const brush = d3.svg.brush()
+        .x(x)
+        .extent([0, d3.mean(data)])
+        // .on('brushstart', brushstart)
+        .on('brush', brushmove)
+        // .on('brushend', brushend);
+
+      const textFn = () => {
+        const precision = +output.precision;
+        const numericValue = (+brush.extent()[1] * 100).toFixed(precision);
+        const value = me.calculateGDPValues(containerId, idx, numericValue, avgDoll);
+        return value;
+      };
+
+      if (!isScoreCardPage) {
+        infoEl.append('p')
+        .attr('class', 'text-results')
+        .append('b')
+        .attr('class', 'text-number')
+        .text(textFn);
+      } else {
+        infoEl.select('div.box-text-results')
+          .append('p')
+          .attr('class', 'scorecard-text-result')
+          .append('b')
+          .attr('class', 'text-number')
+          .text(textFn);
+      }
+
+      // keep a reference to the brush for the output domain
+      this._outputDomains[idx].brush = brush;
+      this._outputDomains[idx].x = x;
+      this._outputDomains[idx].height = height;
+
+      const line = d3.svg.line()
+        .x((d) => {
+          return d3.mean(data);
+        })
+        .y((d) => {
+          return height;
+        });
+
+      const brushg = svg.append('g')
+        .attr('class', 'brush')
+        .style('pointer-events', 'none')
+        .call(brush);
+
+      brushg.call(brush.event)
+        .transition()
+        .duration(750)
+        .call(brush.extent([0, d3.mean(data)]))
+        .call(brush.event);
+
+      brushg.selectAll('#' + containerId + ' g.resize.w').remove();
+      // Add manually chart styles to be integrated when converting to base64 string
+      brushg.select('#' + containerId + ' #' + idx + ' g.resize.e').append('path')
+        .attr('d', line)
+        .style('fill', '#666')
+        .style('fill-opacity', '0.8')
+        .style('stroke-width', '4px')
+        .style('stroke', '#C3D700')
+        .style('pointer-events', 'none');
+      // Add manually chart styles to be integrated when converting to base64 string
+      brushg.select('rect.extent')
+        .style('fill-opacity', '0')
+        .style('shape-rendering', 'crispEdges');
+
+      brushg.selectAll('#' + containerId + ' rect')
+        .attr('height', height)
+        .style('pointer-events', 'none');
     });
   }
   createPolicyListChart(policyListData: any, containerId: string, countryList: any) {
@@ -451,7 +674,6 @@ export class ChartService {
     });
     const aMillion = 1000000;
     let policyList;
-    let maxNum = 0;
     const globalObj = this.getGlobalModelData();
     if (isCountryListObject) {
       const dataClone = [];
@@ -487,33 +709,45 @@ export class ChartService {
         let macroGDPSum = 0;
         allData.forEach((val, idx) => {
           if (idx > 0) {
-            macroGDPSum += globalObj[val.id]['macro_gdp_pc_pp'];
-          }
-        });
-        const macroGDPAvg = macroGDPSum / (allData.length - 1);
-        allData[0].dKTotPercentage = Math.round(((allData[0].dKtot / aMillion) * 100) / macroGDPAvg);
-        allData[0].dWTotPercentage = Math.round(((allData[0].dWtot_currency / aMillion) * 100) / macroGDPAvg);
-        allData.forEach((val, idx) => {
-          if (idx > 0) {
             const countryGDP = globalObj[val.id]['macro_gdp_pc_pp'];
+            macroGDPSum += countryGDP;
             val.dKTotPercentage = Math.round(((val.dKtot / aMillion) * 100) / countryGDP);
             val.dWTotPercentage = Math.round(((val.dWtot_currency / aMillion) * 100) / countryGDP);
             dKTotPercentageArr.push(val.dKTotPercentage);
             dWTotPercentageArr.push(val.dWTotPercentage);
           }
         });
+        const macroGDPAvg = macroGDPSum / (allData.length - 1);
+        allData[0].dKTotPercentage = Math.round(((allData[0].dKtot / aMillion) * 100) / macroGDPAvg);
+        allData[0].dWTotPercentage = Math.round(((allData[0].dWtot_currency / aMillion) * 100) / macroGDPAvg);
       }
     } else {
-      allData.forEach((val, idx) => {
-        const countriesPerPol = this.getMetricAllCountriesSinglePolicy(val.id);
-        jQuery.each(countriesPerPol, (key, country) => {
-          if (country['dKtot'] > maxNum) {
-            maxNum = country['dKtot'];
-          } else if (country['dWtot_currency'] > maxNum) {
-            maxNum = country['dWtot_currency'];
+      // if (countryList.hasOwnProperty('chart') && countryList['chart'] === 'relative') {
+      //   //
+      // }
+      const maxCountryVal = d3.max(dkTotArr.concat(dWTotCurrencyArr));
+      const MAX_SELECTED_COUNTRIES = 2;
+      if (this._maxCountryXValues.length < MAX_SELECTED_COUNTRIES) {
+        this._maxCountryXValues.push({
+          chart: containerId,
+          val: maxCountryVal
+        });
+      } else {
+        if (this.countPolicyListCharts() === 2 && this._maxGDPNum > 0) {
+          this._maxGDPNum = 0;
+        }
+        this._maxCountryXValues.forEach(val => {
+          if (val.chart === containerId) {
+            val.val = maxCountryVal;
           }
         });
+      }
+      const maxVal = d3.max(this._maxCountryXValues, (d) => {
+        return d.val;
       });
+      if (maxVal > this._maxGDPNum) {
+        this._maxGDPNum = maxVal;
+      }
       policyList = this.getChartsConf().policyList;
       policyList.forEach((val, idx) => {
         if (val.id === allData[idx].id) {
@@ -525,7 +759,7 @@ export class ChartService {
     const isNewChart = countryList.hasOwnProperty('isNew') && countryList['isNew'];
 
     const allValues = isCountryListPercentageBased ? dKTotPercentageArr.concat(dWTotPercentageArr) : dkTotArr.concat(dWTotCurrencyArr);
-    let maxValue = isPolicyListObject ? maxNum : d3.max(allValues);
+    let maxValue = isPolicyListObject ? this._maxGDPNum : d3.max(allValues);
     maxValue = isCountryListPercentageBased ? maxValue : Math.round(maxValue / aMillion);
     const minValue = d3.min(allValues);
     const recalculateChartHeight = () => {
@@ -961,237 +1195,6 @@ export class ChartService {
     });
 
   }
-  createOutputChart(outputData: any, containerId: string, groupName?: string, isScoreCardPage?: boolean) {
-    jQuery(`div#${containerId}`).empty();
-    const finalOutput = this.filterOutputDataByGroup(outputData, groupName);
-    const me = this;
-    jQuery.each(finalOutput, (idx, output) => {
-      const s1 = output.gradient[0];
-      const s2 = output.gradient[1];
-      if (!this._outputDomains[idx]['chart']) {
-        this._outputDomains[idx]['chart'] = {};
-      }
-      if (!this._outputDomains[idx]['chart'][containerId]) {
-        this._outputDomains[idx]['chart'][containerId] = '';
-      }
-      // sort the distribution
-      const data: Array<number> = output.domain.sort((a, b) => {
-        return a - b;
-      });
-      const avgDoll = me.calculateAVGGDPValue(idx, groupName);
-      const bounds = d3.extent(data);
-      const margin = {
-        top: 5,
-        right: 2,
-        bottom: 0,
-        left: 2
-      };
-      const width = (isScoreCardPage ? 140 : 110) - margin.left - margin.right;
-      const height = (isScoreCardPage ? 50 : 40) - margin.top - margin.bottom;
-
-      const kde = science['stats'].kde().sample(data);
-      const bw = kde.bandwidth(science['stats'].bandwidth.nrd0)(data);
-      const x = d3.scale.linear()
-        .domain(bounds)
-        .range([0, width])
-        .clamp(true);
-      const d1Y = d3.max(bw, (d) => {
-        return d[1];
-      });
-      const y = d3.scale.linear()
-        .domain([0, d1Y])
-        .range([height, 0]);
-      // gaussian curve
-      const l = d3.svg.line()
-        .x((d) => {
-          return x(d[0]);
-        })
-        .y((d) => {
-          return y(d[1]);
-        });
-      // area under gaussian curve
-      const a = d3.svg.area()
-        .x((d) => {
-          return x(d[0]);
-        })
-        .y0(height)
-        .y1((d) => {
-          return y(d[1]);
-        });
-      // bisect data array at brush selection point
-      const b = d3.bisector((d) => {
-        return d;
-      }).left;
-      const div = d3.select(`#${containerId}`)
-        .append('div')
-        .attr('id', idx)
-        .attr('class', 'col-sm-4')
-        .attr('data-output', idx)
-        .attr('data-output-title', output.descriptor)
-        .style('pointer-events', 'all');
-
-      const table = div.append('table')
-        .attr('width', '100%')
-        .attr('class', 'table table-responsive')
-        .attr('id', 'table-' + idx);
-      const tr = table.append('tr');
-      const td = tr.append('td')
-        .attr('width', '100%');
-      const svg = td.append('svg')
-        .attr('width', width + margin.left + margin.right)
-        .attr('height', height + margin.top + margin.bottom)
-        .attr('xmlns', 'http://www.w3.org/2000/svg')
-        .attr('id', idx)
-          .append('g')
-            .attr('transform',
-              'translate(' + margin.left + ',' + margin.top + ')')
-            .style('pointer-events', 'none')
-            .style('border-bottom', '1px solid lightgrey');
-      // add gaussian curve
-      const gaus = svg.append('g')
-        .attr('id', idx)
-        .attr('class', 'gaussian');
-      gaus.selectAll('#' + containerId + ' g#' + idx + ' .gaussian')
-      // Multivariant Density Estimation
-      // http://bit.ly/1Y3jEcD
-        .data([science['stats'].bandwidth.nrd0])
-          .enter()
-        .append('path')
-        .attr('d', (d) => {
-          return l(kde.bandwidth(d)(data));
-        });
-      // Add manually chart styles to be integrated when converting to base64 string
-      gaus.selectAll('path')
-        .style('stroke', '#000')
-        .style('stroke-width', '3px')
-        .style('fill', 'none')
-        .style('shape-rendering', 'auto');
-      // add gaussian curve
-      const area = svg.append('g')
-        .attr('id', 'area-' + idx)
-        .attr('class', 'area');
-      area.selectAll('#' + containerId + ' g#area-' + idx + ' .area')
-        .data([science['stats'].bandwidth.nrd0])
-        .enter()
-        .append('path')
-        .attr('d', (d) => {
-          return a(kde.bandwidth(d)(data));
-        });
-      // Add manually chart styles to be integrated when converting to base64 string
-      area.selectAll('path')
-        .style('fill', '#5E6A6A');
-      // add placeholder for initial model value
-      const initial = svg.append('g')
-        .attr('id', 'initial-' + idx)
-        .attr('class', 'initial')
-        .append('line');
-      // Add manually chart styles to be integrated when converting to base64 string
-      svg.selectAll('g.initial line')
-        .style('fill', 'none')
-        .style('stroke', '#2f4f4f')
-        .style('stroke-width', '2px')
-        .style('opacity', '0.8');
-
-      let infoEl;
-      if (!isScoreCardPage) {
-        infoEl = tr.append('td')
-          .attr('width', '100%');
-        infoEl.append('p')
-          .attr('class', 'text-results')
-          .text(output.descriptor.toUpperCase());
-      } else {
-        infoEl = table.append('tr');
-        const tdEl = infoEl.append('td')
-          .attr('width', '100%');
-        const divData = tdEl.append('div')
-          .attr('class', 'box-text-results text-center');
-        divData.append('p')
-          .attr('class', 'scorecard-title-result')
-          .text(output.descriptor);
-      }
-
-      const brushstart = () => {
-        svg.classed('selecting-output', true);
-      };
-      const brushmove = () => {
-        d3.select('#' + containerId + ' #' + idx + ' g.resize.e path')
-          .attr('d', 'M 0, 0 ' + ' L 0 ' + height);
-      };
-      const brushend = () => {
-        svg.classed('selecting', !d3.event.target.empty());
-      };
-      const brush = d3.svg.brush()
-        .x(x)
-        .extent([0, d3.mean(data)])
-        // .on('brushstart', brushstart)
-        .on('brush', brushmove)
-        // .on('brushend', brushend);
-
-      const textFn = () => {
-        const precision = +output.precision;
-        const numericValue = (+brush.extent()[1] * 100).toFixed(precision);
-        const value = me.calculateGDPValues(containerId, idx, numericValue, avgDoll);
-        return value;
-      };
-
-      if (!isScoreCardPage) {
-        infoEl.append('p')
-        .attr('class', 'text-results')
-        .append('b')
-        .attr('class', 'text-number')
-        .text(textFn);
-      } else {
-        infoEl.select('div.box-text-results')
-          .append('p')
-          .attr('class', 'scorecard-text-result')
-          .append('b')
-          .attr('class', 'text-number')
-          .text(textFn);
-      }
-
-      // keep a reference to the brush for the output domain
-      this._outputDomains[idx].brush = brush;
-      this._outputDomains[idx].x = x;
-      this._outputDomains[idx].height = height;
-
-      const line = d3.svg.line()
-        .x((d) => {
-          return d3.mean(data);
-        })
-        .y((d) => {
-          return height;
-        });
-
-      const brushg = svg.append('g')
-        .attr('class', 'brush')
-        .style('pointer-events', 'none')
-        .call(brush);
-
-      brushg.call(brush.event)
-        .transition()
-        .duration(750)
-        .call(brush.extent([0, d3.mean(data)]))
-        .call(brush.event);
-
-      brushg.selectAll('#' + containerId + ' g.resize.w').remove();
-      // Add manually chart styles to be integrated when converting to base64 string
-      brushg.select('#' + containerId + ' #' + idx + ' g.resize.e').append('path')
-        .attr('d', line)
-        .style('fill', '#666')
-        .style('fill-opacity', '0.8')
-        .style('stroke-width', '4px')
-        .style('stroke', '#C3D700')
-        .style('pointer-events', 'none');
-      // Add manually chart styles to be integrated when converting to base64 string
-      brushg.select('rect.extent')
-        .style('fill-opacity', '0')
-        .style('shape-rendering', 'crispEdges');
-
-      brushg.selectAll('#' + containerId + ' rect')
-        .attr('height', height)
-        .style('pointer-events', 'none');
-    });
-  }
   filterOutputDataByGroup(outputData, groupName: string) {
     if (groupName === 'GLOBAL' || !groupName) {
       return outputData;
@@ -1381,6 +1384,12 @@ export class ChartService {
     formData.append('m', model);
     formData.append('i_df', modelData);
     return this.webService.post(url, formData).map((res: Response) => res.json()).catch(this.webService.errorHandler);
+  }
+  getMaxGDPCountryValue() {
+    return this._maxGDPNum;
+  }
+  getMaxGDPCountryValues() {
+    return this._maxCountryXValues;
   }
   getMetricAllCountriesSinglePolicy(policy) {
     const outputInfo = {};
