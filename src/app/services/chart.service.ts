@@ -1394,18 +1394,18 @@ export class ChartService {
           'hazard_ratio_fa__wind']
       },
       'policyList': [
+        {'id': 'axfin', 'label': 'Universal access to finance', 'mapping': 'axfin'},
         {'id': 'fap', 'label': 'Reduce vulnerability of the poor by 5% of their current exposure', 'mapping': 'v_cat_info__poor'},
         {'id': 'far', 'label': 'Reduce vulnerability of the rich by 5% of their current exposure', 'mapping': 'v_cat_info__nonpoor'},
         {'id': 'kp', 'label': 'Increase income of the poor by 10%', 'mapping': 'k_cat_info__poor'},
-        {'id': 'social_p', 'label': 'Increase social transfers to poor BY one third', 'mapping': 'gamma_SP_cat_info__poor'},
-        {'id': 't_rebuild_k', 'label': 'Decrease reconstruction time by 1/3', 'mapping': 'macro_T_rebuild_K'},
-        {'id': 'shew', 'label': 'Increase access to early warnings to 100%', 'mapping': 'shew_for_hazard_ratio'},
-        {'id': 'vp', 'label': 'Decrease vulnerability of poor by 30%', 'mapping': 'v_cat_info__poor'},
-        {'id': 'vr',
-          'label': 'Reduce asset vulnerability (by 30%) of nonpoor people (5% of the population)', 'mapping': 'v_cat_info__nonpoor'},
         {'id': 'pdspackage', 'label': 'Postdisaster support package', 'mapping': 'optionPDS'},
         {'id': 'prop_nonpoor', 'label': 'Develop market insurance', 'mapping': 'optionFee'},
-        {'id': 'axfin', 'label': 'Universal access to finance', 'mapping': 'axfin'}
+        {'id': 'shew', 'label': 'Increase access to early warnings to 100%', 'mapping': 'shew_for_hazard_ratio'},
+        {'id': 'social_p', 'label': 'Increase social transfers to poor BY one third', 'mapping': 'gamma_SP_cat_info__poor'},
+        {'id': 't_rebuild_k', 'label': 'Decrease reconstruction time by 1/3', 'mapping': 'macro_T_rebuild_K'},
+        {'id': 'vp', 'label': 'Decrease vulnerability of poor by 30%', 'mapping': 'v_cat_info__poor'},
+        {'id': 'vr',
+          'label': 'Reduce asset vulnerability (by 30%) of nonpoor people (5% of the population)', 'mapping': 'v_cat_info__nonpoor'}
       ],
       'policyMetrics': ['dK', 'dKtot', 'dWpc_currency', 'dWtot_currency'],
       'inputs_info': 'inputs_info_wrapper.csv',
@@ -1730,7 +1730,7 @@ export class ChartService {
     this._outputDataProm$ = Observable.fromPromise(promisedData);
   }
   setPoliciesData(data) {
-    this._policyInfoObj = data;
+    // this._policyInfoObj = data;
     const chartConf = this.getChartsConf();
     const policyList = chartConf.policyList;
     const policyIds = policyList.map((val) => {
