@@ -738,21 +738,6 @@ export class ChartService {
       let policyData = dkTotArr.concat(dWTotCurrencyArr);
       let maxCountryVal = d3.max(policyData);
       const MAX_SELECTED_COUNTRIES = 2;
-      // if (countryList.hasOwnProperty('chartType') && countryList['chartType'] === 'relative' &&
-      //     countryList.hasOwnProperty('totalGDP') && countryList['totalGDP']) {
-      //   policyData = [];
-      //   dkTotArr = [];
-      //   dWTotCurrencyArr = [];
-      //   allData.forEach(data => {
-      //     data['dKtot'] = Math.round((data['dKtot'] / countryList['totalGDP']) * 10000);
-      //     data['dWtot_currency'] = Math.round((data['dWtot_currency'] / countryList['totalGDP']) * 10000);
-      //     dkTotArr.push(data['dKtot']);
-      //     dWTotCurrencyArr.push(data['dWtot_currency']);
-      //   });
-      //   policyData = dkTotArr.concat(dWTotCurrencyArr);
-      //   maxCountryVal = d3.max(policyData);
-      //   console.log(allData);
-      // }
       if (this._maxCountryXValues.length < MAX_SELECTED_COUNTRIES) {
         this._maxCountryXValues.push({
           chart: containerId,

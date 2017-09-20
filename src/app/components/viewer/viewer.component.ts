@@ -223,6 +223,12 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           viewerMod[idx] = glob;
         }
       });
+      // Apply proper slider values from selected country
+      jQuery.each(viewerMod, (viewKey, model) => {
+        if (sliderObj.hasOwnProperty(viewKey)) {
+          viewerMod[viewKey] = sliderObj[viewKey].value;
+        }
+      });
       viewerMod[key] = sliderObj[key].value;
       viewerMod['name'] = countryArr[0].name;
       viewerMod['id'] = countryArr[0].code;
