@@ -272,14 +272,57 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
   onChangeChartTypeEvent() {
     this.switchUICmpVal = !this.switchUICmpVal;
     if (this._selectedCountryList.length) {
-      this._selectedCountryList.forEach(val => {
+      if (this._selectedCountryList.length === 2) {
+        const dKtotArr = [];
+        const dWtotCurrencyArr = [];
+        this._selectedCountryList.forEach(val => {
+          const name = val.name;
+          const data = this.chartService.getMetricAllPoliciesSingleCountry(name);
+          const switchVal = this.switchUICmpVal ? 'relative' : 'absolute';
+          const chartId = val.chartId;
+          jQuery.each(data, (key, poli) => {
+            const dKtot =  switchVal === 'relative' ? +poli['rel_num_asset_losses_label'] : +poli['num_asset_losses_label'];
+            const dWtot_currency = switchVal === 'relative' ?
+              +poli['rel_num_wellbeing_losses_label'] : +poli['num_wellbeing_losses_label'];
+            dKtotArr.push({chartId, dKtot});
+            dWtotCurrencyArr.push({chartId, dWtot_currency});
+          });
+        });
+        dKtotArr.sort((a, b) => {
+          return b.dKtot - a.dKtot;
+        });
+        dWtotCurrencyArr.sort((a, b) => {
+          return b.dWtot_currency - a.dWtot_currency;
+        });
+        const mergedData = dKtotArr.slice(0, 1).concat(dWtotCurrencyArr.slice(0, 1));
+        mergedData.sort((a, b) => {
+          return b['dWtot_currency'] - a['dKtot'];
+        });
+        this._selectedCountryList.forEach(val => {
+          if (mergedData[0].chartId === val.chartId) {
+            val.order = mergedData[0].hasOwnProperty('dWtot_currency') ? mergedData[0]['dWtot_currency'] : mergedData[0]['dKtot'];
+          } else {
+            val.order = -10000;
+          }
+        });
+        this._selectedCountryList.sort((a, b) => {
+          return (b.order > a.order) ? 1 : (a.order > b.order) ? -1 : 0;
+        });
+        this._selectedCountryList.forEach(val => {
+          const name = val.name;
+          const data = this.chartService.getMetricAllPoliciesSingleCountry(name);
+          const switchVal = this.switchUICmpVal ? 'relative' : 'absolute';
+          const defaultOpts = {type: 'policyList', isNew: false, chartType: this.switchUICmpVal ? 'relative' : 'absolute'};
+          this.chartService.createPolicyListChart(data, val.chartId, defaultOpts);
+        });
+      } else {
+        const val = this._selectedCountryList[0];
         const name = val.name;
         const data = this.chartService.getMetricAllPoliciesSingleCountry(name);
-        const extraOpts = this.switchUICmpVal ? {totalGDP: val.totalGDP} : null;
-        let defaultOpts = {type: 'policyList', isNew: false, chartType: this.switchUICmpVal ? 'relative' : 'absolute'};
-        defaultOpts = extraOpts ? Object.assign({}, defaultOpts, extraOpts) : defaultOpts;
+        const switchVal = this.switchUICmpVal ? 'relative' : 'absolute';
+        const defaultOpts = {type: 'policyList', isNew: false, chartType: this.switchUICmpVal ? 'relative' : 'absolute'};
         this.chartService.createPolicyListChart(data, val.chartId, defaultOpts);
-      });
+      }
     }
   }
   onFirstCountryInputChangeEvent() {

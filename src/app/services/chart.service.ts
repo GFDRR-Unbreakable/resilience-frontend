@@ -739,11 +739,24 @@ export class ChartService {
       let maxCountryVal = d3.max(policyData);
       const MAX_SELECTED_COUNTRIES = 2;
       if (this._maxCountryXValues.length < MAX_SELECTED_COUNTRIES) {
-        this._maxCountryXValues.push({
-          chart: containerId,
-          type: countryList['chartType'],
-          maxVal: maxCountryVal
-        });
+        const filterContainer = this._maxCountryXValues.filter(val => val.chart === containerId);
+        if (!filterContainer.length) {
+          this._maxCountryXValues.push({
+            chart: containerId,
+            type: countryList['chartType'],
+            maxVal: maxCountryVal
+          });
+        } else {
+          this._maxCountryXValues.forEach(val => {
+            if (val.chart === containerId) {
+              if (val.type !== countryList['chartType']) {
+                this._maxGDPNum = 0;
+              }
+              val.type = countryList['chartType'];
+              val.maxVal = maxCountryVal;
+            }
+          });
+        }
       } else {
         const filterChartType = this._maxCountryXValues.filter(val => val.type === countryList['chartType']);
         if (!filterChartType.length && this.countPolicyListCharts() === 2) {
