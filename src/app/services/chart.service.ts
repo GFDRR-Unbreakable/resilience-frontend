@@ -4,6 +4,7 @@ import {Subscription} from 'rxjs/Subscription';
 import 'rxjs/add/observable/fromPromise';
 import * as d3 from 'd3/d3.js';
 import * as science from 'science/index.js';
+import * as d3Q from 'd3-queue/index.js';
 import {SERVER} from './server.conf';
 import {WebService} from '../services/web.service';
 import {ViewerModel} from '../store/model/viewer.model';
@@ -24,10 +25,13 @@ export class ChartService {
   private _globalModelData: any = {};
   private _countryGroupData: any = {};
   private _policyInfoObj: any = null;
+  private _newPolicyGroupedByCountryObj: any = {};
+  private _newPolicyGroupedByPolicyObj: any = {};
   private _regionalPoliciesInfoObj: any = {};
   private _outputDataSubs: Subscription;
   public _outputUIList: Array<any> = [];
   public _outputList: Array<any> = [];
+  private _outRelative: any = null;
   private _scoreCardDataObs$: Observable<any>;
   constructor(private webService: WebService) { }
   private _calculateRegionalAvgSinglePolicy(policy) {
@@ -652,98 +656,125 @@ export class ChartService {
   createPolicyListChart(policyListData: any, containerId: string, countryList: any) {
     // jQuery(`div#${containerId}`).empty();
     // d3.select(`div#${containerId}`).remove();
-    const dkTotArr = [];
-    const dWTotCurrencyArr = [];
+    let dkTotArr = [];
+    let dWTotCurrencyArr = [];
     const dKTotPercentageArr = [];
     const dWTotPercentageArr = [];
     let allData = [];
     const isPolicyListObject = typeof countryList === 'object' && countryList['type'] === 'policyList';
-    const isCountryListObject = typeof countryList === 'object' &&
-      (countryList['type'] === 'million' || countryList['type'] === 'percentage');
-    const isCountryListCurrencyBased = isCountryListObject && countryList['type'] === 'million';
-    const isCountryListPercentageBased = isCountryListObject && countryList['type'] === 'percentage';
+    const isCountryListObject = typeof countryList === 'object' && countryList['type'] === 'policyMeasure';
+    const isCountryListCurrencyBased = isCountryListObject && countryList['chartType'] === 'absolute';
+    const isCountryListPercentageBased = isCountryListObject && countryList['chartType'] === 'relative';
 
     jQuery.each(policyListData, (idx, polData) => {
-      dkTotArr.push(polData.dKtot);
-      dWTotCurrencyArr.push(polData.dWtot_currency);
+      const dKtot = countryList['chartType'] === 'absolute' ? +polData['num_asset_losses_label'] : +polData['rel_num_asset_losses_label'];
+      const dWtot_currency = countryList['chartType'] === 'absolute' ?
+        +polData['num_wellbeing_losses_label'] : +polData['rel_num_wellbeing_losses_label'];
+      const dKtotLabel = countryList['chartType'] === 'absolute' ?
+        polData['asset_losses_label'] : polData['rel_asset_losses_label'];
+      const dWtot_currencyLabel = countryList['chartType'] === 'absolute' ?
+        polData['wellbeing_losses_label'] : polData['rel_wellbeing_losses_label'];
+      dkTotArr.push(dKtot);
+      dWTotCurrencyArr.push(dWtot_currency);
       allData.push({
         id: idx,
-        dKtot: polData.dKtot,
-        dWtot_currency: polData.dWtot_currency
+        dKtot,
+        dWtot_currency,
+        dKtotLabel,
+        dWtot_currencyLabel
       });
     });
+    console.log(allData);
     const aMillion = 1000000;
     let policyList;
     const globalObj = this.getGlobalModelData();
     if (isCountryListObject) {
-      const dataClone = [];
-      allData.forEach(val => {
-        if (!globalObj[val.id]) {
-          val.label = val.id + ' AVERAGE';
-        } else {
-          val.label = globalObj[val.id].name;
-        }
-      });
-      if (allData[0].id !== 'GLOBAL') {
-        let regionName;
-        const regionList = {};
-        for (const key in globalObj) {
-          if (globalObj.hasOwnProperty(key) ) {
-            if (!regionName && globalObj[key]['group_name'] === allData[0].id) {
-              regionName = allData[0].id;
-            }
-            if (globalObj[key]['group_name'] === regionName && !regionList[key]) {
-              regionList[key] = key;
-            }
-          }
-        }
-        dataClone.push(allData[0]);
-        for (let i = 1; i < allData.length; i++) {
-          if (allData[i].id === regionList[allData[i].id]) {
-            dataClone.push(allData[i]);
-          }
-        }
-        allData = dataClone;
-      }
-      if (isCountryListPercentageBased) {
-        let macroGDPSum = 0;
-        allData.forEach((val, idx) => {
-          if (idx > 0) {
-            const countryGDP = globalObj[val.id]['macro_gdp_pc_pp'];
-            macroGDPSum += countryGDP;
-            val.dKTotPercentage = Math.round(((val.dKtot / aMillion) * 100) / countryGDP);
-            val.dWTotPercentage = Math.round(((val.dWtot_currency / aMillion) * 100) / countryGDP);
-            dKTotPercentageArr.push(val.dKTotPercentage);
-            dWTotPercentageArr.push(val.dWTotPercentage);
-          }
-        });
-        const macroGDPAvg = macroGDPSum / (allData.length - 1);
-        allData[0].dKTotPercentage = Math.round(((allData[0].dKtot / aMillion) * 100) / macroGDPAvg);
-        allData[0].dWTotPercentage = Math.round(((allData[0].dWtot_currency / aMillion) * 100) / macroGDPAvg);
-      }
-    } else {
-      // if (countryList.hasOwnProperty('chart') && countryList['chart'] === 'relative') {
-      //   //
+      // const dataClone = [];
+      // allData.forEach(val => {
+      //   if (!globalObj[val.id]) {
+      //     val.label = val.id + ' AVERAGE';
+      //   } else {
+      //     val.label = globalObj[val.id].name;
+      //   }
+      // });
+      // if (allData[0].id !== 'GLOBAL') {
+      //   let regionName;
+      //   const regionList = {};
+      //   for (const key in globalObj) {
+      //     if (globalObj.hasOwnProperty(key) ) {
+      //       if (!regionName && globalObj[key]['group_name'] === allData[0].id) {
+      //         regionName = allData[0].id;
+      //       }
+      //       if (globalObj[key]['group_name'] === regionName && !regionList[key]) {
+      //         regionList[key] = key;
+      //       }
+      //     }
+      //   }
+      //   dataClone.push(allData[0]);
+      //   for (let i = 1; i < allData.length; i++) {
+      //     if (allData[i].id === regionList[allData[i].id]) {
+      //       dataClone.push(allData[i]);
+      //     }
+      //   }
+      //   allData = dataClone;
       // }
-      const maxCountryVal = d3.max(dkTotArr.concat(dWTotCurrencyArr));
+      // if (isCountryListPercentageBased) {
+      //   let macroGDPSum = 0;
+      //   allData.forEach((val, idx) => {
+      //     if (idx > 0) {
+      //       const countryGDP = globalObj[val.id]['macro_gdp_pc_pp'];
+      //       macroGDPSum += countryGDP;
+      //       val.dKTotPercentage = Math.round(((val.dKtot / aMillion) * 100) / countryGDP);
+      //       val.dWTotPercentage = Math.round(((val.dWtot_currency / aMillion) * 100) / countryGDP);
+      //       dKTotPercentageArr.push(val.dKTotPercentage);
+      //       dWTotPercentageArr.push(val.dWTotPercentage);
+      //     }
+      //   });
+      //   const macroGDPAvg = macroGDPSum / (allData.length - 1);
+      //   allData[0].dKTotPercentage = Math.round(((allData[0].dKtot / aMillion) * 100) / macroGDPAvg);
+      //   allData[0].dWTotPercentage = Math.round(((allData[0].dWtot_currency / aMillion) * 100) / macroGDPAvg);
+      // }
+    } else {
+      let policyData = dkTotArr.concat(dWTotCurrencyArr);
+      let maxCountryVal = d3.max(policyData);
       const MAX_SELECTED_COUNTRIES = 2;
+      // if (countryList.hasOwnProperty('chartType') && countryList['chartType'] === 'relative' &&
+      //     countryList.hasOwnProperty('totalGDP') && countryList['totalGDP']) {
+      //   policyData = [];
+      //   dkTotArr = [];
+      //   dWTotCurrencyArr = [];
+      //   allData.forEach(data => {
+      //     data['dKtot'] = Math.round((data['dKtot'] / countryList['totalGDP']) * 10000);
+      //     data['dWtot_currency'] = Math.round((data['dWtot_currency'] / countryList['totalGDP']) * 10000);
+      //     dkTotArr.push(data['dKtot']);
+      //     dWTotCurrencyArr.push(data['dWtot_currency']);
+      //   });
+      //   policyData = dkTotArr.concat(dWTotCurrencyArr);
+      //   maxCountryVal = d3.max(policyData);
+      //   console.log(allData);
+      // }
       if (this._maxCountryXValues.length < MAX_SELECTED_COUNTRIES) {
         this._maxCountryXValues.push({
           chart: containerId,
-          val: maxCountryVal
+          type: countryList['chartType'],
+          maxVal: maxCountryVal
         });
       } else {
-        if (this.countPolicyListCharts() === 2 && this._maxGDPNum > 0) {
+        const filterChartType = this._maxCountryXValues.filter(val => val.type === countryList['chartType']);
+        if (!filterChartType.length && this.countPolicyListCharts() === 2) {
           this._maxGDPNum = 0;
+          this._maxCountryXValues.forEach(val => {val.type = countryList['chartType']; val.maxVal = 0; });
+        } else {
+          this._maxGDPNum = d3.max(this._maxCountryXValues, d => d.maxVal);
         }
         this._maxCountryXValues.forEach(val => {
           if (val.chart === containerId) {
-            val.val = maxCountryVal;
+            val.maxVal = maxCountryVal;
           }
         });
       }
       const maxVal = d3.max(this._maxCountryXValues, (d) => {
-        return d.val;
+        return d.maxVal;
       });
       if (maxVal > this._maxGDPNum) {
         this._maxGDPNum = maxVal;
@@ -758,10 +789,11 @@ export class ChartService {
     const allDataClone = Object.assign([], allData);
     const isNewChart = countryList.hasOwnProperty('isNew') && countryList['isNew'];
 
-    const allValues = isCountryListPercentageBased ? dKTotPercentageArr.concat(dWTotPercentageArr) : dkTotArr.concat(dWTotCurrencyArr);
-    let maxValue = isPolicyListObject ? this._maxGDPNum : d3.max(allValues);
-    maxValue = isCountryListPercentageBased ? maxValue : Math.round(maxValue / aMillion);
-    const minValue = d3.min(allValues);
+    const allValues = dkTotArr.concat(dWTotCurrencyArr);
+    const maxValue = isPolicyListObject ? this._maxGDPNum : d3.max(allValues);
+    // let maxValue = d3.max(allValues);
+    // maxValue = isCountryListPercentageBased ? maxValue : Math.round(maxValue / aMillion);
+    // const minValue = d3.min(allValues);
     const recalculateChartHeight = () => {
       const region = allData[0].id;
       if (region === 'GLOBAL') {
@@ -794,11 +826,7 @@ export class ChartService {
     const height = h - margin.top - margin.bottom;
     const spaceLblCh = 10;
     const xDomain = [];
-    if (minValue > 0) {
-      xDomain.push(-5, maxValue);
-    } else {
-      xDomain.push(0, maxValue);
-    }
+    xDomain.push(-1, maxValue);
 
     const xLane = d3.scale.linear()
       .domain(xDomain).nice()
@@ -868,20 +896,20 @@ export class ChartService {
     if (countryList.hasOwnProperty('barType') && countryList.hasOwnProperty('sort')) {
       if (countryList['barType'] === '1' && countryList['sort'] === 'Ascending') {
         allData.sort((a, b) => {
-          return isCountryListPercentageBased ? a.dWTotPercentage - b.dWTotPercentage : a.dWtot_currency - b.dWtot_currency;
+          return a.dWtot_currency - b.dWtot_currency;
         });
       } else if (countryList['barType'] === '2' && countryList['sort'] === 'Ascending') {
         allData.sort((a, b) => {
-          return isCountryListPercentageBased ? a.dKTotPercentage - b.dKTotPercentage : a.dKtot - b.dKtot;
+          return a.dKtot - b.dKtot;
         });
       }
       if (countryList['barType'] === '1' && countryList['sort'] === 'Descending') {
         allData.sort((a, b) => {
-          return isCountryListPercentageBased ? b.dWTotPercentage - a.dWTotPercentage : b.dWtot_currency - a.dWtot_currency;
+          return b.dWtot_currency - a.dWtot_currency;
         });
       } else if (countryList['barType'] === '2' && countryList['sort'] === 'Descending') {
         allData.sort((a, b) => {
-          return isCountryListPercentageBased ? b.dKTotPercentage - a.dKTotPercentage : b.dKtot - a.dKtot;
+          return b.dKtot - a.dKtot;
         });
       }
       if ((countryList['barType'] === '1' || countryList['barType'] === '2') && countryList['sort'] === 'NORMAL') {
@@ -890,7 +918,9 @@ export class ChartService {
     }
 
     const plotChartAxes = (params) => {
-      const yLabelPos = isCountryListObject ? -25 : -40;
+      const yLabelPos = isCountryListObject ? -25 : -35;
+      const xDescLabel = countryList['chartType'] === 'relative' ?
+        'Percent % of Country GDP' : 'US$, millions per year';
       if (isNewChart) {
         // Adding lane lines
         laneChart.append('g')
@@ -903,8 +933,6 @@ export class ChartService {
           .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', ' + (height - margin.bottom) + ')')
           .call(params.axis.x);
         // Adding x axis descriptive label
-        const xDescLabel = isCountryListPercentageBased ?
-          'Percent % of Country GDP' : 'US$, millions per year';
         laneChart.select('.x-axis')
           .append('text')
           .classed('x-axis-lb', true)
@@ -912,7 +940,7 @@ export class ChartService {
           .attr('y', 0)
           .style('text-anchor', 'middle')
           .attr('transform', 'translate(' +
-            (isCountryListPercentageBased ? width / 2.5 : width / 3) + ', ' + (margin.bottom - spaceLblCh) + ')')
+            (isCountryListPercentageBased ? width / 2.5 : width / 3.5) + ', ' + (margin.bottom - spaceLblCh) + ')')
           .text(xDescLabel);
         // Adding y axis labels
         laneChart.append('g')
@@ -940,7 +968,8 @@ export class ChartService {
           .call(textWrap, margin.left);
         // Update x-axis descriptive label style
         laneChart.select('.x-axis-lb')
-          .style('text-anchor', 'middle');
+          .style('text-anchor', 'middle')
+          .text(xDescLabel);
       }
     };
 
@@ -1038,10 +1067,14 @@ export class ChartService {
           .classed('labels2', true);
       // Update phase
       const formatNumericData = (data) => {
-        let value: any = Math.round(data / aMillion);
+        let value: any = Math.abs(Math.round(data));
         const aThousand = 1000;
-        if (value >= aThousand && value % aThousand !== 0) {
-          value = (value / aThousand).toString().replace('.', ',');
+        if (value >= aThousand) {
+          if (value % aThousand !== 0) {
+            value = (value / aThousand).toString().replace('.', ',');
+          } else {
+            value = (value / aThousand).toString() + ',000';
+          }
         }
         return value;
       };
@@ -1093,12 +1126,15 @@ export class ChartService {
         .duration(500)
         .ease('bounce')
         .attr('x', (d, i) => {
-          const data = isCountryListPercentageBased ? d.dWTotPercentage : d.dWtot_currency;
-          let from = isCountryListPercentageBased ? data : data / aMillion;
-          if (data > 0) {
+          const data = d.dWtot_currency;
+          // let from = isCountryListPercentageBased || (isPolicyListObject && countryList['chartType'] === 'relative') ?
+          //   data : data / aMillion;
+          let from = data;
+          if (data >= 0) {
             from = 0;
           }
-          return xLane(from);
+          // return xLane(from);
+          return xLane(Math.min(0, data));
         })
         .attr('y', (d, i) => {
           return yLane(d.label);
@@ -1106,13 +1142,17 @@ export class ChartService {
         .attr('rx', 10)
         .attr('ry', 30)
         .attr('width', (d) => {
-          const data = isCountryListPercentageBased ? d.dWTotPercentage : d.dWtot_currency;
-          const total = xLane(isCountryListPercentageBased ? data : data / aMillion);
+          const data = d.dWtot_currency;
+          // const total = xLane(
+          //   isCountryListPercentageBased || (isPolicyListObject && countryList['chartType'] === 'relative') ?
+          //     data : data / aMillion);
+          const total = xLane(data);
           let fromZero = 0;
-          if (data > 0) {
+          if (data >= 0) {
             fromZero = xLane(0);
           }
-          return total - fromZero;
+          // return total - fromZero;
+          return Math.abs(total - xLane(0));
         })
         .attr('height', (d, i) => {
           return barHeight;
@@ -1125,11 +1165,15 @@ export class ChartService {
         .duration(500)
         .ease('bounce')
         .attr('x', (d, i) => {
-          let from = isCountryListPercentageBased ? d.dKTotPercentage : d.dKtot;
-          if (from > 0) {
+          const data = d.dKtot;
+          // let from = isCountryListPercentageBased || (isPolicyListObject && countryList['chartType'] === 'relative') ?
+          //   data : data / aMillion;
+          let from = data;
+          if (data >= 0) {
             from = 0;
           }
-          return xLane(from);
+          // return xLane(from);
+          return xLane(Math.min(0, data));
         })
         .attr('y', (d, i) => {
           return yLane(d.label) + barHeight + spaceBars;
@@ -1137,13 +1181,17 @@ export class ChartService {
         .attr('rx', 10)
         .attr('ry', 30)
         .attr('width', (d) => {
-          const data = isCountryListPercentageBased ? d.dKTotPercentage : d.dKtot;
-          const total = xLane(isCountryListPercentageBased ? data : data / aMillion);
-          let fromZero = 0;
-          if (data > 0) {
+          const data = d.dKtot;
+          // const total = xLane(
+          //   isCountryListPercentageBased || (isPolicyListObject && countryList['chartType'] === 'relative') ?
+          //     data : data / aMillion);
+          const total = xLane(data);
+          let fromZero = data;
+          if (data >= 0) {
             fromZero = xLane(0);
           }
-          return total - fromZero;
+          // return data >= 0 ? total - fromZero : total;
+          return Math.abs(total - xLane(0));
         })
         .attr('height', (d, i) => {
           return barHeight;
@@ -1163,7 +1211,20 @@ export class ChartService {
         })
         .style('fill', '#6DCCDC')
         .text((d) => {
-          const data = isCountryListPercentageBased ? d.dWTotPercentage + '%' : '$' + formatNumericData(d.dWtot_currency);
+          let data;
+          // if (isCountryListPercentageBased) {
+          //   data = d.dWTotPercentage + '%';
+          // } else if (isPolicyListObject && countryList['chartType'] === 'relative') {
+          //   data = d.dWtot_currency + '%';
+          // } else {
+            // data = '$' + formatNumericData(d.dWtot_currency);
+            if (countryList['chartType'] === 'absolute') {
+              data = (d.dWtot_currency < 0 ?
+                '-$' + formatNumericData(d.dWtot_currency) : '$' + formatNumericData(d.dWtot_currency));
+            } else {
+              data = (d.dWtot_currency).toFixed(1) + '%';
+            }
+          // }
           return data;
         });
       barLabels
@@ -1179,7 +1240,19 @@ export class ChartService {
         })
         .style('fill', '#C3D700')
         .text((d) => {
-          const data = isCountryListPercentageBased ? d.dKTotPercentage + '%' : '$' + formatNumericData(d.dKtot);
+          let data;
+          if (countryList['chartType'] === 'absolute') {
+            data = (d.dKtot < 0 ? '-$' + formatNumericData(d.dKtot) : '$' + formatNumericData(d.dKtot));
+          } else {
+            data = (d.dKtot).toFixed(1) + '%';
+          }
+          // if (isCountryListPercentageBased) {
+          //   data = d.dKTotPercentage + '%';
+          // } else if (isPolicyListObject && countryList['chartType'] === 'relative') {
+          //   data = d.dKtot + '%';
+          // } else {
+            // data = '$' + formatNumericData(d.dKtot);
+          // }
           return data;
         });
     };
@@ -1193,7 +1266,6 @@ export class ChartService {
           x: xGridLines
       }
     });
-
   }
   filterOutputDataByGroup(outputData, groupName: string) {
     if (groupName === 'GLOBAL' || !groupName) {
@@ -1242,6 +1314,15 @@ export class ChartService {
       }
     }
     return filteredInputDomains;
+  }
+  private changeRelativeValue(str){
+    this._outRelative = [];
+    const res = str.substring(str.indexOf('(') + 1, str.indexOf(')'));
+    const foo = ' (' + str.substring(0, str.indexOf('(') - 1) + ')';
+    this._outRelative[0] = res + foo;
+    const percent = str.substring(str.indexOf('(') + 1, str.indexOf(')') - 1);
+    this._outRelative[1] = percent;
+    return this._outRelative;
   }
   formatInputChartValues(data, input, persistedBrush?) {
     let percent = input.number_type === ('percent' || 'small_percent') ? '%' : '';
@@ -1328,16 +1409,17 @@ export class ChartService {
           'hazard_ratio_fa__wind']
       },
       'policyList': [
-        {'id': '_exp095', 'label': 'Reduce vulnerability of the poor by 5% of their current exposure', 'mapping': 'v_cat_info__poor'},
-        {'id': '_exr095', 'label': 'Reduce vulnerability of the rich by 5% of their current exposure', 'mapping': 'v_cat_info__nonpoor'},
-        {'id': '_pcinc_p_110', 'label': 'Increase income of the poor by 10%', 'mapping': 'k_cat_info__poor'},
-        {'id': '_soc133', 'label': 'Increase social transfers to poor BY one third', 'mapping': 'gamma_SP_cat_info__poor'},
-        {'id': '_rec067', 'label': 'Decrease reconstruction time by 1/3', 'mapping': 'macro_T_rebuild_K'},
-        {'id': '_ew100', 'label': 'Increase access to early warnings to 100%', 'mapping': 'shew_for_hazard_ratio'},
-        {'id': '_vul070p', 'label': 'Decrease vulnerability of poor by 30%', 'mapping': 'v_cat_info__poor'},
-        {'id': '_vul070', 'label': 'Reduce vulnerability of the rich by 5% of their current exposure', 'mapping': 'v_cat_info__nonpoor'},
-        {'id': 'optionsPDS', 'label': 'Postdisaster support package', 'mapping': 'optionPDS'},
-        {'id': 'optionFee', 'label': 'Develop market insurance', 'mapping': 'optionFee'},
+        {'id': 'fap', 'label': 'Reduce vulnerability of the poor by 5% of their current exposure', 'mapping': 'v_cat_info__poor'},
+        {'id': 'far', 'label': 'Reduce vulnerability of the rich by 5% of their current exposure', 'mapping': 'v_cat_info__nonpoor'},
+        {'id': 'kp', 'label': 'Increase income of the poor by 10%', 'mapping': 'k_cat_info__poor'},
+        {'id': 'social_p', 'label': 'Increase social transfers to poor BY one third', 'mapping': 'gamma_SP_cat_info__poor'},
+        {'id': 't_rebuild_k', 'label': 'Decrease reconstruction time by 1/3', 'mapping': 'macro_T_rebuild_K'},
+        {'id': 'shew', 'label': 'Increase access to early warnings to 100%', 'mapping': 'shew_for_hazard_ratio'},
+        {'id': 'vp', 'label': 'Decrease vulnerability of poor by 30%', 'mapping': 'v_cat_info__poor'},
+        {'id': 'vr',
+          'label': 'Reduce asset vulnerability (by 30%) of nonpoor people (5% of the population)', 'mapping': 'v_cat_info__nonpoor'},
+        {'id': 'pdspackage', 'label': 'Postdisaster support package', 'mapping': 'optionPDS'},
+        {'id': 'prop_nonpoor', 'label': 'Develop market insurance', 'mapping': 'optionFee'},
         {'id': 'axfin', 'label': 'Universal access to finance', 'mapping': 'axfin'}
       ],
       'policyMetrics': ['dK', 'dKtot', 'dWpc_currency', 'dWtot_currency'],
@@ -1392,58 +1474,62 @@ export class ChartService {
     return this._maxCountryXValues;
   }
   getMetricAllCountriesSinglePolicy(policy) {
-    const outputInfo = {};
-    const chartConf = this.getChartsConf();
-    const outputMetric = chartConf.policyMetrics;
-    for (const key  in this._globalModelData) {
-      if (this._globalModelData.hasOwnProperty(key)) {
-        outputInfo[key] = {};
-        outputMetric.forEach(val => {
-          outputInfo[key][val] = 0.0;
-        });
-      }
-    }
-    const policyList = chartConf.policyList;
-    const selectedPol = policyList.map((val, idx) => {
-      if (val.id === policy) {
-        return idx;
-      }
-    }).filter(isFinite)[0];
-    const policyListData = this._policyInfoObj.data[selectedPol];
-    for (const key in this._globalModelData) {
-      if (this._globalModelData.hasOwnProperty(key)) {
-        for (const key2 in policyListData['id']) {
-          if (policyListData['id'].hasOwnProperty(key2) && policyListData['id'][key2] === this._globalModelData[key]['id']) {
-            outputMetric.forEach(val => {
-              outputInfo[key][val] = policyListData[val][key2];
-            });
-          }
-        }
-      }
-    }
-    return outputInfo;
+    const allCountriesPolicy = this._newPolicyGroupedByPolicyObj;
+    return allCountriesPolicy[policy];
+    // const outputInfo = {};
+    // const chartConf = this.getChartsConf();
+    // const outputMetric = chartConf.policyMetrics;
+    // for (const key  in this._globalModelData) {
+    //   if (this._globalModelData.hasOwnProperty(key)) {
+    //     outputInfo[key] = {};
+    //     outputMetric.forEach(val => {
+    //       outputInfo[key][val] = 0.0;
+    //     });
+    //   }
+    // }
+    // const policyList = chartConf.policyList;
+    // const selectedPol = policyList.map((val, idx) => {
+    //   if (val.id === policy) {
+    //     return idx;
+    //   }
+    // }).filter(isFinite)[0];
+    // const policyListData = this._policyInfoObj.data[selectedPol];
+    // for (const key in this._globalModelData) {
+    //   if (this._globalModelData.hasOwnProperty(key)) {
+    //     for (const key2 in policyListData['id']) {
+    //       if (policyListData['id'].hasOwnProperty(key2) && policyListData['id'][key2] === this._globalModelData[key]['id']) {
+    //         outputMetric.forEach(val => {
+    //           outputInfo[key][val] = policyListData[val][key2];
+    //         });
+    //       }
+    //     }
+    //   }
+    // }
+    // return outputInfo;
   }
-  getMetricAllPoliciesSingleCountry(countryCode: string) {
-    const countryName = this._globalModelData[countryCode]['name'];
-    const output = {};
-    const chartConf = this.getChartsConf();
-    const outputMetric = chartConf.policyMetrics;
-    const policyList = chartConf.policyList;
-    policyList.forEach((pol) => {
-      output[pol.id] = {};
-      outputMetric.forEach((met) => {
-        output[pol.id][met] = {};
-      });
-    });
-    const policyListData = this._policyInfoObj.data;
-    policyListData.forEach((pol, idxP) => {
-      jQuery.each(pol, (idx, prop) => {
-        if (output[policyList[idxP].id].hasOwnProperty(idx) && prop.hasOwnProperty(countryName)) {
-          output[policyList[idxP].id][idx] = prop[countryName];
-        }
-      });
-    });
-    return output;
+  getMetricAllPoliciesSingleCountry(countryName: string) {
+    const allPoliciesCountry = this._newPolicyGroupedByCountryObj;
+    return allPoliciesCountry[countryName];
+    // const countryName = this._globalModelData[countryCode]['name'];
+    // const output = {};
+    // const chartConf = this.getChartsConf();
+    // const outputMetric = chartConf.policyMetrics;
+    // const policyList = chartConf.policyList;
+    // policyList.forEach((pol) => {
+    //   output[pol.id] = {};
+    //   outputMetric.forEach((met) => {
+    //     output[pol.id][met] = {};
+    //   });
+    // });
+    // const policyListData = this._policyInfoObj.data;
+    // policyListData.forEach((pol, idxP) => {
+    //   jQuery.each(pol, (idx, prop) => {
+    //     if (output[policyList[idxP].id].hasOwnProperty(idx) && prop.hasOwnProperty(countryName)) {
+    //       output[policyList[idxP].id][idx] = prop[countryName];
+    //     }
+    //   });
+    // });
+    // return output;
   }
   getOutputData() {
     return this._outputDomains;
@@ -1464,21 +1550,52 @@ export class ChartService {
     return this._regionalPoliciesInfoObj;
   }
   getScorecardData() {
-    const url = SERVER.URL.BASE_SERVER_PY + SERVER.URL.SERVER_SCORECARD_PY;
+    const url = SERVER.URL.BASE;
+    const axfinUrl = url + SERVER.URL.AXFIN_DATA;
+    const fapUrl = url + SERVER.URL.FAP_DATA;
+    const farUrl = url + SERVER.URL.FAR_DATA;
+    const kpUrl = url + SERVER.URL.KP_DATA;
+    const pdsUrl = url + SERVER.URL.PDS_DATA;
+    const propUrl = url + SERVER.URL.PROP_DATA;
+    const shewUrl = url + SERVER.URL.SHEW_DATA;
+    const socialUrl = url + SERVER.URL.SOCIAL_DATA;
+    const tkUrl = url + SERVER.URL.TK_DATA;
+    const vpUrl = url + SERVER.URL.VP_DATA;
+    const vrUrl = url + SERVER.URL.VR_DATA;
     const chartConf = this.getChartsConf();
     const policyList = chartConf.policyList;
-    const policyListStr = policyList.map((val) => {
-      return val.id;
-    }).join(', ');
-    const socialCol = policyList.filter((val) => {
-      return val.id === '_soc133';
-    })[0].mapping;
-    const formData = new URLSearchParams();
-    formData.append('pol_m', chartConf.policy_model_fn);
-    formData.append('pol_str_arr', policyListStr);
-    formData.append('i_df', chartConf.model_scp_data);
-    formData.append('social_col', socialCol);
-    this._scoreCardDataObs$ = this.webService.post(url, formData).map((res: Response) => res.json()).catch(this.webService.errorHandler);
+    const promisedData = new Promise((resolve, reject) => {
+      d3Q.queue()
+      .defer(d3.csv, axfinUrl)
+      .defer(d3.csv, fapUrl)
+      .defer(d3.csv, farUrl)
+      .defer(d3.csv, kpUrl)
+      .defer(d3.csv, pdsUrl)
+      .defer(d3.csv, propUrl)
+      .defer(d3.csv, shewUrl)
+      .defer(d3.csv, socialUrl)
+      .defer(d3.csv, tkUrl)
+      .defer(d3.csv, vpUrl)
+      .defer(d3.csv, vrUrl)
+      .await((err, axfin, fap, far, kp, pdsPackage, propNonpoor, shew, socialP, tRebuildK, vp, vr) => {
+        if (err) { reject(err); }
+        const data = [axfin, fap, far, kp, pdsPackage, propNonpoor, shew, socialP, tRebuildK, vp, vr];
+        resolve(data);
+      });
+    });
+    this._scoreCardDataObs$ = Observable.fromPromise(promisedData);
+    // const policyListStr = policyList.map((val) => {
+    //   return val.id;
+    // }).join(', ');
+    // const socialCol = policyList.filter((val) => {
+    //   return val.id === '_soc133';
+    // })[0].mapping;
+    // const formData = new URLSearchParams();
+    // formData.append('pol_m', chartConf.policy_model_fn);
+    // formData.append('pol_str_arr', policyListStr);
+    // formData.append('i_df', chartConf.model_scp_data);
+    // formData.append('social_col', socialCol);
+    // this._scoreCardDataObs$ = this.webService.post(url, formData).map((res: Response) => res.json()).catch(this.webService.errorHandler);
   }
   getScoreCardDataObs() {
     return this._scoreCardDataObs$;
@@ -1634,9 +1751,91 @@ export class ChartService {
     const policyIds = policyList.map((val) => {
       return val.id;
     });
-    policyIds.forEach((val) => {
-      this._regionalPoliciesInfoObj[val] = this._calculateRegionalAvgSinglePolicy(val);
-    });
+    let out;
+    let key: any;
+    let str;
+    for (let i = 0; i < data.length; i++) {
+      if (i === 0) { // initialize the country object.
+        for (let k = 0; k < data[i].length; k++) {
+          this._newPolicyGroupedByCountryObj[data[i][k][d3.keys(data[i][k])[0]]] = {}; // countryName = {}
+        }
+      }
+      for (let j = 0; j < data[i].length; j++) {
+        for (key in data[i][j]) {
+          if (key === 'Asset losses label' || key === 'Wellbeing losses  label' ||
+            key === 'Asset losses value' || key === 'Wellbeing losses value') {
+						// skip it since new line characters are coming on certain headers
+          } else {
+            this._newPolicyGroupedByCountryObj[data[i][j][key]][policyIds[i]] = {}; // countryName["axfin"] = {}
+            break;
+          }
+        }
+        this._newPolicyGroupedByCountryObj[data[i][j][key]][policyIds[i]]['asset_losses_label'] = data[i][j]['Asset losses label'];
+        this._newPolicyGroupedByCountryObj[data[i][j][key]][policyIds[i]]
+          ['wellbeing_losses_label'] = data[i][j]['Wellbeing losses  label'];
+
+        this._newPolicyGroupedByCountryObj[data[i][j][key]][policyIds[i]]['num_asset_losses_label'] = data[i][j]['Asset losses value'];
+        this._newPolicyGroupedByCountryObj[data[i][j][key]][policyIds[i]]
+          ['num_wellbeing_losses_label'] = data[i][j]['Wellbeing losses value'];
+
+        str = this._newPolicyGroupedByCountryObj[data[i][j][key]][policyIds[i]]['asset_losses_label'];
+        out = this.changeRelativeValue(str);
+        this._newPolicyGroupedByCountryObj[data[i][j][key]][policyIds[i]]['rel_asset_losses_label'] = out[0];
+        this._newPolicyGroupedByCountryObj[data[i][j][key]][policyIds[i]]['rel_num_asset_losses_label'] = out[1];
+
+        str = this._newPolicyGroupedByCountryObj[data[i][j][key]][policyIds[i]]['wellbeing_losses_label'];
+        out = this.changeRelativeValue(str);
+        this._newPolicyGroupedByCountryObj[data[i][j][key]][policyIds[i]]['rel_wellbeing_losses_label'] = out[0];
+        this._newPolicyGroupedByCountryObj[data[i][j][key]][policyIds[i]]['rel_num_wellbeing_losses_label'] = out[1];
+      }
+    }
+    console.log(this._newPolicyGroupedByCountryObj);
+
+    for (let i = 0; i < data.length; i++) {
+      this._newPolicyGroupedByPolicyObj[policyIds[i]] = {}; // initialize the policy object. //axfin = {}
+    }
+
+    let idxPol = ''; // index for unique column name for that policy
+    for (let i = 0; i < data.length; i++) {
+      for (let j = 0; j < data[i].length; j++) {
+        for (key in data[i][j]) {
+          if (key === 'Asset losses label' || key === 'Wellbeing losses  label' ||
+            key === 'Asset losses value' || key === 'Wellbeing losses value'){
+						// skip it since new line characters are coming on certain headers
+        } else {
+          this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][key]] = {}; // axfin["countryName"] = {}
+            idxPol = key;
+            break; // break once you find the main column
+          }
+        }
+        for (key in data[i][j]) {
+          if (key === 'Asset losses label'){
+            this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]['asset_losses_label'] = data[i][j]['Asset losses label'];
+            str = this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]['asset_losses_label'];
+            out = this.changeRelativeValue(str);
+            this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]['rel_asset_losses_label'] = out[0];
+            this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]['rel_num_asset_losses_label'] = out[1];
+          } else if ( key === 'Wellbeing losses  label') {
+            this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]
+              ['wellbeing_losses_label'] = data[i][j]['Wellbeing losses  label'];
+            str = this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]['wellbeing_losses_label'];
+            out = this.changeRelativeValue(str);
+            this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]['rel_wellbeing_losses_label'] = out[0];
+            this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]['rel_num_wellbeing_losses_label'] = out[1];
+          } else if ( key === 'Asset losses value') {
+            this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]
+              ['num_asset_losses_label'] = data[i][j]['Asset losses value'];
+          } else if ( key === 'Wellbeing losses value') {
+            this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]
+              ['num_wellbeing_losses_label'] = data[i][j]['Wellbeing losses value'];
+          }
+        }
+      }
+    }
+    console.log(this._newPolicyGroupedByPolicyObj);
+    // policyIds.forEach((val) => {
+    //   this._regionalPoliciesInfoObj[val] = this._calculateRegionalAvgSinglePolicy(val);
+    // });
   }
   private _sortByKey(array, key) {
     array.sort((a, b) => {

@@ -14,6 +14,17 @@ export const SERVER = {
     SERVER_SCORECARD_PY: 'model_scorecard_adapter.py',
     // OUTPUT_DATA: 'output_data'
     BASE: '/assets/data/',
+    AXFIN_DATA: 'axfin.csv',
+    FAP_DATA: 'fap.csv',
+    FAR_DATA: 'far.csv',
+    KP_DATA: 'kp.csv',
+    PDS_DATA: 'PDSpackage.csv',
+    PROP_DATA: 'prop_nonpoor.csv',
+    SHEW_DATA: 'shew.csv',
+    SOCIAL_DATA: 'social_p.csv',
+    TK_DATA: 'T_rebuild_K.csv',
+    VP_DATA: 'vp.csv',
+    VR_DATA: 'vr.csv',
     INPUT_MODEL: 'model_adapter.py',
     OUTPUT_DATA: 'df_for_wrapper2.csv',
     INPUTS_INFO: 'inputs_info_wrapper.csv'

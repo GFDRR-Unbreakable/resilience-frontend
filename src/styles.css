@@ -10839,3 +10839,121 @@ fieldset {
   stroke-dasharray: 2;
 	shape-rendering: crispEdges;
 }
+.toggle-switch{
+  margin-top: 10px;
+}
+.toggle-switch {
+  display: inline-block;
+  height: 18px;
+  position: relative;
+  overflow: visible;
+  padding: 0;
+  margin-left: 15px;
+  cursor: pointer;
+  width: 73px
+}
+.toggle-switch * {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.toggle-switch label,
+.toggle-switch > span {
+  line-height: 22px;
+  height: 24px;
+  vertical-align: middle;
+}
+.toggle-switch input:focus ~ a,
+.toggle-switch input:focus + label {
+  outline: none;
+}
+.toggle-switch label {
+  position: relative;
+  z-index: 3;
+  display: block;
+  width: 100%;
+}
+.toggle-switch input {
+  position: absolute;
+  opacity: 0;
+  z-index: 5;
+}
+.toggle-switch > span {
+  position: absolute;
+  left: -51px;
+  width: 100%;
+  margin: 0;
+  padding-right: 104px;
+  text-align: left;
+  white-space: nowrap;
+}
+.toggle-switch > span span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  display: block;
+  width: 50%;
+  margin-left: 62px;
+  text-align: left;
+  font-size: 0.9em;
+  width: 100%;
+  left: 3%;
+  top: -1px;
+  opacity: 0;
+}
+.toggle-switch a {
+  position: absolute;
+  right: 50%;
+  z-index: 4;
+  display: block;
+  height: 100%;
+  padding: 0;
+  left: 3px;
+  width: 18px;
+  background-color: #fff;
+  border: 1px solid #7d8f8f;
+  border-radius: 100%;
+  -webkit-transition: all 0.2s ease-out;
+  -moz-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.toggle-switch > span span:first-of-type {
+  color: #fff;
+  font-weight: bold;
+  opacity: 1;
+  left: 12%;
+}
+.toggle-switch > span:before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 50px;
+  top: -3px;
+  background-color: #4a5958;
+  border: 1px solid #7d8f8f;
+  border-radius: 30px;
+  -webkit-transition: all 0.2s ease-out;
+  -moz-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
+}
+.toggle-switch input:checked ~ a {
+  border-color: #53CDDE;
+  left: 100%;
+  margin-left: 9px;
+}
+.toggle-switch input:checked ~ span:before {
+  border-color: #53CDDE;
+  box-shadow: inset 0 0 0 30px #53CDDE;
+}
+.toggle-switch input:checked ~ span span:first-of-type {
+  opacity: 0;
+}
+.toggle-switch input:checked ~ span span:last-of-type {
+  opacity: 1;
+  font-weight: bold;
+  color: #fff;
+}

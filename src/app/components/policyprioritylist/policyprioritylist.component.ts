@@ -43,7 +43,7 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
   public sortUISelected2 = 0;
   public sortUISelectedLbl1 = '';
   public sortUISelectedLbl2 = '';
-  // public switchUICmpVal = false;
+  public switchUICmpVal = false;
 
   public searchCountryFn = (text$: Observable<string>) => {
     const debounceTimeFn = debounceTime.call(text$, 200);
@@ -113,6 +113,11 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
         const countryGDP = globalModelObj[list[0].code]['macro_gdp_pc_pp'];
         let countryPopulation = globalModelObj[list[0].code]['macro_pop'];
         let totalGDP: any = countryGDP * countryPopulation;
+        this._selectedCountryList.forEach(val => {
+          if (val.chartId === idScList) {
+            val.totalGDP = totalGDP;
+          }
+        });
         const aBillion = 1000000000;
         const aMillion = 1000000;
         const aThousand = 1000;
@@ -150,7 +155,7 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
           this.secondCountryPopulation = `${countryPopulation} ${extraMInfo}`;
         }
         const chartChild = document.querySelector(`#${idScList}`).childNodes;
-        this.plotScorecardPolicyChart(list[0].code, idScList, chartChild.length > 0);
+        this.plotScorecardPolicyChart(list[0].name, idScList, chartChild.length > 0);
       }
     } else {
       const filterIndex = this._selectedCountryList.map((val, index) => {
@@ -181,8 +186,8 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
       }
     }
   }
-  plotScorecardPolicyChart(code, chartId, chartExist) {
-    let data = this.chartService.getMetricAllPoliciesSingleCountry(code);
+  plotScorecardPolicyChart(name, chartId, chartExist) {
+    let data = this.chartService.getMetricAllPoliciesSingleCountry(name);
     let extraOpts: any = null;
     if (this.sortUISelected1 >= -1 && this.sortUISelected1 !== 0) {
       extraOpts = {};
@@ -201,13 +206,21 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
         extraOpts.sort = 'Descending';
       }
     }
-    const defaultOpts = {type: 'policyList', isNew: !chartExist };
+    if (this.switchUICmpVal) {
+      const totalGDP = this._selectedCountryList.filter(val => val.chartId === chartId)[0].totalGDP;
+      if (extraOpts) {
+        extraOpts = Object.assign({}, extraOpts, {totalGDP});
+      } else {
+        extraOpts = {totalGDP};
+      }
+    }
+    const defaultOpts = {type: 'policyList', isNew: !chartExist, chartType: this.switchUICmpVal ? 'relative' : 'absolute' };
     const opts = extraOpts ? Object.assign({}, defaultOpts, extraOpts) : defaultOpts;
     this.chartService.createPolicyListChart(data, chartId, opts);
     const MAX_SELECTED_COUNTRIES = 2;
     if (this.chartService.countPolicyListCharts() === MAX_SELECTED_COUNTRIES) {
-      const maxCountryValues = this.chartService.getMaxGDPCountryValues();
-      const maxValue = this.chartService.getMaxGDPCountryValue();
+      // const maxCountryValues = this.chartService.getMaxGDPCountryValues();
+      // const maxValue = this.chartService.getMaxGDPCountryValue();
       const chart1 = 'policy-list1';
       const chart2 = 'policy-list2';
       const filterChart1 = this._selectedCountryList.filter(val => {
@@ -217,11 +230,11 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
         return val.chartId === chart2;
       });
       if (filterChart1.length) {
-        data = this.chartService.getMetricAllPoliciesSingleCountry(filterChart1[0].code);
+        data = this.chartService.getMetricAllPoliciesSingleCountry(filterChart1[0].name);
         this.chartService.createPolicyListChart(data, chart1, Object.assign({}, opts, {isNew: false}));
       }
       if (filterChart2.length) {
-        data = this.chartService.getMetricAllPoliciesSingleCountry(filterChart2[0].code);
+        data = this.chartService.getMetricAllPoliciesSingleCountry(filterChart2[0].name);
         this.chartService.createPolicyListChart(data, chart2, Object.assign({}, opts, {isNew: false}));
       }
     }
@@ -245,7 +258,6 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
   setScorecardChartConf() {
     this.chartService.initScorecardChartConf();
     this.getScorecardDataSubs = this.chartService.getScoreCardDataObs().subscribe(data => {
-      data = JSON.parse(data);
       this.chartService.setPoliciesData(data);
     });
   }
@@ -257,9 +269,19 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
     });
   }
   // EVENTS
-  // onChangeChartTypeEvent() {
-  //   console.log(this.switchUICmpVal);
-  // }
+  onChangeChartTypeEvent() {
+    this.switchUICmpVal = !this.switchUICmpVal;
+    if (this._selectedCountryList.length) {
+      this._selectedCountryList.forEach(val => {
+        const name = val.name;
+        const data = this.chartService.getMetricAllPoliciesSingleCountry(name);
+        const extraOpts = this.switchUICmpVal ? {totalGDP: val.totalGDP} : null;
+        let defaultOpts = {type: 'policyList', isNew: false, chartType: this.switchUICmpVal ? 'relative' : 'absolute'};
+        defaultOpts = extraOpts ? Object.assign({}, defaultOpts, extraOpts) : defaultOpts;
+        this.chartService.createPolicyListChart(data, val.chartId, defaultOpts);
+      });
+    }
+  }
   onFirstCountryInputChangeEvent() {
     this._changeCountryInput(true);
   }
@@ -273,8 +295,9 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
     const field2 = this.policyModel.secondCountry;
     const selectedList1 = this._selectedCountryList.filter(val => val.name === field1);
     const selectedList2 = this._selectedCountryList.filter(val => val.name === field2);
-    const data1 = selectedList1.length ? this.chartService.getMetricAllPoliciesSingleCountry(selectedList1[0].code) : null;
-    const data2 = selectedList2.length ? this.chartService.getMetricAllPoliciesSingleCountry(selectedList2[0].code) : null;
+    const data1 = selectedList1.length ? this.chartService.getMetricAllPoliciesSingleCountry(selectedList1[0].name) : null;
+    const data2 = selectedList2.length ? this.chartService.getMetricAllPoliciesSingleCountry(selectedList2[0].name) : null;
+    const chartType = this.switchUICmpVal ? 'relative' : 'absolute';
     if (data1 || data2) {
       if (barType === '1' && this.sortUISelected2 >= -1) {
         this.resetUISortLabel2();
@@ -298,6 +321,7 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
             type: 'policyList',
             barType: barType,
             sort: sortType,
+            chartType,
             isNew: false
           });
         }
@@ -306,6 +330,7 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
             type: 'policyList',
             barType: barType,
             sort: sortType,
+            chartType,
             isNew: false
           });
         }
@@ -322,6 +347,7 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
             type: 'policyList',
             barType: barType,
             sort: sortType,
+            chartType,
             isNew: false
           });
         }
@@ -330,6 +356,7 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
             type: 'policyList',
             barType: barType,
             sort: sortType,
+            chartType,
             isNew: false
           });
         }
@@ -341,6 +368,7 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
             type: 'policyList',
             barType: barType,
             sort: sortType,
+            chartType,
             isNew: false
           });
         }
@@ -349,6 +377,7 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
             type: 'policyList',
             barType: barType,
             sort: sortType,
+            chartType,
             isNew: false
           });
         }
