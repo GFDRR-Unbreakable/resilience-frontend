@@ -60,7 +60,7 @@
                         <div class="col-md-12">
                            <div ngbDropdown class="option-global">
                               <!-- <img src="assets/image/icon-map.png" alt=""> -->
-                              <button class="btn btn-outline-primary btn-sm dropdown-global" id="dropdownBasic1" ngbDropdownToggle>
+                              <button [disabled]="_selectedCountryList.length !== MAX_COUNTRIES_SELECTED" class="btn btn-outline-primary btn-sm dropdown-global" id="dropdownBasic1" ngbDropdownToggle>
                                 <span *ngIf="global">Globally</span>
                                 <span *ngIf="!global">Regional</span>
                               </button>
@@ -74,6 +74,13 @@
                               <i class="mdi mdi-information-outline"></i>
                               </button>
                            </div>
+                           <div class="row">
+                             <div class="col-md-12">
+                                <p *ngIf="_selectedCountryList.length !== MAX_COUNTRIES_SELECTED">
+                                  Please select two countries to change country charts as Regional charts and viceversa.
+                                </p>
+                             </div>
+                          </div>
                         </div>
                      </div>
                      <div class="row">

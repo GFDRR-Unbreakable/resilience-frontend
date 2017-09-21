@@ -20,14 +20,17 @@ export class ChartService {
   private _outputDataURL = SERVER.URL.OUTPUT_DATA;
   private _inputInfoURL = SERVER.URL.INPUTS_INFO;
   private _inputDomains: any;
+  private _inputFilterObj: any = null;
   private _inputConfig: any = {};
   private _outputDomains: any = {};
+  private _globalExtentData: any = null;
   private _globalModelData: any = {};
   private _countryGroupData: any = {};
   private _policyInfoObj: any = null;
   private _newPolicyGroupedByCountryObj: any = {};
   private _newPolicyGroupedByPolicyObj: any = {};
   private _regionalPoliciesInfoObj: any = {};
+  private _outputFilterObj: any = null;
   private _outputDataSubs: Subscription;
   public _outputUIList: Array<any> = [];
   public _outputList: Array<any> = [];
@@ -70,7 +73,7 @@ export class ChartService {
     });
     return outputMetricAvgInfo;
   }
-  private calculateAVGGDPValue(idx, groupName?) {
+  private calculateAVGGDPValue(idx, groupName?, isoCode?) {
     const globalObj = this.getGlobalModelData();
     let sumGDP = 0;
     let sumPop = 0;
@@ -79,27 +82,33 @@ export class ChartService {
     let avgDoll = 0;
     let avgPop = 0;
     if (idx === 'risk' || idx === 'risk_to_assets') {
-      if (groupName === 'GLOBAL' || !groupName) {
-        jQuery.each(globalObj, (key, global) => {
-          sumGDP += (+global['macro_gdp_pc_pp']);
-          sumPop += (+global['macro_pop']);
-          count++;
-        });
-        avgGDP = sumGDP / count;
-        avgPop = sumPop / count;
-        avgDoll = Math.round(avgGDP * avgPop);
-      } else {
-        jQuery.each(globalObj, (key, global) => {
-          if (groupName === global['group_name']) {
+      if (isoCode) {
+          avgGDP = globalObj[isoCode]['macro_gdp_pc_pp'];
+          avgPop = globalObj[isoCode]['macro_pop'];
+          avgDoll = Math.round(avgGDP * avgPop);
+        } else {
+          jQuery.each(globalObj, (key, global) => {
             sumGDP += (+global['macro_gdp_pc_pp']);
             sumPop += (+global['macro_pop']);
             count++;
-          }
-        });
-        avgGDP = sumGDP / count;
-        avgPop = sumPop / count;
-        avgDoll = Math.round(avgGDP * avgPop);
-      }
+          });
+          avgGDP = sumGDP / count;
+          avgPop = sumPop / count;
+          avgDoll = Math.round(avgGDP * avgPop);
+        }
+      // if (groupName === 'GLOBAL' || !groupName) {
+        // if (groupName === global['group_name']) {
+        // jQuery.each(globalObj, (key, global) => {
+        //   sumGDP += (+global['macro_gdp_pc_pp']);
+        //   sumPop += (+global['macro_pop']);
+        //   count++;
+        // });
+        //  }
+        // avgGDP = sumGDP / count;
+        // avgPop = sumPop / count;
+        // avgDoll = Math.round(avgGDP * avgPop);
+      // }
+      //else 
     }
     return avgDoll;
   }
@@ -422,7 +431,7 @@ export class ChartService {
       }
     });
   }
-  createOutputChart(outputData: any, containerId: string, groupName?: string, isScoreCardPage?: boolean) {
+  createOutputChart(outputData: any, containerId: string, groupName?: string, isScoreCardPage?: boolean, isoCode?: string) {
     jQuery(`div#${containerId}`).empty();
     const finalOutput = this.filterOutputDataByGroup(outputData, groupName);
     const me = this;
@@ -439,7 +448,14 @@ export class ChartService {
       const data: Array<number> = output.domain.sort((a, b) => {
         return a - b;
       });
-      const avgDoll = me.calculateAVGGDPValue(idx, groupName);
+      if (!this._globalExtentData) {
+        this._globalExtentData = {};
+      }
+      if ((groupName === 'GLOBAL' || !groupName) && !this._globalExtentData[idx]) {
+        this._globalExtentData[idx] = d3.mean(data);
+      }
+      console.log('FIRST TIME', this._globalExtentData);
+      const avgDoll = me.calculateAVGGDPValue(idx, groupName, isoCode);
       const bounds = d3.extent(data);
       const margin = {
         top: 5,
@@ -582,15 +598,34 @@ export class ChartService {
         svg.classed('selecting', !d3.event.target.empty());
       };
       const brush = d3.svg.brush()
-        .x(x)
-        .extent([0, d3.mean(data)])
-        // .on('brushstart', brushstart)
-        .on('brush', brushmove)
-        // .on('brushend', brushend);
+        .x(x);
+      // keep a reference to the brush for the output domain
+      output.x = x;
+      output.height = height;
+      const outputId = containerId.indexOf('1') >= 0 ? 'output1' : 'output2';
+      if (!this._outputDomains[idx][outputId]) {
+        this._outputDomains[idx][outputId] = Object.assign({}, output);
+      }
+      if ((groupName === 'GLOBAL' || !groupName) && !this._outputDomains[idx][outputId].brush) {
+        this._outputDomains[idx][outputId].brush = brush;
+        if (this._globalExtentData[idx]) {
+          brush.extent([0, this._globalExtentData[idx]]);
+        }
+      } else {
+        if (this._globalExtentData[idx]) {
+          brush.extent([0, this._globalExtentData[idx]]);
+        }
+      }
+      brush.extent([0, this._outputDomains[idx][outputId].brush.extent()[1]]);
+      brush.on('brush', brushmove);
 
       const textFn = () => {
         const precision = +output.precision;
-        const numericValue = (+brush.extent()[1] * 100).toFixed(precision);
+        console.log('FROM CREATION DATA');
+        console.log(this._outputDomains[idx][outputId]);
+        console.log(+this._outputDomains[idx][outputId].brush.extent()[1]);
+        const brushVal = this._outputDomains[idx][outputId].brush.extent()[1];
+        const numericValue = (brushVal * 100).toFixed(precision);
         const value = me.calculateGDPValues(containerId, idx, numericValue, avgDoll);
         return value;
       };
@@ -609,11 +644,6 @@ export class ChartService {
           .attr('class', 'text-number')
           .text(textFn);
       }
-
-      // keep a reference to the brush for the output domain
-      this._outputDomains[idx].brush = brush;
-      this._outputDomains[idx].x = x;
-      this._outputDomains[idx].height = height;
 
       const line = d3.svg.line()
         .x((d) => {
@@ -654,8 +684,6 @@ export class ChartService {
     });
   }
   createPolicyListChart(policyListData: any, containerId: string, countryList: any) {
-    // jQuery(`div#${containerId}`).empty();
-    // d3.select(`div#${containerId}`).remove();
     let dkTotArr = [];
     let dWTotCurrencyArr = [];
     const dKTotPercentageArr = [];
@@ -684,7 +712,6 @@ export class ChartService {
         dWtot_currencyLabel
       });
     });
-    console.log(allData);
     const aMillion = 1000000;
     let policyList;
     const globalObj = this.getGlobalModelData();
@@ -789,9 +816,6 @@ export class ChartService {
 
     const allValues = dkTotArr.concat(dWTotCurrencyArr);
     const maxValue = isPolicyListObject ? this._maxGDPNum : d3.max(allValues);
-    // let maxValue = d3.max(allValues);
-    // maxValue = isCountryListPercentageBased ? maxValue : Math.round(maxValue / aMillion);
-    // const minValue = d3.min(allValues);
     const recalculateChartHeight = () => {
       const region = allData[0].id;
       if (region === 'GLOBAL') {
@@ -1125,13 +1149,10 @@ export class ChartService {
         .ease('bounce')
         .attr('x', (d, i) => {
           const data = d.dWtot_currency;
-          // let from = isCountryListPercentageBased || (isPolicyListObject && countryList['chartType'] === 'relative') ?
-          //   data : data / aMillion;
           let from = data;
           if (data >= 0) {
             from = 0;
           }
-          // return xLane(from);
           return xLane(Math.min(0, data));
         })
         .attr('y', (d, i) => {
@@ -1141,15 +1162,11 @@ export class ChartService {
         .attr('ry', 30)
         .attr('width', (d) => {
           const data = d.dWtot_currency;
-          // const total = xLane(
-          //   isCountryListPercentageBased || (isPolicyListObject && countryList['chartType'] === 'relative') ?
-          //     data : data / aMillion);
           const total = xLane(data);
           let fromZero = 0;
           if (data >= 0) {
             fromZero = xLane(0);
           }
-          // return total - fromZero;
           return Math.abs(total - xLane(0));
         })
         .attr('height', (d, i) => {
@@ -1164,13 +1181,10 @@ export class ChartService {
         .ease('bounce')
         .attr('x', (d, i) => {
           const data = d.dKtot;
-          // let from = isCountryListPercentageBased || (isPolicyListObject && countryList['chartType'] === 'relative') ?
-          //   data : data / aMillion;
           let from = data;
           if (data >= 0) {
             from = 0;
           }
-          // return xLane(from);
           return xLane(Math.min(0, data));
         })
         .attr('y', (d, i) => {
@@ -1180,15 +1194,11 @@ export class ChartService {
         .attr('ry', 30)
         .attr('width', (d) => {
           const data = d.dKtot;
-          // const total = xLane(
-          //   isCountryListPercentageBased || (isPolicyListObject && countryList['chartType'] === 'relative') ?
-          //     data : data / aMillion);
           const total = xLane(data);
           let fromZero = data;
           if (data >= 0) {
             fromZero = xLane(0);
           }
-          // return data >= 0 ? total - fromZero : total;
           return Math.abs(total - xLane(0));
         })
         .attr('height', (d, i) => {
@@ -1210,12 +1220,6 @@ export class ChartService {
         .style('fill', '#6DCCDC')
         .text((d) => {
           let data;
-          // if (isCountryListPercentageBased) {
-          //   data = d.dWTotPercentage + '%';
-          // } else if (isPolicyListObject && countryList['chartType'] === 'relative') {
-          //   data = d.dWtot_currency + '%';
-          // } else {
-            // data = '$' + formatNumericData(d.dWtot_currency);
             if (countryList['chartType'] === 'absolute') {
               data = (d.dWtot_currency < 0 ?
                 '-$' + formatNumericData(d.dWtot_currency) : '$' + formatNumericData(d.dWtot_currency));
@@ -1244,13 +1248,6 @@ export class ChartService {
           } else {
             data = (d.dKtot).toFixed(1) + '%';
           }
-          // if (isCountryListPercentageBased) {
-          //   data = d.dKTotPercentage + '%';
-          // } else if (isPolicyListObject && countryList['chartType'] === 'relative') {
-          //   data = d.dKtot + '%';
-          // } else {
-            // data = '$' + formatNumericData(d.dKtot);
-          // }
           return data;
         });
     };
@@ -1269,7 +1266,8 @@ export class ChartService {
     if (groupName === 'GLOBAL' || !groupName) {
       return outputData;
     }
-    const filteredOutputDomains = jQuery.extend(true, {}, outputData);
+    this._outputFilterObj = this._outputFilterObj || jQuery.extend(true, {}, outputData);
+    const filteredOutputDomains = this._outputFilterObj;
     for (const key in outputData as any) {
       if (outputData.hasOwnProperty(key)) {
         for (const key2 in outputData[key] as any) {
@@ -1291,7 +1289,8 @@ export class ChartService {
     if (groupName === 'GLOBAL' || !groupName) {
       return inputData;
     }
-    const filteredInputDomains = jQuery.extend(true, [], inputData);
+    this._inputFilterObj = this._inputFilterObj || jQuery.extend(true, [], inputData);
+    const filteredInputDomains = this._inputFilterObj;
 
     for (const g in filteredInputDomains) {
       if (filteredInputDomains.hasOwnProperty(g)) {
@@ -1331,9 +1330,11 @@ export class ChartService {
       const aThousand = 1000;
       value = Math.round(+value);
       if (value >= aThousand) {
-        value /= aThousand;
         if (value % aThousand === 0) {
+          value /= aThousand;
           value = value + '.000';
+        } else {
+          value /= aThousand;
         }
         value = '$' + value.toString().replace('.', ',');
         value = value.split(',')[1].length === 2 ? value + '0' : value;
@@ -1508,26 +1509,6 @@ export class ChartService {
   getMetricAllPoliciesSingleCountry(countryName: string) {
     const allPoliciesCountry = this._newPolicyGroupedByCountryObj;
     return allPoliciesCountry[countryName];
-    // const countryName = this._globalModelData[countryCode]['name'];
-    // const output = {};
-    // const chartConf = this.getChartsConf();
-    // const outputMetric = chartConf.policyMetrics;
-    // const policyList = chartConf.policyList;
-    // policyList.forEach((pol) => {
-    //   output[pol.id] = {};
-    //   outputMetric.forEach((met) => {
-    //     output[pol.id][met] = {};
-    //   });
-    // });
-    // const policyListData = this._policyInfoObj.data;
-    // policyListData.forEach((pol, idxP) => {
-    //   jQuery.each(pol, (idx, prop) => {
-    //     if (output[policyList[idxP].id].hasOwnProperty(idx) && prop.hasOwnProperty(countryName)) {
-    //       output[policyList[idxP].id][idx] = prop[countryName];
-    //     }
-    //   });
-    // });
-    // return output;
   }
   getOutputData() {
     return this._outputDomains;
@@ -1564,36 +1545,24 @@ export class ChartService {
     const policyList = chartConf.policyList;
     const promisedData = new Promise((resolve, reject) => {
       d3Q.queue()
-      .defer(d3.csv, axfinUrl)
-      .defer(d3.csv, fapUrl)
-      .defer(d3.csv, farUrl)
-      .defer(d3.csv, kpUrl)
-      .defer(d3.csv, pdsUrl)
-      .defer(d3.csv, propUrl)
-      .defer(d3.csv, shewUrl)
-      .defer(d3.csv, socialUrl)
-      .defer(d3.csv, tkUrl)
-      .defer(d3.csv, vpUrl)
-      .defer(d3.csv, vrUrl)
-      .await((err, axfin, fap, far, kp, pdsPackage, propNonpoor, shew, socialP, tRebuildK, vp, vr) => {
-        if (err) { reject(err); }
-        const data = [axfin, fap, far, kp, pdsPackage, propNonpoor, shew, socialP, tRebuildK, vp, vr];
-        resolve(data);
-      });
+        .defer(d3.csv, axfinUrl)
+        .defer(d3.csv, fapUrl)
+        .defer(d3.csv, farUrl)
+        .defer(d3.csv, kpUrl)
+        .defer(d3.csv, pdsUrl)
+        .defer(d3.csv, propUrl)
+        .defer(d3.csv, shewUrl)
+        .defer(d3.csv, socialUrl)
+        .defer(d3.csv, tkUrl)
+        .defer(d3.csv, vpUrl)
+        .defer(d3.csv, vrUrl)
+        .await((err, axfin, fap, far, kp, pdsPackage, propNonpoor, shew, socialP, tRebuildK, vp, vr) => {
+          if (err) { reject(err); }
+          const data = [axfin, fap, far, kp, pdsPackage, propNonpoor, shew, socialP, tRebuildK, vp, vr];
+          resolve(data);
+        });
     });
     this._scoreCardDataObs$ = Observable.fromPromise(promisedData);
-    // const policyListStr = policyList.map((val) => {
-    //   return val.id;
-    // }).join(', ');
-    // const socialCol = policyList.filter((val) => {
-    //   return val.id === '_soc133';
-    // })[0].mapping;
-    // const formData = new URLSearchParams();
-    // formData.append('pol_m', chartConf.policy_model_fn);
-    // formData.append('pol_str_arr', policyListStr);
-    // formData.append('i_df', chartConf.model_scp_data);
-    // formData.append('social_col', socialCol);
-    // this._scoreCardDataObs$ = this.webService.post(url, formData).map((res: Response) => res.json()).catch(this.webService.errorHandler);
   }
   getScoreCardDataObs() {
     return this._scoreCardDataObs$;
@@ -1787,7 +1756,6 @@ export class ChartService {
         this._newPolicyGroupedByCountryObj[data[i][j][key]][policyIds[i]]['rel_num_wellbeing_losses_label'] = out[1];
       }
     }
-    console.log(this._newPolicyGroupedByCountryObj);
 
     for (let i = 0; i < data.length; i++) {
       this._newPolicyGroupedByPolicyObj[policyIds[i]] = {}; // initialize the policy object. //axfin = {}
@@ -1906,8 +1874,9 @@ export class ChartService {
     const me = this;
     jQuery.each(domains, (idx, outputData) => {
       const ini = d3.select(`#${containerId} svg#${idx} g.initial line`);
-      const x = domains[idx].x;
-      const height = domains[idx].height;
+      const outputId = containerId.indexOf('1') >= 0 ? 'output1' : 'output2';
+      const x = outputData[outputId].x;
+      const height = outputData[outputId].height;
       let model;
       let avgDoll = 0;
       if (typeof selectedId === 'object') {
@@ -1934,12 +1903,15 @@ export class ChartService {
         })
         .attr('y2', height);
       // get the input config
-      const brush = domains[idx].brush;
+      const brush = outputData[outputId].brush;
       // get the value of the current input from the model
       // and update the brush extent
-      const extent = +model[idx];
+      let extent = brush.extent()[1];
+      if (groupName === 'GLOBAL' || !groupName) {
+        extent = +model[idx];
+      }
       brush.extent([0, extent]);
-      const output = domains[idx];
+      const output = outputData;
       const precision = +output.precision;
       const numericValue = (brush.extent()[1] * 100).toFixed(precision);
       const value = me.calculateGDPValues(containerId, idx, numericValue, avgDoll);
