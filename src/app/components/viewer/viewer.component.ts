@@ -342,6 +342,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   changeCountryInputsByClick(isoCode) {
     const filterISOCode = this.countryListComp.filter(val => val.code === isoCode);
     if (filterISOCode.length > 0) {
+      this.mapService.setMapFilterByISOCode(isoCode);
       const filteredName = filterISOCode[0].name;
       const filteredGroup = filterISOCode[0].group;
       const selectedCountryIdx = this._selectedCountryList.map((val, index) => {
@@ -669,7 +670,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           const isoCodeList = this.countryListIsoCodes.filter(val => val === isoCode);
           if (isoCodeList.length) {
             self.changeCountryInputsByClick(isoCode);
-            self.mapService.setMapFilterByISOCode(isoCode);
+            // self.mapService.setMapFilterByISOCode(isoCode);
           }
         }
       });
