@@ -18,10 +18,6 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
     label: 'Region'
   }];
   public sortUISelected = 0;
-  public sortUISelectedLblChart11 = '';
-  public sortUISelectedLblChart12 = '';
-  public sortUISelectedLblChart21 = '';
-  public sortUISelectedLblChart22 = '';
   public sortBtnPressedId = '';
   public policyGroupUIList = this.chartConf.policyList.map(val => {
     return {
@@ -42,29 +38,11 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
   }
   private _onChangeInputValuesEv() {
     const policyObj = this.selectedPolicyUIList;
-    let data = this.chartService.getMetricAllCountriesSinglePolicy(policyObj.id);
-    const regionalPolicyObj = this.chartService.getRegionalPolicyData();
-    const regionName = this.selectedRegionUIList.id;
-    const selectedRegion = regionalPolicyObj[policyObj.id][regionName];
-    const regionObj = {
-      id: regionName,
-      dKtot: selectedRegion['avg_dKtot'],
-      dWtot_currency: selectedRegion['avg_dWtot_currency'],
-      dK: selectedRegion['avg_dKtot'],
-      dWpc_currency: ['avg_dWpc_currency']
-    };
-    const finalRegionObj = {};
-    finalRegionObj[regionName] = regionObj;
-    data = Object.assign({}, finalRegionObj, data);
-    this.chartService.createPolicyListChart(data, 'policyMeasure0', {type: 'million', isNew: false});
-    this.chartService.createPolicyListChart(data, 'policyMeasure1', {type: 'percentage', isNew: false});
-    this.resetUISortLabels();
-  }
-  resetUISortLabels() {
-    this.sortUISelectedLblChart11 = '';
-    this.sortUISelectedLblChart12 = '';
-    this.sortUISelectedLblChart21 = '';
-    this.sortUISelectedLblChart22 = '';
+    const data = this.chartService.getMetricAllCountriesSinglePolicy(policyObj.id);
+    this.chartService.createPolicyListChart(data, 'policyMeasure0',
+      {type: 'policyMeasure', chartType: 'absolute', isNew: false, region: this.selectedRegionUIList.id});
+    this.chartService.createPolicyListChart(data, 'policyMeasure1',
+      {type: 'policyMeasure', chartType: 'relative', isNew: false, region: this.selectedRegionUIList.id});
   }
   setChartsConfig() {
     this.chartService.initOutputChartConf();
@@ -75,33 +53,29 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
   setScorecardChartConf() {
     this.chartService.initScorecardChartConf();
     this.getScorecardDataSubs = this.chartService.getScoreCardDataObs().subscribe(data => {
-      data = JSON.parse(data);
       this.chartService.setPoliciesData(data);
       const globalGroupList = this.chartService.getCountryGroupData();
-      const chartConf = this.chartService.getChartsConf();
-      const regionalPolicyObj = this.chartService.getRegionalPolicyData();
-      const policyIdList = chartConf.policyList;
-      const policyMetricList = chartConf.policyMetrics;
       jQuery.each(globalGroupList, (key, region) => {
         this.regionUIList.push({
           id: region,
           label: region
         });
       });
-      let policyData = this.chartService.getMetricAllCountriesSinglePolicy(this.selectedPolicyUIList.id);
-      const selectedRegion = regionalPolicyObj[this.selectedPolicyUIList.id][this.selectedRegionUIList.id];
-      const regionObj = {
-        dKtot: selectedRegion['avg_dKtot'],
-        dWtot_currency: selectedRegion['avg_dWtot_currency'],
-        dK: selectedRegion['avg_dKtot'],
-        dWpc_currency: ['avg_dWpc_currency']
-      };
-      const regionName = this.selectedRegionUIList.id;
-      const finalRegionObj = {};
-      finalRegionObj[regionName] = regionObj;
-      policyData = Object.assign({}, finalRegionObj, policyData);
-      this.chartService.createPolicyListChart(policyData, 'policyMeasure0', {type: 'million', isNew: true});
-      this.chartService.createPolicyListChart(policyData, 'policyMeasure1', {type: 'percentage', isNew: true});
+      const policyData = this.chartService.getMetricAllCountriesSinglePolicy(this.selectedPolicyUIList.id);
+      this.chartService.createPolicyListChart(policyData, 'policyMeasure0',
+        {type: 'policyMeasure', chartType: 'absolute', isNew: true, region: this.selectedRegionUIList.id});
+      this.chartService.createPolicyListChart(policyData, 'policyMeasure1',
+        {type: 'policyMeasure', chartType: 'relative', region: this.selectedRegionUIList.id, isNew: true});
+    });
+  }
+  private _sortPolicyMeasureChartData(data, barType, chartType, sortType, chartId) {
+    this.chartService.createPolicyListChart(data, chartId, {
+      type: 'policyMeasure',
+      chartType: chartType,
+      barType: barType,
+      sort: sortType,
+      isNew: false,
+      region: this.selectedRegionUIList.id
     });
   }
 
@@ -119,71 +93,29 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
       this.sortUISelected = 0;
     }
     this.sortBtnPressedId = chartLbl;
-    this.resetUISortLabels();
     this.sortUISelected++;
     const sortSel = this.sortUISelected;
-    let data = this.chartService.getMetricAllCountriesSinglePolicy(this.selectedPolicyUIList.id);
-    const regionalPolicyObj = this.chartService.getRegionalPolicyData();
-    const regionName = this.selectedRegionUIList.id;
-    const selectedRegion = regionalPolicyObj[this.selectedPolicyUIList.id][regionName];
-    const regionObj = {
-      id: regionName,
-      dKtot: selectedRegion['avg_dKtot'],
-      dWtot_currency: selectedRegion['avg_dWtot_currency'],
-      dK: selectedRegion['avg_dKtot'],
-      dWpc_currency: ['avg_dWpc_currency']
-    };
-    const finalRegionObj = {};
-    finalRegionObj[regionName] = regionObj;
-    data = Object.assign({}, finalRegionObj, data);
+    const data = this.chartService.getMetricAllCountriesSinglePolicy(this.selectedPolicyUIList.id);
+    const chartType = chartLbl === 'chart1' ? 'absolute' : 'relative';
+    const chartId = chartLbl === 'chart1' ? 'policyMeasure0' : 'policyMeasure1';
     let sortType;
-    if (sortSel === 2) {
-      sortType = 'Descending';
-      this.chartService.createPolicyListChart(data, 'policyMeasure0', {
-        type: 'million',
-        barType: barType,
-        sort: sortType,
-        isNew: false
-      });
-      this.chartService.createPolicyListChart(data, 'policyMeasure1', {
-        type: 'percentage',
-        barType: barType,
-        sort: sortType,
-        isNew: false
-      });
-      this[chartLbl] = sortType;
-      this.sortUISelected = -1;
-    } else if (sortSel === 1) {
+    if (sortSel === 1) {
       sortType = 'Ascending';
-      this.chartService.createPolicyListChart(data, 'policyMeasure0', {
-        type: 'million',
-        barType: barType,
-        sort: sortType,
-        isNew: false
-      });
-      this.chartService.createPolicyListChart(data, 'policyMeasure1', {
-        type: 'percentage',
-        barType: barType,
-        sort: sortType,
-        isNew: false
-      });
-      this[chartLbl] = sortType;
+      if (this.selectedRegionUIList.id === 'GLOBAL') {
+        this._sortPolicyMeasureChartData(data, barType, chartType, sortType, chartId);
+      } else {
+        this._sortPolicyMeasureChartData(data, barType, 'absolute', sortType, 'policyMeasure0');
+        this._sortPolicyMeasureChartData(data, barType, 'relative', sortType, 'policyMeasure1');
+      }
+      this.sortUISelected = -1;
     } else if (sortSel === 0) {
-      sortType = 'NORMAL';
-      this.chartService.createPolicyListChart(data, 'policyMeasure0', {
-        type: 'million',
-        barType: barType,
-        sort: sortType,
-        isNew: false
-      });
-      this.chartService.createPolicyListChart(data, 'policyMeasure1', {
-        type: 'percentage',
-        barType: barType,
-        sort: sortType,
-        isNew: false
-      });
-      this[chartLbl] = '';
+      sortType = 'Descending';
+      if (this.selectedRegionUIList.id === 'GLOBAL') {
+        this._sortPolicyMeasureChartData(data, barType, chartType, sortType, chartId);
+      } else {
+        this._sortPolicyMeasureChartData(data, barType, 'absolute', sortType, 'policyMeasure0');
+        this._sortPolicyMeasureChartData(data, barType, 'relative', sortType, 'policyMeasure1');
+      }
     }
   }
-
 }

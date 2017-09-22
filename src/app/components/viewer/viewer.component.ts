@@ -670,7 +670,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           const isoCodeList = this.countryListIsoCodes.filter(val => val === isoCode);
           if (isoCodeList.length) {
             self.changeCountryInputsByClick(isoCode);
-            // self.mapService.setMapFilterByISOCode(isoCode);
           }
         }
       });
