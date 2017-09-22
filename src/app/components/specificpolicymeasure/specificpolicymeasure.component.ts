@@ -101,21 +101,11 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
     let sortType;
     if (sortSel === 1) {
       sortType = 'Ascending';
-      if (this.selectedRegionUIList.id === 'GLOBAL') {
-        this._sortPolicyMeasureChartData(data, barType, chartType, sortType, chartId);
-      } else {
-        this._sortPolicyMeasureChartData(data, barType, 'absolute', sortType, 'policyMeasure0');
-        this._sortPolicyMeasureChartData(data, barType, 'relative', sortType, 'policyMeasure1');
-      }
+      this._sortPolicyMeasureChartData(data, barType, chartType, sortType, chartId);
       this.sortUISelected = -1;
     } else if (sortSel === 0) {
       sortType = 'Descending';
-      if (this.selectedRegionUIList.id === 'GLOBAL') {
-        this._sortPolicyMeasureChartData(data, barType, chartType, sortType, chartId);
-      } else {
-        this._sortPolicyMeasureChartData(data, barType, 'absolute', sortType, 'policyMeasure0');
-        this._sortPolicyMeasureChartData(data, barType, 'relative', sortType, 'policyMeasure1');
-      }
+      this._sortPolicyMeasureChartData(data, barType, chartType, sortType, chartId);
     }
   }
 }

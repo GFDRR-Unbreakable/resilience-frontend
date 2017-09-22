@@ -729,7 +729,7 @@ export class ChartService {
           return val.id === temp.id;
         })[0];
       });
-      console.log(allData);
+      // console.log(allData);
     } else {
       const policyData = dkTotArr.concat(dWTotCurrencyArr);
       const maxCountryVal = d3.max(policyData);
@@ -801,11 +801,7 @@ export class ChartService {
     });
     let w;
     if (isCountryListObject) {
-      if (isCountryListPercentageBased && countryList['region'] !== 'GLOBAL') {
-        w = 540;
-      } else {
-        w = 690;
-      }
+      w = 690;
     } else if (isPolicyListObject) {
       w = 800;
     } else {
@@ -813,7 +809,7 @@ export class ChartService {
     }
     const h = isCountryListObject ? recalculateChartHeight() : 1000;
     const margin = {
-      left: isCountryListPercentageBased && countryList['region'] !== 'GLOBAL' ? 50 : (isPolicyListObject ? 170 : 130),
+      left: isPolicyListObject ? 170 : 130,
       right: 60,
       bottom: 50,
       top: 5
@@ -838,9 +834,6 @@ export class ChartService {
     const yAxis = d3.svg.axis()
       .scale(yLane)
       .orient('left');
-    if (isCountryListPercentageBased && countryList['region'] !== 'GLOBAL') {
-      yAxis.tickFormat('');
-    }
     const yRightAx = d3.svg.axis()
       .scale(yLane)
       .orient('right');
@@ -917,7 +910,7 @@ export class ChartService {
       const yLabelPos = isCountryListObject ? -25 : -35;
       const xDescLabel = countryList['chartType'] === 'relative' ?
         'Percent % of Country GDP' : 'US$, millions per year';
-      const xLabelPosition = (isCountryListPercentageBased && countryList['region'] !== 'GLOBAL' ? width / 2.5 : width / 3.5);
+      const xLabelPosition = width / 3.5;
       if (isNewChart) {
         // Adding lane lines
         laneChart.append('g')
