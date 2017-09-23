@@ -1090,7 +1090,7 @@ export class ChartService {
           return 0;
         })
         .attr('y', (d, i) => {
-          const yParam = d.id || d.label;
+          const yParam = isCountryListObject ? d.id : d.label;
           return yLane(yParam);
         })
         .attr('rx', 10)
@@ -1112,7 +1112,7 @@ export class ChartService {
           return 0;
         })
         .attr('y', (d, i) => {
-          const yParam = d.id || d.label;
+          const yParam = isCountryListObject ? d.id : d.label;
           return yLane(yParam) + barHeight + spaceBars;
         })
         .attr('rx', 10)
@@ -1139,7 +1139,7 @@ export class ChartService {
           return xLane(Math.min(0, data));
         })
         .attr('y', (d, i) => {
-          const yParam = d.id || d.label;
+          const yParam = isCountryListObject ? d.id : d.label;
           return yLane(yParam);
         })
         .attr('rx', 10)
@@ -1172,7 +1172,7 @@ export class ChartService {
           return xLane(Math.min(0, data));
         })
         .attr('y', (d, i) => {
-          const yParam = d.id || d.label;
+          const yParam = isCountryListObject ? d.id : d.label;
           return yLane(yParam) + barHeight + spaceBars;
         })
         .attr('rx', 10)
@@ -1200,7 +1200,7 @@ export class ChartService {
           return width - 50;
         })
         .attr('y', (d, i) => {
-          const yParam = d.id || d.label;
+          const yParam = isCountryListObject ? d.id : d.label;
           return yLane(yParam) + barHeight - spaceBars;
         })
         .style('fill', '#6DCCDC')
@@ -1224,7 +1224,7 @@ export class ChartService {
           return width - 50;
         })
         .attr('y', (d, i) => {
-          const yParam = d.id || d.label;
+          const yParam = isCountryListObject ? d.id : d.label;
           return yLane(yParam) + (barHeight * 2) + spaceBars;
         })
         .style('fill', '#C3D700')
