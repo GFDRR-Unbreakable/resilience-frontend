@@ -469,76 +469,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         this.chartService.createInputCharts(inputData, 'inputExp-2', this.sliderValues2);
         this.chartService.createInputCharts(inputData, 'inputVul-1', this.sliderValues1);
         this.chartService.createInputCharts(inputData, 'inputVul-2', this.sliderValues2);
-        for (const inputDataIndex in inputData) {
-          if (inputData.hasOwnProperty(inputDataIndex)) {
-            const key = inputData[inputDataIndex].key;
-            let min = inputData[inputDataIndex].distribGroupArr[0].distribution;
-            let max = inputData[inputDataIndex].distribGroupArr[0].distribution;
-            for (let index = 1; index < inputData[inputDataIndex].distribGroupArr.length; index++) {
-              const valueInput = inputData[inputDataIndex].distribGroupArr[index].distribution;
-              if (valueInput > max) {
-                max = valueInput;
-              }
-              if (valueInput < min) {
-                min = valueInput;
-              }
-            }
-            if (min === max) {
-              min--;
-              max++;
-            }
-            this.sliderValues1[key + '_min'] = 1;
-            this.sliderValues1[key + '_max'] = 100;
-            this.sliderValues1[key + '_step'] = 1;
-            if (this.sliderValues1[key + '_display_value'] != null) {
-              this.sliderValues1[key + '_value'] = this.sliderValues1[key + '_display_value'] / (max + min) * 100;
-              this.sliderValues1[key + '_display_value'] =
-                this.chartService.formatInputChartValues(this.sliderValues1[key + '_display_value'], inputData[inputDataIndex]);
-              this.sliderValues1[key + '_original_value'] =
-                parseFloat(this.sliderValues1[key + '_display_value'].replace('$', '').replace(',', ''));
-            } else {
-              this.sliderValues1[key + '_value'] = 50;
-              this.sliderValues1[key + '_original_value'] = 50;
-              this.sliderValues1[key + '_display_value'] =
-                this.chartService.formatInputChartValues((max + min) / 2, inputData[inputDataIndex]);
-            }
-            this.sliderValues2[key + '_min'] = 1;
-            this.sliderValues2[key + '_max'] = 100;
-            this.sliderValues2[key + '_step'] = 1;
-            if (this.sliderValues2[key + '_display_value'] != null) {
-              this.sliderValues2[key + '_value'] = this.sliderValues2[key + '_display_value'] / (max + min) * 100;
-              this.sliderValues2[key + '_display_value'] =
-                this.chartService.formatInputChartValues(this.sliderValues2[key + '_display_value'], inputData[inputDataIndex]);
-              this.sliderValues2[key + '_original_value'] =
-                parseFloat(this.sliderValues2[key + '_display_value'].replace('$', '').replace(',', ''));
-            } else {
-              this.sliderValues2[key + '_value'] = 50;
-              this.sliderValues2[key + '_original_value'] = 50;
-              this.sliderValues2[key + '_display_value'] =
-                this.chartService.formatInputChartValues((max + min) / 2, inputData[inputDataIndex]);
-            }
-            this.viewerP1[key] =
-              (key === 'macro_T_rebuild_K' || key === 'k_cat_info__poor' || key === 'k_cat_info__nonpoor') ?
-                this.sliderValues1[key + '_original_value'] : this.sliderValues1[key + '_original_value'] / 100;
-            this.viewerP2[key] =
-              (key === 'macro_T_rebuild_K' || key === 'k_cat_info__poor' || key === 'k_cat_info__nonpoor') ?
-                this.sliderValues2[key + '_original_value'] : this.sliderValues2[key + '_original_value'] / 100;
-            this.sliderValues1[key] = {
-              min: min,
-              max: max,
-              value: this.sliderValues1[key + '_value']
-            };
-            this.sliderValues2[key] = {
-              min: min,
-              max: max,
-              value: this.sliderValues2[key + '_value']
-            };
-          }
-        }
-        this.viewerP1Default = Object.assign({}, this.viewerP1);
-        this.viewerP2Default = Object.assign({}, this.viewerP2);
-        this.sliderValues1Default = Object.assign({}, this.sliderValues1);
-        this.sliderValues2Default = Object.assign({}, this.sliderValues2);
+        this.setSliderConfValues(inputData);
       });
       this.chartService.createOutputChart(data._outputDomains, 'outputs-1');
       this.chartService.createOutputChart(data._outputDomains, 'outputs-2');
@@ -675,6 +606,67 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       });
     });
   }
+  setSingleSliderConfValue(sliderObj, key, max, min, input) {
+    sliderObj[key + '_min'] = 1;
+    sliderObj[key + '_max'] = 100;
+    sliderObj[key + '_step'] = 1;
+    if (sliderObj[key + '_display_value'] != null) {
+      sliderObj[key + '_value'] = sliderObj[key + '_display_value'] / (max + min) * 100;
+      sliderObj[key + '_display_value'] =
+        this.chartService.formatInputChartValues(sliderObj[key + '_display_value'], input);
+      sliderObj[key + '_original_value'] =
+        parseFloat(sliderObj[key + '_display_value'].replace('$', '').replace(',', ''));
+    } else {
+      sliderObj[key + '_value'] = 50;
+      sliderObj[key + '_original_value'] = 50;
+      sliderObj[key + '_display_value'] =
+        this.chartService.formatInputChartValues((max + min) / 2, input);
+    }
+  }
+  setSliderConfValues(inputData) {
+    for (const inputDataIndex in inputData) {
+      if (inputData.hasOwnProperty(inputDataIndex)) {
+        const key = inputData[inputDataIndex].key;
+        let min = inputData[inputDataIndex].distribGroupArr[0].distribution;
+        let max = inputData[inputDataIndex].distribGroupArr[0].distribution;
+        for (let index = 1; index < inputData[inputDataIndex].distribGroupArr.length; index++) {
+          const valueInput = inputData[inputDataIndex].distribGroupArr[index].distribution;
+          if (valueInput > max) {
+            max = valueInput;
+          }
+          if (valueInput < min) {
+            min = valueInput;
+          }
+        }
+        if (min === max) {
+          min--;
+          max++;
+        }
+        this.setSingleSliderConfValue(this.sliderValues1, key, max, min, inputData[inputDataIndex]);
+        this.setSingleSliderConfValue(this.sliderValues2, key, max, min, inputData[inputDataIndex]);
+        this.viewerP1[key] =
+          (key === 'macro_T_rebuild_K' || key === 'k_cat_info__poor' || key === 'k_cat_info__nonpoor') ?
+            this.sliderValues1[key + '_original_value'] : this.sliderValues1[key + '_original_value'] / 100;
+        this.viewerP2[key] =
+          (key === 'macro_T_rebuild_K' || key === 'k_cat_info__poor' || key === 'k_cat_info__nonpoor') ?
+            this.sliderValues2[key + '_original_value'] : this.sliderValues2[key + '_original_value'] / 100;
+        this.sliderValues1[key] = {
+          min: min,
+          max: max,
+          value: this.sliderValues1[key + '_value']
+        };
+        this.sliderValues2[key] = {
+          min: min,
+          max: max,
+          value: this.sliderValues2[key + '_value']
+        };
+      }
+    }
+    this.viewerP1Default = Object.assign({}, this.viewerP1);
+    this.viewerP2Default = Object.assign({}, this.viewerP2);
+    this.sliderValues1Default = Object.assign({}, this.sliderValues1);
+    this.sliderValues2Default = Object.assign({}, this.sliderValues2);
+  }
   setViewerObservableConf() {
     this.viewerSubs = this.viewer$.subscribe(state => {
       if (state) {
@@ -791,12 +783,12 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           this.chartService.createInputCharts(inData, 'inputEco-1', this.sliderValues1, group);
           this.chartService.createInputCharts(inData, 'inputExp-1', this.sliderValues1, group);
           this.chartService.createInputCharts(inData, 'inputVul-1', this.sliderValues1, group);
+          this.chartService.updateInputCharts('inputExp-1', this.sliderValues1, country.code);
+          this.chartService.updateInputCharts('inputSoc-1', this.sliderValues1, country.code);
+          this.chartService.updateInputCharts('inputEco-1', this.sliderValues1, country.code);
+          this.chartService.updateInputCharts('inputVul-1', this.sliderValues1, country.code);
           if (this.global) {
             this.chartService.updateOutputCharts('outputs-1', country.code);
-            this.chartService.updateInputCharts('inputExp-1', this.sliderValues1, country.code);
-            this.chartService.updateInputCharts('inputSoc-1', this.sliderValues1, country.code);
-            this.chartService.updateInputCharts('inputEco-1', this.sliderValues1, country.code);
-            this.chartService.updateInputCharts('inputVul-1', this.sliderValues1, country.code);
           }
         }
         if (country.index === 1) {
@@ -805,12 +797,12 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           this.chartService.createInputCharts(inData, 'inputEco-2', this.sliderValues2, group);
           this.chartService.createInputCharts(inData, 'inputExp-2', this.sliderValues2, group);
           this.chartService.createInputCharts(inData, 'inputVul-2', this.sliderValues2, group);
+          this.chartService.updateInputCharts('inputExp-2', this.sliderValues2, country.code);
+          this.chartService.updateInputCharts('inputSoc-2', this.sliderValues2, country.code);
+          this.chartService.updateInputCharts('inputEco-2', this.sliderValues2, country.code);
+          this.chartService.updateInputCharts('inputVul-2', this.sliderValues2, country.code);
           if (this.global) {
             this.chartService.updateOutputCharts('outputs-2', country.code);
-            this.chartService.updateInputCharts('inputExp-2', this.sliderValues2, country.code);
-            this.chartService.updateInputCharts('inputSoc-2', this.sliderValues2, country.code);
-            this.chartService.updateInputCharts('inputEco-2', this.sliderValues2, country.code);
-            this.chartService.updateInputCharts('inputVul-2', this.sliderValues2, country.code);
           }
         }
       });
