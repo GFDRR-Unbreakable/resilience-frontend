@@ -304,7 +304,8 @@ export class ChartService {
           });
 
       gaus.selectAll('path')
-        .style('stroke', '#000')
+        // .style('stroke', '#000')
+        .style('stroke', '#7D8F8F')
         .style('stroke-width', '3px')
         .style('fill', 'none')
         .style('shape-rendering', 'auto');
@@ -323,7 +324,8 @@ export class ChartService {
             return a(dd);
           });
       area.selectAll('path')
-        .style('fill', '#E6E8EF');
+        // .style('fill', '#E6E8EF');
+        .style('fill', '#e4e4e4');
 
       const mask = svg.append('g')
         .attr('id', 'mask-' + input.key)
@@ -391,7 +393,8 @@ export class ChartService {
         .style('fill', '#666')
         .style('fill-opacity', '0.8')
         .style('stroke-width', '4px')
-        .style('stroke', '#7D8F8F')
+        // .style('stroke', '#7D8F8F')
+        .style('stroke', '#50c4cf')
         .style('pointer-events', 'none');
 
       brushg.selectAll('#' + containerId + ' rect')
@@ -525,7 +528,8 @@ export class ChartService {
         });
       // Add manually chart styles to be integrated when converting to base64 string
       gaus.selectAll('path')
-        .style('stroke', '#000')
+        // .style('stroke', '#000')
+        .style('stroke', '#7D8F8F')
         .style('stroke-width', '3px')
         .style('fill', 'none')
         .style('shape-rendering', 'auto');
@@ -542,7 +546,8 @@ export class ChartService {
         });
       // Add manually chart styles to be integrated when converting to base64 string
       area.selectAll('path')
-        .style('fill', '#5E6A6A');
+        // .style('fill', '#5E6A6A');
+        .style('fill', '#e4e4e4');
       // add placeholder for initial model value
       const initial = svg.append('g')
         .attr('id', 'initial-' + idx)
@@ -551,7 +556,8 @@ export class ChartService {
       // Add manually chart styles to be integrated when converting to base64 string
       svg.selectAll('g.initial line')
         .style('fill', 'none')
-        .style('stroke', '#2f4f4f')
+        // .style('stroke', '#2f4f4f')
+        .style('stroke', 'transparent')
         .style('stroke-width', '2px')
         .style('opacity', '0.8');
 
@@ -654,7 +660,8 @@ export class ChartService {
         .style('fill', '#666')
         .style('fill-opacity', '0.8')
         .style('stroke-width', '4px')
-        .style('stroke', '#C3D700')
+        // .style('stroke', '#C3D700')
+        .style('stroke', '#50c4cf')
         .style('pointer-events', 'none');
       // Add manually chart styles to be integrated when converting to base64 string
       brushg.select('rect.extent')
@@ -1575,7 +1582,8 @@ export class ChartService {
         .data([science.stats.bandwidth.nrd0])
         .enter()
           .append('path')
-          .style('fill', '#50C4CF')
+          // .style('fill', '#50C4CF')
+          .style('fill', '#e4e4e4')
           .style('opacity', '1')
           .attr('d', (d) => {
             return toUpd.a(toUpd.kde.bandwidth(d)(selected));

@@ -10627,7 +10627,8 @@ fieldset {
     }
     .initial line, #inputs-1 .initial line, #inputs-2 .initial line {
         fill: none;
-        stroke: #2f4f4f;
+        /* stroke: #2f4f4f; */
+        stroke: transparent;
         stroke-width: 2px;
         opacity: .8;
     }
