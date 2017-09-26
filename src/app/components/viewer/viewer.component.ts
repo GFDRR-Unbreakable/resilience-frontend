@@ -758,6 +758,17 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   onSecondCountryInputChangeEvent() {
     this._changeCountryInput(false);
   }
+  onDisplayTechMapViewEvent() {
+    if (!this.global) {
+      this.global = !this.global;
+      const outData = this.chartService.getOutputData();
+      this._selectedCountryList.forEach(country => {
+        const chartIndex = country.index === 0 ? '1' : '2';
+        this.chartService.createOutputChart(outData, `outputs-${chartIndex}`, 'GLOBAL', false, country.code);
+        this.chartService.updateOutputCharts(`outputs-${chartIndex}`, country.code);
+      });
+    }
+  }
   onSlideChangeEvent($event) {
     let currentSlideId = $event.current;
     currentSlideId = currentSlideId.split('-')[0];
@@ -773,9 +784,9 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   onSwitchGlobal() {
     if (this._selectedCountryList.length === this.MAX_COUNTRIES_SELECTED) {
       this.global = !this.global;
+      const inData = this.chartService.getInputData();
+      const outData = this.chartService.getOutputData();
       this._selectedCountryList.forEach(country => {
-        const inData = this.chartService.getInputData();
-        const outData = this.chartService.getOutputData();
         const group = this.global ? 'GLOBAL' : country.group;
         if (country.index === 0) {
           this.chartService.createOutputChart(outData, 'outputs-1', group, false, country.code);

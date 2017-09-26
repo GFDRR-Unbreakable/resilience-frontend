@@ -1469,36 +1469,6 @@ export class ChartService {
   getMetricAllCountriesSinglePolicy(policy) {
     const allCountriesPolicy = this._newPolicyGroupedByPolicyObj;
     return allCountriesPolicy[policy];
-    // const outputInfo = {};
-    // const chartConf = this.getChartsConf();
-    // const outputMetric = chartConf.policyMetrics;
-    // for (const key  in this._globalModelData) {
-    //   if (this._globalModelData.hasOwnProperty(key)) {
-    //     outputInfo[key] = {};
-    //     outputMetric.forEach(val => {
-    //       outputInfo[key][val] = 0.0;
-    //     });
-    //   }
-    // }
-    // const policyList = chartConf.policyList;
-    // const selectedPol = policyList.map((val, idx) => {
-    //   if (val.id === policy) {
-    //     return idx;
-    //   }
-    // }).filter(isFinite)[0];
-    // const policyListData = this._policyInfoObj.data[selectedPol];
-    // for (const key in this._globalModelData) {
-    //   if (this._globalModelData.hasOwnProperty(key)) {
-    //     for (const key2 in policyListData['id']) {
-    //       if (policyListData['id'].hasOwnProperty(key2) && policyListData['id'][key2] === this._globalModelData[key]['id']) {
-    //         outputMetric.forEach(val => {
-    //           outputInfo[key][val] = policyListData[val][key2];
-    //         });
-    //       }
-    //     }
-    //   }
-    // }
-    // return outputInfo;
   }
   getMetricAllPoliciesSingleCountry(countryName: string) {
     const allPoliciesCountry = this._newPolicyGroupedByCountryObj;

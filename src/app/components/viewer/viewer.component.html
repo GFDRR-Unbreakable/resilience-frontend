@@ -20,7 +20,7 @@
               <label ngbButtonLabel class="nav-pills">
                 <input ngbButton type="radio" [value]="true">Viewer
               </label>
-              <label ngbButtonLabel class="nav-pills">
+              <label ngbButtonLabel class="nav-pills" (click)="onDisplayTechMapViewEvent()">
                 <input ngbButton type="radio" [value]="false">Technical Map
               </label>
             </div>
