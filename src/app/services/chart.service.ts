@@ -803,9 +803,18 @@ export class ChartService {
       }
       return 1400;
     };
-    const maxValue = isPolicyListObject ? this._maxGDPNum : d3.max(allData, (d) => {
+    // const maxValue = isPolicyListObject ? this._maxGDPNum : d3.max(allData, (d) => {
+    //   return d.dWtot_currency;
+    // });
+    let maxFirstBarValue = d3.max(allData, (d) => {
       return d.dWtot_currency;
     });
+    let maxSecondBarValue = d3.max(allData, (d) => {
+      return d.dKtot;
+    });
+    let minValues = [maxFirstBarValue, maxSecondBarValue];
+    let min = d3.min(minValues);
+    let maxValue = isPolicyListObject ? this._maxGDPNum : d3.max([maxFirstBarValue, maxSecondBarValue]);
     let w;
     if (isCountryListObject) {
       w = 690;
@@ -979,8 +988,15 @@ export class ChartService {
       const minSecondBarValue = d3.min(params.data, (d) => {
         return d.dKtot;
       });
-      const minValues = [minFirstBarValue, minSecondBarValue];
-      const min = d3.min(minValues);
+      maxFirstBarValue = d3.max(params.data, (d) => {
+        return d.dWtot_currency;
+      });
+      maxSecondBarValue = d3.max(params.data, (d) => {
+        return d.dKtot;
+      });
+      minValues = [minFirstBarValue, minSecondBarValue];
+      min = d3.min(minValues);
+      maxValue = d3.max([maxFirstBarValue, maxSecondBarValue]);
       if (min < -1) {
         xDomain = [min, maxValue];
         xLane.domain(xDomain).nice();
@@ -1876,7 +1892,6 @@ export class ChartService {
       const precision = +output.precision;
       const numericValue = (brush.extent()[1] * 100).toFixed(precision);
       const value = me.calculateGDPValues(containerId, idx, numericValue, avgDoll);
-      // this._outputDomains[idx]['chart'][containerId] = numericValue;
       jQuery(`#${containerId} #${idx} .text-number`).html(value);
       const brushg = d3.selectAll(`#${containerId} svg#${idx} g.brush`);
       brushg.transition()
