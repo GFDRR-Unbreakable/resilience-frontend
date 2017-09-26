@@ -1876,7 +1876,7 @@ export class ChartService {
       const precision = +output.precision;
       const numericValue = (brush.extent()[1] * 100).toFixed(precision);
       const value = me.calculateGDPValues(containerId, idx, numericValue, avgDoll);
-      this._outputDomains[idx]['chart'][containerId] = numericValue;
+      // this._outputDomains[idx]['chart'][containerId] = numericValue;
       jQuery(`#${containerId} #${idx} .text-number`).html(value);
       const brushg = d3.selectAll(`#${containerId} svg#${idx} g.brush`);
       brushg.transition()

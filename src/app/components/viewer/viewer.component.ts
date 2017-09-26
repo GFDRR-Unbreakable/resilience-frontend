@@ -528,9 +528,22 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       if (!data.country2.outputs[key]) {
         data.country2.outputs[key] = {};
       }
-      data.country1.outputs[key]['value'] = out.chart['outputs-1'];
+      if (key.indexOf('risk') >= 0) {
+        if (!data.country1.outputs[key]['value']) {
+          data.country1.outputs[key]['value'] = {};
+        }
+        if (!data.country2.outputs[key]['value']) {
+          data.country2.outputs[key]['value'] = {};
+        }
+        data.country1.outputs[key]['value'].dollarGDP = out.chart['outputs-1'].dollarGDP;
+        data.country1.outputs[key]['value'].valueGDP = out.chart['outputs-1'].valueGDP;
+        data.country2.outputs[key]['value'].dollarGDP = out.chart['outputs-2'].dollarGDP;
+        data.country2.outputs[key]['value'].valueGDP = out.chart['outputs-2'].valueGDP;
+      } else {
+        data.country1.outputs[key]['value'] = out.chart['outputs-1'];
+        data.country2.outputs[key]['value'] = out.chart['outputs-2'];
+      }
       data.country1.outputs[key]['label'] = out.descriptor;
-      data.country2.outputs[key]['value'] = out.chart['outputs-2'];
       data.country2.outputs[key]['label'] = out.descriptor;
       if (isPDF) {
         const chObj = this.chartService.formatSVGChartBase64Strings(key, true);
@@ -558,12 +571,14 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         data.country1.inputs[key][inpKey]['label'] = label;
         data.country2.inputs[key][inpKey]['label'] = label;
 
-        data.country1.inputs[key][inpKey]['value'] = this.sliderValues1[inpKey + '_display_value'];
-        data.country2.inputs[key][inpKey]['value'] = this.sliderValues2[inpKey + '_display_value'];
-        if (data.page === 'viewer') {
-          data.country1.inputs[key][inpKey]['value'] = this.sliderValues1[inpKey].value;
-          data.country2.inputs[key][inpKey]['value'] = this.sliderValues2[inpKey].value;
-        }
+        data.country1.inputs[key][inpKey]['value'] = {
+          label: this.sliderValues1[inpKey + '_display_value'],
+          value: this.sliderValues1[inpKey].value
+        };
+        data.country2.inputs[key][inpKey]['value'] = {
+          label: this.sliderValues2[inpKey + '_display_value'],
+          value: this.sliderValues2[inpKey].value
+        };
 
         if (isPDF) {
           if (data.page === 'viewer') {
