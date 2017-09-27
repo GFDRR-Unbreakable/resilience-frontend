@@ -647,8 +647,35 @@ template {
     margin-top: 15px;
     padding: 0px 9px;
   }
-
-
+  .tabs-dg{
+    position: absolute !important;
+    bottom: 20px;
+    left: 23px;
+  }
+  .tabs-dg button{
+    height: 50px;
+    cursor: pointer;
+  }
+  .tabs-dg .btn-tab{
+    background: #dbdddd;
+    color: #666666;
+    opacity: 0.8;
+  }
+  .tabs-dg .btn-tab:hover, .tabs-dg .btn-tab:active{
+    background: #fff;
+    color: #666666;
+    opacity: 1;
+    border: 1px solid #50C4CF;
+  }
+  .ct-risk{
+    position: absolute;
+    top: 8px;
+    right: 23px;
+    text-align: center;
+  }
+  .ct-risk p{
+    padding: 0px;
+  }
  /* Acordeon styles viewer */
    .tab {
      position: relative;
@@ -1018,7 +1045,7 @@ template {
 }
 
 div#map {
-  height: 450px;
+  height: 480px;
   width: inherit;
   z-index: 1;
 }
@@ -10845,11 +10872,12 @@ fieldset {
 
 .map-legend {
   position: absolute;
-  bottom: 14px;
+  bottom: 20px;
   z-index: 1;
   background-color: #dddfdf;
-  border: solid 5px #dddfdf;
+  border: solid 8px #dddfdf;
   right: 23px;
+  border-radius: 7px;
 }
 .map-legend-text {
   padding: 0 6px;

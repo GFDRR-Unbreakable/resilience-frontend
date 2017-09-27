@@ -29,6 +29,18 @@
               </ngb-carousel> -->
 
               <div id="map"></div>
+
+              <!-- Country graphics -->
+              <div class="ct-risk">
+                <div class="card bg-light mb-3 card-01">
+                  <div class="card-header">Mexico</div>
+                  <div class="card-body">
+                  <p>Risk to Assets</p>
+                  <p>$22,404 Million (1.01% of GDP)</p>
+                  </div>
+                </div>
+              </div>
+
               <div class="map-legend">
                 <div *ngFor="let legend of legends">
                   <i class="mdi mdi-checkbox-blank float-left" [ngStyle]="{color: legend[2]}"></i>
@@ -40,6 +52,15 @@
                   <br />
                 </div>
               </div>
+
+              <!-- Buttons/tabs -->
+              <div class="btn-group tabs-dg" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-tab">Expects well-being losses (%)</button>
+                <button type="button" class="btn btn-tab">Exposure Risk Losses (%)</button>
+                <button type="button" class="btn btn-tab">Socio Economic Capacity (%)</button>
+              </div>
+              <!-- End Buttons/tabs -->
+
            </div>
         </div>
         <div class="row">
@@ -330,7 +351,7 @@
                         <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
                      </div>
                      <div class="form-group" [class.has-danger]="searchFailed">
-                        <input id="country-2Txt" type="text" class="form-control input-wd" [(ngModel)]="viewerModel.secondCountry" [ngbTypeahead]="searchCountryFn" #country2="ngModel" (ngModelChange)="onSecondCountryInputChangeEvent()" placeholder="Country 2"/>
+                        <input id="country-2Txt" type="text" class="form-control input-wd" [(ngModel)]="viewerModel.secondCountry" [ngbTypeahead]="searchCountryFn" #country2="ngModel" (ngModelChange)="onSecondCountryInputChangeEvent()" placeholder="Country B"/>
                         <span *ngIf="searching">searching...</span>
                         <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
                      </div>
