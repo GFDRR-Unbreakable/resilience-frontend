@@ -695,6 +695,9 @@ template {
   .label-mg{
     margin-top: 15px;
   }
+  .policy-measure .dropdown-menu{
+    width: auto;
+  }
  /* Acordeon styles viewer */
    .tab {
      position: relative;
@@ -1030,26 +1033,28 @@ template {
   font-size: 17px;
 }
 .dropdown-politics{
-  border: 1px solid #7D8F8F !important;
-  background: #4b5757;
-  color: #fff;
+  background: #fff;
+  color: #666;
   margin: 0 15px;
+  border-color: rgba(0,0,0,0.15)!important;
 }
 .dropdown-politics:hover{
-  border: 1px solid #7D8F8F !important;
-  background: #4b5757;
-  box-shadow:0 5px 14px rgba(0,0,0,.1);
+  background: #fff;
+  box-shadow: none;
+  border-color: rgba(0,0,0,0.15)!important;
+  color: #50C4CF;
 }
 .dropdown-politics-menu{
-  background: #4b5757 !important;
+  background: #fff !important;
   margin-left: 15px !important;
 }
 .dropdown-politics-item{
-  background: #4b5757;
+  background: #fff;
+  border-color: rgba(0,0,0,0.15)!important;
 }
 .dropdown-politics-item:hover{
   background: transparent !important;
-  color: #C3D700 !important;
+  color: #50C4CF !important;
 }
 .dropdown-divider-1 {
   height: 1px;
