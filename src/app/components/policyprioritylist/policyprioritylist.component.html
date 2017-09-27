@@ -1,5 +1,5 @@
 <app-navbar></app-navbar>
-<div class="container">
+<div class="container policy-dp">
    <div class="row">
       <div class="col-md-12 scorecard-title">
          <a href="" routerLink="/viewer"><button type="button" class="btn button-map"><i class="mdi mdi-keyboard-backspace"></i> Map</button></a>
@@ -21,7 +21,9 @@
             <p class="scorecard-text"><b>Population (2013 est.):</b> {{firstCountryPopulation}}</p>
          </div>
          <div class="col-md-12">
-            <div class="row">
+           <br>
+            <h6>Losses Based on Resilience Indicators:</h6>
+            <!-- <div class="row">
                <div class="col-md-12">
                   <h6 class="">RESULTS
                      <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
@@ -30,7 +32,7 @@
                   </h6>
                   <span><img src="assets/image/icon-map.png" alt=""> Global Histogram</span>
                </div>
-            </div>
+            </div> -->
             <div class="row">
                 <div class="col-md-12">
                     <div class="row" id="outputs-1"></div>
@@ -45,7 +47,9 @@
             <p class="scorecard-text"><b>Population (2013 est.):</b> {{secondCountryPopulation}}</p>
          </div>
          <div class="col-md-12">
-            <div class="row">
+           <br>
+           <h6>Losses Based on Resilience Indicators:</h6>
+            <!-- <div class="row">
                <div class="col-md-12">
                   <h6 class="">RESULTS
                      <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
@@ -54,7 +58,7 @@
                   </h6>
                   <span><img src="assets/image/icon-map.png" alt=""> Global Histogram</span>
                </div>
-            </div>
+            </div> -->
             <div class="row">
                 <div class="col-md-12">
                     <div class="row" id="outputs-2"></div>
@@ -67,23 +71,19 @@
    <div class="row">
         <div class="col-md-12 box-policyprioritylist-1">
             <div class="row">
-                <div class="col-md-12 box-title-policyprioritylist">
-                    <h6 class="">RESILIENCE FACTORS
-                        <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                        <i class="mdi mdi-information-outline"></i>
-                        </button>
+                <div class="col-md-12 box-title-policyprioritylist text-center">
+                    <h6 class="">HOW CHANGES IN COUNTRY POLICIES AFFECT AVOIDED LOSSES TO ASSETS AND WELL-BEING}
                     </h6>
-                    <label class="text-sort">
+                    <label class="text-sort label-mg">
                         <i class="mdi mdi-checkbox-blank-circle box-icon-a"></i>
-                        Avoided well-being losses
+                        Well-being
                         <img class="icon-sort" (click)="onSortChartDataEvent({barType: '1', charts:['policy-list1', 'policy-list2']})" />
-                    </label>
-                    <label class="text-sort">
+
                         <i class="mdi mdi-checkbox-blank-circle box-icon-c"></i>
-                            Avoided asset losses
+                            Assets
                         <img class="icon-sort" (click)="onSortChartDataEvent({barType: '2', charts:['policy-list1', 'policy-list2']})" />
                     </label>
-                    <div class="row">
+                    <div class="row switch-position">
                         <div class="switch-btn">
                             <label class="toggle-switch nolabel">
                                 <input type="checkbox" style="width: 100%;" [checked]="switchUICmpVal" ([ngModel])="switchUICmpVal" (click)="onChangeChartTypeEvent()"/>
@@ -94,37 +94,42 @@
                                 <a></a>
                             </label>
                         </div>
+                        <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
+                        <i class="mdi mdi-information-outline"></i>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row border-content"></div>
+    <div class="row"></div>
     <div class="row scorecard-prioritylist">
         <div class="col-md-6 box-policyprioritylist-1 vertical-border">
             <div class="row">
-                <div class="col-md-12">
-                <h6 class="">POLICIES
-                    <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
+                <div class="col-md-12 text-center">
+                <h6 class="">COUNTRY A
+                    <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
                     <i class="mdi mdi-information-outline"></i>
-                    </button>
+                    </button> -->
                 </h6>
+                <br>
                 </div>
             </div>
             <div class="row pad-botTop10">
-                <div class="col-md-12 ">
+                <div class="col-md-12 text-center">
                 <div class="row" id="policy-list1"></div>
                 </div>
             </div>
         </div>
         <div class="col-md-6 box-policyprioritylist-1">
             <div class="row">
-                <div class="col-md-12">
-                    <h6 class="">POLICIES
-                        <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
+                <div class="col-md-12 text-center">
+                    <h6 class="">COUNTRY B
+                        <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
                         <i class="mdi mdi-information-outline"></i>
-                        </button>
+                        </button> -->
                     </h6>
+                    <br>
                 </div>
             </div>
             <div class="row pad-botTop10">
