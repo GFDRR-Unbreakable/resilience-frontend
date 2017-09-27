@@ -16,7 +16,7 @@ import {ChartService} from '../../services/chart.service';
 import {Subscription} from 'rxjs/Subscription';
 import {Store} from '@ngrx/store';
 import {AppStore} from '../../store/default.store';
-import * as enablePassiveEvent from 'default-passive-events/default-passive-events.js';
+// import * as enablePassiveEvent from 'default-passive-events/default-passive-events.js';
 
 @Component({
   selector: 'app-viewer',
@@ -151,7 +151,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   public viewerSubs: Subscription;
   public viewerModel1Subs: Subscription;
   public viewerModel2Subs: Subscription;
-  private onPassEv = e => { /*e.preventDefault();*/ };
+  private onPassEv = e => { e.preventDefault(); };
   public searchCountryFn = (text$: Observable<string>) => {
     const debounceTimeFn = debounceTime.call(text$, 200);
     const distinctUntilChangedFn = distinctUntilChanged.call(debounceTimeFn);
@@ -185,6 +185,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.viewerSubs.unsubscribe();
     this.viewerModel1Subs.unsubscribe();
     this.viewerModel2Subs.unsubscribe();
+    this.removeSelectedCountriesOnMap();
     // this.removeElPassiveEvents();
   }
   ngAfterViewInit() {
@@ -333,7 +334,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   addElPassiveEvents() {
-    const options: any = {passive: true};
+    const options: any = {passive: false};
     document.addEventListener('touchstart', this.onPassEv, options);
     document.addEventListener('touchmove', this.onPassEv, options);
     document.addEventListener('wheel', this.onPassEv, options);
@@ -597,10 +598,19 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     return data;
   }
   private removeElPassiveEvents() {
-    document.removeEventListener('touchstart', this.onPassEv);
-    document.removeEventListener('touchmove', this.onPassEv);
-    document.removeEventListener('wheel', this.onPassEv);
-    document.removeEventListener('wheelmove', this.onPassEv);
+    const options: any = {passive: false};
+    document.removeEventListener('touchstart', this.onPassEv, options);
+    document.removeEventListener('touchmove', this.onPassEv, options);
+    document.removeEventListener('wheel', this.onPassEv, options);
+    document.removeEventListener('wheelmove', this.onPassEv, options);
+  }
+  removeSelectedCountriesOnMap() {
+    const selCountriesArr = this._selectedCountryList;
+    if (selCountriesArr.length) {
+      selCountriesArr.forEach(country => {
+        this.mapService.setMapFilterByISOCode(country.code);
+      });
+    }
   }
   setMapConf() {
     const self = this;
@@ -704,6 +714,17 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
   // EVENTS
+  onDisplayTechMapViewEvent() {
+    if (!this.global) {
+      this.global = !this.global;
+      const outData = this.chartService.getOutputData();
+      this._selectedCountryList.forEach(country => {
+        const chartIndex = country.index === 0 ? '1' : '2';
+        this.chartService.createOutputChart(outData, `outputs-${chartIndex}`, 'GLOBAL', false, country.code);
+        this.chartService.updateOutputCharts(`outputs-${chartIndex}`, country.code);
+      });
+    }
+  }
   onDownloadCSVViewerReportEvent() {
     const data = this.processForFileJSONData();
     this.fileService.getViewerCSVFile(data).subscribe(csvData => {
@@ -772,17 +793,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   onSecondCountryInputChangeEvent() {
     this._changeCountryInput(false);
-  }
-  onDisplayTechMapViewEvent() {
-    if (!this.global) {
-      this.global = !this.global;
-      const outData = this.chartService.getOutputData();
-      this._selectedCountryList.forEach(country => {
-        const chartIndex = country.index === 0 ? '1' : '2';
-        this.chartService.createOutputChart(outData, `outputs-${chartIndex}`, 'GLOBAL', false, country.code);
-        this.chartService.updateOutputCharts(`outputs-${chartIndex}`, country.code);
-      });
-    }
   }
   onSlideChangeEvent($event) {
     let currentSlideId = $event.current;
