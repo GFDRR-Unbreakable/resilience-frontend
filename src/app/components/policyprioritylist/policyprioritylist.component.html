@@ -9,7 +9,7 @@
             <button type="button" class="btn btn-outline-secondary icon-plus"><i class="mdi mdi-plus"></i></button>
             <input  type="text" class="form-control" placeholder="" name="secondCountry" [ngbTypeahead]="searchCountryFn" #secondCountry="ngModel" [(ngModel)]="policyModel.secondCountry" (ngModelChange)="onSecondCountryInputChangeEvent()" placeholder="Country 2"/>
          </div>
-         <button type="button" class="btn btn-primary text-download box-button-pdf"><img class="img-download" src="assets/image/ic-download.png" alt="">PDF</button>
+         <button type="button" class="btn btn-primary text-download box-button-pdf" [disabled]="_selectedCountryList.length < 2" (click)="onDownloadPDFFileEvent()"><img class="img-download" src="assets/image/ic-download.png" alt="">PDF</button>
       </div>
    </div>
    <div class="row border-content"></div>
@@ -117,7 +117,7 @@
             </div>
             <div class="row pad-botTop10">
                 <div class="col-md-12 text-center">
-                <div class="row" id="policy-list1"></div>
+                <div class="row" id="policy-list-1"></div>
                 </div>
             </div>
         </div>
@@ -134,7 +134,7 @@
             </div>
             <div class="row pad-botTop10">
                 <div class="col-md-12">
-                    <div class="row" id="policy-list2"></div>
+                    <div class="row" id="policy-list-2"></div>
                 </div>
             </div>
         </div>

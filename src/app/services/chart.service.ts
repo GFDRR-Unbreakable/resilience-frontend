@@ -1362,12 +1362,19 @@ export class ChartService {
     const chartCtn2 = jQuery(`#${id2}`);
     const chart1 = chartCtn1.find('svg');
     const chart2 = chartCtn2.find('svg');
-    const filterFn = (idx, svg) => {
-      const id = isFromOutputChart ? chartId : inChartId;
-      return svg.id === id;
-    };
-    const ch1 = chart1.filter(filterFn)[0];
-    const ch2 = chart2.filter(filterFn)[0];
+    let ch1;
+    let ch2;
+    if (isFromOutputChart) {
+      const filterFn = (idx, svg) => {
+        const id = isFromOutputChart ? chartId : inChartId;
+        return svg.id === id;
+      };
+      ch1 = chart1.filter(filterFn)[0];
+      ch2 = chart2.filter(filterFn)[0];
+    } else {
+      ch1 = chart1[0];
+      ch2 = chart2[0];
+    }
     const svgPrefixStr = "data:image/svg+xml;base64,";
     const ch1XMLStr = new XMLSerializer().serializeToString(ch1);
     const ch1Fmt = window.btoa(ch1XMLStr);

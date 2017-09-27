@@ -8,6 +8,7 @@ export const SERVER = {
     BASE_SERVER_PY: 'http://13.58.142.191:9091/',
     SERVER_API: 'api/',
     SERVER_DOWNLOADPDF: 'pdf',
+    SERVER_DOWNLOADSCPDF: 'sc_pdf',
     SERVER_DOWNLOADCSV: 'csv',
     // SERVER_PYDATA: 'data/',
     SERVER_INPUT_PY: 'model_adapter.py',

@@ -13,6 +13,7 @@ import { PolicyPriority } from '../../store/model/policy.model';
 import { PolicyAction } from '../../store/action/policy.action';
 import {AppStore} from '../../store/default.store';
 import {ChartService} from '../../services/chart.service';
+import {FileService} from '../../services/files.service';
 
 
 @Component({
@@ -36,7 +37,7 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
   };
   public secondCountryGDP: string = '0';
   public secondCountryPopulation: string = '0';
-  private _selectedCountryList: Array<any> = [];
+  public _selectedCountryList: Array<any> = [];
   public sortBtnPressedIdCh1 = '';
   public sortBtnPressedIdCh2 = '';
   public sortUISelected1 = 0;
@@ -58,6 +59,7 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
     return map.call(distinctUntilChangedFn, searchCb);
   }
   constructor(
+    private fileService: FileService,
     private store: Store<AppStore>,
     private chartService: ChartService) {
       this.policyList$ = store.select('policyPriority');
@@ -91,7 +93,7 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
     const inData = this.chartService.getInputData();
     const outData = this.chartService.getOutputData();
     const idOut = selectedIdx === 0 ? 'outputs-1' : 'outputs-2';
-    const idScList = selectedIdx === 0 ? 'policy-list1' : 'policy-list2';
+    const idScList = selectedIdx === 0 ? 'policy-list-1' : 'policy-list-2';
     if (list.length) {
       const filterExistence = this._selectedCountryList.filter(val => {
         return val.name === list[0].name;
@@ -126,9 +128,11 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
         if (totalGDP >= aBillion) {
           totalGDP = Math.round(totalGDP / aBillion);
           if (totalGDP >= aThousand) {
-            totalGDP = totalGDP / aThousand;
             if (totalGDP % aThousand === 0) {
+              totalGDP = totalGDP / aThousand;
               totalGDP += '.000';
+            } else {
+              totalGDP = totalGDP / aThousand;
             }
             totalGDP = totalGDP.toString().split('.').join(',');
             totalGDP = totalGDP.split(',')[1].length === 2 ? totalGDP + '0' : totalGDP;
@@ -138,9 +142,11 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
         if (countryPopulation >= aMillion) {
           countryPopulation = Math.round(countryPopulation / aMillion);
           if (countryPopulation >= aThousand) {
-            countryPopulation = countryPopulation / aThousand;
             if (countryPopulation % aThousand === 0) {
+              countryPopulation = countryPopulation / aThousand;
               countryPopulation += '.000';
+            } else {
+              countryPopulation = countryPopulation / aThousand;
             }
             countryPopulation = countryPopulation.toString().split('.').join(',');
             countryPopulation = countryPopulation.split(',')[1].length === 2 ? countryPopulation + '0' : countryPopulation;
@@ -219,10 +225,8 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
     this.chartService.createPolicyListChart(data, chartId, opts);
     const MAX_SELECTED_COUNTRIES = 2;
     if (this.chartService.countPolicyListCharts() === MAX_SELECTED_COUNTRIES) {
-      // const maxCountryValues = this.chartService.getMaxGDPCountryValues();
-      // const maxValue = this.chartService.getMaxGDPCountryValue();
-      const chart1 = 'policy-list1';
-      const chart2 = 'policy-list2';
+      const chart1 = 'policy-list-1';
+      const chart2 = 'policy-list-2';
       const filterChart1 = this._selectedCountryList.filter(val => {
         return val.chartId === chart1;
       });
@@ -238,6 +242,80 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
         this.chartService.createPolicyListChart(data, chart2, Object.assign({}, opts, {isNew: false}));
       }
     }
+  }
+  private processForFileJSONData(): any {
+    const outputData = this.chartService.getOutputData();
+    const chartConf = this.chartService.getChartsConf();
+    const firstInput = this.policyModel.firstCountry;
+    const secondInput = this.policyModel.secondCountry;
+    const data: any = {
+      country1: {
+        name: '',
+        outputs: {},
+        scorecardList: {}
+      },
+      country2: {
+        name: '',
+        outputs: {},
+        scorecardList: {}
+      },
+    };
+    const countryFInput = this._selectedCountryList.filter(val => {
+      return val.name.toLowerCase() === firstInput.toLowerCase();
+    });
+    const countrySInput = this._selectedCountryList.filter(val => {
+      return val.name.toLowerCase() === secondInput.toLowerCase();
+    });
+    data.country1.name = !firstInput || countryFInput.length === 0 ? 'Global' : firstInput;
+    data.country2.name = !secondInput || countrySInput.length === 0 ? 'Global' : secondInput;
+    data.country1.gdp = this.firstCountryGDP;
+    data.country1.population = this.firstCountryPopulation;
+    data.country2.gdp = this.secondCountryGDP;
+    data.country2.population = this.secondCountryPopulation;
+    jQuery.each(outputData, (key, out) => {
+      if (!data.country1.outputs[key]) {
+        data.country1.outputs[key] = {};
+      }
+      if (!data.country2.outputs[key]) {
+        data.country2.outputs[key] = {};
+      }
+      if (key.indexOf('risk') >= 0) {
+        if (!data.country1.outputs[key]['value']) {
+          data.country1.outputs[key]['value'] = {};
+        }
+        if (!data.country2.outputs[key]['value']) {
+          data.country2.outputs[key]['value'] = {};
+        }
+        data.country1.outputs[key]['value'].dollarGDP = out.chart['outputs-1'].dollarGDP;
+        data.country1.outputs[key]['value'].valueGDP = out.chart['outputs-1'].valueGDP;
+        data.country2.outputs[key]['value'].dollarGDP = out.chart['outputs-2'].dollarGDP;
+        data.country2.outputs[key]['value'].valueGDP = out.chart['outputs-2'].valueGDP;
+      } else {
+        data.country1.outputs[key]['value'] = out.chart['outputs-1'];
+        data.country2.outputs[key]['value'] = out.chart['outputs-2'];
+      }
+      data.country1.outputs[key]['label'] = out.descriptor;
+      data.country2.outputs[key]['label'] = out.descriptor;
+
+      const chObj = this.chartService.formatSVGChartBase64Strings(key, true);
+      data.country1.outputs[key]['chart'] = chObj.chart1;
+      data.country2.outputs[key]['chart'] = chObj.chart2;
+
+    });
+    const MAX_SELECTED_COUNTRIES = 2;
+    if (this._selectedCountryList.length === MAX_SELECTED_COUNTRIES) {
+      const chObj = this.chartService.formatSVGChartBase64Strings('policy-list', false);
+      if (!data.country1.scorecard) {
+        data.country1.scorecard = {};
+      }
+      if (!data.country2.scorecard) {
+        data.country2.scorecard = {};
+      }
+      data.country1.scorecard.chart = chObj.chart1;
+      data.country2.scorecard.chart = chObj.chart2;
+    }
+    data.page = 'policyList';
+    return data;
   }
   resetUISortLabel1() {
     this.sortUISelectedLbl1 = '';
@@ -324,6 +402,13 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
         this.chartService.createPolicyListChart(data, val.chartId, defaultOpts);
       }
     }
+  }
+  onDownloadPDFFileEvent() {
+    const data = this.processForFileJSONData();
+    console.log(data);
+    this.fileService.getScorecardPDFFile(data).subscribe(pdfData => {
+      this.fileService.setPDFDownloadProcess(pdfData, 'scorecardPolicyList');
+    });
   }
   onFirstCountryInputChangeEvent() {
     this._changeCountryInput(true);

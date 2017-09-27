@@ -744,25 +744,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     const data = this.processForFileJSONData(true);
     console.log(data);
     this.fileService.getViewerPDFFile(data).subscribe(pdfData => {
-      const byteString = window.atob(pdfData);
-      // Convert that text into a byte array.
-      const ab = new ArrayBuffer(byteString.length);
-      const ia = new Uint8Array(ab);
-      for (let i = 0; i < byteString.length; i++) {
-          ia[i] = byteString.charCodeAt(i);
-      }
-      const blob = new Blob([ia], {
-        type: 'application/octet-stream;'
-      });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      document.body.appendChild(a);
-      a.href = url;
-      a.download = 'viewer_report.pdf';
-      a.click();
-      setTimeout(() => {
-        window.URL.revokeObjectURL(url);
-      }, 1000);
+      this.fileService.setPDFDownloadProcess(pdfData, 'viewer');
     });
   }
   onFirstCountryInputChangeEvent() {
