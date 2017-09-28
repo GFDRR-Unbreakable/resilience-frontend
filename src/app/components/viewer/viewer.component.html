@@ -32,7 +32,7 @@
 
               <!-- Country graphics -->
               <div class="ct-risk">
-                <div class="card bg-light mb-3 card-01">
+                <div class="card bg-light mb-3 card-03">
                   <div class="card-header">Mexico</div>
                   <div class="card-body">
                   <p>Risk to Assets</p>
@@ -121,140 +121,827 @@
                    <button type="button" class="btn btn-primary text-download" (click)="onDownloadPDFViewerReportEvent()"><img class="img-download" src="assets/image/ic-download.png" alt="">PDF</button>
                 </div></div>
               <div class="card-body">
-                <div class="tab">
-                   <input id="tab-one" type="checkbox" name="tabs">
-                   <label for="tab-one">Social Protection
-                     <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                        <i class="mdi mdi-information-outline"></i>
-                     </button> -->
-                   </label>
-                   <div class="tab-content">
-                      <div class="row">
-                         <div class="col-md-4 label-text">
-                           <div class="box-tab-text">
-                             Share of social protection / remittances to poor people (% of poor)
-                           </div>
-                           <div class="box-tab-text">
-                             Total social protection spending and remittances (US$,PPP)
-                           </div>
-                           <div class="box-tab-text">
-                             Ability to access post-disaster financial resources (% of population)
-                           </div>
-                           <div class="box-tab-text">
-                             Readiness to scale-up social protection (% increase in SP total payout post-disaster)
-                           </div>
-                           <div class="box-tab-text">
-                             Time to recover and reconstruct
-                           </div>
+                <div class="">
+
+                   <!-- <ngb-tabset type="pills">
+                      <ngb-tab title="Viewer">
+                         <ng-template ngbTabContent> -->
+                         <div  [hidden]="!viewerDisplay">
+                            <!-- <div class="row">
+                               <div class="col-md-12 box-select">
+                                  <p>1. Select two countries from the map or type its name:</p>
+                               </div>
+                            </div> -->
+                            <!-- <div class="row box-general">
+                               <div class="col-md-12">
+                                  <div><i class="mdi mdi-checkbox-blank-circle box-icon-c"></i> <span class="text-country">Country</span></div>
+                                  <div class="box-dropdown">
+                                     <div class="form-group" [class.has-danger]="searchFailed">
+                                        <input id="country-1Txt" type="text" class="form-control" [(ngModel)]="viewerModel.firstCountry" [ngbTypeahead]="searchCountryFn" #country1="ngModel" (ngModelChange)="onFirstCountryInputChangeEvent()" placeholder="Country 1"/>
+                                        <span *ngIf="searching">searching...</span>
+                                        <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
+                                     </div>
+                                     <button type="button" class="btn btn-outline-secondary icon-plus"><i class="mdi mdi-plus"></i></button>
+                                     <div class="form-group" [class.has-danger]="searchFailed">
+                                        <input id="country-2Txt" type="text" class="form-control" [(ngModel)]="viewerModel.secondCountry" [ngbTypeahead]="searchCountryFn" #country2="ngModel" (ngModelChange)="onSecondCountryInputChangeEvent()" placeholder="Country 2"/>
+                                        <span *ngIf="searching">searching...</span>
+                                        <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
+                                     </div>
+                                  </div>
+                               </div>
+                            </div> -->
+                            <!-- <div class="row">
+                               <div class="col-md-12 box-select">
+                                  <p>2. Compare resilience factors among each country's peers:</p>
+                               </div>
+                            </div> -->
+                            <!-- <div class="row box-general border-content box-tab-gc">
+                               <div class="col-md-12">
+                                  <div ngbDropdown class="option-global">
+                                     <img src="assets/image/icon-map.png" alt="">
+                                     <button [disabled]="_selectedCountryList.length !== MAX_COUNTRIES_SELECTED" class="btn btn-outline-primary btn-sm dropdown-global" id="dropdownBasic1" ngbDropdownToggle>
+                                       <span *ngIf="global">Globally</span>
+                                       <span *ngIf="!global">Regional</span>
+                                     </button>
+                                     <div class="dropdown-menu box-item" aria-labelledby="dropdownBasic1">
+                                        <button class="dropdown-item" (click)="onSwitchGlobal()">
+                                          <span *ngIf="!global">Global</span>
+                                          <span *ngIf="global">Regional</span>
+                                        </button>
+                                     </div>
+                                     <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
+                                     <i class="mdi mdi-information-outline"></i>
+                                     </button>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-md-12">
+                                       <p *ngIf="_selectedCountryList.length !== MAX_COUNTRIES_SELECTED">
+                                         Please select two countries to change country charts as Regional charts and viceversa.
+                                       </p>
+                                    </div>
+                                 </div>
+                               </div>
+                            </div> -->
+                            <div class="row">
+                               <div class="col-md-12 box-tab">
+                                  <div class="tab">
+                                     <input id="tab-one" type="checkbox" name="tabs">
+                                     <label for="tab-one">Social Protection
+                                       <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
+                                          <i class="mdi mdi-information-outline"></i>
+                                       </button> -->
+                                     </label>
+                                     <div class="tab-content">
+                                        <div class="row">
+                                           <div class="col-md-4 label-text">
+                                             <div class="box-tab-text">
+                                               Share of social protection / remittances to poor people (% of poor)
+                                             </div>
+                                             <div class="box-tab-text">
+                                               Total social protection spending and remittances (US$,PPP)
+                                             </div>
+                                             <div class="box-tab-text">
+                                               Ability to access post-disaster financial resources (% of population)
+                                             </div>
+                                             <div class="box-tab-text">
+                                               Readiness to scale-up social protection (% increase in SP total payout post-disaster)
+                                             </div>
+                                             <div class="box-tab-text">
+                                               Time to recover and reconstruct
+                                             </div>
+                                           </div>
+                                           <div class="col-md-4">
+                                             <div id="inputSoc-1"></div>
+                                           </div>
+                                           <div class="col-md-4">
+                                             <div id="inputSoc-2"></div>
+                                           </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                                  <div class="row border-content"></div>
+                                  <div class="tab">
+                                     <input id="tab-two" type="checkbox" name="tabs">
+                                     <label for="tab-two">Economic
+                                     <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
+                                      <i class="mdi mdi-information-outline"></i>
+                                     </button> -->
+                                     </label>
+                                     <div class="tab-content">
+                                        <div class="row">
+                                           <div class="col-md-4 label-text">
+                                             <div class="box-tab-text">
+                                               Financial inclusion, poor people (% of poor)
+                                             </div>
+                                             <div class="box-tab-text">
+                                               Financial inclusion, non-poor people (% of non-poor)
+                                             </div>
+                                             <div class="box-tab-text">
+                                               Wealth, poor people (US$, PPP)
+                                             </div>
+                                             <div class="box-tab-text">
+                                               Wealth, non-poor people (US$, PPP)
+                                             </div>
+                                           </div>
+                                           <div class="col-md-4">
+                                             <div id="inputEco-1"></div>
+                                           </div>
+                                           <div class="col-md-4">
+                                             <div id="inputEco-2"></div>
+                                           </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                                   <div class="row border-content"></div>
+                                   <div class="tab">
+                                     <input id="tab-three" type="checkbox" name="tabs">
+                                     <label for="tab-three">Vulnerability
+                                     <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
+                                      <i class="mdi mdi-information-outline"></i>
+                                     </button> -->
+                                     </label>
+                                     <div class="tab-content">
+                                        <div class="row">
+                                           <div class="col-md-4 label-text">
+                                             <div class="box-tab-text">
+                                               Asset vulnerability, poor people (% destruction of exposed assets of poor)
+                                             </div>
+                                             <div class="box-tab-text">
+                                               Asset vulnerability, non-poor people (% destruction of exposed assets of non-poor)
+                                             </div>
+                                             <div class="box-tab-text">
+                                               Access to early warning (% of population)
+                                             </div>
+                                           </div>
+                                           <div class="col-md-4">
+                                             <div id="inputVul-1"></div>
+                                           </div>
+                                           <div class="col-md-4">
+                                             <div id="inputVul-2"></div>
+                                           </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                                  <div class="row border-content"></div>
+                                  <div class="tab">
+                                     <input id="tab-four" type="checkbox" name="tabs">
+                                     <label for="tab-four">Exposure
+                                     <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
+                                       <i class="mdi mdi-information-outline"></i>
+                                     </button> -->
+                                     </label>
+                                     <div class="tab-content">
+                                        <div class="row">
+                                           <div class="col-md-4 label-text">
+                                             <div class="box-tab-text">
+                                               Exposure to riverine and coastal floods, poor (% of total assets of poor)
+                                             </div>
+                                             <div class="box-tab-text">
+                                               Exposure to riverine and coastal floods, non-poor (% of total assets of non-poor)
+                                             </div>
+                                             <div class="box-tab-text">
+                                               Exposure to earthquakes (% of total assets)
+                                             </div>
+                                             <div class="box-tab-text">
+                                               Exposure to tsunamis (% of total assets)
+                                             </div>
+                                              <div class="box-tab-text">
+                                               Exposure to windstorms (% of total assets)
+                                             </div>
+                                           </div>
+                                           <div class="col-md-4">
+                                             <div id="inputExp-1"></div>
+                                           </div>
+                                           <div class="col-md-4">
+                                             <div id="inputExp-2"></div>
+                                           </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                                  <div class="row border-content"></div>
+                               </div>
+                            </div>
                          </div>
-                         <div class="col-md-4">
-                           <div id="inputSoc-1"></div>
+                         <!-- </ng-template>
+                      </ngb-tab>
+                      <ngb-tab>
+                         <ng-template ngbTabTitle>Technical Map</ng-template>
+                         <ng-template ngbTabContent> -->
+                         <div [hidden]="viewerDisplay">
+                            <!-- <div class="row">
+                               <div class="col-md-12 box-select">
+                                  <p>Select two countries from the map or type the country's name:</p>
+                               </div>
+                            </div> -->
+                            <!-- <div class="row box-general border-content">
+                               <div class="col-md-12">
+                                  <div class="box-input">
+                                     <div class="form-group" [class.has-danger]="searchFailed">
+                                        <input id="country-1Txt" type="text" class="form-control" [(ngModel)]="viewerModel.firstCountry" [ngbTypeahead]="searchCountryFn" #country1="ngModel" (ngModelChange)="onFirstCountryInputChangeEvent()" placeholder="Country 1"/>
+                                        <span *ngIf="searching">searching...</span>
+                                        <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
+                                     </div>
+                                     <button type="button" class="btn btn-outline-secondary icon-plus"><i class="mdi mdi-plus"></i></button>
+                                     <div class="form-group" [class.has-danger]="searchFailed">
+                                        <input id="country-2Txt" type="text" class="form-control" [(ngModel)]="viewerModel.secondCountry" [ngbTypeahead]="searchCountryFn" #country2="ngModel" (ngModelChange)="onSecondCountryInputChangeEvent()" placeholder="Country 2"/>
+                                        <span *ngIf="searching">searching...</span>
+                                        <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
+                                     </div>
+                                  </div>
+                               </div>
+                            </div> -->
+                            <div class="row">
+                              <div class="col-md-6">
+                                 <h6>Hazard Selection</h6>
+                                 <p>Select one or multiple hazards:</p>
+                              </div>
+                              <div class="col-md-6 text-right">
+                                <button type="button" class="btn btn-sm button-reset" (click)="onResetTechDataEvent()">RESET</button>
+                              </div>
+                            </div>
+                            <div class="row">
+                               <div class="col-md-12">
+                                  <div class="hover-a">
+                                     <a (click)="onSwitchExposure1()">
+                                       <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard1" src="assets/image/flood-yellow.png" alt="" />
+                                       <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard1" src="assets/image/flood.png" alt="" />
+                                     </a>
+                                     <a (click)="onSwitchExposure2()">
+                                       <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard2" src="assets/image/earthquake-yellow.png" alt="" />
+                                       <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard2" src="assets/image/earthquake.png" alt="" />
+                                     </a>
+                                     <a (click)="onSwitchExposure3()">
+                                       <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard3" src="assets/image/tsunami-yellow.png" alt="" />
+                                       <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard3" src="assets/image/tsunami.png" alt="" />
+                                     </a>
+                                     <a (click)="onSwitchExposure4()">
+                                       <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard4" src="assets/image/wind-yellow.png" alt="" />
+                                       <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard4" src="assets/image/wind.png" alt="" />
+                                     </a>
+                                  </div>
+                               </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                               <div class="row pad-botTop10 justify-content-end">
+                                 <div class="col-md-4">
+                                   <span class="text-bold"><b>{{viewerModel.firstCountry}}</b></span>
+                                 </div>
+                                 <div class="col-md-4">
+                                   <span class="text-bold"><b>{{viewerModel.secondCountry}}</b></span>
+                                 </div>
+                               </div>
+                              </div>
+                            </div>
+                            <div class="row border-content"></div>
+                            <div class="row">
+                               <div class="col-md-12 box-tab">
+                                  <div class="tab">
+                                     <input id="tab-one_tech" type="checkbox" name="tabs">
+                                     <label for="tab-one_tech">Social Protection
+                                     <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
+                                     <i class="mdi mdi-information-outline"></i>
+                                     </button> -->
+                                     </label>
+                                     <div class="tab-content">
+                                        <div class="row">
+                                           <div class="col-md-4 box-tab-text">
+                                              Share of social protection / remittances to poor people (% of poor)
+                                           </div>
+                                           <div class="col-md-4 box-tab-text">
+                                             <div class="text-center slider-text">{{sliderValues1.gamma_SP_cat_info__poor_display_value}}</div>
+                                             <md-slider
+                                               [min]="sliderValues1.gamma_SP_cat_info__poor_min"
+                                               [max]="sliderValues1.gamma_SP_cat_info__poor_max"
+                                               [step]="sliderValues1.gamma_SP_cat_info__poor_step"
+                                               [value]="sliderValues1.gamma_SP_cat_info__poor_value"
+                                               [(ngModel)]="sliderValues1.gamma_SP_cat_info__poor_value"
+                                               (change)="onSliderChangeEvent1('gamma_SP_cat_info__poor')"
+                                               >
+                                             </md-slider>
+                                           </div>
+                                           <div class="col-md-4 box-tab-text">
+                                             <div class="text-center slider-text">{{sliderValues2.gamma_SP_cat_info__poor_display_value}}</div>
+                                             <md-slider
+                                                [min]="sliderValues2.gamma_SP_cat_info__poor_min"
+                                                [max]="sliderValues2.gamma_SP_cat_info__poor_max"
+                                                [step]="sliderValues2.gamma_SP_cat_info__poor_step"
+                                                [value]="sliderValues2.gamma_SP_cat_info__poor_value"
+                                                [(ngModel)]="sliderValues2.gamma_SP_cat_info__poor_value"
+                                                (change)="onSliderChangeEvent2('gamma_SP_cat_info__poor')"
+                                                >
+                                              </md-slider>
+                                           </div>
+                                        </div>
+                                        <div class="row">
+                                           <div class="col-md-4 box-tab-text">
+                                              Total social protection spending and remittances (US$,PPP)
+                                           </div>
+                                           <div class="col-md-4 box-tab-text">
+                                             <div class="text-center slider-text">{{sliderValues1.macro_tau_tax_display_value}}</div>
+                                             <md-slider
+                                               [min]="sliderValues1.macro_tau_tax_min"
+                                               [max]="sliderValues1.macro_tau_tax_max"
+                                               [step]="sliderValues1.macro_tau_tax_step"
+                                               [value]="sliderValues1.macro_tau_tax_value"
+                                               [(ngModel)]="sliderValues1.macro_tau_tax_value"
+                                               (change)="onSliderChangeEvent1('macro_tau_tax')"
+                                               >
+                                             </md-slider>
+                                           </div>
+                                           <div class="col-md-4 box-tab-text">
+                                             <div class="text-center slider-text">{{sliderValues2.macro_tau_tax_display_value}}</div>
+                                             <md-slider
+                                               [min]="sliderValues2.macro_tau_tax_min"
+                                               [max]="sliderValues2.macro_tau_tax_max"
+                                               [step]="sliderValues2.macro_tau_tax_step"
+                                               [value]="sliderValues2.macro_tau_tax_value"
+                                               [(ngModel)]="sliderValues2.macro_tau_tax_value"
+                                               (change)="onSliderChangeEvent2('macro_tau_tax')"
+                                               >
+                                             </md-slider>
+                                           </div>
+                                        </div>
+                                        <div class="row">
+                                           <div class="col-md-4 box-tab-text">
+                                              Ability to access post-disaster financial resources (% of population)
+                                           </div>
+                                           <div class="col-md-4 box-tab-text">
+                                             <div class="text-center slider-text">{{sliderValues1.macro_borrow_abi_display_value}}</div>
+                                             <md-slider
+                                               [min]="sliderValues1.macro_borrow_abi_min"
+                                               [max]="sliderValues1.macro_borrow_abi_max"
+                                               [step]="sliderValues1.macro_borrow_abi_step"
+                                               [value]="sliderValues1.macro_borrow_abi_value"
+                                               [(ngModel)]="sliderValues1.macro_borrow_abi_value"
+                                               (change)="onSliderChangeEvent1('macro_borrow_abi')"
+                                               >
+                                             </md-slider>
+                                           </div>
+                                           <div class="col-md-4 box-tab-text">
+                                             <div class="text-center slider-text">{{sliderValues2.macro_borrow_abi_display_value}}</div>
+                                             <md-slider
+                                               [min]="sliderValues2.macro_borrow_abi_min"
+                                               [max]="sliderValues2.macro_borrow_abi_max"
+                                               [step]="sliderValues2.macro_borrow_abi_step"
+                                               [value]="sliderValues2.macro_borrow_abi_value"
+                                               [(ngModel)]="sliderValues2.macro_borrow_abi_value"
+                                               (change)="onSliderChangeEvent2('macro_borrow_abi')"
+                                               >
+                                             </md-slider>
+                                           </div>
+                                        </div>
+                                        <div class="row">
+                                           <div class="col-md-4 box-tab-text">
+                                              Readiness to scale-up social protection (% increase in SP total payout post-disaster)
+                                           </div>
+                                           <div class="col-md-4 box-tab-text">
+                                             <div class="text-center slider-text">{{sliderValues1.macro_prepare_scaleup_display_value}}</div>
+                                             <md-slider
+                                               [min]="sliderValues1.macro_prepare_scaleup_min"
+                                               [max]="sliderValues1.macro_prepare_scaleup_max"
+                                               [step]="sliderValues1.macro_prepare_scaleup_step"
+                                               [value]="sliderValues1.macro_prepare_scaleup_value"
+                                               [(ngModel)]="sliderValues1.macro_prepare_scaleup_value"
+                                               (change)="onSliderChangeEvent1('macro_prepare_scaleup')"
+                                               >
+                                             </md-slider>
+                                           </div>
+                                           <div class="col-md-4 box-tab-text">
+                                             <div class="text-center slider-text">{{sliderValues2.macro_prepare_scaleup_display_value}}</div>
+                                             <md-slider
+                                               [min]="sliderValues2.macro_prepare_scaleup_min"
+                                               [max]="sliderValues2.macro_prepare_scaleup_max"
+                                               [step]="sliderValues2.macro_prepare_scaleup_step"
+                                               [value]="sliderValues2.macro_prepare_scaleup_value"
+                                               [(ngModel)]="sliderValues2.macro_prepare_scaleup_value"
+                                               (change)="onSliderChangeEvent2('macro_prepare_scaleup')"
+                                               >
+                                             </md-slider>
+                                           </div>
+                                        </div>
+                                         <div class="row">
+                                         <div class="col-md-4 box-tab-text">
+                                             Time to recover and reconstruct
+                                         </div>
+                                         <div class="col-md-4 box-tab-text">
+                                           <div class="text-center slider-text">{{sliderValues1.macro_T_rebuild_K_display_value}}</div>
+                                           <md-slider
+                                             [min]="sliderValues1.macro_T_rebuild_K_min"
+                                             [max]="sliderValues1.macro_T_rebuild_K_max"
+                                             [step]="sliderValues1.macro_T_rebuild_K_step"
+                                             [value]="sliderValues1.macro_T_rebuild_K_value"
+                                             [(ngModel)]="sliderValues1.macro_T_rebuild_K_value"
+                                             (change)="onSliderChangeEvent1('macro_T_rebuild_K')"
+                                             >
+                                           </md-slider>
+                                         </div>
+                                         <div class="col-md-4 box-tab-text">
+                                           <div class="text-center slider-text">{{sliderValues2.macro_T_rebuild_K_display_value}}</div>
+                                           <md-slider
+                                             [min]="sliderValues2.macro_T_rebuild_K_min"
+                                             [max]="sliderValues2.macro_T_rebuild_K_max"
+                                             [step]="sliderValues2.macro_T_rebuild_K_step"
+                                             [value]="sliderValues2.macro_T_rebuild_K_value"
+                                             [(ngModel)]="sliderValues2.macro_T_rebuild_K_value"
+                                             (change)="onSliderChangeEvent2('macro_T_rebuild_K')"
+                                             >
+                                           </md-slider>
+                                         </div>
+                                       </div>
+                                     </div>
+                                  </div>
+                                  <div class="row border-content"></div>
+                                  <div class="tab">
+                                     <input id="tab-two_tech" type="checkbox" name="tabs">
+                                     <label for="tab-two_tech">Economic
+                                     <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
+                                     <i class="mdi mdi-information-outline"></i>
+                                     </button> -->
+                                     </label>
+                                     <div class="tab-content">
+
+                                        <div class="row">
+                                           <div class="col-md-4 box-tab-text">
+                                              Financial inclusion, poor people (% of poor)
+                                           </div>
+                                           <div class="col-md-4 box-tab-text">
+                                             <div class="text-center slider-text">{{sliderValues1.axfin_cat_info__poor_display_value}}</div>
+                                             <md-slider
+                                               [min]="sliderValues1.axfin_cat_info__poor_min"
+                                               [max]="sliderValues1.axfin_cat_info__poor_max"
+                                               [step]="sliderValues1.axfin_cat_info__poor_step"
+                                               [value]="sliderValues1.axfin_cat_info__poor_value"
+                                               [(ngModel)]="sliderValues1.axfin_cat_info__poor_value"
+                                               (change)="onSliderChangeEvent1('axfin_cat_info__poor')"
+                                               >
+                                             </md-slider>
+                                           </div>
+                                           <div class="col-md-4 box-tab-text">
+                                             <div class="text-center slider-text">{{sliderValues2.axfin_cat_info__poor_display_value}}</div>
+                                             <md-slider
+                                               [min]="sliderValues2.axfin_cat_info__poor_min"
+                                               [max]="sliderValues2.axfin_cat_info__poor_max"
+                                               [step]="sliderValues2.axfin_cat_info__poor_step"
+                                               [value]="sliderValues2.axfin_cat_info__poor_value"
+                                               [(ngModel)]="sliderValues2.axfin_cat_info__poor_value"
+                                               (change)="onSliderChangeEvent2('axfin_cat_info__poor')"
+                                               >
+                                             </md-slider>
+                                           </div>
+                                        </div>
+                                        <div class="row">
+                                           <div class="col-md-4 box-tab-text">
+                                              Financial inclusion, non-poor people) (% of non-poor)
+                                           </div>
+                                           <div class="col-md-4 box-tab-text">
+                                             <div class="text-center slider-text">{{sliderValues1.axfin_cat_info__nonpoor_display_value}}</div>
+                                             <md-slider
+                                               [min]="sliderValues1.axfin_cat_info__nonpoor_min"
+                                               [max]="sliderValues1.axfin_cat_info__nonpoor_max"
+                                               [step]="sliderValues1.axfin_cat_info__nonpoor_step"
+                                               [value]="sliderValues1.axfin_cat_info__nonpoor_value"
+                                               [(ngModel)]="sliderValues1.axfin_cat_info__nonpoor_value"
+                                               (change)="onSliderChangeEvent1('axfin_cat_info__nonpoor')"
+                                               >
+                                             </md-slider>
+                                           </div>
+                                           <div class="col-md-4 box-tab-text">
+                                             <div class="text-center slider-text">{{sliderValues2.axfin_cat_info__nonpoor_display_value}}</div>
+                                             <md-slider
+                                               [min]="sliderValues2.axfin_cat_info__nonpoor_min"
+                                               [max]="sliderValues2.axfin_cat_info__nonpoor_max"
+                                               [step]="sliderValues2.axfin_cat_info__nonpoor_step"
+                                               [value]="sliderValues2.axfin_cat_info__nonpoor_value"
+                                               [(ngModel)]="sliderValues2.axfin_cat_info__nonpoor_value"
+                                               (change)="onSliderChangeEvent2('axfin_cat_info__nonpoor')"
+                                               >
+                                             </md-slider>
+                                           </div>
+                                        </div>
+                                        <div class="row">
+                                           <div class="col-md-4 box-tab-text">
+                                              Wealth, poor people (US$, PPP)
+                                           </div>
+                                           <div class="col-md-4 box-tab-text">
+                                             <div class="text-center slider-text">{{sliderValues1.k_cat_info__poor_display_value}}</div>
+                                             <md-slider
+                                               [min]="sliderValues1.k_cat_info__poor_min"
+                                               [max]="sliderValues1.k_cat_info__poor_max"
+                                               [step]="sliderValues1.k_cat_info__poor_step"
+                                               [value]="sliderValues1.k_cat_info__poor_value"
+                                               [(ngModel)]="sliderValues1.k_cat_info__poor_value"
+                                               (change)="onSliderChangeEvent1('k_cat_info__poor')"
+                                               >
+                                             </md-slider>
+                                           </div>
+                                           <div class="col-md-4 box-tab-text">
+                                             <div class="text-center slider-text">{{sliderValues2.k_cat_info__poor_display_value}}</div>
+                                             <md-slider
+                                               [min]="sliderValues2.k_cat_info__poor_min"
+                                               [max]="sliderValues2.k_cat_info__poor_max"
+                                               [step]="sliderValues2.k_cat_info__poor_step"
+                                               [value]="sliderValues2.k_cat_info__poor_value"
+                                               [(ngModel)]="sliderValues2.k_cat_info__poor_value"
+                                               (change)="onSliderChangeEvent2('k_cat_info__poor')"
+                                               >
+                                             </md-slider>
+                                           </div>
+                                        </div>
+                                        <div class="row">
+                                           <div class="col-md-4 box-tab-text">
+                                              Wealth, non-poor people (US$, PPP)
+                                           </div>
+                                           <div class="col-md-4 box-tab-text">
+                                             <div class="text-center slider-text">{{sliderValues1.k_cat_info__nonpoor_display_value}}</div>
+                                             <md-slider
+                                               [min]="sliderValues1.k_cat_info__nonpoor_min"
+                                               [max]="sliderValues1.k_cat_info__nonpoor_max"
+                                               [step]="sliderValues1.k_cat_info__nonpoor_step"
+                                               [value]="sliderValues1.k_cat_info__nonpoor_value"
+                                               [(ngModel)]="sliderValues1.k_cat_info__nonpoor_value"
+                                               (change)="onSliderChangeEvent1('k_cat_info__nonpoor')"
+                                               >
+                                             </md-slider>
+                                           </div>
+                                           <div class="col-md-4 box-tab-text">
+                                             <div class="text-center slider-text">{{sliderValues2.k_cat_info__nonpoor_display_value}}</div>
+                                             <md-slider
+                                               [min]="sliderValues2.k_cat_info__nonpoor_min"
+                                               [max]="sliderValues2.k_cat_info__nonpoor_max"
+                                               [step]="sliderValues2.k_cat_info__nonpoor_step"
+                                               [value]="sliderValues2.k_cat_info__nonpoor_value"
+                                               [(ngModel)]="sliderValues2.k_cat_info__nonpoor_value"
+                                               (change)="onSliderChangeEvent2('k_cat_info__nonpoor')"
+                                               >
+                                             </md-slider>
+                                           </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                                  <div class="row border-content"></div>
+                                  <div class="tab">
+                                     <input id="tab-three_tech" type="checkbox" name="tabs">
+                                     <label for="tab-three_tech">Vulnerability
+                                     <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
+                                       <i class="mdi mdi-information-outline"></i>
+                                     </button> -->
+                                     </label>
+                                     <div class="tab-content">
+                                         <div class="row" [hidden]="!hazards.hazard1">
+                                           <div class="col-md-4 box-tab-text">
+                                              Asset vulnerability, poor people (% destruction of exposed assets of poor)
+                                           </div>
+                                           <div class="col-md-4 box-tab-text">
+                                             <div class="text-center slider-text">{{sliderValues1.v_cat_info__poor_display_value}}</div>
+                                             <md-slider
+                                               [min]="sliderValues1.v_cat_info__poor_min"
+                                               [max]="sliderValues1.v_cat_info__poor_max"
+                                               [step]="sliderValues1.v_cat_info__poor_step"
+                                               [value]="sliderValues1.v_cat_info__poor_value"
+                                               [(ngModel)]="sliderValues1.v_cat_info__poor_value"
+                                               (change)="onSliderChangeEvent1('v_cat_info__poor')"
+                                               >
+                                             </md-slider>
+                                           </div>
+                                           <div class="col-md-4 box-tab-text">
+                                             <div class="text-center slider-text">{{sliderValues2.v_cat_info__poor_display_value}}</div>
+                                             <md-slider
+                                               [min]="sliderValues2.v_cat_info__poor_min"
+                                               [max]="sliderValues2.v_cat_info__poor_max"
+                                               [step]="sliderValues2.v_cat_info__poor_step"
+                                               [value]="sliderValues2.v_cat_info__poor_value"
+                                               [(ngModel)]="sliderValues2.v_cat_info__poor_value"
+                                               (change)="onSliderChangeEvent2('v_cat_info__poor')"
+                                               >
+                                             </md-slider>
+                                           </div>
+                                        </div>
+                                        <div class="row" [hidden]="!hazards.hazard1">
+                                           <div class="col-md-4 box-tab-text">
+                                              Asset vulnerability, non-poor people (% destruction of exposed assets of non-poor)
+                                           </div>
+                                           <div class="col-md-4 box-tab-text">
+                                             <div class="text-center slider-text">{{sliderValues1.v_cat_info__nonpoor_display_value}}</div>
+                                             <md-slider
+                                               [min]="sliderValues1.v_cat_info__nonpoor_min"
+                                               [max]="sliderValues1.v_cat_info__nonpoor_max"
+                                               [step]="sliderValues1.v_cat_info__nonpoor_step"
+                                               [value]="sliderValues1.v_cat_info__nonpoor_value"
+                                               [(ngModel)]="sliderValues1.v_cat_info__nonpoor_value"
+                                               (change)="onSliderChangeEvent1('v_cat_info__nonpoor')"
+                                               >
+                                             </md-slider>
+                                           </div>
+                                           <div class="col-md-4 box-tab-text">
+                                             <div class="text-center slider-text">{{sliderValues2.v_cat_info__nonpoor_display_value}}</div>
+                                             <md-slider
+                                               [min]="sliderValues2.v_cat_info__nonpoor_min"
+                                               [max]="sliderValues2.v_cat_info__nonpoor_max"
+                                               [step]="sliderValues2.v_cat_info__nonpoor_step"
+                                               [value]="sliderValues2.v_cat_info__nonpoor_value"
+                                               [(ngModel)]="sliderValues2.v_cat_info__nonpoor_value"
+                                               (change)="onSliderChangeEvent2('v_cat_info__nonpoor')"
+                                               >
+                                             </md-slider>
+                                           </div>
+                                        </div>
+                                        <div class="row">
+                                           <div class="col-md-4 box-tab-text">
+                                              Access to early warning (% of population)
+                                           </div>
+                                           <div class="col-md-4 box-tab-text">
+                                             <div class="text-center slider-text">{{sliderValues1.shew_for_hazard_ratio_display_value}}</div>
+                                             <md-slider
+                                               [min]="sliderValues1.shew_for_hazard_ratio_min"
+                                               [max]="sliderValues1.shew_for_hazard_ratio_max"
+                                               [step]="sliderValues1.shew_for_hazard_ratio_step"
+                                               [value]="sliderValues1.shew_for_hazard_ratio_value"
+                                               [(ngModel)]="sliderValues1.shew_for_hazard_ratio_value"
+                                               (change)="onSliderChangeEvent1('shew_for_hazard_ratio')"
+                                               >
+                                             </md-slider>
+                                           </div>
+                                           <div class="col-md-4 box-tab-text">
+                                             <div class="text-center slider-text">{{sliderValues2.shew_for_hazard_ratio_display_value}}</div>
+                                             <md-slider
+                                               [min]="sliderValues2.shew_for_hazard_ratio_min"
+                                               [max]="sliderValues2.shew_for_hazard_ratio_max"
+                                               [step]="sliderValues2.shew_for_hazard_ratio_step"
+                                               [value]="sliderValues2.shew_for_hazard_ratio_value"
+                                               [(ngModel)]="sliderValues2.shew_for_hazard_ratio_value"
+                                               (change)="onSliderChangeEvent2('shew_for_hazard_ratio')"
+                                               >
+                                             </md-slider>
+                                           </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                                  <div class="row border-content"></div>
+                                  <div class="tab">
+                                     <input id="tab-four_tech" type="checkbox" name="tabs">
+                                     <label for="tab-four_tech">Exposure
+                                     <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
+                                     <i class="mdi mdi-information-outline"></i>
+                                     </button> -->
+                                     </label>
+                                     <div class="tab-content">
+                                        <div class="row" [hidden]="!hazards.hazard1">
+                                           <div class="col-md-4 box-tab-text">
+                                              Exposure to riverine and coastal floods, poor (% of total assets of poor)
+                                           </div>
+                                           <div class="col-md-4 box-tab-text">
+                                             <div class="text-center slider-text">{{sliderValues1.hazard_ratio_flood_poor_display_value}}</div>
+                                             <md-slider
+                                               [min]="sliderValues1.hazard_ratio_flood_poor_min"
+                                               [max]="sliderValues1.hazard_ratio_flood_poor_max"
+                                               [step]="sliderValues1.hazard_ratio_flood_poor_step"
+                                               [value]="sliderValues1.hazard_ratio_flood_poor_value"
+                                               [(ngModel)]="sliderValues1.hazard_ratio_flood_poor_value"
+                                               (change)="onSliderChangeEvent1('hazard_ratio_flood_poor')"
+                                               >
+                                             </md-slider>
+                                           </div>
+                                           <div class="col-md-4 box-tab-text">
+                                             <div class="text-center slider-text">{{sliderValues2.hazard_ratio_flood_poor_display_value}}</div>
+                                             <md-slider
+                                               [min]="sliderValues2.hazard_ratio_flood_poor_min"
+                                               [max]="sliderValues2.hazard_ratio_flood_poor_max"
+                                               [step]="sliderValues2.hazard_ratio_flood_poor_step"
+                                               [value]="sliderValues2.hazard_ratio_flood_poor_value"
+                                               [(ngModel)]="sliderValues2.hazard_ratio_flood_poor_value"
+                                               (change)="onSliderChangeEvent2('hazard_ratio_flood_poor')"
+                                               >
+                                             </md-slider>
+                                           </div>
+                                        </div>
+                                        <div class="row" [hidden]="!hazards.hazard1">
+                                           <div class="col-md-4 box-tab-text">
+                                              Exposure to riverine and coastal floods, non-poor (% of total assets of non-poor)
+                                           </div>
+                                           <div class="col-md-4 box-tab-text">
+                                             <div class="text-center slider-text">{{sliderValues1.hazard_ratio_fa__flood_display_value}}</div>
+                                             <md-slider
+                                               [min]="sliderValues1.hazard_ratio_fa__flood_min"
+                                               [max]="sliderValues1.hazard_ratio_fa__flood_max"
+                                               [step]="sliderValues1.hazard_ratio_fa__flood_step"
+                                               [value]="sliderValues1.hazard_ratio_fa__flood_value"
+                                               [(ngModel)]="sliderValues1.hazard_ratio_fa__flood_value"
+                                               (change)="onSliderChangeEvent1('hazard_ratio_fa__flood')"
+                                               >
+                                             </md-slider>
+                                           </div>
+                                           <div class="col-md-4 box-tab-text">
+                                             <div class="text-center slider-text">{{sliderValues2.hazard_ratio_fa__flood_display_value}}</div>
+                                             <md-slider
+                                               [min]="sliderValues2.hazard_ratio_fa__flood_min"
+                                               [max]="sliderValues2.hazard_ratio_fa__flood_max"
+                                               [step]="sliderValues2.hazard_ratio_fa__flood_step"
+                                               [value]="sliderValues2.hazard_ratio_fa__flood_value"
+                                               [(ngModel)]="sliderValues2.hazard_ratio_fa__flood_value"
+                                               (change)="onSliderChangeEvent2('hazard_ratio_fa__flood')"
+                                               >
+                                             </md-slider>
+                                           </div>
+                                        </div>
+                                        <div class="row" [hidden]="!hazards.hazard2">
+                                           <div class="col-md-4 box-tab-text">
+                                              Exposure to earthquakes (% of total assets)
+                                           </div>
+                                           <div class="col-md-4 box-tab-text">
+                                             <div class="text-center slider-text">{{sliderValues1.hazard_ratio_fa__earthquake_display_value}}</div>
+                                             <md-slider
+                                               [min]="sliderValues1.hazard_ratio_fa__earthquake_min"
+                                               [max]="sliderValues1.hazard_ratio_fa__earthquake_max"
+                                               [step]="sliderValues1.hazard_ratio_fa__earthquake_step"
+                                               [value]="sliderValues1.hazard_ratio_fa__earthquake_value"
+                                               [(ngModel)]="sliderValues1.hazard_ratio_fa__earthquake_value"
+                                               (change)="onSliderChangeEvent1('hazard_ratio_fa__earthquake')"
+                                               >
+                                             </md-slider>
+                                           </div>
+                                           <div class="col-md-4 box-tab-text">
+                                             <div class="text-center slider-text">{{sliderValues2.hazard_ratio_fa__earthquake_display_value}}</div>
+                                             <md-slider
+                                               [min]="sliderValues2.hazard_ratio_fa__earthquake_min"
+                                               [max]="sliderValues2.hazard_ratio_fa__earthquake_max"
+                                               [step]="sliderValues2.hazard_ratio_fa__earthquake_step"
+                                               [value]="sliderValues2.hazard_ratio_fa__earthquake_value"
+                                               [(ngModel)]="sliderValues2.hazard_ratio_fa__earthquake_value"
+                                               (change)="onSliderChangeEvent2('hazard_ratio_fa__earthquake')"
+                                               >
+                                             </md-slider>
+                                           </div>
+                                        </div>
+                                        <div class="row" [hidden]="!hazards.hazard3">
+                                           <div class="col-md-4 box-tab-text">
+                                              Exposure to tsunamis (% of total assets)
+                                           </div>
+                                           <div class="col-md-4 box-tab-text">
+                                             <div class="text-center slider-text">{{sliderValues1.hazard_ratio_fa__tsunami_display_value}}</div>
+                                             <md-slider
+                                               [min]="sliderValues1.hazard_ratio_fa__tsunami_min"
+                                               [max]="sliderValues1.hazard_ratio_fa__tsunami_max"
+                                               [step]="sliderValues1.hazard_ratio_fa__tsunami_step"
+                                               [value]="sliderValues1.hazard_ratio_fa__tsunami_value"
+                                               [(ngModel)]="sliderValues1.hazard_ratio_fa__tsunami_value"
+                                               (change)="onSliderChangeEvent1('hazard_ratio_fa__tsunami')"
+                                               >
+                                             </md-slider>
+                                           </div>
+                                           <div class="col-md-4 box-tab-text">
+                                             <div class="text-center slider-text">{{sliderValues2.hazard_ratio_fa__tsunami_display_value}}</div>
+                                             <md-slider
+                                               [min]="sliderValues2.hazard_ratio_fa__tsunami_min"
+                                               [max]="sliderValues2.hazard_ratio_fa__tsunami_max"
+                                               [step]="sliderValues2.hazard_ratio_fa__tsunami_step"
+                                               [value]="sliderValues2.hazard_ratio_fa__tsunami_value"
+                                               [(ngModel)]="sliderValues2.hazard_ratio_fa__tsunami_value"
+                                               (change)="onSliderChangeEvent2('hazard_ratio_fa__tsunami')"
+                                               >
+                                             </md-slider>
+                                           </div>
+                                        </div>
+                                        <div class="row" [hidden]="!hazards.hazard4">
+                                           <div class="col-md-4 box-tab-text">
+                                              Exposure to windstorms (% of total assets)
+                                           </div>
+                                           <div class="col-md-4 box-tab-text">
+                                             <div class="text-center slider-text">{{sliderValues1.hazard_ratio_fa__wind_display_value}}</div>
+                                             <md-slider
+                                               [min]="sliderValues1.hazard_ratio_fa__wind_min"
+                                               [max]="sliderValues1.hazard_ratio_fa__wind_max"
+                                               [step]="sliderValues1.hazard_ratio_fa__wind_step"
+                                               [value]="sliderValues1.hazard_ratio_fa__wind_value"
+                                               [(ngModel)]="sliderValues1.hazard_ratio_fa__wind_value"
+                                               (change)="onSliderChangeEvent1('hazard_ratio_fa__wind')"
+                                               >
+                                             </md-slider>
+                                           </div>
+                                           <div class="col-md-4 box-tab-text">
+                                             <div class="text-center slider-text">{{sliderValues2.hazard_ratio_fa__wind_display_value}}</div>
+                                             <md-slider
+                                               [min]="sliderValues2.hazard_ratio_fa__wind_min"
+                                               [max]="sliderValues2.hazard_ratio_fa__wind_max"
+                                               [step]="sliderValues2.hazard_ratio_fa__wind_step"
+                                               [value]="sliderValues2.hazard_ratio_fa__wind_value"
+                                               [(ngModel)]="sliderValues2.hazard_ratio_fa__wind_value"
+                                               (change)="onSliderChangeEvent2('hazard_ratio_fa__wind')"
+                                               >
+                                             </md-slider>
+                                           </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                                  <div class="row border-content"></div>
+                               </div>
+                            </div>
                          </div>
-                         <div class="col-md-4">
-                           <div id="inputSoc-2"></div>
-                         </div>
-                      </div>
-                   </div>
+                         <!-- </ng-template>
+                      </ngb-tab>
+                   </ngb-tabset> -->
                 </div>
-                <div class="row border-content"></div>
-                <div class="tab">
-                   <input id="tab-two" type="checkbox" name="tabs">
-                   <label for="tab-two">Economic
-                   <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                    <i class="mdi mdi-information-outline"></i>
-                   </button> -->
-                   </label>
-                   <div class="tab-content">
-                      <div class="row">
-                         <div class="col-md-4 label-text">
-                           <div class="box-tab-text">
-                             Financial inclusion, poor people (% of poor)
-                           </div>
-                           <div class="box-tab-text">
-                             Financial inclusion, non-poor people (% of non-poor)
-                           </div>
-                           <div class="box-tab-text">
-                             Wealth, poor people (US$, PPP)
-                           </div>
-                           <div class="box-tab-text">
-                             Wealth, non-poor people (US$, PPP)
-                           </div>
-                         </div>
-                         <div class="col-md-4">
-                           <div id="inputEco-1"></div>
-                         </div>
-                         <div class="col-md-4">
-                           <div id="inputEco-2"></div>
-                         </div>
-                      </div>
-                   </div>
-                </div>
-                 <div class="row border-content"></div>
-                 <div class="tab">
-                   <input id="tab-three" type="checkbox" name="tabs">
-                   <label for="tab-three">Vulnerability
-                   <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                    <i class="mdi mdi-information-outline"></i>
-                   </button> -->
-                   </label>
-                   <div class="tab-content">
-                      <div class="row">
-                         <div class="col-md-4 label-text">
-                           <div class="box-tab-text">
-                             Asset vulnerability, poor people (% destruction of exposed assets of poor)
-                           </div>
-                           <div class="box-tab-text">
-                             Asset vulnerability, non-poor people (% destruction of exposed assets of non-poor)
-                           </div>
-                           <div class="box-tab-text">
-                             Access to early warning (% of population)
-                           </div>
-                         </div>
-                         <div class="col-md-4">
-                           <div id="inputVul-1"></div>
-                         </div>
-                         <div class="col-md-4">
-                           <div id="inputVul-2"></div>
-                         </div>
-                      </div>
-                   </div>
-                </div>
-                <div class="row border-content"></div>
-                <div class="tab">
-                   <input id="tab-four" type="checkbox" name="tabs">
-                   <label for="tab-four">Exposure
-                   <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                     <i class="mdi mdi-information-outline"></i>
-                   </button> -->
-                   </label>
-                   <div class="tab-content">
-                      <div class="row">
-                         <div class="col-md-4 label-text">
-                           <div class="box-tab-text">
-                             Exposure to riverine and coastal floods, poor (% of total assets of poor)
-                           </div>
-                           <div class="box-tab-text">
-                             Exposure to riverine and coastal floods, non-poor (% of total assets of non-poor)
-                           </div>
-                           <div class="box-tab-text">
-                             Exposure to earthquakes (% of total assets)
-                           </div>
-                           <div class="box-tab-text">
-                             Exposure to tsunamis (% of total assets)
-                           </div>
-                            <div class="box-tab-text">
-                             Exposure to windstorms (% of total assets)
-                           </div>
-                         </div>
-                         <div class="col-md-4">
-                           <div id="inputExp-1"></div>
-                         </div>
-                         <div class="col-md-4">
-                           <div id="inputExp-2"></div>
-                         </div>
-                      </div>
-                   </div>
-                </div>
+
               </div>
             </div>
           </div>
@@ -359,833 +1046,18 @@
                </div>
             </div>
             <br>
-            <button type="button" name="button" class="btn btn-primary btn-block"> NEXT <img src="assets/image/ic-next.png" alt=""></button>
+            <!-- <button type="button" name="button" class="btn btn-primary btn-block"> NEXT <img src="assets/image/ic-next.png" alt=""></button> -->
+            <div [(ngModel)]="viewerDisplay" ngbRadioGroup class="wt-dv">
+              <label ngbButtonLabel class="nav-pills wt-lb">
+                <input ngbButton type="radio" [value]="true">VIEW INDICATORS
+              </label>
+              <span class="wt-sp"><strong>OR</strong></span>
+              <label ngbButtonLabel class="nav-pills wt-lb">
+                <input ngbButton type="radio" [value]="false">RUN MODEL
+              </label>
+            </div>
           </div>
         </div>
-        <div class="">
-           <div [(ngModel)]="viewerDisplay" ngbRadioGroup>
-             <label ngbButtonLabel class="nav-pills">
-               <input ngbButton type="radio" [value]="true">Viewer
-             </label>
-             <label ngbButtonLabel class="nav-pills">
-               <input ngbButton type="radio" [value]="false">Technical Map
-             </label>
-           </div>
-           <!-- <ngb-tabset type="pills">
-              <ngb-tab title="Viewer">
-                 <ng-template ngbTabContent> -->
-                 <div id="viewerContent" [hidden]="!viewerDisplay">
-                    <div class="row">
-                       <div class="col-md-12 box-select">
-                          <p>1. Select two countries from the map or type its name:</p>
-                       </div>
-                    </div>
-                    <div class="row box-general">
-                       <div class="col-md-12">
-                          <!-- <div><i class="mdi mdi-checkbox-blank-circle box-icon-c"></i> <span class="text-country">Country</span></div> -->
-                          <div class="box-dropdown">
-                             <div class="form-group" [class.has-danger]="searchFailed">
-                                <input id="country-1Txt" type="text" class="form-control" [(ngModel)]="viewerModel.firstCountry" [ngbTypeahead]="searchCountryFn" #country1="ngModel" (ngModelChange)="onFirstCountryInputChangeEvent()" placeholder="Country 1"/>
-                                <span *ngIf="searching">searching...</span>
-                                <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
-                             </div>
-                             <button type="button" class="btn btn-outline-secondary icon-plus"><i class="mdi mdi-plus"></i></button>
-                             <div class="form-group" [class.has-danger]="searchFailed">
-                                <input id="country-2Txt" type="text" class="form-control" [(ngModel)]="viewerModel.secondCountry" [ngbTypeahead]="searchCountryFn" #country2="ngModel" (ngModelChange)="onSecondCountryInputChangeEvent()" placeholder="Country 2"/>
-                                <span *ngIf="searching">searching...</span>
-                                <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
-                             </div>
-                          </div>
-                       </div>
-                    </div>
-                    <div class="row">
-                       <div class="col-md-12 box-select">
-                          <p>2. Compare resilience factors among each country's peers:</p>
-                       </div>
-                    </div>
-                    <div class="row box-general border-content box-tab-gc">
-                       <div class="col-md-12">
-                          <div ngbDropdown class="option-global">
-                             <!-- <img src="assets/image/icon-map.png" alt=""> -->
-                             <button [disabled]="_selectedCountryList.length !== MAX_COUNTRIES_SELECTED" class="btn btn-outline-primary btn-sm dropdown-global" id="dropdownBasic1" ngbDropdownToggle>
-                               <span *ngIf="global">Globally</span>
-                               <span *ngIf="!global">Regional</span>
-                             </button>
-                             <div class="dropdown-menu box-item" aria-labelledby="dropdownBasic1">
-                                <button class="dropdown-item" (click)="onSwitchGlobal()">
-                                  <span *ngIf="!global">Global</span>
-                                  <span *ngIf="global">Regional</span>
-                                </button>
-                             </div>
-                             <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                             <i class="mdi mdi-information-outline"></i>
-                             </button>
-                          </div>
-                          <div class="row">
-                            <div class="col-md-12">
-                               <p *ngIf="_selectedCountryList.length !== MAX_COUNTRIES_SELECTED">
-                                 Please select two countries to change country charts as Regional charts and viceversa.
-                               </p>
-                            </div>
-                         </div>
-                       </div>
-                    </div>
-                    <div class="row">
-                       <div class="col-md-12 box-tab">
-                          <div class="tab">
-                             <input id="tab-one" type="checkbox" name="tabs">
-                             <label for="tab-one">Social Protection
-                               <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                                  <i class="mdi mdi-information-outline"></i>
-                               </button> -->
-                             </label>
-                             <div class="tab-content">
-                                <div class="row">
-                                   <div class="col-md-4 label-text">
-                                     <div class="box-tab-text">
-                                       Share of social protection / remittances to poor people (% of poor)
-                                     </div>
-                                     <div class="box-tab-text">
-                                       Total social protection spending and remittances (US$,PPP)
-                                     </div>
-                                     <div class="box-tab-text">
-                                       Ability to access post-disaster financial resources (% of population)
-                                     </div>
-                                     <div class="box-tab-text">
-                                       Readiness to scale-up social protection (% increase in SP total payout post-disaster)
-                                     </div>
-                                     <div class="box-tab-text">
-                                       Time to recover and reconstruct
-                                     </div>
-                                   </div>
-                                   <div class="col-md-4">
-                                     <div id="inputSoc-1"></div>
-                                   </div>
-                                   <div class="col-md-4">
-                                     <div id="inputSoc-2"></div>
-                                   </div>
-                                </div>
-                             </div>
-                          </div>
-                          <div class="row border-content"></div>
-                          <div class="tab">
-                             <input id="tab-two" type="checkbox" name="tabs">
-                             <label for="tab-two">Economic
-                             <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                              <i class="mdi mdi-information-outline"></i>
-                             </button> -->
-                             </label>
-                             <div class="tab-content">
-                                <div class="row">
-                                   <div class="col-md-4 label-text">
-                                     <div class="box-tab-text">
-                                       Financial inclusion, poor people (% of poor)
-                                     </div>
-                                     <div class="box-tab-text">
-                                       Financial inclusion, non-poor people (% of non-poor)
-                                     </div>
-                                     <div class="box-tab-text">
-                                       Wealth, poor people (US$, PPP)
-                                     </div>
-                                     <div class="box-tab-text">
-                                       Wealth, non-poor people (US$, PPP)
-                                     </div>
-                                   </div>
-                                   <div class="col-md-4">
-                                     <div id="inputEco-1"></div>
-                                   </div>
-                                   <div class="col-md-4">
-                                     <div id="inputEco-2"></div>
-                                   </div>
-                                </div>
-                             </div>
-                          </div>
-                           <div class="row border-content"></div>
-                           <div class="tab">
-                             <input id="tab-three" type="checkbox" name="tabs">
-                             <label for="tab-three">Vulnerability
-                             <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                              <i class="mdi mdi-information-outline"></i>
-                             </button> -->
-                             </label>
-                             <div class="tab-content">
-                                <div class="row">
-                                   <div class="col-md-4 label-text">
-                                     <div class="box-tab-text">
-                                       Asset vulnerability, poor people (% destruction of exposed assets of poor)
-                                     </div>
-                                     <div class="box-tab-text">
-                                       Asset vulnerability, non-poor people (% destruction of exposed assets of non-poor)
-                                     </div>
-                                     <div class="box-tab-text">
-                                       Access to early warning (% of population)
-                                     </div>
-                                   </div>
-                                   <div class="col-md-4">
-                                     <div id="inputVul-1"></div>
-                                   </div>
-                                   <div class="col-md-4">
-                                     <div id="inputVul-2"></div>
-                                   </div>
-                                </div>
-                             </div>
-                          </div>
-                          <div class="row border-content"></div>
-                          <div class="tab">
-                             <input id="tab-four" type="checkbox" name="tabs">
-                             <label for="tab-four">Exposure
-                             <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                               <i class="mdi mdi-information-outline"></i>
-                             </button> -->
-                             </label>
-                             <div class="tab-content">
-                                <div class="row">
-                                   <div class="col-md-4 label-text">
-                                     <div class="box-tab-text">
-                                       Exposure to riverine and coastal floods, poor (% of total assets of poor)
-                                     </div>
-                                     <div class="box-tab-text">
-                                       Exposure to riverine and coastal floods, non-poor (% of total assets of non-poor)
-                                     </div>
-                                     <div class="box-tab-text">
-                                       Exposure to earthquakes (% of total assets)
-                                     </div>
-                                     <div class="box-tab-text">
-                                       Exposure to tsunamis (% of total assets)
-                                     </div>
-                                      <div class="box-tab-text">
-                                       Exposure to windstorms (% of total assets)
-                                     </div>
-                                   </div>
-                                   <div class="col-md-4">
-                                     <div id="inputExp-1"></div>
-                                   </div>
-                                   <div class="col-md-4">
-                                     <div id="inputExp-2"></div>
-                                   </div>
-                                </div>
-                             </div>
-                          </div>
-                          <div class="row border-content"></div>
-                       </div>
-                    </div>
-                 </div>
-                 <!-- </ng-template>
-              </ngb-tab>
-              <ngb-tab>
-                 <ng-template ngbTabTitle>Technical Map</ng-template>
-                 <ng-template ngbTabContent> -->
-                 <div id="technicalMapContent" [hidden]="viewerDisplay">
-                    <div class="row">
-                       <div class="col-md-12 box-select">
-                          <p>Select two countries from the map or type the country's name:</p>
-                       </div>
-                    </div>
-                    <div class="row box-general border-content">
-                       <div class="col-md-12">
-                          <div class="box-input">
-                             <div class="form-group" [class.has-danger]="searchFailed">
-                                <input id="country-1Txt" type="text" class="form-control" [(ngModel)]="viewerModel.firstCountry" [ngbTypeahead]="searchCountryFn" #country1="ngModel" (ngModelChange)="onFirstCountryInputChangeEvent()" placeholder="Country 1"/>
-                                <span *ngIf="searching">searching...</span>
-                                <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
-                             </div>
-                             <button type="button" class="btn btn-outline-secondary icon-plus"><i class="mdi mdi-plus"></i></button>
-                             <div class="form-group" [class.has-danger]="searchFailed">
-                                <input id="country-2Txt" type="text" class="form-control" [(ngModel)]="viewerModel.secondCountry" [ngbTypeahead]="searchCountryFn" #country2="ngModel" (ngModelChange)="onSecondCountryInputChangeEvent()" placeholder="Country 2"/>
-                                <span *ngIf="searching">searching...</span>
-                                <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
-                             </div>
-                          </div>
-                       </div>
-                    </div>
-                    <div class="row">
-                       <div class="col-md-12">
-                          <h6>Hazard Selection</h6>
-                          <p>Select one or multiple hazards:</p>
-                          <div class="hover-a">
-                             <a (click)="onSwitchExposure1()">
-                               <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard1" src="assets/image/flood-yellow.png" alt="" />
-                               <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard1" src="assets/image/flood.png" alt="" />
-                             </a>
-                             <a (click)="onSwitchExposure2()">
-                               <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard2" src="assets/image/earthquake-yellow.png" alt="" />
-                               <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard2" src="assets/image/earthquake.png" alt="" />
-                             </a>
-                             <a (click)="onSwitchExposure3()">
-                               <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard3" src="assets/image/tsunami-yellow.png" alt="" />
-                               <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard3" src="assets/image/tsunami.png" alt="" />
-                             </a>
-                             <a (click)="onSwitchExposure4()">
-                               <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard4" src="assets/image/wind-yellow.png" alt="" />
-                               <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard4" src="assets/image/wind.png" alt="" />
-                             </a>
-                          </div>
-                       </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-12">
-                       <div class="row pad-botTop10">
-                         <div class="col-md-4">
-                           <button type="button" class="btn btn-sm button-reset" (click)="onResetTechDataEvent()">RESET</button>
-                         </div>
-                         <div class="col-md-4">
-                           <span class="text-bold"><b>{{viewerModel.firstCountry}}</b></span>
-                         </div>
-                         <div class="col-md-4">
-                           <span class="text-bold"><b>{{viewerModel.secondCountry}}</b></span>
-                         </div>
-                       </div>
-                      </div>
-                    </div>
-                    <div class="row border-content"></div>
-                    <div class="row">
-                       <div class="col-md-12 box-tab">
-                          <div class="tab">
-                             <input id="tab-one_tech" type="checkbox" name="tabs">
-                             <label for="tab-one_tech">Social Protection
-                             <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                             <i class="mdi mdi-information-outline"></i>
-                             </button> -->
-                             </label>
-                             <div class="tab-content">
-                                <div class="row">
-                                   <div class="col-md-4 box-tab-text">
-                                      Share of social protection / remittances to poor people (% of poor)
-                                   </div>
-                                   <div class="col-md-4 box-tab-text">
-                                     <div class="text-center slider-text">{{sliderValues1.gamma_SP_cat_info__poor_display_value}}</div>
-                                     <md-slider
-                                       [min]="sliderValues1.gamma_SP_cat_info__poor_min"
-                                       [max]="sliderValues1.gamma_SP_cat_info__poor_max"
-                                       [step]="sliderValues1.gamma_SP_cat_info__poor_step"
-                                       [value]="sliderValues1.gamma_SP_cat_info__poor_value"
-                                       [(ngModel)]="sliderValues1.gamma_SP_cat_info__poor_value"
-                                       (change)="onSliderChangeEvent1('gamma_SP_cat_info__poor')"
-                                       >
-                                     </md-slider>
-                                   </div>
-                                   <div class="col-md-4 box-tab-text">
-                                     <div class="text-center slider-text">{{sliderValues2.gamma_SP_cat_info__poor_display_value}}</div>
-                                     <md-slider
-                                        [min]="sliderValues2.gamma_SP_cat_info__poor_min"
-                                        [max]="sliderValues2.gamma_SP_cat_info__poor_max"
-                                        [step]="sliderValues2.gamma_SP_cat_info__poor_step"
-                                        [value]="sliderValues2.gamma_SP_cat_info__poor_value"
-                                        [(ngModel)]="sliderValues2.gamma_SP_cat_info__poor_value"
-                                        (change)="onSliderChangeEvent2('gamma_SP_cat_info__poor')"
-                                        >
-                                      </md-slider>
-                                   </div>
-                                </div>
-                                <div class="row">
-                                   <div class="col-md-4 box-tab-text">
-                                      Total social protection spending and remittances (US$,PPP)
-                                   </div>
-                                   <div class="col-md-4 box-tab-text">
-                                     <div class="text-center slider-text">{{sliderValues1.macro_tau_tax_display_value}}</div>
-                                     <md-slider
-                                       [min]="sliderValues1.macro_tau_tax_min"
-                                       [max]="sliderValues1.macro_tau_tax_max"
-                                       [step]="sliderValues1.macro_tau_tax_step"
-                                       [value]="sliderValues1.macro_tau_tax_value"
-                                       [(ngModel)]="sliderValues1.macro_tau_tax_value"
-                                       (change)="onSliderChangeEvent1('macro_tau_tax')"
-                                       >
-                                     </md-slider>
-                                   </div>
-                                   <div class="col-md-4 box-tab-text">
-                                     <div class="text-center slider-text">{{sliderValues2.macro_tau_tax_display_value}}</div>
-                                     <md-slider
-                                       [min]="sliderValues2.macro_tau_tax_min"
-                                       [max]="sliderValues2.macro_tau_tax_max"
-                                       [step]="sliderValues2.macro_tau_tax_step"
-                                       [value]="sliderValues2.macro_tau_tax_value"
-                                       [(ngModel)]="sliderValues2.macro_tau_tax_value"
-                                       (change)="onSliderChangeEvent2('macro_tau_tax')"
-                                       >
-                                     </md-slider>
-                                   </div>
-                                </div>
-                                <div class="row">
-                                   <div class="col-md-4 box-tab-text">
-                                      Ability to access post-disaster financial resources (% of population)
-                                   </div>
-                                   <div class="col-md-4 box-tab-text">
-                                     <div class="text-center slider-text">{{sliderValues1.macro_borrow_abi_display_value}}</div>
-                                     <md-slider
-                                       [min]="sliderValues1.macro_borrow_abi_min"
-                                       [max]="sliderValues1.macro_borrow_abi_max"
-                                       [step]="sliderValues1.macro_borrow_abi_step"
-                                       [value]="sliderValues1.macro_borrow_abi_value"
-                                       [(ngModel)]="sliderValues1.macro_borrow_abi_value"
-                                       (change)="onSliderChangeEvent1('macro_borrow_abi')"
-                                       >
-                                     </md-slider>
-                                   </div>
-                                   <div class="col-md-4 box-tab-text">
-                                     <div class="text-center slider-text">{{sliderValues2.macro_borrow_abi_display_value}}</div>
-                                     <md-slider
-                                       [min]="sliderValues2.macro_borrow_abi_min"
-                                       [max]="sliderValues2.macro_borrow_abi_max"
-                                       [step]="sliderValues2.macro_borrow_abi_step"
-                                       [value]="sliderValues2.macro_borrow_abi_value"
-                                       [(ngModel)]="sliderValues2.macro_borrow_abi_value"
-                                       (change)="onSliderChangeEvent2('macro_borrow_abi')"
-                                       >
-                                     </md-slider>
-                                   </div>
-                                </div>
-                                <div class="row">
-                                   <div class="col-md-4 box-tab-text">
-                                      Readiness to scale-up social protection (% increase in SP total payout post-disaster)
-                                   </div>
-                                   <div class="col-md-4 box-tab-text">
-                                     <div class="text-center slider-text">{{sliderValues1.macro_prepare_scaleup_display_value}}</div>
-                                     <md-slider
-                                       [min]="sliderValues1.macro_prepare_scaleup_min"
-                                       [max]="sliderValues1.macro_prepare_scaleup_max"
-                                       [step]="sliderValues1.macro_prepare_scaleup_step"
-                                       [value]="sliderValues1.macro_prepare_scaleup_value"
-                                       [(ngModel)]="sliderValues1.macro_prepare_scaleup_value"
-                                       (change)="onSliderChangeEvent1('macro_prepare_scaleup')"
-                                       >
-                                     </md-slider>
-                                   </div>
-                                   <div class="col-md-4 box-tab-text">
-                                     <div class="text-center slider-text">{{sliderValues2.macro_prepare_scaleup_display_value}}</div>
-                                     <md-slider
-                                       [min]="sliderValues2.macro_prepare_scaleup_min"
-                                       [max]="sliderValues2.macro_prepare_scaleup_max"
-                                       [step]="sliderValues2.macro_prepare_scaleup_step"
-                                       [value]="sliderValues2.macro_prepare_scaleup_value"
-                                       [(ngModel)]="sliderValues2.macro_prepare_scaleup_value"
-                                       (change)="onSliderChangeEvent2('macro_prepare_scaleup')"
-                                       >
-                                     </md-slider>
-                                   </div>
-                                </div>
-                                 <div class="row">
-                                 <div class="col-md-4 box-tab-text">
-                                     Time to recover and reconstruct
-                                 </div>
-                                 <div class="col-md-4 box-tab-text">
-                                   <div class="text-center slider-text">{{sliderValues1.macro_T_rebuild_K_display_value}}</div>
-                                   <md-slider
-                                     [min]="sliderValues1.macro_T_rebuild_K_min"
-                                     [max]="sliderValues1.macro_T_rebuild_K_max"
-                                     [step]="sliderValues1.macro_T_rebuild_K_step"
-                                     [value]="sliderValues1.macro_T_rebuild_K_value"
-                                     [(ngModel)]="sliderValues1.macro_T_rebuild_K_value"
-                                     (change)="onSliderChangeEvent1('macro_T_rebuild_K')"
-                                     >
-                                   </md-slider>
-                                 </div>
-                                 <div class="col-md-4 box-tab-text">
-                                   <div class="text-center slider-text">{{sliderValues2.macro_T_rebuild_K_display_value}}</div>
-                                   <md-slider
-                                     [min]="sliderValues2.macro_T_rebuild_K_min"
-                                     [max]="sliderValues2.macro_T_rebuild_K_max"
-                                     [step]="sliderValues2.macro_T_rebuild_K_step"
-                                     [value]="sliderValues2.macro_T_rebuild_K_value"
-                                     [(ngModel)]="sliderValues2.macro_T_rebuild_K_value"
-                                     (change)="onSliderChangeEvent2('macro_T_rebuild_K')"
-                                     >
-                                   </md-slider>
-                                 </div>
-                               </div>
-                             </div>
-                          </div>
-                          <div class="row border-content"></div>
-                          <div class="tab">
-                             <input id="tab-two_tech" type="checkbox" name="tabs">
-                             <label for="tab-two_tech">Economic
-                             <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                             <i class="mdi mdi-information-outline"></i>
-                             </button> -->
-                             </label>
-                             <div class="tab-content">
-
-                                <div class="row">
-                                   <div class="col-md-4 box-tab-text">
-                                      Financial inclusion, poor people (% of poor)
-                                   </div>
-                                   <div class="col-md-4 box-tab-text">
-                                     <div class="text-center slider-text">{{sliderValues1.axfin_cat_info__poor_display_value}}</div>
-                                     <md-slider
-                                       [min]="sliderValues1.axfin_cat_info__poor_min"
-                                       [max]="sliderValues1.axfin_cat_info__poor_max"
-                                       [step]="sliderValues1.axfin_cat_info__poor_step"
-                                       [value]="sliderValues1.axfin_cat_info__poor_value"
-                                       [(ngModel)]="sliderValues1.axfin_cat_info__poor_value"
-                                       (change)="onSliderChangeEvent1('axfin_cat_info__poor')"
-                                       >
-                                     </md-slider>
-                                   </div>
-                                   <div class="col-md-4 box-tab-text">
-                                     <div class="text-center slider-text">{{sliderValues2.axfin_cat_info__poor_display_value}}</div>
-                                     <md-slider
-                                       [min]="sliderValues2.axfin_cat_info__poor_min"
-                                       [max]="sliderValues2.axfin_cat_info__poor_max"
-                                       [step]="sliderValues2.axfin_cat_info__poor_step"
-                                       [value]="sliderValues2.axfin_cat_info__poor_value"
-                                       [(ngModel)]="sliderValues2.axfin_cat_info__poor_value"
-                                       (change)="onSliderChangeEvent2('axfin_cat_info__poor')"
-                                       >
-                                     </md-slider>
-                                   </div>
-                                </div>
-                                <div class="row">
-                                   <div class="col-md-4 box-tab-text">
-                                      Financial inclusion, non-poor people) (% of non-poor)
-                                   </div>
-                                   <div class="col-md-4 box-tab-text">
-                                     <div class="text-center slider-text">{{sliderValues1.axfin_cat_info__nonpoor_display_value}}</div>
-                                     <md-slider
-                                       [min]="sliderValues1.axfin_cat_info__nonpoor_min"
-                                       [max]="sliderValues1.axfin_cat_info__nonpoor_max"
-                                       [step]="sliderValues1.axfin_cat_info__nonpoor_step"
-                                       [value]="sliderValues1.axfin_cat_info__nonpoor_value"
-                                       [(ngModel)]="sliderValues1.axfin_cat_info__nonpoor_value"
-                                       (change)="onSliderChangeEvent1('axfin_cat_info__nonpoor')"
-                                       >
-                                     </md-slider>
-                                   </div>
-                                   <div class="col-md-4 box-tab-text">
-                                     <div class="text-center slider-text">{{sliderValues2.axfin_cat_info__nonpoor_display_value}}</div>
-                                     <md-slider
-                                       [min]="sliderValues2.axfin_cat_info__nonpoor_min"
-                                       [max]="sliderValues2.axfin_cat_info__nonpoor_max"
-                                       [step]="sliderValues2.axfin_cat_info__nonpoor_step"
-                                       [value]="sliderValues2.axfin_cat_info__nonpoor_value"
-                                       [(ngModel)]="sliderValues2.axfin_cat_info__nonpoor_value"
-                                       (change)="onSliderChangeEvent2('axfin_cat_info__nonpoor')"
-                                       >
-                                     </md-slider>
-                                   </div>
-                                </div>
-                                <div class="row">
-                                   <div class="col-md-4 box-tab-text">
-                                      Wealth, poor people (US$, PPP)
-                                   </div>
-                                   <div class="col-md-4 box-tab-text">
-                                     <div class="text-center slider-text">{{sliderValues1.k_cat_info__poor_display_value}}</div>
-                                     <md-slider
-                                       [min]="sliderValues1.k_cat_info__poor_min"
-                                       [max]="sliderValues1.k_cat_info__poor_max"
-                                       [step]="sliderValues1.k_cat_info__poor_step"
-                                       [value]="sliderValues1.k_cat_info__poor_value"
-                                       [(ngModel)]="sliderValues1.k_cat_info__poor_value"
-                                       (change)="onSliderChangeEvent1('k_cat_info__poor')"
-                                       >
-                                     </md-slider>
-                                   </div>
-                                   <div class="col-md-4 box-tab-text">
-                                     <div class="text-center slider-text">{{sliderValues2.k_cat_info__poor_display_value}}</div>
-                                     <md-slider
-                                       [min]="sliderValues2.k_cat_info__poor_min"
-                                       [max]="sliderValues2.k_cat_info__poor_max"
-                                       [step]="sliderValues2.k_cat_info__poor_step"
-                                       [value]="sliderValues2.k_cat_info__poor_value"
-                                       [(ngModel)]="sliderValues2.k_cat_info__poor_value"
-                                       (change)="onSliderChangeEvent2('k_cat_info__poor')"
-                                       >
-                                     </md-slider>
-                                   </div>
-                                </div>
-                                <div class="row">
-                                   <div class="col-md-4 box-tab-text">
-                                      Wealth, non-poor people (US$, PPP)
-                                   </div>
-                                   <div class="col-md-4 box-tab-text">
-                                     <div class="text-center slider-text">{{sliderValues1.k_cat_info__nonpoor_display_value}}</div>
-                                     <md-slider
-                                       [min]="sliderValues1.k_cat_info__nonpoor_min"
-                                       [max]="sliderValues1.k_cat_info__nonpoor_max"
-                                       [step]="sliderValues1.k_cat_info__nonpoor_step"
-                                       [value]="sliderValues1.k_cat_info__nonpoor_value"
-                                       [(ngModel)]="sliderValues1.k_cat_info__nonpoor_value"
-                                       (change)="onSliderChangeEvent1('k_cat_info__nonpoor')"
-                                       >
-                                     </md-slider>
-                                   </div>
-                                   <div class="col-md-4 box-tab-text">
-                                     <div class="text-center slider-text">{{sliderValues2.k_cat_info__nonpoor_display_value}}</div>
-                                     <md-slider
-                                       [min]="sliderValues2.k_cat_info__nonpoor_min"
-                                       [max]="sliderValues2.k_cat_info__nonpoor_max"
-                                       [step]="sliderValues2.k_cat_info__nonpoor_step"
-                                       [value]="sliderValues2.k_cat_info__nonpoor_value"
-                                       [(ngModel)]="sliderValues2.k_cat_info__nonpoor_value"
-                                       (change)="onSliderChangeEvent2('k_cat_info__nonpoor')"
-                                       >
-                                     </md-slider>
-                                   </div>
-                                </div>
-                             </div>
-                          </div>
-                          <div class="row border-content"></div>
-                          <div class="tab">
-                             <input id="tab-three_tech" type="checkbox" name="tabs">
-                             <label for="tab-three_tech">Vulnerability
-                             <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                               <i class="mdi mdi-information-outline"></i>
-                             </button> -->
-                             </label>
-                             <div class="tab-content">
-                                 <div class="row" [hidden]="!hazards.hazard1">
-                                   <div class="col-md-4 box-tab-text">
-                                      Asset vulnerability, poor people (% destruction of exposed assets of poor)
-                                   </div>
-                                   <div class="col-md-4 box-tab-text">
-                                     <div class="text-center slider-text">{{sliderValues1.v_cat_info__poor_display_value}}</div>
-                                     <md-slider
-                                       [min]="sliderValues1.v_cat_info__poor_min"
-                                       [max]="sliderValues1.v_cat_info__poor_max"
-                                       [step]="sliderValues1.v_cat_info__poor_step"
-                                       [value]="sliderValues1.v_cat_info__poor_value"
-                                       [(ngModel)]="sliderValues1.v_cat_info__poor_value"
-                                       (change)="onSliderChangeEvent1('v_cat_info__poor')"
-                                       >
-                                     </md-slider>
-                                   </div>
-                                   <div class="col-md-4 box-tab-text">
-                                     <div class="text-center slider-text">{{sliderValues2.v_cat_info__poor_display_value}}</div>
-                                     <md-slider
-                                       [min]="sliderValues2.v_cat_info__poor_min"
-                                       [max]="sliderValues2.v_cat_info__poor_max"
-                                       [step]="sliderValues2.v_cat_info__poor_step"
-                                       [value]="sliderValues2.v_cat_info__poor_value"
-                                       [(ngModel)]="sliderValues2.v_cat_info__poor_value"
-                                       (change)="onSliderChangeEvent2('v_cat_info__poor')"
-                                       >
-                                     </md-slider>
-                                   </div>
-                                </div>
-                                <div class="row" [hidden]="!hazards.hazard1">
-                                   <div class="col-md-4 box-tab-text">
-                                      Asset vulnerability, non-poor people (% destruction of exposed assets of non-poor)
-                                   </div>
-                                   <div class="col-md-4 box-tab-text">
-                                     <div class="text-center slider-text">{{sliderValues1.v_cat_info__nonpoor_display_value}}</div>
-                                     <md-slider
-                                       [min]="sliderValues1.v_cat_info__nonpoor_min"
-                                       [max]="sliderValues1.v_cat_info__nonpoor_max"
-                                       [step]="sliderValues1.v_cat_info__nonpoor_step"
-                                       [value]="sliderValues1.v_cat_info__nonpoor_value"
-                                       [(ngModel)]="sliderValues1.v_cat_info__nonpoor_value"
-                                       (change)="onSliderChangeEvent1('v_cat_info__nonpoor')"
-                                       >
-                                     </md-slider>
-                                   </div>
-                                   <div class="col-md-4 box-tab-text">
-                                     <div class="text-center slider-text">{{sliderValues2.v_cat_info__nonpoor_display_value}}</div>
-                                     <md-slider
-                                       [min]="sliderValues2.v_cat_info__nonpoor_min"
-                                       [max]="sliderValues2.v_cat_info__nonpoor_max"
-                                       [step]="sliderValues2.v_cat_info__nonpoor_step"
-                                       [value]="sliderValues2.v_cat_info__nonpoor_value"
-                                       [(ngModel)]="sliderValues2.v_cat_info__nonpoor_value"
-                                       (change)="onSliderChangeEvent2('v_cat_info__nonpoor')"
-                                       >
-                                     </md-slider>
-                                   </div>
-                                </div>
-                                <div class="row">
-                                   <div class="col-md-4 box-tab-text">
-                                      Access to early warning (% of population)
-                                   </div>
-                                   <div class="col-md-4 box-tab-text">
-                                     <div class="text-center slider-text">{{sliderValues1.shew_for_hazard_ratio_display_value}}</div>
-                                     <md-slider
-                                       [min]="sliderValues1.shew_for_hazard_ratio_min"
-                                       [max]="sliderValues1.shew_for_hazard_ratio_max"
-                                       [step]="sliderValues1.shew_for_hazard_ratio_step"
-                                       [value]="sliderValues1.shew_for_hazard_ratio_value"
-                                       [(ngModel)]="sliderValues1.shew_for_hazard_ratio_value"
-                                       (change)="onSliderChangeEvent1('shew_for_hazard_ratio')"
-                                       >
-                                     </md-slider>
-                                   </div>
-                                   <div class="col-md-4 box-tab-text">
-                                     <div class="text-center slider-text">{{sliderValues2.shew_for_hazard_ratio_display_value}}</div>
-                                     <md-slider
-                                       [min]="sliderValues2.shew_for_hazard_ratio_min"
-                                       [max]="sliderValues2.shew_for_hazard_ratio_max"
-                                       [step]="sliderValues2.shew_for_hazard_ratio_step"
-                                       [value]="sliderValues2.shew_for_hazard_ratio_value"
-                                       [(ngModel)]="sliderValues2.shew_for_hazard_ratio_value"
-                                       (change)="onSliderChangeEvent2('shew_for_hazard_ratio')"
-                                       >
-                                     </md-slider>
-                                   </div>
-                                </div>
-                             </div>
-                          </div>
-                          <div class="row border-content"></div>
-                          <div class="tab">
-                             <input id="tab-four_tech" type="checkbox" name="tabs">
-                             <label for="tab-four_tech">Exposure
-                             <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                             <i class="mdi mdi-information-outline"></i>
-                             </button> -->
-                             </label>
-                             <div class="tab-content">
-                                <div class="row" [hidden]="!hazards.hazard1">
-                                   <div class="col-md-4 box-tab-text">
-                                      Exposure to riverine and coastal floods, poor (% of total assets of poor)
-                                   </div>
-                                   <div class="col-md-4 box-tab-text">
-                                     <div class="text-center slider-text">{{sliderValues1.hazard_ratio_flood_poor_display_value}}</div>
-                                     <md-slider
-                                       [min]="sliderValues1.hazard_ratio_flood_poor_min"
-                                       [max]="sliderValues1.hazard_ratio_flood_poor_max"
-                                       [step]="sliderValues1.hazard_ratio_flood_poor_step"
-                                       [value]="sliderValues1.hazard_ratio_flood_poor_value"
-                                       [(ngModel)]="sliderValues1.hazard_ratio_flood_poor_value"
-                                       (change)="onSliderChangeEvent1('hazard_ratio_flood_poor')"
-                                       >
-                                     </md-slider>
-                                   </div>
-                                   <div class="col-md-4 box-tab-text">
-                                     <div class="text-center slider-text">{{sliderValues2.hazard_ratio_flood_poor_display_value}}</div>
-                                     <md-slider
-                                       [min]="sliderValues2.hazard_ratio_flood_poor_min"
-                                       [max]="sliderValues2.hazard_ratio_flood_poor_max"
-                                       [step]="sliderValues2.hazard_ratio_flood_poor_step"
-                                       [value]="sliderValues2.hazard_ratio_flood_poor_value"
-                                       [(ngModel)]="sliderValues2.hazard_ratio_flood_poor_value"
-                                       (change)="onSliderChangeEvent2('hazard_ratio_flood_poor')"
-                                       >
-                                     </md-slider>
-                                   </div>
-                                </div>
-                                <div class="row" [hidden]="!hazards.hazard1">
-                                   <div class="col-md-4 box-tab-text">
-                                      Exposure to riverine and coastal floods, non-poor (% of total assets of non-poor)
-                                   </div>
-                                   <div class="col-md-4 box-tab-text">
-                                     <div class="text-center slider-text">{{sliderValues1.hazard_ratio_fa__flood_display_value}}</div>
-                                     <md-slider
-                                       [min]="sliderValues1.hazard_ratio_fa__flood_min"
-                                       [max]="sliderValues1.hazard_ratio_fa__flood_max"
-                                       [step]="sliderValues1.hazard_ratio_fa__flood_step"
-                                       [value]="sliderValues1.hazard_ratio_fa__flood_value"
-                                       [(ngModel)]="sliderValues1.hazard_ratio_fa__flood_value"
-                                       (change)="onSliderChangeEvent1('hazard_ratio_fa__flood')"
-                                       >
-                                     </md-slider>
-                                   </div>
-                                   <div class="col-md-4 box-tab-text">
-                                     <div class="text-center slider-text">{{sliderValues2.hazard_ratio_fa__flood_display_value}}</div>
-                                     <md-slider
-                                       [min]="sliderValues2.hazard_ratio_fa__flood_min"
-                                       [max]="sliderValues2.hazard_ratio_fa__flood_max"
-                                       [step]="sliderValues2.hazard_ratio_fa__flood_step"
-                                       [value]="sliderValues2.hazard_ratio_fa__flood_value"
-                                       [(ngModel)]="sliderValues2.hazard_ratio_fa__flood_value"
-                                       (change)="onSliderChangeEvent2('hazard_ratio_fa__flood')"
-                                       >
-                                     </md-slider>
-                                   </div>
-                                </div>
-                                <div class="row" [hidden]="!hazards.hazard2">
-                                   <div class="col-md-4 box-tab-text">
-                                      Exposure to earthquakes (% of total assets)
-                                   </div>
-                                   <div class="col-md-4 box-tab-text">
-                                     <div class="text-center slider-text">{{sliderValues1.hazard_ratio_fa__earthquake_display_value}}</div>
-                                     <md-slider
-                                       [min]="sliderValues1.hazard_ratio_fa__earthquake_min"
-                                       [max]="sliderValues1.hazard_ratio_fa__earthquake_max"
-                                       [step]="sliderValues1.hazard_ratio_fa__earthquake_step"
-                                       [value]="sliderValues1.hazard_ratio_fa__earthquake_value"
-                                       [(ngModel)]="sliderValues1.hazard_ratio_fa__earthquake_value"
-                                       (change)="onSliderChangeEvent1('hazard_ratio_fa__earthquake')"
-                                       >
-                                     </md-slider>
-                                   </div>
-                                   <div class="col-md-4 box-tab-text">
-                                     <div class="text-center slider-text">{{sliderValues2.hazard_ratio_fa__earthquake_display_value}}</div>
-                                     <md-slider
-                                       [min]="sliderValues2.hazard_ratio_fa__earthquake_min"
-                                       [max]="sliderValues2.hazard_ratio_fa__earthquake_max"
-                                       [step]="sliderValues2.hazard_ratio_fa__earthquake_step"
-                                       [value]="sliderValues2.hazard_ratio_fa__earthquake_value"
-                                       [(ngModel)]="sliderValues2.hazard_ratio_fa__earthquake_value"
-                                       (change)="onSliderChangeEvent2('hazard_ratio_fa__earthquake')"
-                                       >
-                                     </md-slider>
-                                   </div>
-                                </div>
-                                <div class="row" [hidden]="!hazards.hazard3">
-                                   <div class="col-md-4 box-tab-text">
-                                      Exposure to tsunamis (% of total assets)
-                                   </div>
-                                   <div class="col-md-4 box-tab-text">
-                                     <div class="text-center slider-text">{{sliderValues1.hazard_ratio_fa__tsunami_display_value}}</div>
-                                     <md-slider
-                                       [min]="sliderValues1.hazard_ratio_fa__tsunami_min"
-                                       [max]="sliderValues1.hazard_ratio_fa__tsunami_max"
-                                       [step]="sliderValues1.hazard_ratio_fa__tsunami_step"
-                                       [value]="sliderValues1.hazard_ratio_fa__tsunami_value"
-                                       [(ngModel)]="sliderValues1.hazard_ratio_fa__tsunami_value"
-                                       (change)="onSliderChangeEvent1('hazard_ratio_fa__tsunami')"
-                                       >
-                                     </md-slider>
-                                   </div>
-                                   <div class="col-md-4 box-tab-text">
-                                     <div class="text-center slider-text">{{sliderValues2.hazard_ratio_fa__tsunami_display_value}}</div>
-                                     <md-slider
-                                       [min]="sliderValues2.hazard_ratio_fa__tsunami_min"
-                                       [max]="sliderValues2.hazard_ratio_fa__tsunami_max"
-                                       [step]="sliderValues2.hazard_ratio_fa__tsunami_step"
-                                       [value]="sliderValues2.hazard_ratio_fa__tsunami_value"
-                                       [(ngModel)]="sliderValues2.hazard_ratio_fa__tsunami_value"
-                                       (change)="onSliderChangeEvent2('hazard_ratio_fa__tsunami')"
-                                       >
-                                     </md-slider>
-                                   </div>
-                                </div>
-                                <div class="row" [hidden]="!hazards.hazard4">
-                                   <div class="col-md-4 box-tab-text">
-                                      Exposure to windstorms (% of total assets)
-                                   </div>
-                                   <div class="col-md-4 box-tab-text">
-                                     <div class="text-center slider-text">{{sliderValues1.hazard_ratio_fa__wind_display_value}}</div>
-                                     <md-slider
-                                       [min]="sliderValues1.hazard_ratio_fa__wind_min"
-                                       [max]="sliderValues1.hazard_ratio_fa__wind_max"
-                                       [step]="sliderValues1.hazard_ratio_fa__wind_step"
-                                       [value]="sliderValues1.hazard_ratio_fa__wind_value"
-                                       [(ngModel)]="sliderValues1.hazard_ratio_fa__wind_value"
-                                       (change)="onSliderChangeEvent1('hazard_ratio_fa__wind')"
-                                       >
-                                     </md-slider>
-                                   </div>
-                                   <div class="col-md-4 box-tab-text">
-                                     <div class="text-center slider-text">{{sliderValues2.hazard_ratio_fa__wind_display_value}}</div>
-                                     <md-slider
-                                       [min]="sliderValues2.hazard_ratio_fa__wind_min"
-                                       [max]="sliderValues2.hazard_ratio_fa__wind_max"
-                                       [step]="sliderValues2.hazard_ratio_fa__wind_step"
-                                       [value]="sliderValues2.hazard_ratio_fa__wind_value"
-                                       [(ngModel)]="sliderValues2.hazard_ratio_fa__wind_value"
-                                       (change)="onSliderChangeEvent2('hazard_ratio_fa__wind')"
-                                       >
-                                     </md-slider>
-                                   </div>
-                                </div>
-                             </div>
-                          </div>
-                          <div class="row border-content"></div>
-                       </div>
-                    </div>
-                 </div>
-                 <!-- </ng-template>
-              </ngb-tab>
-           </ngb-tabset> -->
-        </div>
-
 
    </div>
  </div>
