@@ -578,7 +578,7 @@ template {
   .card-01{
     margin-top: 25px;
     border-radius: 3px !important;
-    /*height: 502px;*/
+    height: 482px;
   }
   .card-01 .card-header{
     background: #fff;
@@ -592,7 +592,7 @@ template {
     padding: 15px 19px;
     border-radius: 0px 0px 3px 3px !important;
     border: 1px solid #f1f1f1;
-    height: 450px;
+    height: 440px;
   }
   .card-01 button{
     height: 40px;
@@ -919,11 +919,12 @@ template {
    border-bottom: 2px solid #7D8F8F !important;
    border-radius: 0;*/
    display: block;
-   padding: 14px 13px 4px 13px;
+   padding: 11px 13px 4px 13px;
    color: #fff;
    /*border-bottom: 2px solid #50C4CF!important;*/
    border-radius: 3px;
    background: #50C4CF;
+   height: 40px;
 }
 
 .nav-pills.btn.focus.active {
@@ -944,10 +945,10 @@ template {
    color: #fff;
    cursor: default;
    background-color: #c3d700;
-   border-bottom: 2px solid #c3d700!important;
-   padding: 14px 13px 14px 13px;
+   /*border-bottom: 2px solid #c3d700!important;*/
+   padding: 11px 13px 10px 13px;
    font-weight: 600;
-   height: 50px;
+   height: 40px;
    border-radius: 3px;
  }
 
@@ -1106,7 +1107,7 @@ template {
 }
 
 div#map {
-  height: 501px;
+  height: 491px;
   width: inherit;
   z-index: 1;
 }
