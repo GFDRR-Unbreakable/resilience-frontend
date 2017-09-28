@@ -12,12 +12,20 @@ export class NavbarComponent implements OnInit {
 
   constructor(private modalService: NgbModal) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
   onOpenModalEvent() {
     this.modalService.open(AboutComponent,  {
       size: 'lg'
     });
   }
-
+  onScrollAboutElEvent(event) {
+    let el = jQuery("div#about");
+    if (el.length) {
+      el = el[0];
+      jQuery('html, body').animate({
+          scrollTop: (el.getBoundingClientRect().y - 10)
+      }, 1000);
+      return false;
+    }
+  }
 }
