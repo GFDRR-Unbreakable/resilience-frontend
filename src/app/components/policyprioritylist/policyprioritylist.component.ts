@@ -252,12 +252,12 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
       country1: {
         name: '',
         outputs: {},
-        scorecardList: {}
+        scorecard: {}
       },
       country2: {
         name: '',
         outputs: {},
-        scorecardList: {}
+        scorecard: {}
       },
     };
     const countryFInput = this._selectedCountryList.filter(val => {
@@ -305,12 +305,6 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
     const MAX_SELECTED_COUNTRIES = 2;
     if (this._selectedCountryList.length === MAX_SELECTED_COUNTRIES) {
       const chObj = this.chartService.formatSVGChartBase64Strings('policy-list', false);
-      if (!data.country1.scorecard) {
-        data.country1.scorecard = {};
-      }
-      if (!data.country2.scorecard) {
-        data.country2.scorecard = {};
-      }
       data.country1.scorecard.chart = chObj.chart1;
       data.country2.scorecard.chart = chObj.chart2;
     }
