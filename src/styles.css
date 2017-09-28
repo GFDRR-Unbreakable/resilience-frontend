@@ -682,7 +682,7 @@ template {
     color: #666666;
     opacity: 0.8;
   }
-  .tabs-dg .btn-tab:hover, .tabs-dg .btn-tab:active{
+  .tabs-dg .btn-tab:hover, .tabs-dg .btn-tab:active, .tabs-dg .btn-tab.active{
     background: #fff;
     color: #666666;
     opacity: 1;
