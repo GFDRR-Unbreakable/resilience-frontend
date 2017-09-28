@@ -209,8 +209,8 @@ export class ChartService {
         bottom: 0,
         left: 1
       };
-      const width = 50 - margin.left - margin.right;
-      const height = 35 - margin.top - margin.bottom;
+      const width = 115 - margin.left - margin.right;
+      const height = 40 - margin.top - margin.bottom;
 
       const kde = science.stats.kde().sample(data);
       const bw = kde.bandwidth(science.stats.bandwidth.nrd0)(data);
@@ -1332,10 +1332,11 @@ export class ChartService {
     return this._outRelative;
   }
   formatInputChartValues(data, input, persistedBrush?) {
-    let percent = input.number_type === ('percent' || 'small_percent') ? '%' : '';
+    let percent = '';
+    // let percent = input.number_type === ('percent' || 'small_percent') ? '%' : '';
     let value: any = data.toFixed(1);
     percent = input.key === 'macro_T_rebuild_K' ? ' Yrs' : percent;
-    percent = input.key.indexOf('hazard') >= 0 ? '%' : percent;
+    percent = input.key.indexOf('hazard') === 0 ? '%' : percent;
     if (input.key === 'k_cat_info__poor' || input.key === 'k_cat_info__nonpoor') {
       const aThousand = 1000;
       value = Math.round(+value);
@@ -1346,10 +1347,10 @@ export class ChartService {
         } else {
           value /= aThousand;
         }
-        value = '$' + value.toString().replace('.', ',');
+        value = value.toFixed(3).replace('.', ',');
         value = value.split(',')[1].length === 2 ? value + '0' : value;
       }
-    } else if (percent !== '') {
+    } else {
       data = input.key === 'macro_T_rebuild_K' ? data : (persistedBrush ? (+persistedBrush.extent()[1]) * 100 : data * 100);
       value = data.toFixed(1) + percent;
     }

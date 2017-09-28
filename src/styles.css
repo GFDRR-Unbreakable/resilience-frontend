@@ -771,13 +771,17 @@ template {
      /*padding-left: 0px !important;
      padding-right: 0px !important;*/
    }
+   .country-text {
+     padding-left: 30px;
+   }
    .box-tab-text{
      /* padding-top: 15px; */
      /* padding-bottom: 15px; */
      font-size: 12px;
      color: #666;
      line-height: 13px;
-     height: 64px;
+     height: 70px;
+     padding-top: 5px;
    }
 
    /* :checked */
