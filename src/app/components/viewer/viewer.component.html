@@ -55,9 +55,9 @@
 
               <!-- Buttons/tabs -->
               <div class="btn-group tabs-dg" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-tab" (click)="onChangeMapLayerEvent('well')">Expects Well-Being Losses (%)</button>
-                <button type="button" class="btn btn-tab" (click)="onChangeMapLayerEvent('asset')">Exposure Risk Losses (%)</button>
-                <button type="button" class="btn btn-tab" (click)="onChangeMapLayerEvent('socio')">Socio Economic Capacity (%)</button>
+                <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'well'}" (click)="onChangeMapLayerEvent('well')">Expects Well-Being Losses (%)</button>
+                <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'asset'}" (click)="onChangeMapLayerEvent('asset')">Exposure Risk Losses (%)</button>
+                <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'socio'}" (click)="onChangeMapLayerEvent('socio')">Socio Economic Capacity (%)</button>
               </div>
               <!-- End Buttons/tabs -->
 
