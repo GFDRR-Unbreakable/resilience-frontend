@@ -55,9 +55,9 @@
 
               <!-- Buttons/tabs -->
               <div class="btn-group tabs-dg" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-tab">Expects Well-Being Losses (%)</button>
-                <button type="button" class="btn btn-tab">Exposure Risk Losses (%)</button>
-                <button type="button" class="btn btn-tab">Socio Economic Capacity (%)</button>
+                <button type="button" class="btn btn-tab" (click)="onChangeMapLayerEvent('well')">Expects Well-Being Losses (%)</button>
+                <button type="button" class="btn btn-tab" (click)="onChangeMapLayerEvent('asset')">Exposure Risk Losses (%)</button>
+                <button type="button" class="btn btn-tab" (click)="onChangeMapLayerEvent('socio')">Socio Economic Capacity (%)</button>
               </div>
               <!-- End Buttons/tabs -->
 

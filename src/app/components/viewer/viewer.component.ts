@@ -714,6 +714,16 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
   // EVENTS
+  onChangeMapLayerEvent(mapId) {
+    this.mapSlideUISelected = mapId;
+    const layerPaintProp = 'fill-color';
+    this.mapService.changeLayerStyle({
+      property: layerPaintProp,
+      type: mapId
+    });
+    const currentLegend = this.mapService.getMapPaintConf(mapId);
+    this.legends = this.mapService.getMapLegendConf(mapId);
+  }
   onDisplayTechMapViewEvent() {
     if (!this.global) {
       this.global = !this.global;
@@ -775,18 +785,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   onSecondCountryInputChangeEvent() {
     this._changeCountryInput(false);
-  }
-  onSlideChangeEvent($event) {
-    let currentSlideId = $event.current;
-    currentSlideId = currentSlideId.split('-')[0];
-    this.mapSlideUISelected = currentSlideId;
-    const layerPaintProp = 'fill-color';
-    this.mapService.changeLayerStyle({
-      property: layerPaintProp,
-      type: currentSlideId
-    });
-    const currentLegend = this.mapService.getMapPaintConf(currentSlideId);
-    this.legends = this.mapService.getMapLegendConf(currentSlideId);
   }
   onSwitchGlobal() {
     if (this._selectedCountryList.length === this.MAX_COUNTRIES_SELECTED) {
