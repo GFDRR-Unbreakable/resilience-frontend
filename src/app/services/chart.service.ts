@@ -185,10 +185,16 @@ export class ChartService {
       const data = Object.assign([], dataArr);
 
       const dataMean = d3.mean(data);
-      sliderValues[input.key + '_display_value'] = dataMean;
       if (sliderValues[input.key]) {
-        sliderValues[input.key].value = dataMean;
-        sliderValues[input.key + '_value'] = dataMean / (sliderValues[input.key].max + sliderValues[input.key].min) * 100;
+        if (groupName === 'GLOBAL') {
+          sliderValues[input.key + '_display_value'] = 0;
+          sliderValues[input.key].value = 0;
+          sliderValues[input.key + '_value'] = 0;
+        } else {
+          sliderValues[input.key + '_display_value'] = dataMean;
+          sliderValues[input.key].value = dataMean;
+          sliderValues[input.key + '_value'] = dataMean / (sliderValues[input.key].max + sliderValues[input.key].min) * 100;
+        }
       }
 
 		  // add a margin of 0.1 m,M
@@ -1332,9 +1338,8 @@ export class ChartService {
     return this._outRelative;
   }
   formatInputChartValues(data, input, persistedBrush?) {
-    let percent = '';
-    // let percent = input.number_type === ('percent' || 'small_percent') ? '%' : '';
-    let value: any = data.toFixed(1);
+    let percent = input.number_type === ('percent' || 'small_percent') ? '%' : '';
+    let value: any = (input.key.indexOf('hazard') === 0 || input.key === 'macro_T_rebuild_K') ? +data.toFixed(1) : Math.round(+data);
     percent = input.key === 'macro_T_rebuild_K' ? ' Yrs' : percent;
     percent = input.key.indexOf('hazard') === 0 ? '%' : percent;
     if (input.key === 'k_cat_info__poor' || input.key === 'k_cat_info__nonpoor') {
@@ -1350,9 +1355,10 @@ export class ChartService {
         value = value.toFixed(3).replace('.', ',');
         value = value.split(',')[1].length === 2 ? value + '0' : value;
       }
-    } else {
+      value = '$' + value;
+    } else if (percent) {
       data = input.key === 'macro_T_rebuild_K' ? data : (persistedBrush ? (+persistedBrush.extent()[1]) * 100 : data * 100);
-      value = data.toFixed(1) + percent;
+      value = ((input.key.indexOf('hazard') === 0 || input.key === 'macro_T_rebuild_K') ? data.toFixed(1) : Math.round(+data)) + percent;
     }
     return value;
   }
@@ -1816,9 +1822,19 @@ export class ChartService {
         } else {
           model = this._globalModelData[selectedId];
         }
-        sliderValues[conf + '_display_value'] = this.formatInputChartValues(model[conf], input);
-        sliderValues[conf].value = model[conf];
-        sliderValues[conf + '_value'] = model[conf] / (sliderValues[conf].max + sliderValues[conf].min) * 100;
+        if (selectedId === 'global') {
+          sliderValues[conf + '_display_value'] = this.formatInputChartValues(0, input);
+          sliderValues[conf].value = 0;
+          sliderValues[conf + '_value'] = 0;
+          sliderValues[conf + '_original_value'] =
+            sliderValues[conf + '_display_value'].replace('$', '').replace(',', '');
+        } else {
+          sliderValues[conf + '_display_value'] = this.formatInputChartValues(model[conf], input);
+          sliderValues[conf].value = model[conf];
+          sliderValues[conf + '_value'] = model[conf] / (sliderValues[conf].max + sliderValues[conf].min) * 100;
+          sliderValues[conf + '_original_value'] =
+            sliderValues[conf + '_display_value'].replace('$', '').replace(',', '');
+        }
         ini.attr('x1', function(d) {
             return input.x(+model[conf]);
           })

@@ -632,20 +632,30 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
   setSingleSliderConfValue(sliderObj, key, max, min, input) {
-    sliderObj[key + '_min'] = 1;
+    sliderObj[key + '_min'] = 0;
+    if (key.indexOf('hazard') === 0 || key === 'macro_T_rebuild_K') {
+      sliderObj[key + '_min'] = 1;
+    }
     sliderObj[key + '_max'] = 100;
     sliderObj[key + '_step'] = 1;
     if (sliderObj[key + '_display_value'] != null) {
-      sliderObj[key + '_value'] = sliderObj[key + '_display_value'] / (max + min) * 100;
-      sliderObj[key + '_display_value'] =
-        this.chartService.formatInputChartValues(sliderObj[key + '_display_value'], input);
+      // sliderObj[key + '_value'] = sliderObj[key + '_display_value'] / (max + min) * 100;
+      sliderObj[key + '_value'] = 0 / (max + min) * 100;
+      sliderObj[key + '_display_value'] = 
+        this.chartService.formatInputChartValues(0, input);
+      // sliderObj[key + '_display_value'] =
+        // this.chartService.formatInputChartValues(sliderObj[key + '_display_value'], input);
       sliderObj[key + '_original_value'] =
         parseFloat(sliderObj[key + '_display_value'].replace('$', '').replace(',', ''));
     } else {
-      sliderObj[key + '_value'] = 50;
-      sliderObj[key + '_original_value'] = 50;
+      // sliderObj[key + '_value'] = 50;
+      sliderObj[key + '_value'] = 0;
+      // sliderObj[key + '_original_value'] = 50;
+      sliderObj[key + '_original_value'] = 0;
       sliderObj[key + '_display_value'] =
-        this.chartService.formatInputChartValues((max + min) / 2, input);
+        this.chartService.formatInputChartValues(0, input);
+      // sliderObj[key + '_display_value'] =
+        // this.chartService.formatInputChartValues((max + min) / 2, input);
     }
   }
   setSliderConfValues(inputData) {
@@ -678,12 +688,14 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         this.sliderValues1[key] = {
           min: min,
           max: max,
-          value: this.sliderValues1[key + '_value']
+          // value: this.sliderValues1[key + '_value']
+          value: 0
         };
         this.sliderValues2[key] = {
           min: min,
           max: max,
-          value: this.sliderValues2[key + '_value']
+          // value: this.sliderValues2[key + '_value']
+          value: 0
         };
       }
     }
