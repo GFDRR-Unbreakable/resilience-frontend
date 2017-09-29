@@ -542,6 +542,9 @@ template {
   .dropdown-global:hover span {
     color: #000 !important;
   }
+  .global-btn-ht{
+    height: 45px;
+  }
   .box-item{
     margin-top: -1px !important;
     /* margin-left: 31px !important; */
@@ -4200,7 +4203,7 @@ tbody.collapse.show {
 .dropdown-item:focus, .dropdown-item:hover {
   color: #50C4CF;
   text-decoration: none;
-  background-color: #f4f5fa;
+  background-color: #fff;
 }
 .dropdown-item.active{
   color: #50C4CF;
