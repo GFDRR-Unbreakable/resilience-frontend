@@ -778,7 +778,10 @@ template {
      padding-right: 0px !important;*/
    }
    .country-text {
-     padding-left: 30px;
+     padding-left: 40px;
+   }
+   .country-text-input {
+     padding-left: 55px;
    }
    .box-tab-text{
      /* padding-top: 15px; */
@@ -788,6 +791,12 @@ template {
      line-height: 13px;
      height: 70px;
      padding-top: 5px;
+   }
+   .td-label-txt {
+    font-size: 12px;
+    color: #666;
+    /* padding: 0px; */
+    height: 67px;
    }
 
    /* :checked */
@@ -10913,7 +10922,7 @@ fieldset {
         padding-right: 0;
     }
 .tab .mat-accent {
-  min-width: 110px;
+  min-width: 160px;
 }
 .tab .mat-accent .mat-slider-wrapper,
 .tab .mat-accent .mat-slider-wrapper .mat-slider-ticks-container,

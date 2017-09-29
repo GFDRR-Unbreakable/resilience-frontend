@@ -186,8 +186,8 @@
                                <div class="col-md-12 box-tab">
                                   <div class="row">
                                     <div class="col-md-4"></div>
-                                    <div class="col-md-4"><b class="country-text">{{viewerModel.firstCountry || 'Global'}}</b></div>
-                                    <div class="col-md-4"><b class="country-text">{{viewerModel.secondCountry || 'Global'}}</b></div>
+                                    <div class="col-md-4"><b class="country-text">{{viewerModel.firstCountry || 'Country A'}}</b></div>
+                                    <div class="col-md-4"><b class="country-text">{{viewerModel.secondCountry || 'Country B'}}</b></div>
                                   </div>
                                   <div class="tab">
                                      <input id="tab-one" type="checkbox" name="tabs">
@@ -197,23 +197,27 @@
                                        </button> -->
                                      </label>
                                      <div class="tab-content">
-                                        <div class="row">
+                                        <div class="row align-items-start">
                                            <div class="col-md-4 label-text">
-                                             <div class="box-tab-text">
-                                               Share of social protection / remittances to poor people (% of poor)
-                                             </div>
-                                             <div class="box-tab-text">
-                                               Total social protection spending and remittances (US$,PPP)
-                                             </div>
-                                             <div class="box-tab-text">
-                                               Ability to access post-disaster financial resources (% of population)
-                                             </div>
-                                             <div class="box-tab-text">
-                                               Readiness to scale-up social protection (% increase in SP total payout post-disaster)
-                                             </div>
-                                             <div class="box-tab-text">
-                                               Time to recover and reconstruct
-                                             </div>
+                                             <table>
+                                               <tbody>
+                                                  <tr>
+                                                    <td class="td-label-txt">Share of social protection / remittances to poor people (% of poor)</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td class="td-label-txt">Total social protection spending and remittances (US$,PPP)</td>
+                                                    </tr>
+                                                  <tr>
+                                                    <td class="td-label-txt">Ability to access post-disaster financial resources (% of population)</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td class="td-label-txt">Readiness to scale-up social protection (% increase in SP total payout post-disaster)</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td class="td-label-txt">Time to recover and reconstruct</td>
+                                                  </tr>
+                                               </tbody>
+                                             </table>
                                            </div>
                                            <div class="col-md-4">
                                              <div id="inputSoc-1"></div>
@@ -235,18 +239,30 @@
                                      <div class="tab-content">
                                         <div class="row">
                                            <div class="col-md-4 label-text">
-                                             <div class="box-tab-text">
-                                               Financial inclusion, poor people (% of poor)
-                                             </div>
-                                             <div class="box-tab-text">
-                                               Financial inclusion, non-poor people (% of non-poor)
-                                             </div>
-                                             <div class="box-tab-text">
-                                               Wealth, poor people (US$, PPP)
-                                             </div>
-                                             <div class="box-tab-text">
-                                               Wealth, non-poor people (US$, PPP)
-                                             </div>
+                                            <table>
+                                              <tbody>
+                                                <tr>
+                                                    <td class="td-label-txt">
+                                                      Financial inclusion, poor people (% of poor)
+                                                    </td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td class="td-label-txt">
+                                                      Financial inclusion, non-poor people (% of non-poor)
+                                                    </td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td class="td-label-txt">
+                                                      Wealth, poor people (US$, PPP)
+                                                    </td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td class="td-label-txt">
+                                                      Wealth, non-poor people (US$, PPP)
+                                                    </td>
+                                                  </tr>
+                                              </tbody>
+                                            </table>
                                            </div>
                                            <div class="col-md-4">
                                              <div id="inputEco-1"></div>
@@ -268,15 +284,25 @@
                                      <div class="tab-content">
                                         <div class="row">
                                            <div class="col-md-4 label-text">
-                                             <div class="box-tab-text">
-                                               Asset vulnerability, poor people (% destruction of exposed assets of poor)
-                                             </div>
-                                             <div class="box-tab-text">
-                                               Asset vulnerability, non-poor people (% destruction of exposed assets of non-poor)
-                                             </div>
-                                             <div class="box-tab-text">
-                                               Access to early warning (% of population)
-                                             </div>
+                                            <table>
+                                              <tbody>
+                                                <tr>
+                                                    <td class="td-label-txt">
+                                                      Asset vulnerability, poor people (% destruction of exposed assets of poor)
+                                                    </td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td class="td-label-txt">
+                                                      Asset vulnerability, non-poor people (% destruction of exposed assets of non-poor)
+                                                    </td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td class="td-label-txt">
+                                                        Access to early warning (% of population)
+                                                    </td>
+                                                  </tr>
+                                              </tbody>
+                                            </table>
                                            </div>
                                            <div class="col-md-4">
                                              <div id="inputVul-1"></div>
@@ -298,21 +324,35 @@
                                      <div class="tab-content">
                                         <div class="row">
                                            <div class="col-md-4 label-text">
-                                             <div class="box-tab-text">
-                                               Exposure to riverine and coastal floods, poor (% of total assets of poor)
-                                             </div>
-                                             <div class="box-tab-text">
-                                               Exposure to riverine and coastal floods, non-poor (% of total assets of non-poor)
-                                             </div>
-                                             <div class="box-tab-text">
-                                               Exposure to earthquakes (% of total assets)
-                                             </div>
-                                             <div class="box-tab-text">
-                                               Exposure to tsunamis (% of total assets)
-                                             </div>
-                                              <div class="box-tab-text">
-                                               Exposure to windstorms (% of total assets)
-                                             </div>
+                                             <table>
+                                               <tbody>
+                                                <tr>
+                                                    <td class="td-label-txt">
+                                                      Exposure to riverine and coastal floods, poor (% of total assets of poor)
+                                                    </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td class="td-label-txt">
+                                                        Exposure to riverine and coastal floods, non-poor (% of total assets of non-poor)
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td class="td-label-txt">
+                                                        Exposure to earthquakes (% of total assets)
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td class="td-label-txt">
+                                                        Exposure to tsunamis (% of total assets)
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td class="td-label-txt">
+                                                        Exposure to windstorms (% of total assets)
+                                                      </td>
+                                                    </tr>
+                                               </tbody>
+                                             </table>
                                            </div>
                                            <div class="col-md-4">
                                              <div id="inputExp-1"></div>
@@ -390,10 +430,10 @@
                               <div class="col-md-12">
                                <div class="row pad-botTop10 justify-content-end">
                                  <div class="col-md-4">
-                                   <span class="text-bold"><b>{{viewerModel.firstCountry}}</b></span>
+                                   <span class="text-bold country-text-input"><b>{{viewerModel.firstCountry}}</b></span>
                                  </div>
                                  <div class="col-md-4">
-                                   <span class="text-bold"><b>{{viewerModel.secondCountry}}</b></span>
+                                   <span class="text-bold country-text-input"><b>{{viewerModel.secondCountry}}</b></span>
                                  </div>
                                </div>
                               </div>
@@ -413,8 +453,7 @@
                                            <div class="col-md-4 box-tab-text">
                                               Share of social protection / remittances to poor people (% of poor)
                                            </div>
-                                           <div class="col-md-4 box-tab-text">
-                                             <div class="text-center slider-text">{{sliderValues1.gamma_SP_cat_info__poor_display_value}}</div>
+                                           <div class="col-md-4">
                                              <md-slider
                                                [min]="sliderValues1.gamma_SP_cat_info__poor_min"
                                                [max]="sliderValues1.gamma_SP_cat_info__poor_max"
@@ -424,9 +463,9 @@
                                                (change)="onSliderChangeEvent1('gamma_SP_cat_info__poor')"
                                                >
                                              </md-slider>
+                                             <span class="text-center slider-text">{{sliderValues1.gamma_SP_cat_info__poor_display_value}}</span>
                                            </div>
-                                           <div class="col-md-4 box-tab-text">
-                                             <div class="text-center slider-text">{{sliderValues2.gamma_SP_cat_info__poor_display_value}}</div>
+                                           <div class="col-md-4">
                                              <md-slider
                                                 [min]="sliderValues2.gamma_SP_cat_info__poor_min"
                                                 [max]="sliderValues2.gamma_SP_cat_info__poor_max"
@@ -436,14 +475,14 @@
                                                 (change)="onSliderChangeEvent2('gamma_SP_cat_info__poor')"
                                                 >
                                               </md-slider>
+                                              <span class="text-center slider-text">{{sliderValues2.gamma_SP_cat_info__poor_display_value}}</span>
                                            </div>
                                         </div>
                                         <div class="row">
                                            <div class="col-md-4 box-tab-text">
                                               Total social protection spending and remittances (US$,PPP)
                                            </div>
-                                           <div class="col-md-4 box-tab-text">
-                                             <div class="text-center slider-text">{{sliderValues1.macro_tau_tax_display_value}}</div>
+                                           <div class="col-md-4">
                                              <md-slider
                                                [min]="sliderValues1.macro_tau_tax_min"
                                                [max]="sliderValues1.macro_tau_tax_max"
@@ -453,9 +492,9 @@
                                                (change)="onSliderChangeEvent1('macro_tau_tax')"
                                                >
                                              </md-slider>
+                                             <span class="text-center slider-text">{{sliderValues1.macro_tau_tax_display_value}}</span>
                                            </div>
-                                           <div class="col-md-4 box-tab-text">
-                                             <div class="text-center slider-text">{{sliderValues2.macro_tau_tax_display_value}}</div>
+                                           <div class="col-md-4">
                                              <md-slider
                                                [min]="sliderValues2.macro_tau_tax_min"
                                                [max]="sliderValues2.macro_tau_tax_max"
@@ -465,14 +504,14 @@
                                                (change)="onSliderChangeEvent2('macro_tau_tax')"
                                                >
                                              </md-slider>
+                                             <span class="text-center slider-text">{{sliderValues2.macro_tau_tax_display_value}}</span>
                                            </div>
                                         </div>
                                         <div class="row">
                                            <div class="col-md-4 box-tab-text">
                                               Ability to access post-disaster financial resources (% of population)
                                            </div>
-                                           <div class="col-md-4 box-tab-text">
-                                             <div class="text-center slider-text">{{sliderValues1.macro_borrow_abi_display_value}}</div>
+                                           <div class="col-md-4">
                                              <md-slider
                                                [min]="sliderValues1.macro_borrow_abi_min"
                                                [max]="sliderValues1.macro_borrow_abi_max"
@@ -482,9 +521,9 @@
                                                (change)="onSliderChangeEvent1('macro_borrow_abi')"
                                                >
                                              </md-slider>
+                                             <span class="text-center slider-text">{{sliderValues1.macro_borrow_abi_display_value}}</span>
                                            </div>
-                                           <div class="col-md-4 box-tab-text">
-                                             <div class="text-center slider-text">{{sliderValues2.macro_borrow_abi_display_value}}</div>
+                                           <div class="col-md-4">
                                              <md-slider
                                                [min]="sliderValues2.macro_borrow_abi_min"
                                                [max]="sliderValues2.macro_borrow_abi_max"
@@ -494,14 +533,14 @@
                                                (change)="onSliderChangeEvent2('macro_borrow_abi')"
                                                >
                                              </md-slider>
+                                             <span class="text-center slider-text">{{sliderValues2.macro_borrow_abi_display_value}}</span>                                             
                                            </div>
                                         </div>
                                         <div class="row">
                                            <div class="col-md-4 box-tab-text">
                                               Readiness to scale-up social protection (% increase in SP total payout post-disaster)
                                            </div>
-                                           <div class="col-md-4 box-tab-text">
-                                             <div class="text-center slider-text">{{sliderValues1.macro_prepare_scaleup_display_value}}</div>
+                                           <div class="col-md-4">
                                              <md-slider
                                                [min]="sliderValues1.macro_prepare_scaleup_min"
                                                [max]="sliderValues1.macro_prepare_scaleup_max"
@@ -511,9 +550,9 @@
                                                (change)="onSliderChangeEvent1('macro_prepare_scaleup')"
                                                >
                                              </md-slider>
+                                             <span class="text-center slider-text">{{sliderValues1.macro_prepare_scaleup_display_value}}</span>
                                            </div>
-                                           <div class="col-md-4 box-tab-text">
-                                             <div class="text-center slider-text">{{sliderValues2.macro_prepare_scaleup_display_value}}</div>
+                                           <div class="col-md-4">
                                              <md-slider
                                                [min]="sliderValues2.macro_prepare_scaleup_min"
                                                [max]="sliderValues2.macro_prepare_scaleup_max"
@@ -523,14 +562,14 @@
                                                (change)="onSliderChangeEvent2('macro_prepare_scaleup')"
                                                >
                                              </md-slider>
+                                             <span class="text-center slider-text">{{sliderValues2.macro_prepare_scaleup_display_value}}</span>
                                            </div>
                                         </div>
                                          <div class="row">
                                          <div class="col-md-4 box-tab-text">
                                              Time to recover and reconstruct
                                          </div>
-                                         <div class="col-md-4 box-tab-text">
-                                           <div class="text-center slider-text">{{sliderValues1.macro_T_rebuild_K_display_value}}</div>
+                                         <div class="col-md-4">
                                            <md-slider
                                              [min]="sliderValues1.macro_T_rebuild_K_min"
                                              [max]="sliderValues1.macro_T_rebuild_K_max"
@@ -540,9 +579,9 @@
                                              (change)="onSliderChangeEvent1('macro_T_rebuild_K')"
                                              >
                                            </md-slider>
+                                           <span class="text-center slider-text">{{sliderValues1.macro_T_rebuild_K_display_value}}</span>
                                          </div>
-                                         <div class="col-md-4 box-tab-text">
-                                           <div class="text-center slider-text">{{sliderValues2.macro_T_rebuild_K_display_value}}</div>
+                                         <div class="col-md-4">
                                            <md-slider
                                              [min]="sliderValues2.macro_T_rebuild_K_min"
                                              [max]="sliderValues2.macro_T_rebuild_K_max"
@@ -552,6 +591,7 @@
                                              (change)="onSliderChangeEvent2('macro_T_rebuild_K')"
                                              >
                                            </md-slider>
+                                           <span class="text-center slider-text">{{sliderValues2.macro_T_rebuild_K_display_value}}</span>
                                          </div>
                                        </div>
                                      </div>
@@ -570,8 +610,7 @@
                                            <div class="col-md-4 box-tab-text">
                                               Financial inclusion, poor people (% of poor)
                                            </div>
-                                           <div class="col-md-4 box-tab-text">
-                                             <div class="text-center slider-text">{{sliderValues1.axfin_cat_info__poor_display_value}}</div>
+                                           <div class="col-md-4">
                                              <md-slider
                                                [min]="sliderValues1.axfin_cat_info__poor_min"
                                                [max]="sliderValues1.axfin_cat_info__poor_max"
@@ -581,9 +620,9 @@
                                                (change)="onSliderChangeEvent1('axfin_cat_info__poor')"
                                                >
                                              </md-slider>
+                                             <span class="text-center slider-text">{{sliderValues1.axfin_cat_info__poor_display_value}}</span>
                                            </div>
-                                           <div class="col-md-4 box-tab-text">
-                                             <div class="text-center slider-text">{{sliderValues2.axfin_cat_info__poor_display_value}}</div>
+                                           <div class="col-md-4">
                                              <md-slider
                                                [min]="sliderValues2.axfin_cat_info__poor_min"
                                                [max]="sliderValues2.axfin_cat_info__poor_max"
@@ -593,14 +632,14 @@
                                                (change)="onSliderChangeEvent2('axfin_cat_info__poor')"
                                                >
                                              </md-slider>
+                                             <span class="text-center slider-text">{{sliderValues2.axfin_cat_info__poor_display_value}}</span>
                                            </div>
                                         </div>
                                         <div class="row">
                                            <div class="col-md-4 box-tab-text">
                                               Financial inclusion, non-poor people) (% of non-poor)
                                            </div>
-                                           <div class="col-md-4 box-tab-text">
-                                             <div class="text-center slider-text">{{sliderValues1.axfin_cat_info__nonpoor_display_value}}</div>
+                                           <div class="col-md-4">
                                              <md-slider
                                                [min]="sliderValues1.axfin_cat_info__nonpoor_min"
                                                [max]="sliderValues1.axfin_cat_info__nonpoor_max"
@@ -610,9 +649,9 @@
                                                (change)="onSliderChangeEvent1('axfin_cat_info__nonpoor')"
                                                >
                                              </md-slider>
+                                             <span class="text-center slider-text">{{sliderValues1.axfin_cat_info__nonpoor_display_value}}</span>                                             
                                            </div>
-                                           <div class="col-md-4 box-tab-text">
-                                             <div class="text-center slider-text">{{sliderValues2.axfin_cat_info__nonpoor_display_value}}</div>
+                                           <div class="col-md-4">
                                              <md-slider
                                                [min]="sliderValues2.axfin_cat_info__nonpoor_min"
                                                [max]="sliderValues2.axfin_cat_info__nonpoor_max"
@@ -622,14 +661,14 @@
                                                (change)="onSliderChangeEvent2('axfin_cat_info__nonpoor')"
                                                >
                                              </md-slider>
+                                             <span class="text-center slider-text">{{sliderValues2.axfin_cat_info__nonpoor_display_value}}</span>
                                            </div>
                                         </div>
                                         <div class="row">
                                            <div class="col-md-4 box-tab-text">
                                               Wealth, poor people (US$, PPP)
                                            </div>
-                                           <div class="col-md-4 box-tab-text">
-                                             <div class="text-center slider-text">{{sliderValues1.k_cat_info__poor_display_value}}</div>
+                                           <div class="col-md-4">
                                              <md-slider
                                                [min]="sliderValues1.k_cat_info__poor_min"
                                                [max]="sliderValues1.k_cat_info__poor_max"
@@ -639,9 +678,9 @@
                                                (change)="onSliderChangeEvent1('k_cat_info__poor')"
                                                >
                                              </md-slider>
+                                             <span class="text-center slider-text">{{sliderValues1.k_cat_info__poor_display_value}}</span>
                                            </div>
-                                           <div class="col-md-4 box-tab-text">
-                                             <div class="text-center slider-text">{{sliderValues2.k_cat_info__poor_display_value}}</div>
+                                           <div class="col-md-4">
                                              <md-slider
                                                [min]="sliderValues2.k_cat_info__poor_min"
                                                [max]="sliderValues2.k_cat_info__poor_max"
@@ -651,14 +690,14 @@
                                                (change)="onSliderChangeEvent2('k_cat_info__poor')"
                                                >
                                              </md-slider>
+                                             <span class="text-center slider-text">{{sliderValues2.k_cat_info__poor_display_value}}</span>
                                            </div>
                                         </div>
                                         <div class="row">
                                            <div class="col-md-4 box-tab-text">
                                               Wealth, non-poor people (US$, PPP)
                                            </div>
-                                           <div class="col-md-4 box-tab-text">
-                                             <div class="text-center slider-text">{{sliderValues1.k_cat_info__nonpoor_display_value}}</div>
+                                           <div class="col-md-4">
                                              <md-slider
                                                [min]="sliderValues1.k_cat_info__nonpoor_min"
                                                [max]="sliderValues1.k_cat_info__nonpoor_max"
@@ -668,9 +707,9 @@
                                                (change)="onSliderChangeEvent1('k_cat_info__nonpoor')"
                                                >
                                              </md-slider>
+                                             <span class="text-center slider-text">{{sliderValues1.k_cat_info__nonpoor_display_value}}</span>
                                            </div>
-                                           <div class="col-md-4 box-tab-text">
-                                             <div class="text-center slider-text">{{sliderValues2.k_cat_info__nonpoor_display_value}}</div>
+                                           <div class="col-md-4">
                                              <md-slider
                                                [min]="sliderValues2.k_cat_info__nonpoor_min"
                                                [max]="sliderValues2.k_cat_info__nonpoor_max"
@@ -680,6 +719,7 @@
                                                (change)="onSliderChangeEvent2('k_cat_info__nonpoor')"
                                                >
                                              </md-slider>
+                                             <span class="text-center slider-text">{{sliderValues2.k_cat_info__nonpoor_display_value}}</span>
                                            </div>
                                         </div>
                                      </div>
@@ -697,8 +737,7 @@
                                            <div class="col-md-4 box-tab-text">
                                               Asset vulnerability, poor people (% destruction of exposed assets of poor)
                                            </div>
-                                           <div class="col-md-4 box-tab-text">
-                                             <div class="text-center slider-text">{{sliderValues1.v_cat_info__poor_display_value}}</div>
+                                           <div class="col-md-4">
                                              <md-slider
                                                [min]="sliderValues1.v_cat_info__poor_min"
                                                [max]="sliderValues1.v_cat_info__poor_max"
@@ -708,9 +747,9 @@
                                                (change)="onSliderChangeEvent1('v_cat_info__poor')"
                                                >
                                              </md-slider>
+                                             <span class="text-center slider-text">{{sliderValues1.v_cat_info__poor_display_value}}</span>
                                            </div>
-                                           <div class="col-md-4 box-tab-text">
-                                             <div class="text-center slider-text">{{sliderValues2.v_cat_info__poor_display_value}}</div>
+                                           <div class="col-md-4">
                                              <md-slider
                                                [min]="sliderValues2.v_cat_info__poor_min"
                                                [max]="sliderValues2.v_cat_info__poor_max"
@@ -720,14 +759,14 @@
                                                (change)="onSliderChangeEvent2('v_cat_info__poor')"
                                                >
                                              </md-slider>
+                                             <span class="text-center slider-text">{{sliderValues2.v_cat_info__poor_display_value}}</span>                                             
                                            </div>
                                         </div>
                                         <div class="row" [hidden]="!hazards.hazard1">
                                            <div class="col-md-4 box-tab-text">
                                               Asset vulnerability, non-poor people (% destruction of exposed assets of non-poor)
                                            </div>
-                                           <div class="col-md-4 box-tab-text">
-                                             <div class="text-center slider-text">{{sliderValues1.v_cat_info__nonpoor_display_value}}</div>
+                                           <div class="col-md-4">
                                              <md-slider
                                                [min]="sliderValues1.v_cat_info__nonpoor_min"
                                                [max]="sliderValues1.v_cat_info__nonpoor_max"
@@ -737,9 +776,9 @@
                                                (change)="onSliderChangeEvent1('v_cat_info__nonpoor')"
                                                >
                                              </md-slider>
+                                             <span class="text-center slider-text">{{sliderValues1.v_cat_info__nonpoor_display_value}}</span>                                             
                                            </div>
-                                           <div class="col-md-4 box-tab-text">
-                                             <div class="text-center slider-text">{{sliderValues2.v_cat_info__nonpoor_display_value}}</div>
+                                           <div class="col-md-4">
                                              <md-slider
                                                [min]="sliderValues2.v_cat_info__nonpoor_min"
                                                [max]="sliderValues2.v_cat_info__nonpoor_max"
@@ -749,14 +788,14 @@
                                                (change)="onSliderChangeEvent2('v_cat_info__nonpoor')"
                                                >
                                              </md-slider>
+                                             <span class="text-center slider-text">{{sliderValues2.v_cat_info__nonpoor_display_value}}</span>                                             
                                            </div>
                                         </div>
                                         <div class="row">
                                            <div class="col-md-4 box-tab-text">
                                               Access to early warning (% of population)
                                            </div>
-                                           <div class="col-md-4 box-tab-text">
-                                             <div class="text-center slider-text">{{sliderValues1.shew_for_hazard_ratio_display_value}}</div>
+                                           <div class="col-md-4">
                                              <md-slider
                                                [min]="sliderValues1.shew_for_hazard_ratio_min"
                                                [max]="sliderValues1.shew_for_hazard_ratio_max"
@@ -766,9 +805,9 @@
                                                (change)="onSliderChangeEvent1('shew_for_hazard_ratio')"
                                                >
                                              </md-slider>
+                                             <span class="text-center slider-text">{{sliderValues1.shew_for_hazard_ratio_display_value}}</span>                                             
                                            </div>
-                                           <div class="col-md-4 box-tab-text">
-                                             <div class="text-center slider-text">{{sliderValues2.shew_for_hazard_ratio_display_value}}</div>
+                                           <div class="col-md-4">
                                              <md-slider
                                                [min]="sliderValues2.shew_for_hazard_ratio_min"
                                                [max]="sliderValues2.shew_for_hazard_ratio_max"
@@ -778,6 +817,7 @@
                                                (change)="onSliderChangeEvent2('shew_for_hazard_ratio')"
                                                >
                                              </md-slider>
+                                             <span class="text-center slider-text">{{sliderValues2.shew_for_hazard_ratio_display_value}}</span>                                             
                                            </div>
                                         </div>
                                      </div>
@@ -795,8 +835,7 @@
                                            <div class="col-md-4 box-tab-text">
                                               Exposure to riverine and coastal floods, poor (% of total assets of poor)
                                            </div>
-                                           <div class="col-md-4 box-tab-text">
-                                             <div class="text-center slider-text">{{sliderValues1.hazard_ratio_flood_poor_display_value}}</div>
+                                           <div class="col-md-4">
                                              <md-slider
                                                [min]="sliderValues1.hazard_ratio_flood_poor_min"
                                                [max]="sliderValues1.hazard_ratio_flood_poor_max"
@@ -806,9 +845,9 @@
                                                (change)="onSliderChangeEvent1('hazard_ratio_flood_poor')"
                                                >
                                              </md-slider>
+                                             <span class="text-center slider-text">{{sliderValues1.hazard_ratio_flood_poor_display_value}}</span>                                             
                                            </div>
-                                           <div class="col-md-4 box-tab-text">
-                                             <div class="text-center slider-text">{{sliderValues2.hazard_ratio_flood_poor_display_value}}</div>
+                                           <div class="col-md-4">
                                              <md-slider
                                                [min]="sliderValues2.hazard_ratio_flood_poor_min"
                                                [max]="sliderValues2.hazard_ratio_flood_poor_max"
@@ -818,14 +857,14 @@
                                                (change)="onSliderChangeEvent2('hazard_ratio_flood_poor')"
                                                >
                                              </md-slider>
+                                             <span class="text-center slider-text">{{sliderValues2.hazard_ratio_flood_poor_display_value}}</span>                                             
                                            </div>
                                         </div>
                                         <div class="row" [hidden]="!hazards.hazard1">
                                            <div class="col-md-4 box-tab-text">
                                               Exposure to riverine and coastal floods, non-poor (% of total assets of non-poor)
                                            </div>
-                                           <div class="col-md-4 box-tab-text">
-                                             <div class="text-center slider-text">{{sliderValues1.hazard_ratio_fa__flood_display_value}}</div>
+                                           <div class="col-md-4">
                                              <md-slider
                                                [min]="sliderValues1.hazard_ratio_fa__flood_min"
                                                [max]="sliderValues1.hazard_ratio_fa__flood_max"
@@ -835,9 +874,9 @@
                                                (change)="onSliderChangeEvent1('hazard_ratio_fa__flood')"
                                                >
                                              </md-slider>
+                                             <span class="text-center slider-text">{{sliderValues1.hazard_ratio_fa__flood_display_value}}</span>                                             
                                            </div>
-                                           <div class="col-md-4 box-tab-text">
-                                             <div class="text-center slider-text">{{sliderValues2.hazard_ratio_fa__flood_display_value}}</div>
+                                           <div class="col-md-4">
                                              <md-slider
                                                [min]="sliderValues2.hazard_ratio_fa__flood_min"
                                                [max]="sliderValues2.hazard_ratio_fa__flood_max"
@@ -847,14 +886,14 @@
                                                (change)="onSliderChangeEvent2('hazard_ratio_fa__flood')"
                                                >
                                              </md-slider>
+                                             <span class="text-center slider-text">{{sliderValues2.hazard_ratio_fa__flood_display_value}}</span>                                             
                                            </div>
                                         </div>
                                         <div class="row" [hidden]="!hazards.hazard2">
                                            <div class="col-md-4 box-tab-text">
                                               Exposure to earthquakes (% of total assets)
                                            </div>
-                                           <div class="col-md-4 box-tab-text">
-                                             <div class="text-center slider-text">{{sliderValues1.hazard_ratio_fa__earthquake_display_value}}</div>
+                                           <div class="col-md-4">
                                              <md-slider
                                                [min]="sliderValues1.hazard_ratio_fa__earthquake_min"
                                                [max]="sliderValues1.hazard_ratio_fa__earthquake_max"
@@ -864,9 +903,9 @@
                                                (change)="onSliderChangeEvent1('hazard_ratio_fa__earthquake')"
                                                >
                                              </md-slider>
+                                             <span class="text-center slider-text">{{sliderValues1.hazard_ratio_fa__earthquake_display_value}}</span>                                             
                                            </div>
-                                           <div class="col-md-4 box-tab-text">
-                                             <div class="text-center slider-text">{{sliderValues2.hazard_ratio_fa__earthquake_display_value}}</div>
+                                           <div class="col-md-4">
                                              <md-slider
                                                [min]="sliderValues2.hazard_ratio_fa__earthquake_min"
                                                [max]="sliderValues2.hazard_ratio_fa__earthquake_max"
@@ -876,14 +915,14 @@
                                                (change)="onSliderChangeEvent2('hazard_ratio_fa__earthquake')"
                                                >
                                              </md-slider>
+                                             <span class="text-center slider-text">{{sliderValues2.hazard_ratio_fa__earthquake_display_value}}</span>                                             
                                            </div>
                                         </div>
                                         <div class="row" [hidden]="!hazards.hazard3">
                                            <div class="col-md-4 box-tab-text">
                                               Exposure to tsunamis (% of total assets)
                                            </div>
-                                           <div class="col-md-4 box-tab-text">
-                                             <div class="text-center slider-text">{{sliderValues1.hazard_ratio_fa__tsunami_display_value}}</div>
+                                           <div class="col-md-4">
                                              <md-slider
                                                [min]="sliderValues1.hazard_ratio_fa__tsunami_min"
                                                [max]="sliderValues1.hazard_ratio_fa__tsunami_max"
@@ -893,9 +932,9 @@
                                                (change)="onSliderChangeEvent1('hazard_ratio_fa__tsunami')"
                                                >
                                              </md-slider>
+                                             <span class="text-center slider-text">{{sliderValues1.hazard_ratio_fa__tsunami_display_value}}</span>                                             
                                            </div>
-                                           <div class="col-md-4 box-tab-text">
-                                             <div class="text-center slider-text">{{sliderValues2.hazard_ratio_fa__tsunami_display_value}}</div>
+                                           <div class="col-md-4">
                                              <md-slider
                                                [min]="sliderValues2.hazard_ratio_fa__tsunami_min"
                                                [max]="sliderValues2.hazard_ratio_fa__tsunami_max"
@@ -905,14 +944,14 @@
                                                (change)="onSliderChangeEvent2('hazard_ratio_fa__tsunami')"
                                                >
                                              </md-slider>
+                                             <span class="text-center slider-text">{{sliderValues2.hazard_ratio_fa__tsunami_display_value}}</span>                                             
                                            </div>
                                         </div>
                                         <div class="row" [hidden]="!hazards.hazard4">
                                            <div class="col-md-4 box-tab-text">
                                               Exposure to windstorms (% of total assets)
                                            </div>
-                                           <div class="col-md-4 box-tab-text">
-                                             <div class="text-center slider-text">{{sliderValues1.hazard_ratio_fa__wind_display_value}}</div>
+                                           <div class="col-md-4">
                                              <md-slider
                                                [min]="sliderValues1.hazard_ratio_fa__wind_min"
                                                [max]="sliderValues1.hazard_ratio_fa__wind_max"
@@ -922,9 +961,9 @@
                                                (change)="onSliderChangeEvent1('hazard_ratio_fa__wind')"
                                                >
                                              </md-slider>
+                                             <span class="text-center slider-text">{{sliderValues1.hazard_ratio_fa__wind_display_value}}</span>                                             
                                            </div>
-                                           <div class="col-md-4 box-tab-text">
-                                             <div class="text-center slider-text">{{sliderValues2.hazard_ratio_fa__wind_display_value}}</div>
+                                           <div class="col-md-4">
                                              <md-slider
                                                [min]="sliderValues2.hazard_ratio_fa__wind_min"
                                                [max]="sliderValues2.hazard_ratio_fa__wind_max"
@@ -934,6 +973,7 @@
                                                (change)="onSliderChangeEvent2('hazard_ratio_fa__wind')"
                                                >
                                              </md-slider>
+                                             <span class="text-center slider-text">{{sliderValues2.hazard_ratio_fa__wind_display_value}}</span>                                             
                                            </div>
                                         </div>
                                      </div>
