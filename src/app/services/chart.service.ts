@@ -494,22 +494,27 @@ export class ChartService {
       const b = d3.bisector((d) => {
         return d;
       }).left;
+
       const div = d3.select(`#${containerId}`)
         .append('div')
         .attr('id', idx)
-        .attr('class', 'col-sm-4')
+        .attr('class', 'col-sm-12')
         .attr('data-output', idx)
         .attr('data-output-title', output.descriptor)
         .style('pointer-events', 'all');
+      if (isScoreCardPage) {
+        div.attr('class', 'col-sm-4');
+      }
+      if (!isScoreCardPage && (idx === 'risk_to_assets' || idx === 'resilience')) {
+        div.style('border-bottom', '1px solid #dbdbdb');
+      }
 
-      const table = div.append('table')
-        .attr('width', '100%')
-        .attr('class', 'table table-responsive')
-        .attr('id', 'table-' + idx);
-      const tr = table.append('tr');
-      const td = tr.append('td')
-        .attr('width', '100%');
-      const svg = td.append('svg')
+      const createPlot = (tdElement) => {
+        if (!isScoreCardPage) {
+          tdElement.attr('width', '2%');
+          tdElement.style('padding', '0.75rem 0');
+        }
+        const svg = tdElement.append('svg')
         .attr('width', width + margin.left + margin.right)
         .attr('height', height + margin.top + margin.bottom)
         .attr('xmlns', 'http://www.w3.org/2000/svg')
@@ -519,164 +524,209 @@ export class ChartService {
               'translate(' + margin.left + ',' + margin.top + ')')
             .style('pointer-events', 'none')
             .style('border-bottom', '1px solid lightgrey');
-      // add gaussian curve
-      const gaus = svg.append('g')
-        .attr('id', idx)
-        .attr('class', 'gaussian');
-      gaus.selectAll('#' + containerId + ' g#' + idx + ' .gaussian')
-      // Multivariant Density Estimation
-      // http://bit.ly/1Y3jEcD
-        .data([science['stats'].bandwidth.nrd0])
+        // add gaussian curve
+        const gaus = svg.append('g')
+          .attr('id', idx)
+          .attr('class', 'gaussian');
+        gaus.selectAll('#' + containerId + ' g#' + idx + ' .gaussian')
+        // Multivariant Density Estimation
+        // http://bit.ly/1Y3jEcD
+          .data([science['stats'].bandwidth.nrd0])
+            .enter()
+          .append('path')
+          .attr('d', (d) => {
+            return l(kde.bandwidth(d)(data));
+          });
+        // Add manually chart styles to be integrated when converting to base64 string
+        gaus.selectAll('path')
+          // .style('stroke', '#000')
+          .style('stroke', '#7D8F8F')
+          .style('stroke-width', '3px')
+          .style('fill', 'none')
+          .style('shape-rendering', 'auto');
+        // add gaussian curve
+        const area = svg.append('g')
+          .attr('id', 'area-' + idx)
+          .attr('class', 'area');
+        area.selectAll('#' + containerId + ' g#area-' + idx + ' .area')
+          .data([science['stats'].bandwidth.nrd0])
           .enter()
-        .append('path')
-        .attr('d', (d) => {
-          return l(kde.bandwidth(d)(data));
-        });
-      // Add manually chart styles to be integrated when converting to base64 string
-      gaus.selectAll('path')
-        // .style('stroke', '#000')
-        .style('stroke', '#7D8F8F')
-        .style('stroke-width', '3px')
-        .style('fill', 'none')
-        .style('shape-rendering', 'auto');
-      // add gaussian curve
-      const area = svg.append('g')
-        .attr('id', 'area-' + idx)
-        .attr('class', 'area');
-      area.selectAll('#' + containerId + ' g#area-' + idx + ' .area')
-        .data([science['stats'].bandwidth.nrd0])
-        .enter()
-        .append('path')
-        .attr('d', (d) => {
-          return a(kde.bandwidth(d)(data));
-        });
-      // Add manually chart styles to be integrated when converting to base64 string
-      area.selectAll('path')
-        // .style('fill', '#5E6A6A');
-        .style('fill', '#e4e4e4');
-      // add placeholder for initial model value
-      const initial = svg.append('g')
-        .attr('id', 'initial-' + idx)
-        .attr('class', 'initial')
-        .append('line');
-      // Add manually chart styles to be integrated when converting to base64 string
-      svg.selectAll('g.initial line')
-        .style('fill', 'none')
-        // .style('stroke', '#2f4f4f')
-        .style('stroke', 'transparent')
-        .style('stroke-width', '2px')
-        .style('opacity', '0.8');
+          .append('path')
+          .attr('d', (d) => {
+            return a(kde.bandwidth(d)(data));
+          });
+        // Add manually chart styles to be integrated when converting to base64 string
+        area.selectAll('path')
+          // .style('fill', '#5E6A6A');
+          .style('fill', '#e4e4e4');
+        // add placeholder for initial model value
+        const initial = svg.append('g')
+          .attr('id', 'initial-' + idx)
+          .attr('class', 'initial')
+          .append('line');
+        // Add manually chart styles to be integrated when converting to base64 string
+        svg.selectAll('g.initial line')
+          .style('fill', 'none')
+          // .style('stroke', '#2f4f4f')
+          .style('stroke', 'transparent')
+          .style('stroke-width', '2px')
+          .style('opacity', '0.8');
 
-      let infoEl;
+        let infoEl;
+        if (!isScoreCardPage) {
+          // infoEl = tr.append('td')
+          //   .attr('width', '100%');
+          // infoEl.append('p')
+          //   .attr('class', 'text-results')
+          //   .text(output.descriptor.toUpperCase());
+        } else {
+          const table = d3.select(tdElement.node().parentElement.parentElement.parentElement);
+          infoEl = table.append('tr');
+          const tdEl = infoEl.append('td')
+            .attr('width', '100%');
+          const divData = tdEl.append('div')
+            .attr('class', 'box-text-results text-center');
+          divData.append('p')
+            .attr('class', 'scorecard-title-result')
+            .text(output.descriptor);
+        }
+
+        const brushstart = () => {
+          svg.classed('selecting-output', true);
+        };
+        const brushmove = () => {
+          d3.select('#' + containerId + ' #' + idx + ' g.resize.e path')
+            .attr('d', 'M 0, 0 ' + ' L 0 ' + height);
+        };
+        const brushend = () => {
+          svg.classed('selecting', !d3.event.target.empty());
+        };
+        const brush = d3.svg.brush()
+          .x(x);
+        // keep a reference to the brush for the output domain
+        output.x = x;
+        output.height = height;
+        const outputId = containerId.indexOf('1') >= 0 ? 'output1' : 'output2';
+        if (!this._outputDomains[idx][outputId]) {
+          this._outputDomains[idx][outputId] = Object.assign({}, output);
+        }
+        if ((groupName === 'GLOBAL' || !groupName) && !this._outputDomains[idx][outputId].brush) {
+          this._outputDomains[idx][outputId].brush = brush;
+          if (this._globalExtentData[idx]) {
+            brush.extent([0, this._globalExtentData[idx]]);
+          }
+        } else {
+          if (this._globalExtentData[idx]) {
+            brush.extent([0, this._globalExtentData[idx]]);
+          }
+        }
+        brush.extent([0, this._outputDomains[idx][outputId].brush.extent()[1]]);
+        brush.on('brush', brushmove);
+
+        const textFn = () => {
+          const precision = +output.precision;
+          const brushVal = this._outputDomains[idx][outputId].brush.extent()[1];
+          const numericValue = (brushVal * 100).toFixed(precision);
+          const value = me.calculateGDPValues(containerId, idx, numericValue, avgDoll);
+          return value;
+        };
+
+        if (!isScoreCardPage) {
+          infoEl = d3.select(tdElement.node().parentElement);
+          const td = infoEl.append('td');
+          td.style('padding', '0.75rem 0')
+            .attr('width', '15%');
+          td.append('p')
+            .attr('class', 'text-results')
+            .append('b')
+            .attr('class', 'text-number')
+            .text(textFn);
+        } else {
+          infoEl.select('div.box-text-results')
+            .append('p')
+            .attr('class', 'scorecard-text-result')
+            .append('b')
+            .attr('class', 'text-number')
+            .text(textFn);
+        }
+
+        const line = d3.svg.line()
+          .x((d) => {
+            return d3.mean(data);
+          })
+          .y((d) => {
+            return height;
+          });
+
+        const brushg = svg.append('g')
+          .attr('class', 'brush')
+          .style('pointer-events', 'none')
+          .call(brush);
+
+        brushg.call(brush.event)
+          .transition()
+          .duration(750)
+          .call(brush.extent([0, d3.mean(data)]))
+          .call(brush.event);
+
+        brushg.selectAll('#' + containerId + ' g.resize.w').remove();
+        // Add manually chart styles to be integrated when converting to base64 string
+        brushg.select('#' + containerId + ' #' + idx + ' g.resize.e').append('path')
+          .attr('d', line)
+          .style('fill', '#666')
+          .style('fill-opacity', '0.8')
+          .style('stroke-width', '4px')
+          // .style('stroke', '#C3D700')
+          .style('stroke', '#50c4cf')
+          .style('pointer-events', 'none');
+        // Add manually chart styles to be integrated when converting to base64 string
+        brushg.select('rect.extent')
+          .style('fill-opacity', '0')
+          .style('shape-rendering', 'crispEdges');
+
+        brushg.selectAll('#' + containerId + ' rect')
+          .attr('height', height)
+          .style('pointer-events', 'none');
+      };
+
       if (!isScoreCardPage) {
-        infoEl = tr.append('td')
-          .attr('width', '100%');
-        infoEl.append('p')
-          .attr('class', 'text-results')
-          .text(output.descriptor.toUpperCase());
-      } else {
-        infoEl = table.append('tr');
-        const tdEl = infoEl.append('td')
-          .attr('width', '100%');
-        const divData = tdEl.append('div')
-          .attr('class', 'box-text-results text-center');
-        divData.append('p')
-          .attr('class', 'scorecard-title-result')
-          .text(output.descriptor);
-      }
-
-      const brushstart = () => {
-        svg.classed('selecting-output', true);
-      };
-      const brushmove = () => {
-        d3.select('#' + containerId + ' #' + idx + ' g.resize.e path')
-          .attr('d', 'M 0, 0 ' + ' L 0 ' + height);
-      };
-      const brushend = () => {
-        svg.classed('selecting', !d3.event.target.empty());
-      };
-      const brush = d3.svg.brush()
-        .x(x);
-      // keep a reference to the brush for the output domain
-      output.x = x;
-      output.height = height;
-      const outputId = containerId.indexOf('1') >= 0 ? 'output1' : 'output2';
-      if (!this._outputDomains[idx][outputId]) {
-        this._outputDomains[idx][outputId] = Object.assign({}, output);
-      }
-      if ((groupName === 'GLOBAL' || !groupName) && !this._outputDomains[idx][outputId].brush) {
-        this._outputDomains[idx][outputId].brush = brush;
-        if (this._globalExtentData[idx]) {
-          brush.extent([0, this._globalExtentData[idx]]);
+        let table;
+        let tr;
+        let td;
+        if (containerId.indexOf('1') > 0) {
+          // div.attr('class', 'col-sm-8');
+          table = div.append('table');
+          table.attr('width', '100%')
+            .attr('class', 'table table-responsive')
+            .attr('id', 'table-' + idx);
+          const tr1 = table.append('tr');
+          const td11 = tr1.append('td');
+          const td12 = tr1.append('td');
+          td11.attr('width', '40%');
+          td11.append('p')
+            .attr('class', 'text-results')
+            .text(output.descriptor.toUpperCase());
+          createPlot(td12);
+        } else {
+          // div.attr('class', 'col-sm-4');
+          table = div.append('table');
+          table.attr('width', '100%')
+            .attr('class', 'table table-responsive')
+            .attr('id', 'table-' + idx);
+          tr = table.append('tr');
+          td = tr.append('td');
+          createPlot(td);
         }
       } else {
-        if (this._globalExtentData[idx]) {
-          brush.extent([0, this._globalExtentData[idx]]);
-        }
+        const table = div.append('table')
+        .attr('width', '100%')
+        .attr('class', 'table table-responsive')
+        .attr('id', 'table-' + idx);
+        const tr = table.append('tr');
+        const td = tr.append('td')
+          .attr('width', '100%');
+        createPlot(td);
       }
-      brush.extent([0, this._outputDomains[idx][outputId].brush.extent()[1]]);
-      brush.on('brush', brushmove);
-
-      const textFn = () => {
-        const precision = +output.precision;
-        const brushVal = this._outputDomains[idx][outputId].brush.extent()[1];
-        const numericValue = (brushVal * 100).toFixed(precision);
-        const value = me.calculateGDPValues(containerId, idx, numericValue, avgDoll);
-        return value;
-      };
-
-      if (!isScoreCardPage) {
-        infoEl.append('p')
-        .attr('class', 'text-results')
-        .append('b')
-        .attr('class', 'text-number')
-        .text(textFn);
-      } else {
-        infoEl.select('div.box-text-results')
-          .append('p')
-          .attr('class', 'scorecard-text-result')
-          .append('b')
-          .attr('class', 'text-number')
-          .text(textFn);
-      }
-
-      const line = d3.svg.line()
-        .x((d) => {
-          return d3.mean(data);
-        })
-        .y((d) => {
-          return height;
-        });
-
-      const brushg = svg.append('g')
-        .attr('class', 'brush')
-        .style('pointer-events', 'none')
-        .call(brush);
-
-      brushg.call(brush.event)
-        .transition()
-        .duration(750)
-        .call(brush.extent([0, d3.mean(data)]))
-        .call(brush.event);
-
-      brushg.selectAll('#' + containerId + ' g.resize.w').remove();
-      // Add manually chart styles to be integrated when converting to base64 string
-      brushg.select('#' + containerId + ' #' + idx + ' g.resize.e').append('path')
-        .attr('d', line)
-        .style('fill', '#666')
-        .style('fill-opacity', '0.8')
-        .style('stroke-width', '4px')
-        // .style('stroke', '#C3D700')
-        .style('stroke', '#50c4cf')
-        .style('pointer-events', 'none');
-      // Add manually chart styles to be integrated when converting to base64 string
-      brushg.select('rect.extent')
-        .style('fill-opacity', '0')
-        .style('shape-rendering', 'crispEdges');
-
-      brushg.selectAll('#' + containerId + ' rect')
-        .attr('height', height)
-        .style('pointer-events', 'none');
     });
   }
   createPolicyListChart(policyListData: any, containerId: string, countryList: any) {

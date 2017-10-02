@@ -477,8 +477,9 @@ template {
    /*text-align: center;*/
  }
  .text-results{
-   width: 100px;
-   float: right;
+   /* width: 100px; */
+   /* float: right; */
+   width: 100%;
    font-size: 11px;
    padding-top: 0px;
    color: #666666;
@@ -489,7 +490,7 @@ template {
    margin-top: -20px;
  }
  .text-number{
-   font-size: 14px;
+   font-size: 13px;
  }
  .box-general{
    padding: 5px 0;
@@ -10798,6 +10799,9 @@ fieldset {
     }
     #outputs-1 .resize.e path, #outputs-2 .resize.e path {
       stroke: #C3D700;
+    }
+    #outputs-1 table td, #outputs-2 table td{
+      vertical-align: middle;
     }
     .resize.e {
         cursor: pointer !important;
