@@ -572,7 +572,8 @@ template {
     padding-bottom: 15px;
   }
   .slider-text {
-    font-size: 12px;
+    font-size: 14px;
+    font-weight: bold;
   }
 
   /*VIEWER NEW CODE*/
@@ -3753,7 +3754,12 @@ fieldset[disabled] a.btn {
   background-color: #50C4CF;
   border-color: #50C4CF;
 }
-.btn-primary:hover {
+.card-body .wt-dv .btn-primary {
+  height: 40px;
+  font-size: 13.125px;
+  font-family: sans-serif;
+}
+.btn-primary:hover, .card-body .wt-dv .btn-primary.active {
   color: #fff;
   background-color: #c3d700;
   border-color: #c3d700;
@@ -10922,7 +10928,7 @@ fieldset {
         padding-right: 0;
     }
 .tab .mat-accent {
-  min-width: 160px;
+  min-width: 130px;
 }
 .tab .mat-accent .mat-slider-wrapper,
 .tab .mat-accent .mat-slider-wrapper .mat-slider-ticks-container,

@@ -44,7 +44,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   public sliderValues2Default = {};
   public sliderValues1 = {};
   public sliderValues2 = {};
-  public viewerDisplay = true;
+  public viewerDisplay: string = '';
   public viewerModel: Viewer = {
     firstCountry: '',
     secondCountry: ''
@@ -513,7 +513,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         type: this.mapSlideUISelected
       };
     }
-    data.page = this.viewerDisplay ? 'viewer' : 'tech';
+    data.page = this.viewerDisplay === 'viewer' ? 'viewer' : 'tech';
     const countryFInput = this._selectedCountryList.filter(val => {
       return val.name.toLowerCase() === firstInput.toLowerCase();
     });
@@ -735,6 +735,29 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     const currentLegend = this.mapService.getMapPaintConf(mapId);
     this.legends = this.mapService.getMapLegendConf(mapId);
+  }
+  onChangeViewerIndViewEvent(viewType) {
+    const bodyEl = jQuery('html, body');
+    if (!this.viewerDisplay || this.viewerDisplay !== viewType) {
+      this.viewerDisplay = viewType;
+      const el = jQuery('div#viewIndCtn')[0];
+      const body = jQuery('body')[0];
+      const bodyDimension = body.getBoundingClientRect();
+      const elDimension = el.getBoundingClientRect();
+      let scrollMeasure;
+      if (elDimension.y > bodyDimension.y) {
+        scrollMeasure = elDimension.y - bodyDimension.y;
+      }
+      bodyEl.animate({
+        scrollTop: (scrollMeasure - 10)
+      }, 1000);
+    } else if (this.viewerDisplay === viewType) {
+      this.viewerDisplay = '';
+      bodyEl.animate({
+        scrollTop: 0
+      }, 1000);
+    }
+    return false;
   }
   onDisplayTechMapViewEvent() {
     if (!this.global) {
