@@ -1131,7 +1131,8 @@ export class ChartService {
           return barHeight;
         })
         .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', 0)')
-        .style('fill', '#485050');
+        // .style('fill', '#485050');
+        .style('fill', '#ffffff');
       eBar
         .selectAll('.empty-bar2')
         .transition()
@@ -1153,7 +1154,8 @@ export class ChartService {
           return barHeight;
         })
         .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', 0)')
-        .style('fill', '#485050');
+        // .style('fill', '#485050');
+        .style('fill', '#ffffff');
       dataBars
         .selectAll('.bar-chart1')
         .transition()
@@ -1186,7 +1188,8 @@ export class ChartService {
           return barHeight;
         })
         .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', 0)')
-        .style('fill', '#6DCCDC');
+        // .style('fill', '#6DCCDC');
+        .style('fill', '#4b5455');
       dataBars
         .selectAll('.bar-chart2')
         .transition()
@@ -1219,7 +1222,8 @@ export class ChartService {
           return barHeight;
         })
         .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', 0)')
-        .style('fill', '#C3D700');
+        // .style('fill', '#C3D700');
+        .style('fill', '#f3a277');
       barLabels
         .selectAll('.labels1')
         .transition()
@@ -1232,7 +1236,8 @@ export class ChartService {
           const yParam = isCountryListObject ? d.id : d.label;
           return yLane(yParam) + barHeight - spaceBars;
         })
-        .style('fill', '#6DCCDC')
+        .style('fill', '#4b5455')
+        .style('font-weight', 'bold')
         .text((d) => {
           let data;
             if (countryList['chartType'] === 'absolute') {
@@ -1256,7 +1261,8 @@ export class ChartService {
           const yParam = isCountryListObject ? d.id : d.label;
           return yLane(yParam) + (barHeight * 2) + spaceBars;
         })
-        .style('fill', '#C3D700')
+        .style('fill', '#f3a277')
+        .style('font-weight', 'bold')
         .text((d) => {
           let data;
           if (countryList['chartType'] === 'absolute') {
