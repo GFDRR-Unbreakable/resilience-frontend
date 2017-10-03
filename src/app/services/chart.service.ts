@@ -511,7 +511,10 @@ export class ChartService {
 
       const createPlot = (tdElement) => {
         if (!isScoreCardPage) {
-          tdElement.attr('width', '2%');
+          tdElement.attr('width', '3%');
+          if (containerId.indexOf('1') > 0) {
+            tdElement.attr('width', '6%');
+          }
           tdElement.style('padding', '0.75rem 0');
         }
         const svg = tdElement.append('svg')
@@ -1155,7 +1158,7 @@ export class ChartService {
           if (value % aThousand !== 0) {
             value = (value / aThousand).toString().replace('.', ',');
           } else {
-            value = (value / aThousand).toString() + ',000';
+            value = (value / aThousand).toFixed(3).replace('.', ',');
           }
         }
         return value;
@@ -1181,8 +1184,9 @@ export class ChartService {
           return barHeight;
         })
         .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', 0)')
-        // .style('fill', '#485050');
-        .style('fill', '#ffffff');
+       // .style('fill', '#485050');
+       .style('fill', 'transparent');
+       // .style('fill', '#ffffff');
       eBar
         .selectAll('.empty-bar2')
         .transition()
@@ -1204,8 +1208,9 @@ export class ChartService {
           return barHeight;
         })
         .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', 0)')
-        // .style('fill', '#485050');
-        .style('fill', '#ffffff');
+       // .style('fill', '#485050');
+        .style('fill', 'transparent');
+       // .style('fill', '#ffffff');
       dataBars
         .selectAll('.bar-chart1')
         .transition()
@@ -1238,8 +1243,8 @@ export class ChartService {
           return barHeight;
         })
         .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', 0)')
-        // .style('fill', '#6DCCDC');
-        .style('fill', '#4b5455');
+        .style('fill', '#6DCCDC');
+        // .style('fill', '#4b5455');
       dataBars
         .selectAll('.bar-chart2')
         .transition()
@@ -1272,8 +1277,8 @@ export class ChartService {
           return barHeight;
         })
         .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', 0)')
-        // .style('fill', '#C3D700');
-        .style('fill', '#f3a277');
+        .style('fill', '#C3D700');
+       // .style('fill', '#f3a277');
       barLabels
         .selectAll('.labels1')
         .transition()
@@ -1286,8 +1291,9 @@ export class ChartService {
           const yParam = isCountryListObject ? d.id : d.label;
           return yLane(yParam) + barHeight - spaceBars;
         })
-        .style('fill', '#4b5455')
-        .style('font-weight', 'bold')
+        // .style('fill', '#4b5455')
+        .style('fill', '#666')
+        // .style('font-weight', 'bold')
         .text((d) => {
           let data;
             if (countryList['chartType'] === 'absolute') {
@@ -1311,8 +1317,9 @@ export class ChartService {
           const yParam = isCountryListObject ? d.id : d.label;
           return yLane(yParam) + (barHeight * 2) + spaceBars;
         })
-        .style('fill', '#f3a277')
-        .style('font-weight', 'bold')
+        .style('fill', '#666')
+       // .style('fill', '#f3a277')
+       // .style('font-weight', 'bold')
         .text((d) => {
           let data;
           if (countryList['chartType'] === 'absolute') {

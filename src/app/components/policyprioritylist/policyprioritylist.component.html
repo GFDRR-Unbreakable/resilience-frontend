@@ -5,9 +5,9 @@
          <a href="" routerLink="/viewer"><button type="button" class="btn button-map"><i class="mdi mdi-keyboard-backspace"></i> Map</button></a>
          <h6>Policy Priority List</h6>
          <div class="scorecard-input">
-            <input  type="text" class="form-control" placeholder="" name="firstCountry" [ngbTypeahead]="searchCountryFn" #firstCountry="ngModel" [(ngModel)]="policyModel.firstCountry" (ngModelChange)="onFirstCountryInputChangeEvent()" placeholder="Country 1"/>
+            <input  type="text" class="form-control" placeholder="" name="firstCountry" [ngbTypeahead]="searchCountryFn" #firstCountry="ngModel" [(ngModel)]="policyModel.firstCountry" (ngModelChange)="onFirstCountryInputChangeEvent()" placeholder="Country A"/>
             <button type="button" class="btn btn-outline-secondary icon-plus"><i class="mdi mdi-plus"></i></button>
-            <input  type="text" class="form-control" placeholder="" name="secondCountry" [ngbTypeahead]="searchCountryFn" #secondCountry="ngModel" [(ngModel)]="policyModel.secondCountry" (ngModelChange)="onSecondCountryInputChangeEvent()" placeholder="Country 2"/>
+            <input  type="text" class="form-control" placeholder="" name="secondCountry" [ngbTypeahead]="searchCountryFn" #secondCountry="ngModel" [(ngModel)]="policyModel.secondCountry" (ngModelChange)="onSecondCountryInputChangeEvent()" placeholder="Country B"/>
          </div>
          <button type="button" class="btn btn-primary text-download box-button-pdf" [disabled]="_selectedCountryList.length < 2" (click)="onDownloadPDFFileEvent()"><img class="img-download" src="assets/image/ic-download.png" alt="">PDF</button>
       </div>
@@ -16,7 +16,7 @@
    <div class="row">
       <div class="col-md-6 box-policyprioritylist vertical-border">
          <div class="col-md-12">
-            <h5>{{policyModel.firstCountry || 'Country 1'}}</h5>
+            <h5>{{policyModel.firstCountry || 'Country A'}}</h5>
             <p class="scorecard-text"><b>GDP:</b> ${{firstCountryGDP}}&nbsp;USD</p>
             <p class="scorecard-text"><b>Population (2013 est.):</b> {{firstCountryPopulation}}</p>
          </div>
@@ -42,7 +42,7 @@
       </div>
       <div class="col-md-6 box-policyprioritylist">
          <div class="col-md-12">
-            <h5>{{policyModel.secondCountry || 'Country 2'}}</h5>
+            <h5>{{policyModel.secondCountry || 'Country B'}}</h5>
             <p class="scorecard-text"><b>GDP:</b> ${{secondCountryGDP}}&nbsp;USD</p>
             <p class="scorecard-text"><b>Population (2013 est.):</b> {{secondCountryPopulation}}</p>
          </div>
@@ -107,7 +107,7 @@
         <div class="col-md-6 box-policyprioritylist-1 vertical-border">
             <div class="row">
                 <div class="col-md-12 text-center">
-                <h6 class="">COUNTRY A
+                <h6 class="">{{policyModel.firstCountry || 'COUNTRY A'}}
                     <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
                     <i class="mdi mdi-information-outline"></i>
                     </button> -->
@@ -124,7 +124,7 @@
         <div class="col-md-6 box-policyprioritylist-1">
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <h6 class="">COUNTRY B
+                    <h6 class="">{{policyModel.secondCountry || 'COUNTRY B'}}
                         <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
                         <i class="mdi mdi-information-outline"></i>
                         </button> -->
