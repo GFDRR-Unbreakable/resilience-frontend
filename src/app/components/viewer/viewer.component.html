@@ -33,10 +33,11 @@
               <!-- Country graphics -->
               <div class="ct-risk">
                 <div class="card bg-light mb-3 card-03">
-                  <div class="card-header">Mexico</div>
+                  <div class="card-header">{{hoverCountry ? hoverCountry : 'Country'}}</div>
                   <div class="card-body">
-                  <p>Risk to Assets</p>
+                  <p>{{optionsLabel[mapSlideUISelected]}}</p>
                   <p>$22,404 Million (1.01% of GDP)</p>
+                  <p>{{hoverValue ? hoverValue : '-'}}</p>
                   </div>
                 </div>
               </div>
@@ -55,9 +56,9 @@
 
               <!-- Buttons/tabs -->
               <div class="btn-group tabs-dg" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'well'}" (click)="onChangeMapLayerEvent('well')">Well-Being Losses (%)</button>
-                <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'asset'}" (click)="onChangeMapLayerEvent('asset')">Asset Losses (%)</button>
-                <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'socio'}" (click)="onChangeMapLayerEvent('socio')">Socio-Economic Capacity (%)</button>
+                <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'well'}" (click)="onChangeMapLayerEvent('well')">{{optionsLabel['well']}}</button>
+                <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'asset'}" (click)="onChangeMapLayerEvent('asset')">{{optionsLabel['asset']}}</button>
+                <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'socio'}" (click)="onChangeMapLayerEvent('socio')">{{optionsLabel['socio']}}</button>
               </div>
               <!-- End Buttons/tabs -->
 
@@ -533,7 +534,7 @@
                                                (change)="onSliderChangeEvent2('macro_borrow_abi')"
                                                >
                                              </md-slider>
-                                             <span class="text-center slider-text">{{sliderValues2.macro_borrow_abi_display_value}}</span>                                             
+                                             <span class="text-center slider-text">{{sliderValues2.macro_borrow_abi_display_value}}</span>
                                            </div>
                                         </div>
                                         <div class="row">
@@ -649,7 +650,7 @@
                                                (change)="onSliderChangeEvent1('axfin_cat_info__nonpoor')"
                                                >
                                              </md-slider>
-                                             <span class="text-center slider-text">{{sliderValues1.axfin_cat_info__nonpoor_display_value}}</span>                                             
+                                             <span class="text-center slider-text">{{sliderValues1.axfin_cat_info__nonpoor_display_value}}</span>
                                            </div>
                                            <div class="col-md-4">
                                              <md-slider
@@ -759,7 +760,7 @@
                                                (change)="onSliderChangeEvent2('v_cat_info__poor')"
                                                >
                                              </md-slider>
-                                             <span class="text-center slider-text">{{sliderValues2.v_cat_info__poor_display_value}}</span>                                             
+                                             <span class="text-center slider-text">{{sliderValues2.v_cat_info__poor_display_value}}</span>
                                            </div>
                                         </div>
                                         <div class="row" [hidden]="!hazards.hazard1">
@@ -776,7 +777,7 @@
                                                (change)="onSliderChangeEvent1('v_cat_info__nonpoor')"
                                                >
                                              </md-slider>
-                                             <span class="text-center slider-text">{{sliderValues1.v_cat_info__nonpoor_display_value}}</span>                                             
+                                             <span class="text-center slider-text">{{sliderValues1.v_cat_info__nonpoor_display_value}}</span>
                                            </div>
                                            <div class="col-md-4">
                                              <md-slider
@@ -788,7 +789,7 @@
                                                (change)="onSliderChangeEvent2('v_cat_info__nonpoor')"
                                                >
                                              </md-slider>
-                                             <span class="text-center slider-text">{{sliderValues2.v_cat_info__nonpoor_display_value}}</span>                                             
+                                             <span class="text-center slider-text">{{sliderValues2.v_cat_info__nonpoor_display_value}}</span>
                                            </div>
                                         </div>
                                         <div class="row">
@@ -805,7 +806,7 @@
                                                (change)="onSliderChangeEvent1('shew_for_hazard_ratio')"
                                                >
                                              </md-slider>
-                                             <span class="text-center slider-text">{{sliderValues1.shew_for_hazard_ratio_display_value}}</span>                                             
+                                             <span class="text-center slider-text">{{sliderValues1.shew_for_hazard_ratio_display_value}}</span>
                                            </div>
                                            <div class="col-md-4">
                                              <md-slider
@@ -817,7 +818,7 @@
                                                (change)="onSliderChangeEvent2('shew_for_hazard_ratio')"
                                                >
                                              </md-slider>
-                                             <span class="text-center slider-text">{{sliderValues2.shew_for_hazard_ratio_display_value}}</span>                                             
+                                             <span class="text-center slider-text">{{sliderValues2.shew_for_hazard_ratio_display_value}}</span>
                                            </div>
                                         </div>
                                      </div>
@@ -845,7 +846,7 @@
                                                (change)="onSliderChangeEvent1('hazard_ratio_flood_poor')"
                                                >
                                              </md-slider>
-                                             <span class="text-center slider-text">{{sliderValues1.hazard_ratio_flood_poor_display_value}}</span>                                             
+                                             <span class="text-center slider-text">{{sliderValues1.hazard_ratio_flood_poor_display_value}}</span>
                                            </div>
                                            <div class="col-md-4">
                                              <md-slider
@@ -857,7 +858,7 @@
                                                (change)="onSliderChangeEvent2('hazard_ratio_flood_poor')"
                                                >
                                              </md-slider>
-                                             <span class="text-center slider-text">{{sliderValues2.hazard_ratio_flood_poor_display_value}}</span>                                             
+                                             <span class="text-center slider-text">{{sliderValues2.hazard_ratio_flood_poor_display_value}}</span>
                                            </div>
                                         </div>
                                         <div class="row" [hidden]="!hazards.hazard1">
@@ -874,7 +875,7 @@
                                                (change)="onSliderChangeEvent1('hazard_ratio_fa__flood')"
                                                >
                                              </md-slider>
-                                             <span class="text-center slider-text">{{sliderValues1.hazard_ratio_fa__flood_display_value}}</span>                                             
+                                             <span class="text-center slider-text">{{sliderValues1.hazard_ratio_fa__flood_display_value}}</span>
                                            </div>
                                            <div class="col-md-4">
                                              <md-slider
@@ -886,7 +887,7 @@
                                                (change)="onSliderChangeEvent2('hazard_ratio_fa__flood')"
                                                >
                                              </md-slider>
-                                             <span class="text-center slider-text">{{sliderValues2.hazard_ratio_fa__flood_display_value}}</span>                                             
+                                             <span class="text-center slider-text">{{sliderValues2.hazard_ratio_fa__flood_display_value}}</span>
                                            </div>
                                         </div>
                                         <div class="row" [hidden]="!hazards.hazard2">
@@ -903,7 +904,7 @@
                                                (change)="onSliderChangeEvent1('hazard_ratio_fa__earthquake')"
                                                >
                                              </md-slider>
-                                             <span class="text-center slider-text">{{sliderValues1.hazard_ratio_fa__earthquake_display_value}}</span>                                             
+                                             <span class="text-center slider-text">{{sliderValues1.hazard_ratio_fa__earthquake_display_value}}</span>
                                            </div>
                                            <div class="col-md-4">
                                              <md-slider
@@ -915,7 +916,7 @@
                                                (change)="onSliderChangeEvent2('hazard_ratio_fa__earthquake')"
                                                >
                                              </md-slider>
-                                             <span class="text-center slider-text">{{sliderValues2.hazard_ratio_fa__earthquake_display_value}}</span>                                             
+                                             <span class="text-center slider-text">{{sliderValues2.hazard_ratio_fa__earthquake_display_value}}</span>
                                            </div>
                                         </div>
                                         <div class="row" [hidden]="!hazards.hazard3">
@@ -932,7 +933,7 @@
                                                (change)="onSliderChangeEvent1('hazard_ratio_fa__tsunami')"
                                                >
                                              </md-slider>
-                                             <span class="text-center slider-text">{{sliderValues1.hazard_ratio_fa__tsunami_display_value}}</span>                                             
+                                             <span class="text-center slider-text">{{sliderValues1.hazard_ratio_fa__tsunami_display_value}}</span>
                                            </div>
                                            <div class="col-md-4">
                                              <md-slider
@@ -944,7 +945,7 @@
                                                (change)="onSliderChangeEvent2('hazard_ratio_fa__tsunami')"
                                                >
                                              </md-slider>
-                                             <span class="text-center slider-text">{{sliderValues2.hazard_ratio_fa__tsunami_display_value}}</span>                                             
+                                             <span class="text-center slider-text">{{sliderValues2.hazard_ratio_fa__tsunami_display_value}}</span>
                                            </div>
                                         </div>
                                         <div class="row" [hidden]="!hazards.hazard4">
@@ -961,7 +962,7 @@
                                                (change)="onSliderChangeEvent1('hazard_ratio_fa__wind')"
                                                >
                                              </md-slider>
-                                             <span class="text-center slider-text">{{sliderValues1.hazard_ratio_fa__wind_display_value}}</span>                                             
+                                             <span class="text-center slider-text">{{sliderValues1.hazard_ratio_fa__wind_display_value}}</span>
                                            </div>
                                            <div class="col-md-4">
                                              <md-slider
@@ -973,7 +974,7 @@
                                                (change)="onSliderChangeEvent2('hazard_ratio_fa__wind')"
                                                >
                                              </md-slider>
-                                             <span class="text-center slider-text">{{sliderValues2.hazard_ratio_fa__wind_display_value}}</span>                                             
+                                             <span class="text-center slider-text">{{sliderValues2.hazard_ratio_fa__wind_display_value}}</span>
                                            </div>
                                         </div>
                                      </div>

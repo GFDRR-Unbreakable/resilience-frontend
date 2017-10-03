@@ -266,4 +266,7 @@ export class MapService {
   setClickFnMapEvent(cb: Function) {
     this.map.on('click', cb);
   }
+  setHoverFnMapEvent(cb: Function) {
+    this.map.on('mousemove', cb);
+  }
 }

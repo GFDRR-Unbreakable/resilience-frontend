@@ -164,6 +164,13 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     };
     return map.call(distinctUntilChangedFn, searchCb);
   }
+  public optionsLabel = {
+    well: 'Well-Being Losses (%)',
+    asset: 'Asset Losses (%)',
+    socio: 'Socio-Economic Capacity (%)',
+  };
+  public hoverCountry: string;
+  public hoverValue: string;
 
   constructor(
     private mapService: MapService,
@@ -629,6 +636,25 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           }
         }
       });
+      this.mapService.setHoverFnMapEvent((ev) => {
+        const features = self.mapService.getMap().queryRenderedFeatures(ev.point, {layers: [self.mapService.getViewerFillLayer()]});
+        if (features.length) {
+          const names = features[0].properties['Names'];
+          let value = '';
+          if (this.mapSlideUISelected == 'asset') {
+            value = features[0].properties['1_Assets']
+          } else if (this.mapSlideUISelected == 'socio') {
+            value = features[0].properties['2_SocEcon']
+          } else if (this.mapSlideUISelected == 'well') {
+            value = features[0].properties['3_WeBeing']
+          }
+          this.hoverCountry = names;
+          this.hoverValue = value;
+        } else {
+          this.hoverCountry = null;
+          this.hoverValue = null;
+        }
+      });
     });
   }
   setSingleSliderConfValue(sliderObj, key, max, min, input) {
@@ -641,7 +667,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     if (sliderObj[key + '_display_value'] != null) {
       // sliderObj[key + '_value'] = sliderObj[key + '_display_value'] / (max + min) * 100;
       sliderObj[key + '_value'] = 0 / (max + min) * 100;
-      sliderObj[key + '_display_value'] = 
+      sliderObj[key + '_display_value'] =
         this.chartService.formatInputChartValues(0, input);
       // sliderObj[key + '_display_value'] =
         // this.chartService.formatInputChartValues(sliderObj[key + '_display_value'], input);
