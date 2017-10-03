@@ -19,13 +19,15 @@ export class NavbarComponent implements OnInit {
     });
   }
   onScrollAboutElEvent(event) {
-    let el = jQuery("div#about");
+    let el = jQuery('div#about');
     if (el.length) {
       el = el[0];
       jQuery('html, body').animate({
           scrollTop: (el.getBoundingClientRect().y - 10)
       }, 1000);
       return false;
+    } else {
+      this.onOpenModalEvent();
     }
   }
 }
