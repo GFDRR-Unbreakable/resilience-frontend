@@ -398,9 +398,10 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
     }
   }
   onDownloadPDFFileEvent() {
+    this.chartService.switchScoreCardChartFont(true, true);
     const data = this.processForFileJSONData();
-    console.log(data);
     this.fileService.getScorecardPDFFile(data).subscribe(pdfData => {
+      this.chartService.switchScoreCardChartFont(true, false);
       this.fileService.setPDFDownloadProcess(pdfData, 'scorecardPolicyList');
     });
   }

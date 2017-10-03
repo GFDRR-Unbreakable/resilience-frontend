@@ -10812,9 +10812,9 @@ fieldset {
     g.brush> .background {
         cursor: default !important;
     }
-    g.tick> text {
+    /*g.tick> text {
         font-size: .5em !important;
-    }
+    }*/
     .axis path, .axis line, #inputs-1 .axis path, #inputs-1 .axis line, #inputs-2 .axis path, #inputs-2 .axis line {
         fill: none;
         stroke: #000;
@@ -10825,7 +10825,7 @@ fieldset {
         font-size: 1em;
     }
     g.tick> text {
-        font-size: 1em !important;
+        font-size: 1em;
     }
     .brush .extent {
         fill-opacity: 0;
@@ -11036,9 +11036,9 @@ fieldset {
 }
 .x-axis g.tick text{
   fill: #666;
-  font-size: 11px !important;
+  font-size: 11px;
   font-weight: bold;
-  text-anchor: start !important;
+  text-anchor: start;
 }
 .lanes path,
 .lanes line {

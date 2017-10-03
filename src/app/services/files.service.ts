@@ -44,7 +44,7 @@ export class FileService {
       fileName = 'viewer_report';
     } else if (view === 'scorecardPolicyList') {
       fileName = 'scorecard_priority_list_report';
-    } else if (view === 'scorecardPolicyMeasure'){
+    } else if (view === 'scorecardPolicyMeasure') {
       fileName = 'scorecard_policy_measure_report';
     }
     a.download = `${fileName}.pdf`;

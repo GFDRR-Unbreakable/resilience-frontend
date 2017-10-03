@@ -992,11 +992,31 @@ export class ChartService {
           .call(params.gridLines.x)
           .classed('lanes', true)
           .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ',' + (height - margin.bottom) + ')');
+        // Apply UI styles in vertical lines to get them in base64 conversion process.
+        laneChart.selectAll('g.lanes path')
+          .style('fill', 'none')
+          .style('stroke', '#485050')
+          .style('stroke-dasharray', '2')
+          .style('shape-rendering', 'crispEdges');
+        laneChart.selectAll('g.lanes line')
+          .style('fill', 'none')
+          .style('stroke', '#485050')
+          .style('stroke-dasharray', '2')
+          .style('shape-rendering', 'crispEdges');
         // Adding X axis
         laneChart.append('g')
           .classed('x-axis', true)
           .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', ' + (height - margin.bottom) + ')')
           .call(params.axis.x);
+        // Apply UI styles in x axis element to get it in base 64 conversion process.
+        laneChart.selectAll('g.x-axis path')
+          .style('fill', 'none')
+          .style('stroke', '#626262')
+          .style('shape-rendering', 'crispEdges');
+        laneChart.selectAll('g.x-axis line')
+          .style('fill', 'none')
+          .style('stroke', '#626262')
+          .style('shape-rendering', 'crispEdges');
         // Adding x axis descriptive label
         laneChart.select('.x-axis')
           .append('text')
@@ -1011,9 +1031,31 @@ export class ChartService {
           .classed('y-axis', true)
           .attr('transform', 'translate(' + margin.left + ', ' + yLabelPos + ')')
           .call(params.axis.y);
+        // Apply UI styles in y axis element to get it in base 64 conversion process.
+        laneChart.selectAll('g.y-axis path')
+          .style('fill', 'none')
+          .style('stroke', 'transparent')
+          .style('shape-rendering', 'crispEdges');
+        laneChart.selectAll('g.y-axis path')
+          .style('fill', 'none')
+          .style('stroke', 'transparent')
+          .style('shape-rendering', 'crispEdges');
+        // Adding y left-axis labels
         laneChart.select('.y-axis')
           .selectAll('.tick text')
           .call(textWrap, margin.left);
+        // Adding UI styles in other y and x axes elements to get them in base64 conversion process.
+        laneChart.selectAll('g.x-axis text')
+          .style('fill', '#666')
+          .style('font-weight', 'bold');
+        laneChart.selectAll('g.y-axis g.tick text')
+          .style('fill', '#666')
+          .style('font-size', '0.9rem');
+        laneChart.selectAll('g.x-axis g.tick text')
+          .style('fill', '#666')
+          .style('font-size', '11px')
+          .style('font-weight', 'bold')
+          .style('text-anchor', 'start');
       } else {
         // Update lane lines
         laneChart.selectAll('g.lanes')
@@ -1292,7 +1334,6 @@ export class ChartService {
           return yLane(yParam) + barHeight - spaceBars;
         })
         // .style('fill', '#4b5455')
-        .style('fill', '#666')
         // .style('font-weight', 'bold')
         .text((d) => {
           let data;
@@ -1304,7 +1345,8 @@ export class ChartService {
             }
           // }
           return data;
-        });
+        })
+        .style('fill', '#666');
       barLabels
         .selectAll('.labels2')
         .transition()
@@ -1317,7 +1359,6 @@ export class ChartService {
           const yParam = isCountryListObject ? d.id : d.label;
           return yLane(yParam) + (barHeight * 2) + spaceBars;
         })
-        .style('fill', '#666')
        // .style('fill', '#f3a277')
        // .style('font-weight', 'bold')
         .text((d) => {
@@ -1328,7 +1369,13 @@ export class ChartService {
             data = (d.dKtot).toFixed(1) + '%';
           }
           return data;
-        });
+        })
+        .style('fill', '#666');
+
+      barLabels.selectAll('text')
+        .style('font-size', '0.9315rem');
+      laneChart.selectAll('text')
+        .style('fill', '#666');
     };
     plotChart({
       data: allData,
@@ -1862,6 +1909,18 @@ export class ChartService {
       const x = a[key]; const y = b[key];
       return ((x < y) ? -1 : ((x > y) ? 1 : 0));
     });
+  }
+  switchScoreCardChartFont(isScoreCardList, isPDF) {
+    const chartId1 = isScoreCardList ? 'policy-list-1' : 'policyMeasure0';
+    const chartId2 = isScoreCardList ? 'policy-list-2' : 'policyMeasure1';
+    const chart1 = jQuery(`#${chartId1} svg`);
+    const chart2 = jQuery(`#${chartId2} svg`);
+    let fontFamilyTxt = 'Lato, Helvetica Neue, Helvetica, Arial, sans-serif';
+    if (isPDF) {
+      fontFamilyTxt = 'Arial';
+    }
+    chart1.find('text').css('font-family', fontFamilyTxt);
+    chart2.find('text').css('font-family', fontFamilyTxt);
   }
   unsubscribeOutputData() {
     this._outputDataSubs.unsubscribe();
