@@ -3957,9 +3957,9 @@ fieldset[disabled] a.btn {
   background-color: transparent;
 }
 .btn-outline-secondary:active, .btn-outline-secondary.active, .show > .btn-outline-secondary.dropdown-toggle {
-  color: #fff;
-  background-color: #4b5757;
-  border-color: #4b5757;
+  /*color: #fff;*/
+  background-color: transparent;
+  border-color: transparent;
 }
 
 .btn-outline-info {
