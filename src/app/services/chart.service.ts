@@ -99,24 +99,42 @@ export class ChartService {
     }
     return avgDoll;
   }
-  public calculateRiskGDPValues = (gdpDollars, percentageValue) => {
+  public calculateRiskGDPValues = (gdpDollars, percentageValue, isSetBillion?) => {
     let dollarLossGDP = (gdpDollars * (+percentageValue)) / 100;
     const aThousand = 1000;
     const aMillion = 1000000;
+    const aBillion = 1000000000;
     let asString;
     let extraInfo;
     let aValue;
-    if (dollarLossGDP >= aMillion) {
+    if (isSetBillion) {
+      if (dollarLossGDP >= aBillion) {
+        dollarLossGDP = Math.round(dollarLossGDP / aBillion);
+        asString = dollarLossGDP;
+        if (dollarLossGDP >= aThousand) {
+          asString = dollarLossGDP / aThousand;
+          asString = asString.toFixed(3).split('.').join(',');
+        }
+        extraInfo = 'Billion';
+        aValue = `$${asString} ${extraInfo} (${percentageValue} % of GDP)`;
+      } else if (dollarLossGDP >= aMillion) {
+        dollarLossGDP /= aMillion;
+        dollarLossGDP = Math.round(dollarLossGDP);
+        asString = dollarLossGDP;
+        if (dollarLossGDP >= aThousand) {
+          asString = dollarLossGDP / aThousand;
+          asString = asString.toFixed(3).split('.').join(',');
+        }
+        extraInfo = 'Million';
+        aValue = `$${asString} ${extraInfo} (${percentageValue} % of GDP)`;
+      }
+    } else if (dollarLossGDP >= aMillion) {
       dollarLossGDP /= aMillion;
       dollarLossGDP = Math.round(dollarLossGDP);
       asString = dollarLossGDP;
       if (dollarLossGDP >= aThousand) {
         asString = dollarLossGDP / aThousand;
-        if (asString % aThousand === 0) {
-          asString += '.000';
-        }
-        asString = asString.toString().split('.').join(',');
-        asString = asString.split(',')[1].length === 2 ? asString + '0' : asString;
+        asString = asString.toFixed(3).split('.').join(',');
       }
       extraInfo = 'Million';
       aValue = `$${asString} ${extraInfo} (${percentageValue} % of GDP)`;
@@ -125,8 +143,7 @@ export class ChartService {
       asString = dollarLossGDP;
       if (dollarLossGDP >= aThousand) {
         asString = dollarLossGDP / aThousand;
-        asString = asString.toString().split('.').join(',');
-        asString = asString.split(',')[1].length === 2 ? asString + '0' : asString;
+        asString = asString.toFixed(3).split('.').join(',');
       }
       aValue = `$${asString} (${percentageValue} % of GDP)`;
     }

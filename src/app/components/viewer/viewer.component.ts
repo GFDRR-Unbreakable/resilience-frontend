@@ -644,19 +644,24 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           const names = features[0].properties['Names'];
           let value = '';
           if (this.mapSlideUISelected == 'asset') {
-            value = features[0].properties['1_Assets']
+            value = features[0].properties['1_Assets'];
           } else if (this.mapSlideUISelected == 'socio') {
-            value = features[0].properties['2_SocEcon']
+            value = features[0].properties['2_SocEcon'];
           } else if (this.mapSlideUISelected == 'well') {
-            value = features[0].properties['3_WeBeing']
+            value = features[0].properties['3_WeBeing'];
           }
           this.hoverCountry = names;
           this.hoverValue = (parseFloat(value) * 100).toFixed(2);
-          const globalModelObj = this.chartService.getGlobalModelData();
-          let model = globalModelObj[isoCode];
-          let avg = Math.round((+model['macro_gdp_pc_pp']) * (+model['macro_pop']));
-          const results = this.chartService.calculateRiskGDPValues(avg, this.hoverValue);
-          this.hoverDisplayValue = results.text;
+          if (this.mapSlideUISelected === 'well' || this.mapSlideUISelected === 'asset') {
+            const globalModelObj = this.chartService.getGlobalModelData();
+            let model = globalModelObj[isoCode];
+            let avg = Math.round((+model['macro_gdp_pc_pp']) * (+model['macro_pop']));
+            const results = this.chartService.calculateRiskGDPValues(avg, this.hoverValue, true);
+            this.hoverDisplayValue = results.text;
+          } else {
+            const percent = ' %';
+            this.hoverDisplayValue = this.hoverValue + percent;
+          }
         } else {
           this.hoverCountry = null;
           this.hoverValue = null;

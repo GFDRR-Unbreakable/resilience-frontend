@@ -128,28 +128,16 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
         if (totalGDP >= aBillion) {
           totalGDP = Math.round(totalGDP / aBillion);
           if (totalGDP >= aThousand) {
-            if (totalGDP % aThousand === 0) {
-              totalGDP = totalGDP / aThousand;
-              totalGDP += '.000';
-            } else {
-              totalGDP = totalGDP / aThousand;
-            }
-            totalGDP = totalGDP.toString().split('.').join(',');
-            totalGDP = totalGDP.split(',')[1].length === 2 ? totalGDP + '0' : totalGDP;
+            totalGDP = totalGDP / aThousand;
+            totalGDP = totalGDP.toFixed(3).split('.').join(',');
           }
           extraBInfo = 'Billion';
         }
         if (countryPopulation >= aMillion) {
           countryPopulation = Math.round(countryPopulation / aMillion);
           if (countryPopulation >= aThousand) {
-            if (countryPopulation % aThousand === 0) {
-              countryPopulation = countryPopulation / aThousand;
-              countryPopulation += '.000';
-            } else {
-              countryPopulation = countryPopulation / aThousand;
-            }
-            countryPopulation = countryPopulation.toString().split('.').join(',');
-            countryPopulation = countryPopulation.split(',')[1].length === 2 ? countryPopulation + '0' : countryPopulation;
+            countryPopulation = countryPopulation / aThousand;
+            countryPopulation = countryPopulation.toFixed(3).split('.').join(',');
           }
           extraMInfo = 'Million';
         }
