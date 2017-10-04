@@ -16,7 +16,8 @@ export class ChartService {
   private _inputDataProm$: Observable<any>;
   private _baseURL = SERVER.URL.BASE;
   private _maxGDPNum = 0;
-  private _maxCountryXValues: Array<any> = [];
+  private _minGDPNum = 0;
+  private _maxMinCountryXValues: Array<any> = [];
   private _outputDataURL = SERVER.URL.OUTPUT_DATA;
   private _inputInfoURL = SERVER.URL.INPUTS_INFO;
   private _inputDomains: any;
@@ -816,45 +817,58 @@ export class ChartService {
     } else {
       const policyData = dkTotArr.concat(dWTotCurrencyArr);
       const maxCountryVal = d3.max(policyData);
+      const minCountryVal = d3.min(policyData);
       const MAX_SELECTED_COUNTRIES = 2;
-      if (this._maxCountryXValues.length < MAX_SELECTED_COUNTRIES) {
-        const filterContainer = this._maxCountryXValues.filter(val => val.chart === containerId);
+      if (this._maxMinCountryXValues.length < MAX_SELECTED_COUNTRIES) {
+        const filterContainer = this._maxMinCountryXValues.filter(val => val.chart === containerId);
         if (!filterContainer.length) {
-          this._maxCountryXValues.push({
+          this._maxMinCountryXValues.push({
             chart: containerId,
             type: countryList['chartType'],
-            maxVal: maxCountryVal
+            maxVal: maxCountryVal,
+            minVal: minCountryVal
           });
         } else {
-          this._maxCountryXValues.forEach(val => {
+          this._maxMinCountryXValues.forEach(val => {
             if (val.chart === containerId) {
               if (val.type !== countryList['chartType']) {
                 this._maxGDPNum = 0;
+                this._minGDPNum = 0;
               }
               val.type = countryList['chartType'];
               val.maxVal = maxCountryVal;
+              val.minVal = minCountryVal;
             }
           });
         }
       } else {
-        const filterChartType = this._maxCountryXValues.filter(val => val.type === countryList['chartType']);
+        const filterChartType = this._maxMinCountryXValues.filter(val => val.type === countryList['chartType']);
         if (!filterChartType.length && this.countPolicyListCharts() === 2) {
           this._maxGDPNum = 0;
-          this._maxCountryXValues.forEach(val => {val.type = countryList['chartType']; val.maxVal = 0; });
+          this._minGDPNum = 0;
+          this._maxMinCountryXValues.forEach(val => {val.type = countryList['chartType']; val.maxVal = 0; val.minVal = 0; });
         } else {
-          this._maxGDPNum = d3.max(this._maxCountryXValues, d => d.maxVal);
+          this._maxGDPNum = d3.max(this._maxMinCountryXValues, d => d.maxVal);
+          this._minGDPNum = d3.min(this._maxMinCountryXValues, d => d.minVal);
         }
-        this._maxCountryXValues.forEach(val => {
+        this._maxMinCountryXValues.forEach(val => {
           if (val.chart === containerId) {
             val.maxVal = maxCountryVal;
+            val.minVal = minCountryVal;
           }
         });
       }
-      const maxVal = d3.max(this._maxCountryXValues, (d) => {
+      const maxVal = d3.max(this._maxMinCountryXValues, (d) => {
         return d.maxVal;
+      });
+      const minVal = d3.min(this._maxMinCountryXValues, (d) => {
+        return d.minVal;
       });
       if (maxVal > this._maxGDPNum) {
         this._maxGDPNum = maxVal;
+      }
+      if (minVal < this._minGDPNum) {
+        this._minGDPNum = minVal;
       }
       policyList = this.getChartsConf().policyList;
       policyList.forEach((val, idx) => {
@@ -1113,8 +1127,8 @@ export class ChartService {
         return d.dKtot;
       });
       minValues = [minFirstBarValue, minSecondBarValue];
-      min = d3.min(minValues);
-      maxValue = d3.max([maxFirstBarValue, maxSecondBarValue]);
+      min = isPolicyListObject ? this._minGDPNum : d3.min(minValues);
+      maxValue = isPolicyListObject ? this._maxGDPNum : d3.max([maxFirstBarValue, maxSecondBarValue]);
       if (min < -1) {
         xDomain = [min, maxValue];
         xLane.domain(xDomain).nice();
@@ -1614,8 +1628,8 @@ export class ChartService {
   getMaxGDPCountryValue() {
     return this._maxGDPNum;
   }
-  getMaxGDPCountryValues() {
-    return this._maxCountryXValues;
+  getMaxMinGDPCountryValues() {
+    return this._maxMinCountryXValues;
   }
   getMetricAllCountriesSinglePolicy(policy) {
     const allCountriesPolicy = this._newPolicyGroupedByPolicyObj;
