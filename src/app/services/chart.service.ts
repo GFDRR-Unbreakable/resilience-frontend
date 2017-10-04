@@ -658,14 +658,14 @@ export class ChartService {
             .attr('width', '15%');
           td.append('p')
             .attr('class', 'text-results')
-            .append('b')
+            .append('span')
             .attr('class', 'text-number')
             .text(textFn);
         } else {
           infoEl.select('div.box-text-results')
             .append('p')
             .attr('class', 'scorecard-text-result')
-            .append('b')
+            .append('span')
             .attr('class', 'text-number')
             .text(textFn);
         }
