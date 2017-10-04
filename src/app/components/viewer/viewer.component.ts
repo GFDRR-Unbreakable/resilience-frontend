@@ -672,14 +672,14 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   setSingleSliderConfValue(sliderObj, key, max, min, input) {
     sliderObj[key + '_min'] = 0;
-    if (key.indexOf('hazard') === 0 || key === 'macro_T_rebuild_K') {
+    /*if (key.indexOf('hazard') === 0 || key === 'macro_T_rebuild_K') {
       sliderObj[key + '_min'] = 1;
-    }
+    }*/
     sliderObj[key + '_max'] = 100;
     sliderObj[key + '_step'] = 1;
     if (sliderObj[key + '_display_value'] != null) {
       // sliderObj[key + '_value'] = sliderObj[key + '_display_value'] / (max + min) * 100;
-      sliderObj[key + '_value'] = 0 / (max + min) * 100;
+      sliderObj[key + '_value'] = 0;
       sliderObj[key + '_display_value'] =
         this.chartService.formatInputChartValues(0, input);
       // sliderObj[key + '_display_value'] =
@@ -715,6 +715,21 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         if (min === max) {
           min--;
           max++;
+        }
+        switch (key) {
+          case 'gamma_SP_cat_info__poor':
+          case 'macro_tau_tax':
+          case 'macro_borrow_abi':
+          case 'macro_prepare_scaleup':
+          case 'axfin_cat_info__poor':
+          case 'axfin_cat_info__nonpoor':
+          case 'v_cat_info__poor':
+          case 'v_cat_info__nonpoor':
+          case 'shew_for_hazard_ratio':
+            min = 0;
+            max = 1;
+            break;
+          default: break;
         }
         this.setSingleSliderConfValue(this.sliderValues1, key, max, min, inputData[inputDataIndex]);
         this.setSingleSliderConfValue(this.sliderValues2, key, max, min, inputData[inputDataIndex]);

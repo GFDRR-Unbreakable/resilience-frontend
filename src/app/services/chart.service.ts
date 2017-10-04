@@ -1473,14 +1473,8 @@ export class ChartService {
       const aThousand = 1000;
       value = Math.round(+value);
       if (value >= aThousand) {
-        if (value % aThousand === 0) {
-          value /= aThousand;
-          value = value + '.000';
-        } else {
-          value /= aThousand;
-        }
+        value /= aThousand;
         value = value.toFixed(3).replace('.', ',');
-        value = value.split(',')[1].length === 2 ? value + '0' : value;
       }
       value = '$' + value;
     } else if (percent) {
@@ -1968,6 +1962,21 @@ export class ChartService {
           sliderValues[conf + '_original_value'] =
             sliderValues[conf + '_display_value'].replace('$', '').replace(',', '');
         } else {
+          switch (conf) {
+            case 'gamma_SP_cat_info__poor':
+            case 'macro_tau_tax':
+            case 'macro_borrow_abi':
+            case 'macro_prepare_scaleup':
+            case 'axfin_cat_info__poor':
+            case 'axfin_cat_info__nonpoor':
+            case 'v_cat_info__poor':
+            case 'v_cat_info__nonpoor':
+            case 'shew_for_hazard_ratio':
+              model[conf] = model[conf] > 1 ? 1 : model[conf];
+              model[conf] = model[conf] < 0 ? 0 : model[conf];
+              break;
+            default: break;
+          }
           sliderValues[conf + '_display_value'] = this.formatInputChartValues(model[conf], input);
           sliderValues[conf].value = model[conf];
           sliderValues[conf + '_value'] = model[conf] / (sliderValues[conf].max + sliderValues[conf].min) * 100;
