@@ -73,7 +73,7 @@ export class ChartService {
     });
     return outputMetricAvgInfo;
   }
-  private calculateAVGGDPValue(idx, groupName?, isoCode?) {
+  public calculateAVGGDPValue(idx, groupName?, isoCode?) {
     const globalObj = this.getGlobalModelData();
     let sumGDP = 0;
     let sumPop = 0;
@@ -99,48 +99,48 @@ export class ChartService {
     }
     return avgDoll;
   }
+  public calculateRiskGDPValues = (gdpDollars, percentageValue) => {
+    let dollarLossGDP = (gdpDollars * (+percentageValue)) / 100;
+    const aThousand = 1000;
+    const aMillion = 1000000;
+    let asString;
+    let extraInfo;
+    let aValue;
+    if (dollarLossGDP >= aMillion) {
+      dollarLossGDP /= aMillion;
+      dollarLossGDP = Math.round(dollarLossGDP);
+      asString = dollarLossGDP;
+      if (dollarLossGDP >= aThousand) {
+        asString = dollarLossGDP / aThousand;
+        if (asString % aThousand === 0) {
+          asString += '.000';
+        }
+        asString = asString.toString().split('.').join(',');
+        asString = asString.split(',')[1].length === 2 ? asString + '0' : asString;
+      }
+      extraInfo = 'Million';
+      aValue = `$${asString} ${extraInfo} (${percentageValue} % of GDP)`;
+    } else {
+      dollarLossGDP = Math.round(dollarLossGDP);
+      asString = dollarLossGDP;
+      if (dollarLossGDP >= aThousand) {
+        asString = dollarLossGDP / aThousand;
+        asString = asString.toString().split('.').join(',');
+        asString = asString.split(',')[1].length === 2 ? asString + '0' : asString;
+      }
+      aValue = `$${asString} (${percentageValue} % of GDP)`;
+    }
+    return {
+      dollarGDP: dollarLossGDP,
+      text: aValue
+    };
+  };
   private calculateGDPValues (containerId, key, numericValue, gdpDollars) {
     let percent;
     let value;
     let moreValues;
-    const calculateRiskGDPValues = (percentageValue) => {
-      let dollarLossGDP = (gdpDollars * (+percentageValue)) / 100;
-      const aThousand = 1000;
-      const aMillion = 1000000;
-      let asString;
-      let extraInfo;
-      let aValue;
-      if (dollarLossGDP >= aMillion) {
-        dollarLossGDP /= aMillion;
-        dollarLossGDP = Math.round(dollarLossGDP);
-        asString = dollarLossGDP;
-        if (dollarLossGDP >= aThousand) {
-          asString = dollarLossGDP / aThousand;
-          if (asString % aThousand === 0) {
-            asString += '.000';
-          }
-          asString = asString.toString().split('.').join(',');
-          asString = asString.split(',')[1].length === 2 ? asString + '0' : asString;
-        }
-        extraInfo = 'Million';
-        aValue = `$${asString} ${extraInfo} (${percentageValue} % of GDP)`;
-      } else {
-        dollarLossGDP = Math.round(dollarLossGDP);
-        asString = dollarLossGDP;
-        if (dollarLossGDP >= aThousand) {
-          asString = dollarLossGDP / aThousand;
-          asString = asString.toString().split('.').join(',');
-          asString = asString.split(',')[1].length === 2 ? asString + '0' : asString;
-        }
-        aValue = `$${asString} (${percentageValue} % of GDP)`;
-      }
-      return {
-        dollarGDP: dollarLossGDP,
-        text: aValue
-      };
-    };
     if (key === 'risk' || key === 'risk_to_assets') {
-      moreValues = calculateRiskGDPValues(numericValue);
+      moreValues = this.calculateRiskGDPValues(gdpDollars, numericValue);
       value = moreValues.text;
       this._outputDomains[key]['chart'][containerId] = {
         dollarGDP: moreValues.dollarGDP,
@@ -342,7 +342,7 @@ export class ChartService {
         .attr('id', 'initial-' + input.key)
         .attr('class', 'initial')
         .append('line');
-      // add the brush to the input config so 
+      // add the brush to the input config so
       // we can access it later
       input.forUpdate = {
         b,

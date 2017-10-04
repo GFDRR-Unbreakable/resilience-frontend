@@ -170,7 +170,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     socio: 'Socio-Economic Capacity (%)',
   };
   public hoverCountry: string;
-  public hoverValue: number;
+  public hoverValue: string;
+  public hoverDisplayValue: string;
 
   constructor(
     private mapService: MapService,
@@ -639,6 +640,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       this.mapService.setHoverFnMapEvent((ev) => {
         const features = self.mapService.getMap().queryRenderedFeatures(ev.point, {layers: [self.mapService.getViewerFillLayer()]});
         if (features.length) {
+          const isoCode = features[0].properties['ISO_Codes'];
           const names = features[0].properties['Names'];
           let value = '';
           if (this.mapSlideUISelected == 'asset') {
@@ -649,10 +651,17 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
             value = features[0].properties['3_WeBeing']
           }
           this.hoverCountry = names;
-          this.hoverValue = parseFloat(value);
+          this.hoverValue = (parseFloat(value) * 100).toFixed(2);
+          const globalModelObj = this.chartService.getGlobalModelData();
+          let model = globalModelObj[isoCode];
+          let avg = Math.round((+model['macro_gdp_pc_pp']) * (+model['macro_pop']));
+          const results = this.chartService.calculateRiskGDPValues(avg, this.hoverValue);
+          this.hoverDisplayValue = results.text;
+          console.log(results.text);
         } else {
           this.hoverCountry = null;
           this.hoverValue = null;
+          this.hoverDisplayValue = null;
         }
       });
     });

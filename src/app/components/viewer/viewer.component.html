@@ -36,7 +36,7 @@
                   <div class="card-header">{{hoverCountry ? hoverCountry : 'Country'}}</div>
                   <div class="card-body">
                   <p>{{optionsLabel[mapSlideUISelected]}}</p>
-                  <p>{{hoverValue ? (hoverValue * 100 | number: '1.2-2') + '%': '-'}}</p>
+                  <p>{{hoverDisplayValue ? hoverDisplayValue : '-'}}</p>
                   </div>
                 </div>
               </div>
