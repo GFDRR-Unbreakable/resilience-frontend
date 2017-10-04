@@ -657,7 +657,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           let avg = Math.round((+model['macro_gdp_pc_pp']) * (+model['macro_pop']));
           const results = this.chartService.calculateRiskGDPValues(avg, this.hoverValue);
           this.hoverDisplayValue = results.text;
-          console.log(results.text);
         } else {
           this.hoverCountry = null;
           this.hoverValue = null;
