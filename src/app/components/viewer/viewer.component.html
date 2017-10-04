@@ -36,8 +36,7 @@
                   <div class="card-header">{{hoverCountry ? hoverCountry : 'Country'}}</div>
                   <div class="card-body">
                   <p>{{optionsLabel[mapSlideUISelected]}}</p>
-                  <p>$22,404 Million (1.01% of GDP)</p>
-                  <p>{{hoverValue ? hoverValue : '-'}}</p>
+                  <p>{{hoverValue ? (hoverValue * 100 | number: '1.2-2') + '%': '-'}}</p>
                   </div>
                 </div>
               </div>

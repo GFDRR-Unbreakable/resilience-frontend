@@ -170,7 +170,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     socio: 'Socio-Economic Capacity (%)',
   };
   public hoverCountry: string;
-  public hoverValue: string;
+  public hoverValue: number;
 
   constructor(
     private mapService: MapService,
@@ -649,7 +649,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
             value = features[0].properties['3_WeBeing']
           }
           this.hoverCountry = names;
-          this.hoverValue = value;
+          this.hoverValue = parseFloat(value);
         } else {
           this.hoverCountry = null;
           this.hoverValue = null;
