@@ -211,25 +211,26 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
     const defaultOpts = {type: 'policyList', isNew: !chartExist, chartType: this.switchUICmpVal ? 'relative' : 'absolute' };
     const opts = extraOpts ? Object.assign({}, defaultOpts, extraOpts) : defaultOpts;
     this.chartService.createPolicyListChart(data, chartId, opts);
-    const MAX_SELECTED_COUNTRIES = 2;
-    if (this.chartService.countPolicyListCharts() === MAX_SELECTED_COUNTRIES) {
-      const chart1 = 'policy-list-1';
-      const chart2 = 'policy-list-2';
-      const filterChart1 = this._selectedCountryList.filter(val => {
-        return val.chartId === chart1;
-      });
-      const filterChart2 = this._selectedCountryList.filter(val => {
-        return val.chartId === chart2;
-      });
-      if (filterChart1.length) {
-        data = this.chartService.getMetricAllPoliciesSingleCountry(filterChart1[0].name);
-        this.chartService.createPolicyListChart(data, chart1, Object.assign({}, opts, {isNew: false}));
-      }
-      if (filterChart2.length) {
-        data = this.chartService.getMetricAllPoliciesSingleCountry(filterChart2[0].name);
-        this.chartService.createPolicyListChart(data, chart2, Object.assign({}, opts, {isNew: false}));
-      }
-    }
+    // Comparing countries min and max values to change their x coordinates range values 
+    // const MAX_SELECTED_COUNTRIES = 2;
+    // if (this.chartService.countPolicyListCharts() === MAX_SELECTED_COUNTRIES) {
+    //   const chart1 = 'policy-list-1';
+    //   const chart2 = 'policy-list-2';
+    //   const filterChart1 = this._selectedCountryList.filter(val => {
+    //     return val.chartId === chart1;
+    //   });
+    //   const filterChart2 = this._selectedCountryList.filter(val => {
+    //     return val.chartId === chart2;
+    //   });
+    //   if (filterChart1.length) {
+    //     data = this.chartService.getMetricAllPoliciesSingleCountry(filterChart1[0].name);
+    //     this.chartService.createPolicyListChart(data, chart1, Object.assign({}, opts, {isNew: false}));
+    //   }
+    //   if (filterChart2.length) {
+    //     data = this.chartService.getMetricAllPoliciesSingleCountry(filterChart2[0].name);
+    //     this.chartService.createPolicyListChart(data, chart2, Object.assign({}, opts, {isNew: false}));
+    //   }
+    // }
   }
   private processForFileJSONData(): any {
     const outputData = this.chartService.getOutputData();

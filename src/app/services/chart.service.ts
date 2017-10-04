@@ -813,63 +813,63 @@ export class ChartService {
           return val.id === temp.id;
         })[0];
       });
-      // console.log(allData);
     } else {
-      const policyData = dkTotArr.concat(dWTotCurrencyArr);
-      const maxCountryVal = d3.max(policyData);
-      const minCountryVal = d3.min(policyData);
-      const MAX_SELECTED_COUNTRIES = 2;
-      if (this._maxMinCountryXValues.length < MAX_SELECTED_COUNTRIES) {
-        const filterContainer = this._maxMinCountryXValues.filter(val => val.chart === containerId);
-        if (!filterContainer.length) {
-          this._maxMinCountryXValues.push({
-            chart: containerId,
-            type: countryList['chartType'],
-            maxVal: maxCountryVal,
-            minVal: minCountryVal
-          });
-        } else {
-          this._maxMinCountryXValues.forEach(val => {
-            if (val.chart === containerId) {
-              if (val.type !== countryList['chartType']) {
-                this._maxGDPNum = 0;
-                this._minGDPNum = 0;
-              }
-              val.type = countryList['chartType'];
-              val.maxVal = maxCountryVal;
-              val.minVal = minCountryVal;
-            }
-          });
-        }
-      } else {
-        const filterChartType = this._maxMinCountryXValues.filter(val => val.type === countryList['chartType']);
-        if (!filterChartType.length && this.countPolicyListCharts() === 2) {
-          this._maxGDPNum = 0;
-          this._minGDPNum = 0;
-          this._maxMinCountryXValues.forEach(val => {val.type = countryList['chartType']; val.maxVal = 0; val.minVal = 0; });
-        } else {
-          this._maxGDPNum = d3.max(this._maxMinCountryXValues, d => d.maxVal);
-          this._minGDPNum = d3.min(this._maxMinCountryXValues, d => d.minVal);
-        }
-        this._maxMinCountryXValues.forEach(val => {
-          if (val.chart === containerId) {
-            val.maxVal = maxCountryVal;
-            val.minVal = minCountryVal;
-          }
-        });
-      }
-      const maxVal = d3.max(this._maxMinCountryXValues, (d) => {
-        return d.maxVal;
-      });
-      const minVal = d3.min(this._maxMinCountryXValues, (d) => {
-        return d.minVal;
-      });
-      if (maxVal > this._maxGDPNum) {
-        this._maxGDPNum = maxVal;
-      }
-      if (minVal < this._minGDPNum) {
-        this._minGDPNum = minVal;
-      }
+      // Comparing countries min and max values to change in x coordinates range values
+      // const policyData = dkTotArr.concat(dWTotCurrencyArr);
+      // const maxCountryVal = d3.max(policyData);
+      // const minCountryVal = d3.min(policyData);
+      // const MAX_SELECTED_COUNTRIES = 2;
+      // if (this._maxMinCountryXValues.length < MAX_SELECTED_COUNTRIES) {
+      //   const filterContainer = this._maxMinCountryXValues.filter(val => val.chart === containerId);
+      //   if (!filterContainer.length) {
+      //     this._maxMinCountryXValues.push({
+      //       chart: containerId,
+      //       type: countryList['chartType'],
+      //       maxVal: maxCountryVal,
+      //       minVal: minCountryVal
+      //     });
+      //   } else {
+      //     this._maxMinCountryXValues.forEach(val => {
+      //       if (val.chart === containerId) {
+      //         if (val.type !== countryList['chartType']) {
+      //           this._maxGDPNum = 0;
+      //           this._minGDPNum = 0;
+      //         }
+      //         val.type = countryList['chartType'];
+      //         val.maxVal = maxCountryVal;
+      //         val.minVal = minCountryVal;
+      //       }
+      //     });
+      //   }
+      // } else {
+      //   const filterChartType = this._maxMinCountryXValues.filter(val => val.type === countryList['chartType']);
+      //   if (!filterChartType.length && this.countPolicyListCharts() === 2) {
+      //     this._maxGDPNum = 0;
+      //     this._minGDPNum = 0;
+      //     this._maxMinCountryXValues.forEach(val => {val.type = countryList['chartType']; val.maxVal = 0; val.minVal = 0; });
+      //   } else {
+      //     this._maxGDPNum = d3.max(this._maxMinCountryXValues, d => d.maxVal);
+      //     this._minGDPNum = d3.min(this._maxMinCountryXValues, d => d.minVal);
+      //   }
+      //   this._maxMinCountryXValues.forEach(val => {
+      //     if (val.chart === containerId) {
+      //       val.maxVal = maxCountryVal;
+      //       val.minVal = minCountryVal;
+      //     }
+      //   });
+      // }
+      // const maxVal = d3.max(this._maxMinCountryXValues, (d) => {
+      //   return d.maxVal;
+      // });
+      // const minVal = d3.min(this._maxMinCountryXValues, (d) => {
+      //   return d.minVal;
+      // });
+      // if (maxVal > this._maxGDPNum) {
+      //   this._maxGDPNum = maxVal;
+      // }
+      // if (minVal < this._minGDPNum) {
+      //   this._minGDPNum = minVal;
+      // }
       policyList = this.getChartsConf().policyList;
       policyList.forEach((val, idx) => {
         if (val.id === allData[idx].id) {
@@ -904,7 +904,8 @@ export class ChartService {
     });
     let minValues = [maxFirstBarValue, maxSecondBarValue];
     let min = d3.min(minValues);
-    let maxValue = isPolicyListObject ? this._maxGDPNum : d3.max([maxFirstBarValue, maxSecondBarValue]);
+    // let maxValue = isPolicyListObject ? this._maxGDPNum : d3.max([maxFirstBarValue, maxSecondBarValue]);
+    let maxValue = d3.max([maxFirstBarValue, maxSecondBarValue]);
     let w;
     if (isCountryListObject) {
       w = 690;
@@ -1023,31 +1024,11 @@ export class ChartService {
           .call(params.gridLines.x)
           .classed('lanes', true)
           .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ',' + (height - margin.bottom) + ')');
-        // Apply UI styles in vertical lines to get them in base64 conversion process.
-        laneChart.selectAll('g.lanes path')
-          .style('fill', 'none')
-          .style('stroke', '#485050')
-          .style('stroke-dasharray', '2')
-          .style('shape-rendering', 'crispEdges');
-        laneChart.selectAll('g.lanes line')
-          .style('fill', 'none')
-          .style('stroke', '#485050')
-          .style('stroke-dasharray', '2')
-          .style('shape-rendering', 'crispEdges');
         // Adding X axis
         laneChart.append('g')
           .classed('x-axis', true)
           .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', ' + (height - margin.bottom) + ')')
           .call(params.axis.x);
-        // Apply UI styles in x axis element to get it in base 64 conversion process.
-        laneChart.selectAll('g.x-axis path')
-          .style('fill', 'none')
-          .style('stroke', '#626262')
-          .style('shape-rendering', 'crispEdges');
-        laneChart.selectAll('g.x-axis line')
-          .style('fill', 'none')
-          .style('stroke', '#626262')
-          .style('shape-rendering', 'crispEdges');
         // Adding x axis descriptive label
         laneChart.select('.x-axis')
           .append('text')
@@ -1062,31 +1043,10 @@ export class ChartService {
           .classed('y-axis', true)
           .attr('transform', 'translate(' + margin.left + ', ' + yLabelPos + ')')
           .call(params.axis.y);
-        // Apply UI styles in y axis element to get it in base 64 conversion process.
-        laneChart.selectAll('g.y-axis path')
-          .style('fill', 'none')
-          .style('stroke', 'transparent')
-          .style('shape-rendering', 'crispEdges');
-        laneChart.selectAll('g.y-axis path')
-          .style('fill', 'none')
-          .style('stroke', 'transparent')
-          .style('shape-rendering', 'crispEdges');
         // Adding y left-axis labels
         laneChart.select('.y-axis')
           .selectAll('.tick text')
           .call(textWrap, margin.left);
-        // Adding UI styles in other y and x axes elements to get them in base64 conversion process.
-        laneChart.selectAll('g.x-axis text')
-          .style('fill', '#666')
-          .style('font-weight', 'bold');
-        laneChart.selectAll('g.y-axis g.tick text')
-          .style('fill', '#666')
-          .style('font-size', '0.9rem');
-        laneChart.selectAll('g.x-axis g.tick text')
-          .style('fill', '#666')
-          .style('font-size', '11px')
-          .style('font-weight', 'bold')
-          .style('text-anchor', 'start');
       } else {
         // Update lane lines
         laneChart.selectAll('g.lanes')
@@ -1109,6 +1069,47 @@ export class ChartService {
           .attr('transform', 'translate(' + xLabelPosition + ', ' + (margin.bottom - spaceLblCh) + ')')
           .text(xDescLabel);
       }
+      // Apply UI styles in vertical lines to get them in base64 conversion process.
+      laneChart.selectAll('g.lanes path')
+        .style('fill', 'none')
+        .style('stroke', '#485050')
+        .style('stroke-dasharray', '2')
+        .style('shape-rendering', 'crispEdges');
+      laneChart.selectAll('g.lanes line')
+        .style('fill', 'none')
+        .style('stroke', '#485050')
+        .style('stroke-dasharray', '2')
+        .style('shape-rendering', 'crispEdges');
+      // Apply UI styles in x axis element to get it in base 64 conversion process.
+      laneChart.selectAll('g.x-axis path')
+        .style('fill', 'none')
+        .style('stroke', '#626262')
+        .style('shape-rendering', 'crispEdges');
+      laneChart.selectAll('g.x-axis line')
+        .style('fill', 'none')
+        .style('stroke', '#626262')
+        .style('shape-rendering', 'crispEdges');
+      // Apply UI styles in y axis element to get it in base 64 conversion process.
+      laneChart.selectAll('g.y-axis path')
+        .style('fill', 'none')
+        .style('stroke', 'transparent')
+        .style('shape-rendering', 'crispEdges');
+      laneChart.selectAll('g.y-axis path')
+        .style('fill', 'none')
+        .style('stroke', 'transparent')
+        .style('shape-rendering', 'crispEdges');
+      // Adding UI styles in other y and x axes elements to get them in base64 conversion process.
+      laneChart.selectAll('g.x-axis text')
+        .style('fill', '#666')
+        .style('font-weight', 'bold');
+      laneChart.selectAll('g.y-axis g.tick text')
+        .style('fill', '#666')
+        .style('font-size', '0.9rem');
+      laneChart.selectAll('g.x-axis g.tick text')
+        .style('fill', '#666')
+        .style('font-size', '11px')
+        .style('font-weight', 'bold')
+        .style('text-anchor', 'start');
     };
 
     const plotChart = (params) => {
@@ -1127,8 +1128,10 @@ export class ChartService {
         return d.dKtot;
       });
       minValues = [minFirstBarValue, minSecondBarValue];
-      min = isPolicyListObject ? this._minGDPNum : d3.min(minValues);
-      maxValue = isPolicyListObject ? this._maxGDPNum : d3.max([maxFirstBarValue, maxSecondBarValue]);
+      // min = isPolicyListObject ? this._minGDPNum : d3.min(minValues);
+      min = d3.min(minValues);
+      // maxValue = isPolicyListObject ? this._maxGDPNum : d3.max([maxFirstBarValue, maxSecondBarValue]);
+      maxValue = d3.max([maxFirstBarValue, maxSecondBarValue]);
       if (min < -1) {
         xDomain = [min, maxValue];
         xLane.domain(xDomain).nice();
@@ -1404,6 +1407,7 @@ export class ChartService {
         .style('fill', '#666');
 
       barLabels.selectAll('text')
+        .style('fill', '#666')
         .style('font-size', '0.9315rem');
       laneChart.selectAll('text')
         .style('fill', '#666');
