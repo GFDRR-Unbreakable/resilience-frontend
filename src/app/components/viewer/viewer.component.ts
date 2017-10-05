@@ -264,6 +264,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     const idInExp = selectedIdx === 0 ? 'inputExp-1' : 'inputExp-2';
     const idInVul = selectedIdx === 0 ? 'inputVul-1' : 'inputVul-2';
     const sliderValues = selectedIdx === 0 ? this.sliderValues1 : this.sliderValues2;
+    const viewerMod = selectedIdx === 0 ? this.viewerP1 : this.viewerP2;
     if (list.length) {
       const filterExistence = this._selectedCountryList.filter(val => {
         return val.name === list[0].name;
@@ -289,6 +290,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           this.chartService.createInputCharts(inData, idInVul, sliderValues, list[0].group);
 
         }
+        this.setResetValues(sliderValues, viewerMod, selectedIdx === 0 ? 1 : 2, list[0].code);
         this.mapService.setMapFilterByISOCode(list[0].code);
       }
     } else {
@@ -336,6 +338,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
             this.chartService.createInputCharts(inData, idInExp, sliderValues, 'GLOBAL');
             this.chartService.createInputCharts(inData, idInVul, sliderValues, 'GLOBAL');
           }
+          this.setResetValues(sliderValues, viewerMod, selectedIdx === 0 ? 1 : 2, 'GLOBAL');
           this._selectedCountryList.splice(filterIndex[0], 1);
         }
       }
@@ -407,6 +410,10 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
             code: isoCode,
             group: filteredGroup
           });
+          const sliderV = index === 0 ? this.sliderValues1 : this.sliderValues2;
+          const viewerP = index === 0 ? this.viewerP1 : this.viewerP2;
+          const viewerType = index === 0 ? 1 : 2;
+          this.setResetValues(sliderV, viewerP, viewerType, isoCode);
         }
       } else {
         const selectedC = this._selectedCountryList[selectedCountryIdx[0]].name;
@@ -435,6 +442,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
             this.chartService.createInputCharts(inData, 'inputExp-1', this.sliderValues1, 'GLOBAL');
             this.chartService.createInputCharts(inData, 'inputVul-1', this.sliderValues1, 'GLOBAL');
           }
+          this.setResetValues(this.sliderValues1, this.viewerP1, 1, 'GLOBAL');
         } else if (this.viewerModel.secondCountry.length && selectedC.indexOf(this.viewerModel.secondCountry) >= 0) {
           this.viewerModel.secondCountry = '';
           if (this.global) {
@@ -460,6 +468,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
             this.chartService.createInputCharts(inData, 'inputExp-2', this.sliderValues2, 'GLOBAL');
             this.chartService.createInputCharts(inData, 'inputVul-2', this.sliderValues2, 'GLOBAL');
           }
+          this.setResetValues(this.sliderValues2, this.viewerP2, 2, 'GLOBAL');
         }
         this._selectedCountryList.splice(selectedCountryIdx[0], 1);
       }
@@ -670,6 +679,41 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       });
     });
   }
+  setResetValues(sliderObj, viewerMod, viewerType, isoCode) {
+    const globalObj = this.chartService.getGlobalModelData();
+    if (isoCode !== 'GLOBAL') {
+      const filterCountry = this._selectedCountryList.filter(val => val.code === isoCode);
+      const countryName = filterCountry[0].name;
+      const groupName = filterCountry[0].group;
+      const selectedCtr = globalObj[isoCode];
+      jQuery.each(selectedCtr, (idx, glob) => {
+        if (viewerMod[idx] === 0 && glob > viewerMod[idx]) {
+          viewerMod[idx] = glob;
+        }
+      });
+      jQuery.each(viewerMod, (viewKey, model) => {
+        if (sliderObj.hasOwnProperty(viewKey)) {
+          viewerMod[viewKey] = sliderObj[viewKey].value;
+        }
+      });
+      viewerMod['name'] = countryName;
+      viewerMod['id'] = isoCode;
+      viewerMod['group_name'] = groupName;
+    } else {
+      jQuery.each(viewerMod, (viewKey, model) => {
+        if (sliderObj.hasOwnProperty(viewKey)) {
+          viewerMod[viewKey] = 0;
+        }
+      });
+      viewerMod['name'] = 'GLOBAL';
+      viewerMod['id'] = 'GLOBAL';
+      viewerMod['group_name'] = 'GLOBAL';
+    }
+    const viewerPropDefault = viewerType === 1 ? 'viewerP1Default' : 'viewerP2Default';
+    const sliderPropDefault = viewerType === 1 ? 'sliderValues1Default' : 'sliderValues2Default';
+    this[viewerPropDefault] = Object.assign({}, viewerMod);
+    this[sliderPropDefault] = Object.assign({}, sliderObj);
+  }
   setSingleSliderConfValue(sliderObj, key, max, min, input) {
     sliderObj[key + '_min'] = 0;
     /*if (key.indexOf('hazard') === 0 || key === 'macro_T_rebuild_K') {
@@ -851,8 +895,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   onResetTechDataEvent() {
     // Reset values
-    this.viewerModel.firstCountry = '';
-    this.viewerModel.secondCountry = '';
     this.viewerP1 = Object.assign({}, this.viewerP1Default);
     this.viewerP2 = Object.assign({}, this.viewerP2Default);
     this.sliderValues1 = Object.assign({}, this.sliderValues1Default);
@@ -861,16 +903,44 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.store.dispatch({type: ViewerAction.EDIT_VIEWER, payload: this.viewerModel});
     this.store.dispatch({type: ViewerAction.EDIT_VIEWER_MODEL_1, payload: this.viewerP1});
     this.store.dispatch({type: ViewerAction.EDIT_VIEWER_MODEL_2, payload: this.viewerP2});
-    // Update charts
-    this.chartService.updateOutputCharts('outputs-1', 'global');
-    this.chartService.updateOutputCharts('outputs-2', 'global');
-    // Update map data
     if (this._selectedCountryList.length) {
       this._selectedCountryList.forEach(val => {
-        this.mapService.setMapFilterByISOCode(val.code);
+        const viewerMod = val.index === 0 ? this.viewerP1 : this.viewerP2;
+        const outputChartId = val.index === 0 ? 'outputs-1' : 'outputs-2';
+        this.chartService.getInputPModelData(viewerMod).subscribe(data => {
+          const newObj = {};
+          for (const dataK in data) {
+            if (data.hasOwnProperty(dataK)) {
+              newObj[dataK] = data[dataK][viewerMod['name']];
+            }
+          }
+          this.chartService.updateOutputCharts(outputChartId, {model: newObj}, 'GLOBAL');
+        });
       });
-      this._selectedCountryList = [];
+    } else {
+      this.viewerModel.firstCountry = '';
+      this.viewerModel.secondCountry = '';
+    // Update charts
+      this.chartService.updateOutputCharts('outputs-1', 'global');
+      this.chartService.updateOutputCharts('outputs-2', 'global');
+    // Update map data
+      if (this._selectedCountryList.length) {
+        this._selectedCountryList.forEach(val => {
+          this.mapService.setMapFilterByISOCode(val.code);
+        });
+        this._selectedCountryList = [];
+      }
     }
+    // Update charts
+    // this.chartService.updateOutputCharts('outputs-1', 'global');
+    // this.chartService.updateOutputCharts('outputs-2', 'global');
+    // Update map data
+    // if (this._selectedCountryList.length) {
+      // this._selectedCountryList.forEach(val => {
+      //   this.mapService.setMapFilterByISOCode(val.code);
+      // });
+      // this._selectedCountryList = [];
+    // }
   }
   onSecondCountryInputChangeEvent() {
     this._changeCountryInput(false);

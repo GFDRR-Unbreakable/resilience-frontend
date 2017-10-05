@@ -3,8 +3,8 @@
  */
 export const SERVER = {
   URL: {
-    BASE_SERVER: 'http://13.58.142.191:9090/',
-    // BASE_SERVER: 'http://localhost:9090',
+    // BASE_SERVER: 'http://13.58.142.191:9090/',
+    BASE_SERVER: 'http://localhost:9090/',
     BASE_SERVER_PY: 'http://13.58.142.191:9091/',
     SERVER_API: 'api/',
     SERVER_DOWNLOADPDF: 'pdf',
