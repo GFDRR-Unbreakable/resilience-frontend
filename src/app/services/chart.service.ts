@@ -1102,9 +1102,14 @@ export class ChartService {
       laneChart.selectAll('g.x-axis text')
         .style('fill', '#666')
         .style('font-weight', 'bold');
+      laneChart.selectAll('g.x-axis text.x-axis-lb')
+        .style('fill', '#666')
+        .style('text-anchor', 'middle')
+        .style('font-weight', 'bold')
+        .style('font-size', '13px');
       laneChart.selectAll('g.y-axis g.tick text')
         .style('fill', '#666')
-        .style('font-size', '0.9rem');
+        .style('font-size', '13px');
       laneChart.selectAll('g.x-axis g.tick text')
         .style('fill', '#666')
         .style('font-size', '11px')
@@ -1408,7 +1413,7 @@ export class ChartService {
 
       barLabels.selectAll('text')
         .style('fill', '#666')
-        .style('font-size', '0.9315rem');
+        .style('font-size', '13px');
       laneChart.selectAll('text')
         .style('fill', '#666');
     };
