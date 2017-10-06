@@ -58,7 +58,7 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
       }
     };
     data.selectedPolicy = this.selectedPolicyUIList.label;
-    data.selectedPolicy = this.selectedRegionUIList.label;
+    data.selectedRegion = this.selectedRegionUIList.label;
     const chartObj = this.chartService.formatSVGChartBase64Strings('policy-measure', false);
     data.charts.absolute = chartObj.chart1;
     data.charts.relative = chartObj.chart2;
