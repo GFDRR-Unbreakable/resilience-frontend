@@ -1506,18 +1506,18 @@ export class ChartService {
     }
     return value;
   }
-  formatSVGChartBase64Strings(chartId, isFromOutputChart, inChartId?) {
-    const id1 = isFromOutputChart ? 'outputs-1' : `${chartId}-1`;
-    const id2 = isFromOutputChart ? 'outputs-2' : `${chartId}-2`;
+  formatSVGChartBase64Strings(chartId, isFromInOutChart, innerKey?) {
+    const id1 = `${chartId}-1`;
+    const id2 = `${chartId}-2`;
     const chartCtn1 = jQuery(`#${id1}`);
     const chartCtn2 = jQuery(`#${id2}`);
     const chart1 = chartCtn1.find('svg');
     const chart2 = chartCtn2.find('svg');
     let ch1;
     let ch2;
-    if (isFromOutputChart) {
+    if (isFromInOutChart) {
       const filterFn = (idx, svg) => {
-        const id = isFromOutputChart ? chartId : inChartId;
+        const id = innerKey;
         return svg.id === id;
       };
       ch1 = chart1.filter(filterFn)[0];
@@ -1526,7 +1526,7 @@ export class ChartService {
       ch1 = chart1[0];
       ch2 = chart2[0];
     }
-    const svgPrefixStr = "data:image/svg+xml;base64,";
+    const svgPrefixStr = 'data:image/svg+xml;base64,';
     const ch1XMLStr = new XMLSerializer().serializeToString(ch1);
     const ch1Fmt = window.btoa(ch1XMLStr);
     const ch1Str = svgPrefixStr + ch1Fmt;
@@ -1945,8 +1945,8 @@ export class ChartService {
     });
   }
   switchScoreCardChartFont(isScoreCardList, isPDF) {
-    const chartId1 = isScoreCardList ? 'policy-list-1' : 'policyMeasure0';
-    const chartId2 = isScoreCardList ? 'policy-list-2' : 'policyMeasure1';
+    const chartId1 = isScoreCardList ? 'policy-list-1' : 'policy-measure-1';
+    const chartId2 = isScoreCardList ? 'policy-list-2' : 'policy-measure-2';
     const chart1 = jQuery(`#${chartId1} svg`);
     const chart2 = jQuery(`#${chartId2} svg`);
     let fontFamilyTxt = 'Lato, Helvetica Neue, Helvetica, Arial, sans-serif';

@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import {Subscription} from 'rxjs/Subscription';
 
 import {ChartService} from '../../services/chart.service';
+import {FileService} from '../../services/files.service';
 
 @Component({
   selector: 'app-specificpolicymeasure',
@@ -27,7 +28,8 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
   });
   public selectedPolicyUIList = this.policyGroupUIList[0];
   public selectedRegionUIList = this.regionUIList[0];
-  constructor(private chartService: ChartService) { }
+  constructor(private chartService: ChartService,
+    private fileService: FileService) { }
 
   ngOnInit() {
     this.setChartsConfig();
@@ -39,10 +41,29 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
   private _onChangeInputValuesEv() {
     const policyObj = this.selectedPolicyUIList;
     const data = this.chartService.getMetricAllCountriesSinglePolicy(policyObj.id);
-    this.chartService.createPolicyListChart(data, 'policyMeasure0',
+    this.chartService.createPolicyListChart(data, 'policy-measure-1',
       {type: 'policyMeasure', chartType: 'absolute', isNew: false, region: this.selectedRegionUIList.id});
-    this.chartService.createPolicyListChart(data, 'policyMeasure1',
+    this.chartService.createPolicyListChart(data, 'policy-measure-2',
       {type: 'policyMeasure', chartType: 'relative', isNew: false, region: this.selectedRegionUIList.id});
+  }
+  private processForFileJSONData(): any {
+    const outputData = this.chartService.getOutputData();
+    const chartConf = this.chartService.getChartsConf();
+    const data: any = {
+      selectedPolicy: '',
+      selectedRegion: '',
+      charts: {
+        absolute: '',
+        relative: ''
+      }
+    };
+    data.selectedPolicy = this.selectedPolicyUIList.label;
+    data.selectedPolicy = this.selectedRegionUIList.label;
+    const chartObj = this.chartService.formatSVGChartBase64Strings('policy-measure', false);
+    data.charts.absolute = chartObj.chart1;
+    data.charts.relative = chartObj.chart2;
+    data.page = 'policyMeasure';
+    return data;
   }
   setChartsConfig() {
     this.chartService.initOutputChartConf();
@@ -62,9 +83,9 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
         });
       });
       const policyData = this.chartService.getMetricAllCountriesSinglePolicy(this.selectedPolicyUIList.id);
-      this.chartService.createPolicyListChart(policyData, 'policyMeasure0',
+      this.chartService.createPolicyListChart(policyData, 'policy-measure-1',
         {type: 'policyMeasure', chartType: 'absolute', isNew: true, region: this.selectedRegionUIList.id});
-      this.chartService.createPolicyListChart(policyData, 'policyMeasure1',
+      this.chartService.createPolicyListChart(policyData, 'policy-measure-2',
         {type: 'policyMeasure', chartType: 'relative', region: this.selectedRegionUIList.id, isNew: true});
     });
   }
@@ -80,6 +101,14 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
   }
 
   // EVENTS
+  onDownloadPDFFileEvent() {
+    this.chartService.switchScoreCardChartFont(true, true);
+    const data = this.processForFileJSONData();
+    this.fileService.getScorecardPDFFile(data).subscribe(pdfData => {
+      this.chartService.switchScoreCardChartFont(true, false);
+      this.fileService.setPDFDownloadProcess(pdfData, 'scorecardPolicyList');
+    });
+  }
   onScorecardPolicyChange(policyObj) {
     this.selectedPolicyUIList = policyObj;
     this._onChangeInputValuesEv();
@@ -97,7 +126,7 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
     const sortSel = this.sortUISelected;
     const data = this.chartService.getMetricAllCountriesSinglePolicy(this.selectedPolicyUIList.id);
     const chartType = chartLbl === 'chart1' ? 'absolute' : 'relative';
-    const chartId = chartLbl === 'chart1' ? 'policyMeasure0' : 'policyMeasure1';
+    const chartId = chartLbl === 'chart1' ? 'policy-measure-1' : 'policy-measure-2';
     let sortType;
     if (sortSel === 1) {
       sortType = 'Ascending';

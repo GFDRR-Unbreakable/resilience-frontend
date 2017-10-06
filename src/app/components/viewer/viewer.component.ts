@@ -564,7 +564,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       data.country1.outputs[key]['label'] = out.descriptor;
       data.country2.outputs[key]['label'] = out.descriptor;
       if (isPDF) {
-        const chObj = this.chartService.formatSVGChartBase64Strings(key, true);
+        const chObj = this.chartService.formatSVGChartBase64Strings('outputs', true, key);
         data.country1.outputs[key]['chart'] = chObj.chart1;
         data.country2.outputs[key]['chart'] = chObj.chart2;
       }
@@ -600,7 +600,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (isPDF) {
           if (data.page === 'viewer') {
-            const chObj = this.chartService.formatSVGChartBase64Strings(key, false, inpKey);
+            const chObj = this.chartService.formatSVGChartBase64Strings(key, true, inpKey);
             data.country1.inputs[key][inpKey]['chart'] = chObj.chart1;
             data.country2.inputs[key][inpKey]['chart'] = chObj.chart2;
           } else {

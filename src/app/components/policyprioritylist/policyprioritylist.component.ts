@@ -286,7 +286,7 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
       data.country1.outputs[key]['label'] = out.descriptor;
       data.country2.outputs[key]['label'] = out.descriptor;
 
-      const chObj = this.chartService.formatSVGChartBase64Strings(key, true);
+      const chObj = this.chartService.formatSVGChartBase64Strings('outputs', true, key);
       data.country1.outputs[key]['chart'] = chObj.chart1;
       data.country2.outputs[key]['chart'] = chObj.chart2;
 
