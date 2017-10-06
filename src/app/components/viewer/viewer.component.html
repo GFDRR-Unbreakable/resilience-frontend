@@ -117,8 +117,8 @@
                    </button>
 
                 <div class="box-download">
-                   <button type="button" class="btn btn-primary text-download" (click)="onDownloadCSVViewerReportEvent()"><img class="img-download" src="assets/image/ic-download.png" alt="">CSV</button>
-                   <button type="button" class="btn btn-primary text-download" (click)="onDownloadPDFViewerReportEvent()"><img class="img-download" src="assets/image/ic-download.png" alt="">PDF</button>
+                   <button [disabled]="_selectedCountryList.length !== MAX_COUNTRIES_SELECTED" type="button" class="btn btn-primary text-download" (click)="onDownloadCSVViewerReportEvent()"><img class="img-download" src="assets/image/ic-download.png" alt="">CSV</button>
+                   <button [disabled]="_selectedCountryList.length !== MAX_COUNTRIES_SELECTED" type="button" class="btn btn-primary text-download" (click)="onDownloadPDFViewerReportEvent()"><img class="img-download" src="assets/image/ic-download.png" alt="">PDF</button>
                 </div></div>
               <div class="card-body">
                 <div class="">

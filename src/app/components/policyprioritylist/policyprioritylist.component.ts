@@ -400,9 +400,9 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
   onSecondCountryInputChangeEvent() {
     this._changeCountryInput(false);
   }
-  onSortChartDataEvent(params: any) {
-    const {barType} = params;
-    const chartIds = params.charts;
+  onSortChartDataEvent(barT) {
+    const barType = barT;
+    const chartIds = ['policy-list-1', 'policy-list-2'];
     const field1 = this.policyModel.firstCountry;
     const field2 = this.policyModel.secondCountry;
     const selectedList1 = this._selectedCountryList.filter(val => val.name === field1);
