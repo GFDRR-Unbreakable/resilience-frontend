@@ -9,16 +9,29 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-
+  /**
+   * Component constructor which is first invoked when the app is rendering.
+   * It has injected a modal service which refers to Angular-bootstrap modal component.
+   * @param modalService 
+   */
   constructor(private modalService: NgbModal) {}
 
   ngOnInit() {}
+  /**
+   * This method is triggered when the "About" tab-button is clicked.
+   * Opens a custom modal component to display About info.
+   */
   onOpenModalEvent() {
     this.modalService.open(AboutComponent,  {
       size: 'lg'
     });
   }
-  onScrollAboutElEvent(event) {
+  /**
+   * @event Click - This event is triggered when the "About" tab-button is clicked.
+   * It scroll down the page to about info when it is rendered in the "Viewer" route, otherwise
+   * it opens a "About" info modal component.
+   */
+  onScrollAboutElEvent() {
     let el = jQuery('div#about');
     if (el.length) {
       el = el[0];

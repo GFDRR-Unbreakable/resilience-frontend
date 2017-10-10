@@ -1,8 +1,15 @@
+/**
+ * The Viewer data interface which determines what type of data will be the
+ * text input fields on the Viewer/TechMap pages.
+ */
 export interface Viewer {
     firstCountry: string;
     secondCountry: string;
 };
-
+/**
+ * The ViewerModel data interface which represents all indicators data + country properties
+ * to be persisted/modified in the Viewer/TechMap pages.
+ */
 export interface ViewerModel {
     name: string;
     macro_gdp_pc_pp: number;

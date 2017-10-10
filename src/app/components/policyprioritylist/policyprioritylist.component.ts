@@ -22,6 +22,10 @@ import {FileService} from '../../services/files.service';
   styleUrls: ['./policyprioritylist.component.css']
 })
 export class PolicyprioritylistComponent implements OnInit, OnDestroy {
+  /**
+   * Public and private properties set to work with the component, these are
+   * chart conf, UI events, observables and policyList models.
+   */
   public countryListComp: Array<any> = [];
   public countryUIList: Array<any> = [];
   public firstCountryGDP: string = '0';
@@ -45,7 +49,9 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
   public sortUISelectedLbl1 = '';
   public sortUISelectedLbl2 = '';
   public switchUICmpVal = false;
-
+  /**
+   * Returns a list of matches as a result of a searched string when first or second input-text is being modified.
+  */
   public searchCountryFn = (text$: Observable<string>) => {
     const debounceTimeFn = debounceTime.call(text$, 200);
     const distinctUntilChangedFn = distinctUntilChanged.call(debounceTimeFn);
@@ -58,23 +64,46 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
     };
     return map.call(distinctUntilChangedFn, searchCb);
   }
+  /**
+   * Component constructor which is first invoked when the app is rendering.
+   * Inits accessing stored state-like data from the app root store data to be used in this component.
+   * It has three custom injected services: MapService, ChartService and FileService
+   * and a Store service from @ngrx library.
+   * @param {FileService} fileService - Service which is required to perform the download CSV or PDF file process through a server.
+   * @param {Store<AppStore>} store - Service which is required to create/modify state-like data of the root stored data of the app.
+   * @param {ChartService} chartService - Service which is required to create/modify SVG charts using D3.js library.
+   */
   constructor(
     private fileService: FileService,
     private store: Store<AppStore>,
     private chartService: ChartService) {
       this.policyList$ = store.select('policyPriority');
   }
-
+  // LIFE-CYCLE METHODS
+  /**
+   * This method gets called after the component has invoked its constructor.
+   * Inits PolicyList observable subscription and charts configuration.
+   */
   ngOnInit() {
     this.setPolicyPriorityObservableConf();
     this.setChartsConf();
   }
+  /**
+   * This methods gets called when the component gets removed from the UI (normally happens while changing to another page).
+   * Unsubscribe all subscribed observables the component has.
+   */
   ngOnDestroy() {
     this.policySubs.unsubscribe();
     this.getOutputDataSubs.unsubscribe();
     this.getScorecardDataSubs.unsubscribe();
   }
   // METHODS
+  /**
+   * This method invokes the creation/modification/deletion of a country data in terms of drawing its output
+   * SVG charts through a country input text field. Also updates the
+   * policyList country text field in the root store app data using @ngrx library.
+   * @param {Boolean} isFirstInput - Determines if the viewer input text field is from the first or the second one.
+   */
   private _changeCountryInput(isFirstInput) {
     const input = isFirstInput ? this.policyModel.firstCountry : this.policyModel.secondCountry;
     const fromListFilter = this.countryListComp.filter(
@@ -89,6 +118,14 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
       this.store.dispatch({type: PolicyAction.EDIT_POLICY_FIELDS, payload: this.policyModel});
     }
   }
+  /**
+   * This private method is called by the @private _changeCountryInput method set it in this component
+   * which creates/updates/removes selected countries data in a @public array called _selectedCountryList,
+   * also modifies output chart and values.
+   * @param {Array} list - Array of country properties filtered-by-input-text value. 
+   * @param {Number} selectedIdx - Determines which input field has been modified
+   * @param {String} field - Input-text field model
+   */
   private _filterCountryByInput(list, selectedIdx, field) {
     const inData = this.chartService.getInputData();
     const outData = this.chartService.getOutputData();
@@ -180,6 +217,12 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
       }
     }
   }
+  /**
+   * Plots ScoreCardPriorityList chart in the page with some chart configurations needed.
+   * @param {String} name - Country name persisted from the input-text field. 
+   * @param {String} chartId - Chart UI element id. 
+   * @param {Boolean} chartExist - Determines wheter the chart has already plotted in the page or not.
+   */
   plotScorecardPolicyChart(name, chartId, chartExist) {
     let data = this.chartService.getMetricAllPoliciesSingleCountry(name);
     let extraOpts: any = null;
@@ -232,6 +275,10 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
     //   }
     // }
   }
+  /**
+   * This method builds data from Output chart, country input fields and chart default values to be
+   * send as params to PDF-generation API endpoint.
+   */
   private processForFileJSONData(): any {
     const outputData = this.chartService.getOutputData();
     const chartConf = this.chartService.getChartsConf();
@@ -300,12 +347,21 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
     data.page = 'policyList';
     return data;
   }
+  /**
+   * Reset UI sort label for the first selected country
+   */
   resetUISortLabel1() {
     this.sortUISelectedLbl1 = '';
   }
+  /**
+   * Reset UI sort label for the second selected country
+   */
   resetUISortLabel2() {
     this.sortUISelectedLbl2 = '';
   }
+  /**
+   * Inits default Scorecard Priority list and Output data to be manipulated and plotted as charts.
+   */
   setChartsConf() {
     this.chartService.initOutputChartConf();
     this.getOutputDataSubs = this.chartService.getOutputDataObs().subscribe(data => {
@@ -316,12 +372,19 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
       this.setScorecardChartConf();
     });
   }
+  /**
+   * Inits default Scorecard Priority list data
+   */
   setScorecardChartConf() {
     this.chartService.initScorecardChartConf();
     this.getScorecardDataSubs = this.chartService.getScoreCardDataObs().subscribe(data => {
       this.chartService.setPoliciesData(data);
     });
   }
+  /**
+   * Subscribes to policy-priority-list observable to check if its observer has any changes
+   * to modify in the policy model object.
+   */
   setPolicyPriorityObservableConf() {
     this.policySubs = this.policyList$.subscribe(state => {
       if (state) {
@@ -330,6 +393,10 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
     });
   }
   // EVENTS
+  /**
+   * @event Change - This event gets triggered when the displayed charts will change their data from "Absolute" to "Relative" values
+   * displayed on their respective charts.
+   */
   onChangeChartTypeEvent() {
     this.switchUICmpVal = !this.switchUICmpVal;
     if (this._selectedCountryList.length) {
@@ -386,6 +453,10 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
       }
     }
   }
+  /**
+   * @event Click - This event is fired when the user clicks on the "PDF" button to download a PDF file
+   * of the current output-scorecard-priority-list charts and values displayed on the page.
+   */
   onDownloadPDFFileEvent() {
     this.chartService.switchScoreCardChartFont(true, true);
     const data = this.processForFileJSONData();
@@ -394,12 +465,24 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
       this.fileService.setPDFDownloadProcess(pdfData, 'scorecardPolicyList');
     });
   }
+  /**
+   * @event Change - This event is called when the first country input field is being modified.
+   */
   onFirstCountryInputChangeEvent() {
     this._changeCountryInput(true);
   }
+  /**
+   * @event Change - This event is called when the second country input field is being modified.
+   */
   onSecondCountryInputChangeEvent() {
     this._changeCountryInput(false);
   }
+  /**
+   * @event Click - This event is fired when the sort buttons (up & down arrows) are clicked on the page.
+   * It sorts Scorcard data according of which button has been clicked either sorting by well-being or assets data and
+   * displays its chart with sorted data.
+   * @param {String} barT - Determines which bar type will be sorted either well-being or assets bar chart data. 
+   */
   onSortChartDataEvent(barT) {
     const barType = barT;
     const chartIds = ['policy-list-1', 'policy-list-2'];

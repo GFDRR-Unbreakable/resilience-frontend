@@ -1,6 +1,9 @@
 /**
  * Created by joel on 7/20/17.
  */
+/**
+ * Constant variable which saves server default data configuration like Server Urls and endpoints.
+ */
 export const SERVER = {
   URL: {
     BASE_SERVER: 'http://13.58.142.191:9090/',

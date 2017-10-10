@@ -5,6 +5,9 @@ import VectorSource = mapboxgl.VectorSource;
 
 @Injectable()
 export class MapService {
+  /**
+   * Public and private variables are set here to be used along with the Mapbox-gl library.
+   */
   public token: String
     = 'pk.eyJ1IjoiZ2ZkcnItZGFzaGJvYXJkIiwiYSI6ImNqMnV3MWppdjAwMXUydmxhaG1weTZzaW8ifQ.drORihaTAcJEGLXFSKjvfQ';
   public map: Map;
@@ -74,9 +77,15 @@ export class MapService {
       ['No data', '', '#f6f6f4']
     ]
   };
+  /**
+   * Set mapboxgl accestoken when this service is initialized by a component.
+   */
   constructor() {
     (mapboxgl as any).accessToken = this.token;
   }
+  /**
+   * Appends base-layers on the map chart, these includes the root-layer and hovering-layer.
+   */
   addBasemap() {
     this.map.addSource(this._sourceId, {
       type: 'vector',
@@ -116,9 +125,19 @@ export class MapService {
       }
     });
   }
+  /**
+   * This method listens the UI @event style.load from mapbox-gl library and invokes passed
+   * function callback
+   * @param {Function} cb - Anonymous custom function to be invoked when this event is happening on the map. 
+   */
   addStylesOnMapLoading(cb: Function) {
     this.map.on('style.load', cb);
   }
+  /**
+   * Appends vector-lines layer to contrast country geometry limitation in its base-layer.
+   * @param {Object} sourceParams - Source params to be used in the layer configuration
+   * @param {Object} mapParams - Map params to be used in the layer configuration
+   */
   addVectorLinesFromUrl(sourceParams: any, mapParams: any) {
     const params = this.getVectorLinesParams(sourceParams, mapParams);
     sourceParams = params.source;
@@ -152,6 +171,11 @@ export class MapService {
     }
     this.map.addLayer(layerObj);
   }
+  /**
+   * Appends vector-fill layer to contrast country geometry selection in its base-layer.
+   * @param {Object} sourceParams - Source params to be used in the layer configuration
+   * @param {Object} mapParams - Map params to be used in the layer configuration
+   */
   addVectorFillFromUrl(sourceParams: any, mapParams: any) {
     const params = this.getVectorFillParams(sourceParams, mapParams);
     sourceParams = params.source;
@@ -175,11 +199,19 @@ export class MapService {
     }
     this.map.addLayer(layerObj);
   }
+  /**
+   * Modifies layer styles like background-color when layers are being changed according the indicators.
+   * @param {Object} params - Style related properties to be set.
+   */
   changeLayerStyle(params: any) {
     const styleProp = params.property;
     const layerStyle = this.getMapPaintConf(params.type);
     this.map.setPaintProperty(this._layerId, styleProp, layerStyle);
   }
+  /**
+   * Modifies Isocode private array according to passed id.
+   * @param {Number} id - Id to be pushed or popped from the Isocode private array.
+   */
   changeIsoCodeFilter(id?) {
     const arr = this._isoCodesArr;
     if (id) {
@@ -193,6 +225,10 @@ export class MapService {
       this._isoCodesArr = [];
     }
   }
+  /**
+   * Plots a map chart given a mapId passed as argument.
+   * @param {String} mapId - HTML container Id which map chart will be plotted on the page. 
+   */
   createMap(mapId: string) {
     this.map = new Map({
       container: mapId,
@@ -204,15 +240,31 @@ export class MapService {
       maxBounds: [[-180, -80], [180, 80]]
     });
   }
+  /**
+   * Returns the mapbox-gl created map configuration object.
+   */
   getMap() {
     return this.map;
   }
+  /**
+   * Returns style configuration for selected-indicator (basemap) layer.
+   * @param {String} type - Indicator name
+   */
   getMapPaintConf(type: string) {
     return this._getViewerStyleConf[type];
   }
+  /**
+   * Returns style configuration for selected-indicator legend UI component.
+   * @param {String} type - Indicator name
+   */
   getMapLegendConf(type: string) {
     return this._getViewerMapLegendConf[type];
   }
+  /**
+   * Merges new Vector-fill object params with default ones and returns them into another object
+   * @param {Object} sourceParams - Source params to be used in the layer configuration
+   * @param {Object} mapParams - Map params to be used in the layer configuration
+   */
   getVectorFillParams(sourceParams, mapParams) {
     const defaultSourceParams: any = {
       id: <string> null,
@@ -230,6 +282,11 @@ export class MapService {
       map: Object.assign({}, defaultMapParams, mapParams)
     };
   }
+  /**
+   * Merges new Vector-lines object params with default ones and returns them into another object
+   * @param {Object} sourceParams - Source params to be used in the layer configuration
+   * @param {Object} mapParams - Map params to be used in the layer configuration
+   */
   getVectorLinesParams(sourceParams, mapParams) {
     const defaultSourceParams = {
       id: <string> null,
@@ -250,23 +307,44 @@ export class MapService {
       map: Object.assign({}, defaultMapParams, mapParams)
     };
   }
+  /**
+   * Returns Fill-layer name.
+   */
   getViewerFillLayer(): string {
     return this._layerFillId;
   }
+  /**
+   * Changes map filtering ISO-code for Filled-layer in order to show a country-selection-like functionality on the map.
+   * @param {String} isoCode - Country Iso-code 
+   */
   setMapFilterByISOCode(isoCode) {
     const defaultArr = ['in', 'ISO_Codes'];
     this.changeIsoCodeFilter(isoCode);
     this.map.setFilter(this._layerHoverId, [...defaultArr, ...this._isoCodesArr]);
   }
+  /**
+   * Changes map filtering ISO-code for existing and non-existing countries in order to
+   * show a country-selection-like functionality on the map. 
+   * @param {Array[String]} isoCodes - Set of country iso-codes.
+   */
   setMapFilterByISOCodes(isoCodes) {
     const defaultArr = ['in', 'ISO_Codes'];
     this.map.setFilter(this._layerId, [...defaultArr, ...isoCodes]);
     this.map.setFilter(this._layerFillId, [...defaultArr, ...isoCodes]);
   }
-  // EVENTS
+  /**
+   * This method listens @event click from the mapbox-gl map chart and invokes passed
+   * function callback
+   * @param {Function} cb - Anonymous custom function to be invoked when this event is happening on the map.
+   */
   setClickFnMapEvent(cb: Function) {
     this.map.on('click', cb);
   }
+  /**
+   * This method listens @event mousemove from the mapbox-gl map chart and invokes passed
+   * function callback
+   * @param {Function} cb - Anonymous custom function to be invoked when this event is happening on the map.
+   */
   setHoverFnMapEvent(cb: Function) {
     this.map.on('mousemove', cb);
   }

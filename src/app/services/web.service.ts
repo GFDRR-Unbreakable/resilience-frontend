@@ -4,6 +4,9 @@ import {Observable} from 'rxjs/Rx';
 import {SERVER} from '../services/server.conf';
 import {LoadingMaskService} from '../services/loadingmask.service';
 
+/**
+ * This service is using the same angular http API code with some code customizations
+ */
 @Injectable()
 export class WebService extends Http {
 
@@ -81,7 +84,9 @@ export class WebService extends Http {
   private onSubscribeSuccess(res: Response): void {}
 
   private onSubscribeError(res: any): void {}
-
+  /**
+   * Whenever HTTP request is finished the UI loading mask is hidden
+   */
   private onFinally(): void {
     this.loadingMaskService.hideLoadingMask();
   }
@@ -89,17 +94,26 @@ export class WebService extends Http {
   private getServerURL(url: string) {
     return SERVER.URL.BASE + url;
   }
+  /**
+   * Returns form-data like Content-Type Header option.
+   */
   getJSONOptions() {
     const headers = new Headers({'Content-Type': 'application/json'});
     const options = new RequestOptions({headers: headers});
     return options;
   }
+   /**
+   * Returns JSON like Content-Type Header option.
+   */
   getDefaultFormOptions() {
     const headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
     const options = new RequestOptions({headers: headers});
     return options;
   }
-
+  /**
+   * Returns ContentType and Authorization Header options. 
+   * @param {String} token - Token to be saved in session storage. 
+   */
   getAuthHeaders(token?: string) {
     const sessionToken = window.sessionStorage.getItem('currentToken');
     const headers = new Headers({
@@ -109,6 +123,9 @@ export class WebService extends Http {
     const options = new RequestOptions({ headers: headers });
     return options;
   }
+  /**
+   * Whenever HTTP request is made a UI loading mask is shown
+   */
   interceptRequest() {
     this.loadingMaskService.showLoadingMask();
   }
