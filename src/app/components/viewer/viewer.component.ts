@@ -1017,9 +1017,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   onDownloadPDFViewerReportEvent() {
     const data = this.processForFileJSONData(true);
-    console.log(data);
     this.fileService.getViewerPDFFile(data).subscribe(pdfData => {
-      this.fileService.setPDFDownloadProcess(pdfData, 'viewer');
+      this.fileService.setPDFDownloadProcess(pdfData, this.viewerDisplay);
     });
   }
   /**

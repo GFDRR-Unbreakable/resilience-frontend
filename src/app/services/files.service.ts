@@ -67,6 +67,8 @@ export class FileService {
     let fileName;
     if (view === 'viewer') {
       fileName = 'viewer_report';
+    } else if (view === 'tech') {
+      fileName = 'technicalMap_report';
     } else if (view === 'scorecardPolicyList') {
       fileName = 'scorecard_priority_list_report';
     } else if (view === 'scorecardPolicyMeasure') {

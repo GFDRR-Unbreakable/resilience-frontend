@@ -150,7 +150,7 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
     const data = this.processForFileJSONData();
     this.fileService.getScorecardPDFFile(data).subscribe(pdfData => {
       this.chartService.switchScoreCardChartFont(true, false);
-      this.fileService.setPDFDownloadProcess(pdfData, 'scorecardPolicyList');
+      this.fileService.setPDFDownloadProcess(pdfData, 'scorecardPolicyMeasure');
     });
   }
   /**
