@@ -1002,8 +1002,9 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       const blob = new Blob(['\ufeff', csvData]);
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
+      const fileName = (this.viewerDisplay === 'viewer' ? 'viewer' : 'technicalMap') + '_report.csv';
       a.setAttribute('href', url);
-      a.setAttribute('download', 'viewer_report.csv');
+      a.setAttribute('download', fileName);
       document.body.appendChild(a);
       a.click();
       setTimeout(() => {
