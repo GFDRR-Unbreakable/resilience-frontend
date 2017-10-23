@@ -995,7 +995,7 @@ export class ChartService {
 
     const xAxis = d3.svg.axis()
       .scale(xLane)
-      .orient('bottom');
+      .orient('top');
     const yAxis = d3.svg.axis()
       .scale(yLane)
       .orient('left');
@@ -1007,7 +1007,7 @@ export class ChartService {
       .scale(xLane)
       .tickSize(-height, 0, 0)
       .tickFormat('')
-      .orient('bottom');
+      .orient('top');
     // Add SVG element
     let laneChart;
     if (isNewChart) {
@@ -1071,8 +1071,11 @@ export class ChartService {
       }
     }
 
+    const topOffset = 30;
+
     const plotChartAxes = (params) => {
-      const yLabelPos = isCountryListObject ? -25 : -35;
+      const yLabelPos = isCountryListObject ? 15 : 5;
+      const labelOffset = -20;
       const xDescLabel = countryList['chartType'] === 'relative' ?
         'Percent % of Country GDP' : 'US$, millions per year';
       const xLabelPosition = width / 3.5;
@@ -1081,11 +1084,11 @@ export class ChartService {
         laneChart.append('g')
           .call(params.gridLines.x)
           .classed('lanes', true)
-          .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ',' + (height - margin.bottom) + ')');
+          .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ',' + topOffset + ')');
         // Adding X axis
         laneChart.append('g')
           .classed('x-axis', true)
-          .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', ' + (height - margin.bottom) + ')')
+          .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', ' + topOffset + ')')
           .call(params.axis.x);
         // Adding x axis descriptive label
         laneChart.select('.x-axis')
@@ -1094,7 +1097,7 @@ export class ChartService {
           .attr('x', 0)
           .attr('y', 0)
           .style('text-anchor', 'middle')
-          .attr('transform', 'translate(' + xLabelPosition + ', ' + (margin.bottom - spaceLblCh) + ')')
+          .attr('transform', 'translate(' + xLabelPosition + ', ' + labelOffset + ')')
           .text(xDescLabel);
         // Adding y axis labels
         laneChart.append('g')
@@ -1108,11 +1111,11 @@ export class ChartService {
       } else {
         // Update lane lines
         laneChart.selectAll('g.lanes')
-          .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ',' + (height - margin.bottom) + ')')
+          .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ',' + topOffset + ')')
           .call(params.gridLines.x);
         // Update x-axis labels
         laneChart.selectAll('g.x-axis')
-          .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', ' + (height - margin.bottom) + ')')
+          .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', ' + topOffset + ')')
           .call(params.axis.x);
         // Update y-axis labels
         laneChart.selectAll('g.y-axis')
@@ -1124,7 +1127,7 @@ export class ChartService {
         // Update x-axis descriptive label style
         laneChart.select('.x-axis-lb')
           .style('text-anchor', 'middle')
-          .attr('transform', 'translate(' + xLabelPosition + ', ' + (margin.bottom - spaceLblCh) + ')')
+          .attr('transform', 'translate(' + xLabelPosition + ', ' + labelOffset + ')')
           .text(xDescLabel);
       }
       // Apply UI styles in vertical lines to get them in base64 conversion process.
@@ -1214,10 +1217,12 @@ export class ChartService {
           .classed('e-bar', true);
         // Add bars with data container
         dataBars  = laneChart.append('g')
-          .classed('bar-charts', true);
-         // Add right y-position bar labels container
-        barLabels = laneChart.append('g')
-          .classed('bar-labels', true);
+          .classed('bar-charts', true)
+          .attr('transform', 'translate(0,' + (topOffset + 10) + ')');
+          // Add right y-position bar labels container
+          barLabels = laneChart.append('g')
+          .classed('bar-labels', true)
+          .attr('transform', 'translate(0,' + (topOffset + 10) + ')');
       } else {
         eBar = laneChart.select('.e-bar');
         dataBars = laneChart.select('.bar-charts');
