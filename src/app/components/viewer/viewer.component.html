@@ -108,6 +108,54 @@
           </div>
         </div>
 
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card bg-light card-02">
+              <div class="card-header">Output: Country Losses to Assets, Well-Being, and Socio-Economic Capacity
+                 <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
+                 <i class="mdi mdi-information-outline"></i>
+                 </button>
+                 <!-- <span><i class="mdi mdi-checkbox-blank-circle box-icon-c"></i> Country</span>
+                 <span><img src="assets/image/icon-map.png" alt=""> Global Average</span> --></div>
+              <div class="card-body">
+
+                <div class="row">
+                   <div class="col-md-12">
+                     <div class="row">
+                       <div class="col-md-4"></div>
+                       <div class="col-md-4 text-center">{{viewerModel.firstCountry || 'Global Average'}}</div>
+                       <div class="col-md-4 text-center">{{viewerModel.secondCountry || 'Global Average'}}</div>
+                     </div>
+                      <!-- <div class="form-group bottom-results" [class.has-danger]="searchFailed">
+                         <input type="text" class="form-control form-control-01" [(ngModel)]="viewerModel.firstCountry" disabled placeholder="Country 1" />
+                         <span *ngIf="searching">searching...</span>
+                         <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
+                      </div> -->
+                   </div>
+                   <div class="col-md-8">
+                     <div class="row" id="outputs-1"></div>
+                   </div>
+                   <div class="col-md-4">
+                    <div class="row" id="outputs-2"></div>
+                  </div>
+                </div>
+                <!-- <div class="row border-content">
+                   <div class="col-md-12">
+                      <div class="form-group bottom-results" [class.has-danger]="searchFailed">
+                         <input type="text" class="form-control form-control-01" [(ngModel)]="viewerModel.secondCountry" disabled placeholder="Country 2" />
+                         <span *ngIf="searching">searching...</span>
+                         <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
+                      </div>
+                   </div>
+                   <div class="col-md-12">
+                     <div class="row" id="outputs-2"></div>
+                   </div>
+                </div> -->
+
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="row" [hidden]="!viewerDisplay">
           <div class="col-md-12">
             <div class="card bg-light card-02">
@@ -986,54 +1034,6 @@
                       </ngb-tab>
                    </ngb-tabset> -->
                 </div>
-
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card bg-light card-02">
-              <div class="card-header">Output: Country Losses to Assets, Well-Being, and Socio-Economic Capacity
-                 <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                 <i class="mdi mdi-information-outline"></i>
-                 </button>
-                 <!-- <span><i class="mdi mdi-checkbox-blank-circle box-icon-c"></i> Country</span>
-                 <span><img src="assets/image/icon-map.png" alt=""> Global Average</span> --></div>
-              <div class="card-body">
-
-                <div class="row">
-                   <div class="col-md-12">
-                     <div class="row">
-                       <div class="col-md-4"></div>
-                       <div class="col-md-4 text-center">{{viewerModel.firstCountry || 'Global Average'}}</div>
-                       <div class="col-md-4 text-center">{{viewerModel.secondCountry || 'Global Average'}}</div>
-                     </div>
-                      <!-- <div class="form-group bottom-results" [class.has-danger]="searchFailed">
-                         <input type="text" class="form-control form-control-01" [(ngModel)]="viewerModel.firstCountry" disabled placeholder="Country 1" />
-                         <span *ngIf="searching">searching...</span>
-                         <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
-                      </div> -->
-                   </div>
-                   <div class="col-md-8">
-                     <div class="row" id="outputs-1"></div>
-                   </div>
-                   <div class="col-md-4">
-                    <div class="row" id="outputs-2"></div>
-                  </div>
-                </div>
-                <!-- <div class="row border-content">
-                   <div class="col-md-12">
-                      <div class="form-group bottom-results" [class.has-danger]="searchFailed">
-                         <input type="text" class="form-control form-control-01" [(ngModel)]="viewerModel.secondCountry" disabled placeholder="Country 2" />
-                         <span *ngIf="searching">searching...</span>
-                         <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
-                      </div>
-                   </div>
-                   <div class="col-md-12">
-                     <div class="row" id="outputs-2"></div>
-                   </div>
-                </div> -->
 
               </div>
             </div>
