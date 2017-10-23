@@ -142,7 +142,7 @@ export class ChartService {
           asString = asString.toFixed(3).split('.').join(',');
         }
         extraInfo = 'Billion';
-        aValue = `$${asString} ${extraInfo} (${percentageValue} % of GDP)`;
+        aValue = `$${asString} ${extraInfo} (${percentageValue} % of Current Annual Losses)`;
       } else if (dollarLossGDP >= aMillion) {
         dollarLossGDP /= aMillion;
         dollarLossGDP = Math.round(dollarLossGDP);
@@ -152,7 +152,7 @@ export class ChartService {
           asString = asString.toFixed(3).split('.').join(',');
         }
         extraInfo = 'Million';
-        aValue = `$${asString} ${extraInfo} (${percentageValue} % of GDP)`;
+        aValue = `$${asString} ${extraInfo} (${percentageValue} % of Current Annual Losses)`;
       }
     } else if (dollarLossGDP >= aMillion) {
       dollarLossGDP /= aMillion;
@@ -163,7 +163,7 @@ export class ChartService {
         asString = asString.toFixed(3).split('.').join(',');
       }
       extraInfo = 'Million';
-      aValue = `$${asString} ${extraInfo} (${percentageValue} % of GDP)`;
+      aValue = `$${asString} ${extraInfo} (${percentageValue} % of Current Annual Losses)`;
     } else {
       dollarLossGDP = Math.round(dollarLossGDP);
       asString = dollarLossGDP;
@@ -171,7 +171,7 @@ export class ChartService {
         asString = dollarLossGDP / aThousand;
         asString = asString.toFixed(3).split('.').join(',');
       }
-      aValue = `$${asString} (${percentageValue} % of GDP)`;
+      aValue = `$${asString} (${percentageValue} % of Current Annual Losses)`;
     }
     return {
       dollarGDP: dollarLossGDP,
