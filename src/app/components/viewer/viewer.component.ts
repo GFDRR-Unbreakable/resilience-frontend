@@ -17,6 +17,7 @@ import {Subscription} from 'rxjs/Subscription';
 import {Store} from '@ngrx/store';
 import {AppStore} from '../../store/default.store';
 // import * as enablePassiveEvent from 'default-passive-events/default-passive-events.js';
+import {MdSliderChange} from '@angular/material/';
 
 @Component({
   selector: 'app-viewer',
@@ -1189,5 +1190,13 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   onSliderChangeEvent2(key) {
     this.onSliderChangeEvent(this.sliderValues2, key);
     this._changeSliderValue(key, false);
+  }
+  onSliderInputEvent1(event: MdSliderChange, key) {
+    this.sliderValues1[key + '_value'] = event.value;
+    this.onSliderChangeEvent(this.sliderValues1, key);
+  }
+  onSliderInputEvent2(event: MdSliderChange, key) {
+    this.sliderValues2[key + '_value'] = event.value;
+    this.onSliderChangeEvent(this.sliderValues2, key);
   }
 }
