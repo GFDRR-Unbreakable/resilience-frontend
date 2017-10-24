@@ -619,10 +619,17 @@ template {
   }
   .country-p{
     padding: 0px;
-    margin-top: 4px;
+    margin-top: -2px;
+    margin-left: 10px
   }
   .global-p{
-    margin-top: 3px;
+    margin-top: -6px;
+    margin-left: 10px;
+  }
+  .value-p{
+    padding: 0px;
+    margin-left: 10px;
+    margin-top: 5px;
   }
   .card-02{
     margin-top: 10px;
@@ -845,10 +852,10 @@ template {
     display: -webkit-box;
   }
   .icon-hazard{
-    background: #7D8F8F !important;
+    background: #d8deea !important;
     padding: 3% 4.5%;
     border-radius: 5px;
-    border: 1px solid #7D8F8F !important;
+    border: 1px solid #d8deea !important;
     margin-bottom: 12px;
     margin-right: 3px;
   }
