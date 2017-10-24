@@ -760,6 +760,48 @@ export class ChartService {
         brushg.selectAll('#' + containerId + ' rect')
           .attr('height', height)
           .style('pointer-events', 'none');
+
+        const line2 = d3.svg.line()
+          .x((d) => {
+            return d3.mean(data);
+          })
+          .y((d) => {
+            return height;
+          });
+
+        const brushg2 = svg.append('g')
+          .attr('class', 'brush2')
+          .style('pointer-events', 'none')
+          .call(brush);
+
+        brushg2.call(brush.event)
+          .transition()
+          .duration(750)
+          .call(brush.extent([0, d3.mean(data)]))
+          .call(brush.event);
+
+        brushg2.selectAll('#' + containerId + ' g.resize.w').remove();
+        // Add manually chart styles to be integrated when converting to base64 string
+        brushg2.select('#' + containerId + ' #' + idx + ' g.resize.e').append('path')
+          .attr('d', line2)
+          .style('fill', '#666')
+          .style('fill-opacity', '0.8')
+          .style('stroke-width', '4px')
+          // .style('stroke', '#C3D700')
+          .style('stroke', '#000000')
+          .style('pointer-events', 'none');
+        // Add manually chart styles to be integrated when converting to base64 string
+        brushg2.select('rect.extent')
+          .style('fill-opacity', '0')
+          .style('shape-rendering', 'crispEdges');
+
+        brushg2.selectAll('#' + containerId + ' rect')
+          .attr('height', height)
+          .style('pointer-events', 'none');
+        let brushg2El = brushg2.select('#' + containerId + ' #' + idx + ' g.resize.e rect')[0][0];
+        brushg2El.style.visibility = "visible";
+        brushg2El.style['fill-opacity'] = 0.2;
+        brushg2El.width.baseVal.value = 3;
       };
 
       if (!isScoreCardPage) {
