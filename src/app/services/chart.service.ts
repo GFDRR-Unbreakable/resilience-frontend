@@ -25,6 +25,7 @@ export class ChartService {
   private _outputDataURL = SERVER.URL.OUTPUT_DATA;
   private _inputInfoURL = SERVER.URL.INPUTS_INFO;
   private _inputDomains: any;
+  private _inputLabels: any;
   private _inputFilterObj: any = null;
   private _inputConfig: any = {};
   private _outputDomains: any = {};
@@ -227,6 +228,9 @@ export class ChartService {
     const inputTypeTxt = containerId.split('-')[0];
     const inputTypes = this.getInputIdChartByType(inputTypeTxt);
     const filterInputType = filteredInputData.filter(val => {
+      if (inputTypes == null) {
+        console.log(val);
+      }
       return inputTypes.filter(type => {
         return val.key === type;
       })[0];
@@ -1686,7 +1690,7 @@ export class ChartService {
           'descriptor': 'Risk to assets',
           'gradient': ['#f0f9e8', '#08589e'],
           'number_type': 'percent',
-          'precision': 2
+          'precision': 3
         },
         'resilience': {
           'descriptor': 'Socio-economic capacity',
@@ -1698,20 +1702,21 @@ export class ChartService {
           'descriptor': 'Risk to well-being',
           'gradient': ['#edf8fb', '#6e016b'],
           'number_type': 'percent',
-          'precision': 2
+          'precision': 3
         }
       },
-      'inputs': ['gamma_SP_cat_info__poor', 'macro_tau_tax', 'macro_borrow_abi', 'macro_prepare_scaleup',
-        'macro_T_rebuild_K', 'shew_for_hazard_ratio', 'axfin_cat_info__poor', 'axfin_cat_info__nonpoor',
-        'k_cat_info__poor', 'k_cat_info__nonpoor', 'hazard_ratio_flood_poor', 'hazard_ratio_fa__flood',
-        'v_cat_info__poor', 'v_cat_info__nonpoor', 'hazard_ratio_fa__earthquake', 'hazard_ratio_fa__tsunami', 'hazard_ratio_fa__wind'
+      'inputs': ['macro_T_rebuild_K', 'macro_borrow_abi', 'macro_prepare_scaleup', 'macro_tau_tax',
+        'axfin_cat_info__nonpoor', 'axfin_cat_info__poor', 'gamma_SP_cat_info__poor', 'c_cat_info__nonpoor',
+        'c_cat_info__poor', 'v_cat_info__nonpoor', 'v_cat_info__poor', 'shew_for_hazard_ratio',
+        'hazard_ratio_fa__earthquake', 'hazard_ratio_fa__flood', 'hazard_ratio_flood_poor',
+        'hazard_ratio_fa__tsunami', 'hazard_ratio_fa__wind'
       ],
       'inputTypes' : {
-        'inputSoc': ['gamma_SP_cat_info__poor', 'macro_tau_tax', 'macro_borrow_abi', 'macro_prepare_scaleup', 'macro_T_rebuild_K'],
-        'inputEco': ['axfin_cat_info__poor', 'axfin_cat_info__nonpoor', 'k_cat_info__poor', 'k_cat_info__nonpoor'],
-        'inputVul': ['v_cat_info__poor', 'v_cat_info__nonpoor', 'shew_for_hazard_ratio'],
-        'inputExp': ['hazard_ratio_flood_poor', 'hazard_ratio_fa__flood', 'hazard_ratio_fa__earthquake', 'hazard_ratio_fa__tsunami',
-          'hazard_ratio_fa__wind']
+        'inputSoc': ['gamma_SP_cat_info__poor', 'macro_tau_tax', 'macro_borrow_abi', 'macro_prepare_scaleup'],
+        'inputEco': ['macro_T_rebuild_K', 'shew_for_hazard_ratio', 'axfin_cat_info__nonpoor', 'axfin_cat_info__poor',
+          'c_cat_info__poor', 'c_cat_info__nonpoor'],
+        'inputExp': ['hazard_ratio_flood_poor', 'hazard_ratio_fa__flood', 'v_cat_info__poor', 'v_cat_info__nonpoor',
+          'hazard_ratio_fa__earthquake', 'hazard_ratio_fa__tsunami']
       },
       'policyList': [
         {'id': 'axfin', 'label': 'Universal access to finance', 'mapping': 'axfin'},
@@ -1729,15 +1734,15 @@ export class ChartService {
       ],
       'policyMetrics': ['dK', 'dKtot', 'dWpc_currency', 'dWtot_currency'],
       'inputs_info': 'inputs_info_wrapper.csv',
-      'default_input': 'axfin_p',
+      'default_input': 'axfin_cat_info__poor',
       'default_output': 'resilience',
       'default_feature': 'AUS',
       'model_data': 'df_for_wrapper.csv',
       'model_scp_data': 'df_for_wrapper_scp.csv',
       'model_function': 'res_ind_lib.compute_resilience_from_packed_inputs',
       'policy_model_fn': 'res_ind_lib_big.compute_resilience_from_adjusted_inputs_for_pol',
-      'pop': 'pop',
-      'gdp': 'gdp_pc_pp',
+      'pop': 'macro_pop',
+      'gdp': 'macro_gdp_pc_pp',
       'map': {
         'width': 500,
         'height': 350
@@ -1761,6 +1766,9 @@ export class ChartService {
    */
   getInputData() {
     return this._inputDomains;
+  }
+  getInputLabels() {
+    return this._inputLabels;
   }
   /**
    * Returns persisted input-data observable. 
@@ -2017,6 +2025,17 @@ export class ChartService {
           inputObj['upper'] = +value.upper;
           inputObj['number_type'] = value.number_type;
           inputDomainsArr.push(inputObj);
+          if (this._inputLabels == null) {
+            this._inputLabels = {};
+          }
+          if (this._inputLabels[value.key] == null) {
+            this._inputLabels[value.key] = {};
+          }
+          this._inputLabels[value.key].key = value.key;
+          this._inputLabels[value.key].descriptor = value.descriptor;
+          this._inputLabels[value.key].lower = +value.lower;
+          this._inputLabels[value.key].upper = +value.upper;
+          this._inputLabels[value.key].number_type = value.number_type;
         });
         this._inputDomains = this._populateInputDomains(inputDomainsArr, _globalModelData);
         resolve(this._inputDomains);
@@ -2250,7 +2269,7 @@ export class ChartService {
           sliderValues[conf].value = model[conf];
           sliderValues[conf + '_value'] = model[conf] / (sliderValues[conf].max + sliderValues[conf].min) * 100;
           sliderValues[conf + '_original_value'] =
-            sliderValues[conf + '_display_value'].replace('$', '').replace(',', '');
+            ('' + sliderValues[conf + '_display_value']).replace('$', '').replace(',', '');
         }
         ini.attr('x1', function(d) {
             return input.x(+model[conf]);

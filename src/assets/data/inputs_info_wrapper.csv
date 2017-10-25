@@ -16,3 +16,5 @@ k_cat_info__nonpoor,Wealth (nonpoor people),,,,dollar,0.3
 hazard_ratio_fa__earthquake,Exposure to earthquakes,,,,small_percent,0.2
 hazard_ratio_fa__tsunami,Exposure to tsunamis,,,,small_percent,0.2
 hazard_ratio_fa__wind,Exposure to windstorms,,,,small_percent,0.2
+c_cat_info__poor,Income (poor people),,,,dollar,0.3
+c_cat_info__nonpoor,Income (nonpoor people),,,,dollar,0.3
