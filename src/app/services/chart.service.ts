@@ -1022,8 +1022,8 @@ export class ChartService {
     const margin = {
       left: isPolicyListObject ? 170 : 130,
       right: 60,
-      bottom: 50,
-      top: 5
+      bottom: 35,
+      top: 35
     };
     const width = w - margin.left - margin.right;
     const height = h - margin.top - margin.bottom;
@@ -1042,6 +1042,9 @@ export class ChartService {
     const xAxis = d3.svg.axis()
       .scale(xLane)
       .orient('top');
+    const xAxis2 = d3.svg.axis()
+      .scale(xLane)
+      .orient('bottom');
     const yAxis = d3.svg.axis()
       .scale(yLane)
       .orient('left');
@@ -1051,7 +1054,7 @@ export class ChartService {
 
     const xGridLines = d3.svg.axis()
       .scale(xLane)
-      .tickSize(-height, 0, 0)
+      .tickSize(-height + margin.top + margin.bottom - 30, 0, 0)
       .tickFormat('')
       .orient('top');
     // Add SVG element
@@ -1060,7 +1063,7 @@ export class ChartService {
       laneChart = d3.select(`#${containerId}`)
         .append('svg')
         .attr('width', width)
-        .attr('height', height);
+        .attr('height', height + margin.bottom);
     } else {
       laneChart = d3.select(`#${containerId} svg`);
       if (height !== laneChart.attr('height')) {
@@ -1117,8 +1120,6 @@ export class ChartService {
       }
     }
 
-    const topOffset = 30;
-
     const plotChartAxes = (params) => {
       const yLabelPos = isCountryListObject ? 15 : 5;
       const labelOffset = -20;
@@ -1130,12 +1131,16 @@ export class ChartService {
         laneChart.append('g')
           .call(params.gridLines.x)
           .classed('lanes', true)
-          .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ',' + topOffset + ')');
+          .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ',' + (margin.top - 5) + ')');
         // Adding X axis
         laneChart.append('g')
           .classed('x-axis', true)
-          .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', ' + topOffset + ')')
+          .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', ' + (margin.top - 5) + ')')
           .call(params.axis.x);
+        laneChart.append('g')
+          .classed('x-axis2', true)
+          .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', ' + (height - 5) + ')')
+          .call(params.axis.x2);
         // Adding x axis descriptive label
         laneChart.select('.x-axis')
           .append('text')
@@ -1144,6 +1149,14 @@ export class ChartService {
           .attr('y', 0)
           .style('text-anchor', 'middle')
           .attr('transform', 'translate(' + xLabelPosition + ', ' + labelOffset + ')')
+          .text(xDescLabel);
+        laneChart.select('.x-axis2')
+          .append('text')
+          .classed('x-axis-lb2', true)
+          .attr('x', 0)
+          .attr('y', 0)
+          .style('text-anchor', 'middle')
+          .attr('transform', 'translate(' + xLabelPosition + ', ' + (margin.bottom) + ')')
           .text(xDescLabel);
         // Adding y axis labels
         laneChart.append('g')
@@ -1157,11 +1170,11 @@ export class ChartService {
       } else {
         // Update lane lines
         laneChart.selectAll('g.lanes')
-          .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ',' + topOffset + ')')
+          .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ',' + margin.top + ')')
           .call(params.gridLines.x);
         // Update x-axis labels
         laneChart.selectAll('g.x-axis')
-          .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', ' + topOffset + ')')
+          .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', ' + margin.top + ')')
           .call(params.axis.x);
         // Update y-axis labels
         laneChart.selectAll('g.y-axis')
@@ -1264,11 +1277,11 @@ export class ChartService {
         // Add bars with data container
         dataBars  = laneChart.append('g')
           .classed('bar-charts', true)
-          .attr('transform', 'translate(0,' + (topOffset + 10) + ')');
+          .attr('transform', 'translate(0,' + margin.top + ')');
           // Add right y-position bar labels container
           barLabels = laneChart.append('g')
           .classed('bar-labels', true)
-          .attr('transform', 'translate(0,' + (topOffset + 10) + ')');
+          .attr('transform', 'translate(0,' + margin.top + ')');
       } else {
         eBar = laneChart.select('.e-bar');
         dataBars = laneChart.select('.bar-charts');
@@ -1530,6 +1543,7 @@ export class ChartService {
       data: allData,
       axis: {
         x: xAxis,
+        x2: xAxis2,
         y: yAxis
       },
       gridLines: {

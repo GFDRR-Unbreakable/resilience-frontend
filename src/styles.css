@@ -11025,7 +11025,9 @@ fieldset {
   padding: 10px 0;
 }
 .x-axis path,
-.x-axis line {
+.x-axis line,
+.x-axis2 path,
+.x-axis2 line {
   fill: none;
   stroke: #626262;
 	shape-rendering: crispEdges;
@@ -11036,14 +11038,16 @@ fieldset {
   stroke: transparent;
 	shape-rendering: crispEdges;
 }
-.x-axis text {
+.x-axis text,
+.x-axis2 text {
   fill: #666;
   font-weight: bold;
 }
 .y-axis g.tick {
   fill: #666;
 }
-.x-axis g.tick text{
+.x-axis g.tick text,
+.x-axis2 g.tick text{
   fill: #666;
   font-size: 11px;
   font-weight: bold;
