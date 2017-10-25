@@ -1151,24 +1151,32 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       this.hazardDisplay[hazardType] = this.hazards.hazard1;
       if (flood) {
         this.setValueExposure(this.hazards.hazard1, hazardType);
+        this._changeSliderValue(hazardType, true);
+        this._changeSliderValue(hazardType, false);
       }
     });
     this.hazardTypes.hazardEarthquake.forEach((hazardType) => {
       this.hazardDisplay[hazardType] = this.hazards.hazard2;
       if (earthquake) {
         this.setValueExposure(this.hazards.hazard2, hazardType);
+        this._changeSliderValue(hazardType, true);
+        this._changeSliderValue(hazardType, false);
       }
     });
     this.hazardTypes.hazardTsunami.forEach((hazardType) => {
       this.hazardDisplay[hazardType] = this.hazards.hazard3;
       if (tsunami) {
         this.setValueExposure(this.hazards.hazard3, hazardType);
+        this._changeSliderValue(hazardType, true);
+        this._changeSliderValue(hazardType, false);
       }
     });
     this.hazardTypes.hazardWindstorm.forEach((hazardType) => {
       this.hazardDisplay[hazardType] = this.hazards.hazard4;
       if (windstorm) {
         this.setValueExposure(this.hazards.hazard4, hazardType);
+        this._changeSliderValue(hazardType, true);
+        this._changeSliderValue(hazardType, false);
       }
     });
   }
