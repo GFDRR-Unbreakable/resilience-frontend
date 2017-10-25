@@ -335,6 +335,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     const idOut = selectedIdx === 0 ? 'outputs-1' : 'outputs-2';
     const idInSoc = selectedIdx === 0 ? 'inputSoc-1' : 'inputSoc-2';
     const idInEco = selectedIdx === 0 ? 'inputEco-1' : 'inputEco-2';
+    const idInVul = selectedIdx === 0 ? 'inputVul-1' : 'inputVul-2';
     const idInExp = selectedIdx === 0 ? 'inputExp-1' : 'inputExp-2';
     const sliderValues = selectedIdx === 0 ? this.sliderValues1 : this.sliderValues2;
     const viewerMod = selectedIdx === 0 ? this.viewerP1 : this.viewerP2;
@@ -353,11 +354,13 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           this.chartService.updateOutputCharts(idOut, list[0].code);
           this.chartService.updateInputCharts(idInSoc, sliderValues, list[0].code);
           this.chartService.updateInputCharts(idInEco, sliderValues, list[0].code);
+          this.chartService.updateInputCharts(idInVul, sliderValues, list[0].code);
           this.chartService.updateInputCharts(idInExp, sliderValues, list[0].code);
         } else {
           this.chartService.createOutputChart(outData, idOut, list[0].group, false, list[0].code);
           this.chartService.createInputCharts(inData, idInSoc, sliderValues, list[0].group);
           this.chartService.createInputCharts(inData, idInEco, sliderValues, list[0].group);
+          this.chartService.createInputCharts(inData, idInVul, sliderValues, list[0].group);
           this.chartService.createInputCharts(inData, idInExp, sliderValues, list[0].group);
 
         }
@@ -381,6 +384,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
             this.chartService.updateOutputCharts(idOut, 'global');
             this.chartService.updateInputCharts(idInSoc, sliderValues, 'global');
             this.chartService.updateInputCharts(idInEco, sliderValues, 'global');
+            this.chartService.updateInputCharts(idInVul, sliderValues, 'global');
             this.chartService.updateInputCharts(idInExp, sliderValues, 'global');
           } else {
             this.chartService.createOutputChart(outData, idOut, 'GLOBAL');
@@ -405,6 +409,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
             }
             this.chartService.createInputCharts(inData, idInSoc, sliderValues, 'GLOBAL');
             this.chartService.createInputCharts(inData, idInEco, sliderValues, 'GLOBAL');
+            this.chartService.createInputCharts(inData, idInVul, sliderValues, 'GLOBAL');
             this.chartService.createInputCharts(inData, idInExp, sliderValues, 'GLOBAL');
           }
           this.setResetValues(sliderValues, viewerMod, selectedIdx === 0 ? 1 : 2, 'GLOBAL');
@@ -454,11 +459,13 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
             this.chartService.updateOutputCharts('outputs-1', isoCode);
             this.chartService.updateInputCharts('inputSoc-1', this.sliderValues1, isoCode);
             this.chartService.updateInputCharts('inputEco-1', this.sliderValues1, isoCode);
+            this.chartService.updateInputCharts('inputVul-1', this.sliderValues1, isoCode);
             this.chartService.updateInputCharts('inputExp-1', this.sliderValues1, isoCode);
           } else {
             this.chartService.createOutputChart(outData, 'outputs-1', filteredGroup, false, isoCode);
             this.chartService.createInputCharts(inData, 'inputSoc-1', this.sliderValues1, filteredGroup);
             this.chartService.createInputCharts(inData, 'inputEco-1', this.sliderValues1, filteredGroup);
+            this.chartService.createInputCharts(inData, 'inputVul-1', this.sliderValues1, filteredGroup);
             this.chartService.createInputCharts(inData, 'inputExp-1', this.sliderValues1, filteredGroup);
           }
         } else if (!this.viewerModel.secondCountry.trim() || filterCountryVal2.length === 0) {
@@ -468,11 +475,13 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
             this.chartService.updateOutputCharts('outputs-2', isoCode);
             this.chartService.updateInputCharts('inputSoc-2', this.sliderValues2, isoCode);
             this.chartService.updateInputCharts('inputEco-2', this.sliderValues2, isoCode);
+            this.chartService.updateInputCharts('inputVul-2', this.sliderValues2, isoCode);
             this.chartService.updateInputCharts('inputExp-2', this.sliderValues2, isoCode);
           } else {
             this.chartService.createOutputChart(outData, 'outputs-2', filteredGroup, false, isoCode);
             this.chartService.createInputCharts(inData, 'inputSoc-2', this.sliderValues2, filteredGroup);
             this.chartService.createInputCharts(inData, 'inputEco-2', this.sliderValues2, filteredGroup);
+            this.chartService.createInputCharts(inData, 'inputVul-2', this.sliderValues2, filteredGroup);
             this.chartService.createInputCharts(inData, 'inputExp-2', this.sliderValues2, filteredGroup);
           }
         }
@@ -497,6 +506,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
             this.chartService.updateInputCharts('inputExp-1', this.sliderValues1, 'global');
             this.chartService.updateInputCharts('inputSoc-1', this.sliderValues1, 'global');
             this.chartService.updateInputCharts('inputEco-1', this.sliderValues1, 'global');
+            this.chartService.updateInputCharts('inputVul-1', this.sliderValues1, 'global');
           } else {
             this.chartService.createOutputChart(outData, 'outputs-1', 'GLOBAL');
             this.chartService.updateOutputCharts('outputs-1', 'global');
@@ -511,6 +521,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
             }
             this.chartService.createInputCharts(inData, 'inputSoc-1', this.sliderValues1, 'GLOBAL');
             this.chartService.createInputCharts(inData, 'inputEco-1', this.sliderValues1, 'GLOBAL');
+            this.chartService.createInputCharts(inData, 'inputVul-1', this.sliderValues1, 'GLOBAL');
             this.chartService.createInputCharts(inData, 'inputExp-1', this.sliderValues1, 'GLOBAL');
           }
           this.setResetValues(this.sliderValues1, this.viewerP1, 1, 'GLOBAL');
@@ -521,6 +532,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
             this.chartService.updateInputCharts('inputExp-2', this.sliderValues2, 'global');
             this.chartService.updateInputCharts('inputSoc-2', this.sliderValues2, 'global');
             this.chartService.updateInputCharts('inputEco-2', this.sliderValues2, 'global');
+            this.chartService.updateInputCharts('inputVul-2', this.sliderValues2, 'global');
           } else {
             this.chartService.createOutputChart(outData, 'outputs-2', 'GLOBAL');
             this.chartService.updateOutputCharts('outputs-2', 'global');
@@ -535,6 +547,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
             }
             this.chartService.createInputCharts(inData, 'inputSoc-2', this.sliderValues2, 'GLOBAL');
             this.chartService.createInputCharts(inData, 'inputEco-2', this.sliderValues2, 'GLOBAL');
+            this.chartService.createInputCharts(inData, 'inputVul-2', this.sliderValues2, 'GLOBAL');
             this.chartService.createInputCharts(inData, 'inputExp-2', this.sliderValues2, 'GLOBAL');
           }
           this.setResetValues(this.sliderValues2, this.viewerP2, 2, 'GLOBAL');
@@ -558,6 +571,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         this.chartService.createInputCharts(inputData, 'inputSoc-2', this.sliderValues2);
         this.chartService.createInputCharts(inputData, 'inputEco-1', this.sliderValues1);
         this.chartService.createInputCharts(inputData, 'inputEco-2', this.sliderValues2);
+        this.chartService.createInputCharts(inputData, 'inputVul-1', this.sliderValues1);
+        this.chartService.createInputCharts(inputData, 'inputVul-2', this.sliderValues2);
         this.chartService.createInputCharts(inputData, 'inputExp-1', this.sliderValues1);
         this.chartService.createInputCharts(inputData, 'inputExp-2', this.sliderValues2);
         this.setSliderConfValues(inputData);
@@ -1113,10 +1128,12 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           this.chartService.createOutputChart(outData, 'outputs-1', group, false, country.code);
           this.chartService.createInputCharts(inData, 'inputSoc-1', this.sliderValues1, group);
           this.chartService.createInputCharts(inData, 'inputEco-1', this.sliderValues1, group);
+          this.chartService.createInputCharts(inData, 'inputVul-1', this.sliderValues1, group);
           this.chartService.createInputCharts(inData, 'inputExp-1', this.sliderValues1, group);
           this.chartService.updateInputCharts('inputExp-1', this.sliderValues1, country.code);
           this.chartService.updateInputCharts('inputSoc-1', this.sliderValues1, country.code);
           this.chartService.updateInputCharts('inputEco-1', this.sliderValues1, country.code);
+          this.chartService.updateInputCharts('inputVul-1', this.sliderValues1, country.code);
           if (this.global) {
             this.chartService.updateOutputCharts('outputs-1', country.code);
           }
@@ -1125,10 +1142,12 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           this.chartService.createOutputChart(outData, 'outputs-2', group, false, country.code);
           this.chartService.createInputCharts(inData, 'inputSoc-2', this.sliderValues2, group);
           this.chartService.createInputCharts(inData, 'inputEco-2', this.sliderValues2, group);
+          this.chartService.createInputCharts(inData, 'inputVul-2', this.sliderValues2, group);
           this.chartService.createInputCharts(inData, 'inputExp-2', this.sliderValues2, group);
           this.chartService.updateInputCharts('inputExp-2', this.sliderValues2, country.code);
           this.chartService.updateInputCharts('inputSoc-2', this.sliderValues2, country.code);
           this.chartService.updateInputCharts('inputEco-2', this.sliderValues2, country.code);
+          this.chartService.updateInputCharts('inputVul-2', this.sliderValues2, country.code);
           if (this.global) {
             this.chartService.updateOutputCharts('outputs-2', country.code);
           }
