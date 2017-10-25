@@ -492,10 +492,10 @@
                                      </label>
                                      <div class="tab-content">
                                         <div class="row" *ngFor="let inputType of inputTypes.inputExp">
-                                          <div class="col-md-4 box-tab-text">
+                                          <div class="col-md-4 box-tab-text" [hidden]="!hazardDisplay[inputType]">
                                             {{inputLabels[inputType] ? inputLabels[inputType].descriptor : inputType}}
                                           </div>
-                                          <div class="col-md-4">
+                                          <div class="col-md-4" [hidden]="!hazardDisplay[inputType]">
                                             <md-slider
                                               [min]="sliderValues1[inputType + '_min']"
                                               [max]="sliderValues1[inputType + '_max']"
@@ -508,7 +508,7 @@
                                             </md-slider>
                                             <span class="text-center slider-text">{{sliderValues1[inputType + '_display_value']}}</span>
                                           </div>
-                                          <div class="col-md-4">
+                                          <div class="col-md-4" [hidden]="!hazardDisplay[inputType]">
                                             <md-slider
                                               [min]="sliderValues2[inputType + '_min']"
                                               [max]="sliderValues2[inputType + '_max']"

@@ -185,6 +185,13 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     inputEco: [],
     inputExp: []
   };
+  public hazardTypes = {
+    hazardFlood: [],
+    hazardEarthquake: [],
+    hazardTsunami: [],
+    hazardWindstorm: []
+  };
+  public hazardDisplay = {};
   public inputData = {};
   public inputLabels = {};
   /**
@@ -218,7 +225,11 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.inputTypes.inputSoc = this.chartService.getChartsConf().inputTypes.inputSoc;
     this.inputTypes.inputEco = this.chartService.getChartsConf().inputTypes.inputEco;
     this.inputTypes.inputExp = this.chartService.getChartsConf().inputTypes.inputExp;
-}
+    this.inputTypes.inputExp.forEach((inputType) => {
+      this.hazardDisplay[inputType] = true;
+    });
+    this.hazardTypes = this.chartService.getChartsConf().hazardTypes;
+  }
   /**
    * This methods gets called when the component gets removed from the UI (normally happens while changing to another page).
    * Unsubscribes all the remaining observables which have been subscribed during UI events through rxjs library.
@@ -1123,35 +1134,71 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       });
     }
   }
-  onSwitchExposure() {
+  setValueExposure(selected: boolean, key: string) {
+    if (selected) {
+      console.log(this.sliderValues1Default);
+      this.sliderValues1[key + '_value'] = this.sliderValues1Default[key + '_value'];
+      this.sliderValues2[key + '_value'] = this.sliderValues2Default[key + '_value'];
+    } else {
+      this.sliderValues1[key + '_value'] = 0;
+      this.sliderValues2[key + '_value'] = 0;
+    }
+    this.onSliderChangeEvent(this.sliderValues1, key);
+    this.onSliderChangeEvent(this.sliderValues2, key);
+  }
+  onSwitchExposure(flood: boolean, earthquake: boolean, tsunami: boolean, windstorm: boolean) {
+    this.hazardTypes.hazardFlood.forEach((hazardType) => {
+      this.hazardDisplay[hazardType] = this.hazards.hazard1;
+      if (flood) {
+        this.setValueExposure(this.hazards.hazard1, hazardType);
+      }
+    });
+    this.hazardTypes.hazardEarthquake.forEach((hazardType) => {
+      this.hazardDisplay[hazardType] = this.hazards.hazard2;
+      if (earthquake) {
+        this.setValueExposure(this.hazards.hazard2, hazardType);
+      }
+    });
+    this.hazardTypes.hazardTsunami.forEach((hazardType) => {
+      this.hazardDisplay[hazardType] = this.hazards.hazard3;
+      if (tsunami) {
+        this.setValueExposure(this.hazards.hazard3, hazardType);
+      }
+    });
+    this.hazardTypes.hazardWindstorm.forEach((hazardType) => {
+      this.hazardDisplay[hazardType] = this.hazards.hazard4;
+      if (windstorm) {
+        this.setValueExposure(this.hazards.hazard4, hazardType);
+      }
+    });
   }
   /**
    * @event Click - This event is triggered when the first hazard button is selected/deselected on the "Run model" view
    */
   onSwitchExposure1() {
     this.hazards.hazard1 = !this.hazards.hazard1;
-    this.onSwitchExposure();
+    this.onSwitchExposure(true, false, false ,false);
   }
   /**
    * @event Click - This event is triggered when the second hazard button is selected/deselected on the "Run model" view
    */
   onSwitchExposure2() {
     this.hazards.hazard2 = !this.hazards.hazard2;
-    this.onSwitchExposure();
+    this.onSwitchExposure(false, true, false, false);
   }
   /**
    * @event Click - This event is triggered when the third hazard button is selected/deselected on the "Run model" view
    */
   onSwitchExposure3() {
     this.hazards.hazard3 = !this.hazards.hazard3;
-    this.onSwitchExposure();
+    this.onSwitchExposure(false, false, true, false);
   }
   /**
    * @event Click - This event is triggered when the fourth hazard button is selected/deselected on the "Run model" view
    */
   onSwitchExposure4() {
     this.hazards.hazard4 = !this.hazards.hazard4;
-    this.onSwitchExposure();
+    this.onSwitchExposure(false, false, false, true);
   }
   /**
    * This method works as a helper of the @event onSliderChangeEvent1 or @event onSliderChangeEvent1 

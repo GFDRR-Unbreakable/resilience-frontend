@@ -1716,7 +1716,13 @@ export class ChartService {
         'inputEco': ['macro_T_rebuild_K', 'shew_for_hazard_ratio', 'axfin_cat_info__nonpoor', 'axfin_cat_info__poor',
           'c_cat_info__poor', 'c_cat_info__nonpoor'],
         'inputExp': ['hazard_ratio_flood_poor', 'hazard_ratio_fa__flood', 'v_cat_info__poor', 'v_cat_info__nonpoor',
-          'hazard_ratio_fa__earthquake', 'hazard_ratio_fa__tsunami']
+          'hazard_ratio_fa__earthquake', 'hazard_ratio_fa__tsunami', 'hazard_ratio_fa__wind']
+      },
+      'hazardTypes' : {
+        'hazardFlood': ['hazard_ratio_flood_poor', 'hazard_ratio_fa__flood', 'v_cat_info__poor', 'v_cat_info__nonpoor'],
+        'hazardEarthquake': ['hazard_ratio_fa__earthquake'],
+        'hazardTsunami': ['hazard_ratio_fa__tsunami'],
+        'hazardWindstorm': ['hazard_ratio_fa__wind']
       },
       'policyList': [
         {'id': 'axfin', 'label': 'Universal access to finance', 'mapping': 'axfin'},
