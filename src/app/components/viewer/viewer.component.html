@@ -295,6 +295,34 @@
                                   </div>
                                   <div class="row border-content"></div>
                                   <div class="tab">
+                                     <input id="tab-two" type="checkbox" name="tabs">
+                                     <label for="tab-two">Vulnerability
+                                     <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
+                                      <i class="mdi mdi-information-outline"></i>
+                                     </button> -->
+                                     </label>
+                                     <div class="tab-content">
+                                        <div class="row">
+                                           <div class="col-md-4 label-text">
+                                            <table>
+                                              <tbody>
+                                                <tr *ngFor="let inputType of inputTypes.inputVul">
+                                                  <td class="td-label-txt">{{inputLabels[inputType] ? inputLabels[inputType].descriptor : inputType}}</td>
+                                                </tr>
+                                            </tbody>
+                                            </table>
+                                           </div>
+                                           <div class="col-md-4">
+                                             <div id="inputEco-1"></div>
+                                           </div>
+                                           <div class="col-md-4">
+                                             <div id="inputEco-2"></div>
+                                           </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                                  <div class="row border-content"></div>
+                                  <div class="tab">
                                      <input id="tab-four" type="checkbox" name="tabs">
                                      <label for="tab-four">Exposure
                                      <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
@@ -450,6 +478,48 @@
                                      </label>
                                      <div class="tab-content">
                                         <div class="row" *ngFor="let inputType of inputTypes.inputEco">
+                                          <div class="col-md-4 box-tab-text">
+                                            {{inputLabels[inputType] ? inputLabels[inputType].descriptor : inputType}}
+                                          </div>
+                                          <div class="col-md-4">
+                                            <md-slider
+                                              [min]="sliderValues1[inputType + '_min']"
+                                              [max]="sliderValues1[inputType + '_max']"
+                                              [step]="sliderValues1[inputType + '_step']"
+                                              [value]="sliderValues1[inputType + '_value']"
+                                              [(ngModel)]="sliderValues1[inputType + '_value']"
+                                              (change)="onSliderChangeEvent1(inputType)"
+                                              (input)="onSliderInputEvent1($event, inputType)"
+                                            >
+                                            </md-slider>
+                                            <span class="text-center slider-text">{{sliderValues1[inputType + '_display_value']}}</span>
+                                          </div>
+                                          <div class="col-md-4">
+                                            <md-slider
+                                              [min]="sliderValues2[inputType + '_min']"
+                                              [max]="sliderValues2[inputType + '_max']"
+                                              [step]="sliderValues2[inputType + '_step']"
+                                              [value]="sliderValues2[inputType + '_value']"
+                                              [(ngModel)]="sliderValues2[inputType + '_value']"
+                                              (change)="onSliderChangeEvent2(inputType)"
+                                              (input)="onSliderInputEvent2($event, inputType)"
+                                            >
+                                            </md-slider>
+                                            <span class="text-center slider-text">{{sliderValues2[inputType + '_display_value']}}</span>
+                                          </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                                  <div class="row border-content"></div>
+                                  <div class="tab">
+                                     <input id="tab-three_tech" type="checkbox" name="tabs">
+                                     <label for="tab-three_tech">Vulnerability
+                                     <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
+                                     <i class="mdi mdi-information-outline"></i>
+                                     </button> -->
+                                     </label>
+                                     <div class="tab-content">
+                                        <div class="row" *ngFor="let inputType of inputTypes.inputVul">
                                           <div class="col-md-4 box-tab-text">
                                             {{inputLabels[inputType] ? inputLabels[inputType].descriptor : inputType}}
                                           </div>

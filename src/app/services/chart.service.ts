@@ -1729,11 +1729,12 @@ export class ChartService {
         'inputSoc': ['gamma_SP_cat_info__poor', 'macro_tau_tax', 'macro_borrow_abi', 'macro_prepare_scaleup'],
         'inputEco': ['macro_T_rebuild_K', 'shew_for_hazard_ratio', 'axfin_cat_info__nonpoor', 'axfin_cat_info__poor',
           'c_cat_info__poor', 'c_cat_info__nonpoor'],
-        'inputExp': ['hazard_ratio_flood_poor', 'hazard_ratio_fa__flood', 'v_cat_info__poor', 'v_cat_info__nonpoor',
+        'inputVul': ['v_cat_info__poor', 'v_cat_info__nonpoor'],
+        'inputExp': ['hazard_ratio_flood_poor', 'hazard_ratio_fa__flood',
           'hazard_ratio_fa__earthquake', 'hazard_ratio_fa__tsunami', 'hazard_ratio_fa__wind']
       },
       'hazardTypes' : {
-        'hazardFlood': ['hazard_ratio_flood_poor', 'hazard_ratio_fa__flood', 'v_cat_info__poor', 'v_cat_info__nonpoor'],
+        'hazardFlood': ['hazard_ratio_flood_poor', 'hazard_ratio_fa__flood'],
         'hazardEarthquake': ['hazard_ratio_fa__earthquake'],
         'hazardTsunami': ['hazard_ratio_fa__tsunami'],
         'hazardWindstorm': ['hazard_ratio_fa__wind']

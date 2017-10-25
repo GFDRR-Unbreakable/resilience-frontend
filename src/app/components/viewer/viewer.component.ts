@@ -183,6 +183,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   public inputTypes = {
     inputSoc: [],
     inputEco: [],
+    inputVul: [],
     inputExp: []
   };
   public hazardTypes = {
@@ -224,6 +225,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.addElPassiveEvents();
     this.inputTypes.inputSoc = this.chartService.getChartsConf().inputTypes.inputSoc;
     this.inputTypes.inputEco = this.chartService.getChartsConf().inputTypes.inputEco;
+    this.inputTypes.inputVul = this.chartService.getChartsConf().inputTypes.inputVul;
     this.inputTypes.inputExp = this.chartService.getChartsConf().inputTypes.inputExp;
     this.inputTypes.inputExp.forEach((inputType) => {
       this.hazardDisplay[inputType] = true;
