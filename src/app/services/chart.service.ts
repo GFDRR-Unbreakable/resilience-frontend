@@ -1635,7 +1635,7 @@ export class ChartService {
     let value: any = (input.key.indexOf('hazard') === 0 || input.key === 'macro_T_rebuild_K') ? +data.toFixed(1) : Math.round(+data);
     percent = input.key === 'macro_T_rebuild_K' ? ' Yrs' : percent;
     percent = input.key.indexOf('hazard') === 0 ? '%' : percent;
-    if (input.key === 'k_cat_info__poor' || input.key === 'k_cat_info__nonpoor') {
+    if (input.key === 'k_cat_info__poor' || input.key === 'k_cat_info__nonpoor' || input.key === 'c_cat_info__poor' || input.key === 'c_cat_info__nonpoor') {
       const aThousand = 1000;
       value = Math.round(+value);
       if (value >= aThousand) {

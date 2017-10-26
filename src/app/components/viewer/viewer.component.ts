@@ -904,10 +904,10 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         this.setSingleSliderConfValue(this.sliderValues1, key, max, min, inputData[inputDataIndex]);
         this.setSingleSliderConfValue(this.sliderValues2, key, max, min, inputData[inputDataIndex]);
         this.viewerP1[key] =
-          (key === 'macro_T_rebuild_K' || key === 'k_cat_info__poor' || key === 'k_cat_info__nonpoor') ?
+          (key === 'macro_T_rebuild_K' || key === 'k_cat_info__poor' || key === 'k_cat_info__nonpoor' || key === 'c_cat_info__poor' || key === 'c_cat_info__nonpoor') ?
             this.sliderValues1[key + '_original_value'] : this.sliderValues1[key + '_original_value'] / 100;
         this.viewerP2[key] =
-          (key === 'macro_T_rebuild_K' || key === 'k_cat_info__poor' || key === 'k_cat_info__nonpoor') ?
+          (key === 'macro_T_rebuild_K' || key === 'k_cat_info__poor' || key === 'k_cat_info__nonpoor' || key === 'c_cat_info__poor' || key === 'c_cat_info__nonpoor') ?
             this.sliderValues2[key + '_original_value'] : this.sliderValues2[key + '_original_value'] / 100;
         this.sliderValues1[key] = {
           min: min,
