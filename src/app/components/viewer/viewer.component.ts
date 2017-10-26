@@ -280,7 +280,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * @param {String} key - Input indicator name which is used to modify the new slider component data.
    * @param {Boolean} isFirstInput - Checks if the first or second slider component has been modified.
    */
-  private _changeSliderValue(key, isFirstInput) {
+  private _changeSliderValue(key, isFirstInput, key2?) {
     const sliderObj = isFirstInput ? this.sliderValues1 : this.sliderValues2;
     const inputIdx = isFirstInput ? 0 : 1;
     const viewerMod = isFirstInput ? this.viewerP1 : this.viewerP2;
@@ -304,6 +304,9 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       });
       viewerMod[key] = sliderObj[key].value;
+      if (key2) {
+        viewerMod[key2] = sliderObj[key2].value;
+      }
       viewerMod['name'] = countryArr[0].name;
       viewerMod['id'] = countryArr[0].code;
       viewerMod['group_name'] = countryArr[0].group;
@@ -1155,7 +1158,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       });
     }
   }
-  setValueExposure(selected: boolean, key: string) {
+  setValueExposure(selected: boolean, key: string, key2?: string) {
     if (selected) {
       console.log(this.sliderValues1Default);
       this.sliderValues1[key + '_value'] = this.sliderValues1Default[key + '_value'];
@@ -1166,38 +1169,46 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     this.onSliderChangeEvent(this.sliderValues1, key);
     this.onSliderChangeEvent(this.sliderValues2, key);
+    if (key2) {
+      this._changeSliderValue(key, true, key2);
+      this._changeSliderValue(key, false, key2);
+    } else {
+      this._changeSliderValue(key, true);
+      this._changeSliderValue(key, false);
+    }
   }
   onSwitchExposure(flood: boolean, earthquake: boolean, tsunami: boolean, windstorm: boolean) {
+    let floodKey1 = null;
+    let floodKey2 = null;
     this.hazardTypes.hazardFlood.forEach((hazardType) => {
       this.hazardDisplay[hazardType] = this.hazards.hazard1;
       if (flood) {
-        this.setValueExposure(this.hazards.hazard1, hazardType);
-        this._changeSliderValue(hazardType, true);
-        this._changeSliderValue(hazardType, false);
+        if (floodKey1 == null) {
+          floodKey1 = hazardType;
+        } else if (floodKey2 == null) {
+          floodKey2 = hazardType;
+        }
       }
     });
+    if (floodKey1 != null && floodKey2 != null) {
+      this.setValueExposure(this.hazards.hazard1, floodKey1, floodKey2);
+    }
     this.hazardTypes.hazardEarthquake.forEach((hazardType) => {
       this.hazardDisplay[hazardType] = this.hazards.hazard2;
       if (earthquake) {
         this.setValueExposure(this.hazards.hazard2, hazardType);
-        this._changeSliderValue(hazardType, true);
-        this._changeSliderValue(hazardType, false);
       }
     });
     this.hazardTypes.hazardTsunami.forEach((hazardType) => {
       this.hazardDisplay[hazardType] = this.hazards.hazard3;
       if (tsunami) {
         this.setValueExposure(this.hazards.hazard3, hazardType);
-        this._changeSliderValue(hazardType, true);
-        this._changeSliderValue(hazardType, false);
       }
     });
     this.hazardTypes.hazardWindstorm.forEach((hazardType) => {
       this.hazardDisplay[hazardType] = this.hazards.hazard4;
       if (windstorm) {
         this.setValueExposure(this.hazards.hazard4, hazardType);
-        this._changeSliderValue(hazardType, true);
-        this._changeSliderValue(hazardType, false);
       }
     });
   }
