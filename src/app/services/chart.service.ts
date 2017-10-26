@@ -2332,7 +2332,7 @@ export class ChartService {
    * @param {String} selectedId - Verifies whether a country iso code or global label is set
    * @param {String} groupName - Group name a country pertains or Global label is set. 
    */
-  updateOutputCharts(containerId: string, selectedId?: any, groupName?: string) {
+  updateOutputCharts(containerId: string, selectedId?: any, groupName?: string, brush2?: boolean) {
     const domains = this.filterOutputDataByGroup(this._outputDomains, groupName);
     const me = this;
     jQuery.each(domains, (idx, outputData) => {
@@ -2386,6 +2386,15 @@ export class ChartService {
         .call(brush.event);
       // remove w resize extent handle
       d3.selectAll(`#${containerId} g.brush > g.resize.w`).remove();
+      if (brush2) {
+        const brushg2 = d3.selectAll(`#${containerId} svg#${idx} g.brush2`);
+        brushg2.transition()
+          .duration(750)
+          .call(brush)
+          .call(brush.event);
+        // remove w resize extent handle
+        d3.selectAll(`#${containerId} g.brush2 > g.resize.w`).remove();
+      }
     });
   }
 }
