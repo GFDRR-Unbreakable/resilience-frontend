@@ -1,20 +1,20 @@
 key,descriptor,weight_der,lower,upper,number_type,bandwith
-hazard_ratio_flood_poor,Exposure to riverine and coastal floods (poor),,,,small_percent,0.2
-hazard_ratio_fa__flood,Exposure to riverine and coastal floods (nonpoor),,,,small_percent,0.2
-v_cat_info__poor,Asset vulnerability (poor people),0.2,0,1,percent,0.2
-v_cat_info__nonpoor,Asset vulnerability (nonpoor people),0.2,0,1,percent,0.2
-macro_T_rebuild_K,Time to  recover and reconstruct,1,0,10,simple,0.2
-shew_for_hazard_ratio,Access to early warning,1,,,percent,0.02
-gamma_SP_cat_info__poor,Share of social protection/remittances to poor people,,,,percent,0.3
-macro_tau_tax,Total social protection spending and remittances,0.2,,,percent,0.2
-macro_borrow_abi,Ability to access postdisaster financial resources,1,,,percent,0.06
-macro_prepare_scaleup,Readiness to scale-up social protection,1,,,percent,0.06
-axfin_cat_info__nonpoor,Financial inclusion (nonpoor people),,,,percent,0.3
-axfin_cat_info__poor,Financial inclusion (poor people),,,,percent,0.3
+hazard_ratio_flood_poor,"Exposure to riverine and coastal floods, poor (% of total assets of poor)",,,,small_percent,0.2
+hazard_ratio_fa__flood,"Exposure to riverine and coastal floods, non-poor (% of total assets of non-poor)",,,,small_percent,0.2
+v_cat_info__poor,"Asset vulnerability, poor people (% destruction of exposed assets of poor)",0.2,0,1,percent,0.2
+v_cat_info__nonpoor,"Asset vulnerability, non-poor people (% destruction of exposed assets of non-poor)",0.2,0,1,percent,0.2
+macro_T_rebuild_K,"Time to recover and reconstruct (years)",1,0,10,simple,0.2
+shew_for_hazard_ratio,"Access to early warning (% of population)",1,,,percent,0.02
+gamma_SP_cat_info__poor,"Share of social protection / remittances to poor people (% of poor)",,,,percent,0.3
+macro_tau_tax,"Total social protection spending and remittances (US$,PPP)",0.2,,,percent,0.2
+macro_borrow_abi,"Ability to access post-disaster financial resources (% of population)",1,,,percent,0.06
+macro_prepare_scaleup,"Readiness to scale-up social protection (% increase in SP total payout post-disaster)",1,,,percent,0.06
+axfin_cat_info__nonpoor,"Financial inclusion, non-poor people (% of non-poor)",,,,percent,0.3
+axfin_cat_info__poor,"Financial inclusion, poor people (% of poor)",,,,percent,0.3
 k_cat_info__poor,Wealth (poor people),,,,dollar,0.3
 k_cat_info__nonpoor,Wealth (nonpoor people),,,,dollar,0.3
-hazard_ratio_fa__earthquake,Exposure to earthquakes,,,,small_percent,0.2
-hazard_ratio_fa__tsunami,Exposure to tsunamis,,,,small_percent,0.2
-hazard_ratio_fa__wind,Exposure to windstorms,,,,small_percent,0.2
-c_cat_info__poor,Income (poor people),,,,dollar,0.3
-c_cat_info__nonpoor,Income (nonpoor people),,,,dollar,0.3
+hazard_ratio_fa__earthquake,"Exposure to earthquakes (% of total assets)",,,,small_percent,0.2
+hazard_ratio_fa__tsunami,"Exposure to tsunamis (% of total assets)",,,,small_percent,0.2
+hazard_ratio_fa__wind,"Exposure to windstorms (% of total assets)",,,,small_percent,0.2
+c_cat_info__poor,"Income, poor people (US$, PPP)",,,,dollar,0.3
+c_cat_info__nonpoor,"Income, non-poor people (US$, PPP)",,,,dollar,0.3
