@@ -1165,7 +1165,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   setValueExposure(selected: boolean, key: string, key2?: string) {
     if (selected) {
-      console.log(this.sliderValues1Default);
       this.sliderValues1[key + '_value'] = this.sliderValues1Default[key + '_value'];
       this.sliderValues2[key + '_value'] = this.sliderValues2Default[key + '_value'];
     } else {
@@ -1175,6 +1174,15 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.onSliderChangeEvent(this.sliderValues1, key);
     this.onSliderChangeEvent(this.sliderValues2, key);
     if (key2) {
+      if (selected) {
+        this.sliderValues1[key2 + '_value'] = this.sliderValues1Default[key2 + '_value'];
+        this.sliderValues2[key2 + '_value'] = this.sliderValues2Default[key2 + '_value'];
+      } else {
+        this.sliderValues1[key2 + '_value'] = 0;
+        this.sliderValues2[key2 + '_value'] = 0;
+      }
+      this.onSliderChangeEvent(this.sliderValues1, key2);
+      this.onSliderChangeEvent(this.sliderValues2, key2);
       this._changeSliderValue(key, true, key2);
       this._changeSliderValue(key, false, key2);
     } else {
