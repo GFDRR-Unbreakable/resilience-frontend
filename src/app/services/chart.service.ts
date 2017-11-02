@@ -1124,7 +1124,7 @@ export class ChartService {
       const yLabelPos = isCountryListObject ? 15 : 5;
       const labelOffset = -20;
       const xDescLabel = countryList['chartType'] === 'relative' ?
-        'Percent % of Country GDP' : 'US$, millions per year';
+        '% of Current Losses' : 'US$, millions per year';
       const xLabelPosition = width / 3.5;
       if (isNewChart) {
         // Adding lane lines
