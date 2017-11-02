@@ -923,6 +923,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         };
       }
     }
+    this.sliderValues1['c_cat_info__poor'].min = this.sliderValues1['c_cat_info__nonpoor'].min;
+    this.sliderValues1['c_cat_info__poor'].max = this.sliderValues1['c_cat_info__nonpoor'].max;
     this.viewerP1Default = Object.assign({}, this.viewerP1);
     this.viewerP2Default = Object.assign({}, this.viewerP2);
     this.sliderValues1Default = Object.assign({}, this.sliderValues1);
