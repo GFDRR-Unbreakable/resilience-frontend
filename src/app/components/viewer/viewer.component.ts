@@ -1280,8 +1280,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       parseFloat(('' + sliderValues[key + '_display_value']).replace('$', '').replace(',', ''));
     sliderValues[key + '_difference_value'] = this.chartService.formatInputChartDifference(newValue - sliderValues[key + '_default_value'], input);
     sliderValues[key].value = newValue;
-    console.log(sliderValues[key]);
-    console.log(sliderValues);
   }
   /**
    * @event Change - This event is triggered when a slider component of the first country set of sliders has changed of value
