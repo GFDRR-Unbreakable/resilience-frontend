@@ -253,10 +253,16 @@ export class ChartService {
       if (sliderValues[input.key]) {
         if (groupName === 'GLOBAL') {
           sliderValues[input.key + '_display_value'] = 0;
+          sliderValues[input.key + '_baseline_value'] = 0;
+          sliderValues[input.key + '_difference_value'] = 0;
+          sliderValues[input.key + '_default_value'] = 0;
           sliderValues[input.key].value = 0;
           sliderValues[input.key + '_value'] = 0;
         } else {
           sliderValues[input.key + '_display_value'] = dataMean;
+          sliderValues[input.key + '_baseline_value'] = dataMean;
+          sliderValues[input.key + '_difference_value'] = dataMean;
+          sliderValues[input.key + '_default_value'] = dataMean;
           sliderValues[input.key].value = dataMean;
           sliderValues[input.key + '_value'] = dataMean / (sliderValues[input.key].max + sliderValues[input.key].min) * 100;
         }
@@ -1650,6 +1656,18 @@ export class ChartService {
     return value;
   }
   /**
+   * Return formatted input-data values to be displayed in the sliders.
+   * @param {String} data - The input data to format.
+   * @param {Object} input - Input-indicator model object.
+   * @param {d3.brush} persistedBrush - D3 brush object to get its current value.
+   */
+  formatInputChartDifference(data, input, persistedBrush?) {
+    let sign = data < 0 ? '-' : '+';
+    let value = data < 0 ? -data : data;
+    let formattedValue = this.formatInputChartValues(value, input, persistedBrush);
+    return sign + ' ' + formattedValue;
+  }
+  /**
    * Returns converted SVG charts to base64 string.
    * @param {String} chartId - Chart id which the chart belongs to. 
    * @param {Boolean} isFromInOutChart - Determines whether the chart container comes from output or input charts.
@@ -2265,6 +2283,8 @@ export class ChartService {
         }
         if (selectedId === 'global') {
           sliderValues[conf + '_display_value'] = this.formatInputChartValues(0, input);
+          sliderValues[conf + '_baseline_value'] = this.formatInputChartValues(0, input);
+          sliderValues[conf + '_difference_value'] = this.formatInputChartDifference(sliderValues[conf + '_default_value'] - 0, input);
           sliderValues[conf].value = 0;
           sliderValues[conf + '_value'] = 0;
           sliderValues[conf + '_original_value'] =
@@ -2286,6 +2306,9 @@ export class ChartService {
             default: break;
           }
           sliderValues[conf + '_display_value'] = this.formatInputChartValues(model[conf], input);
+          sliderValues[conf + '_baseline_value'] = this.formatInputChartValues(model[conf], input);
+          sliderValues[conf + '_default_value'] = model[conf];
+          sliderValues[conf + '_difference_value'] = this.formatInputChartDifference(sliderValues[conf + '_default_value'] - model[conf] , input);
           sliderValues[conf].value = model[conf];
           sliderValues[conf + '_value'] = model[conf] / (sliderValues[conf].max + sliderValues[conf].min) * 100;
           sliderValues[conf + '_original_value'] =

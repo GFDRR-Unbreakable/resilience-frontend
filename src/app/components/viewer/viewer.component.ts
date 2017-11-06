@@ -852,6 +852,9 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         // this.chartService.formatInputChartValues(sliderObj[key + '_display_value'], input);
       sliderObj[key + '_original_value'] =
         parseFloat(sliderObj[key + '_display_value'].replace('$', '').replace(',', ''));
+      sliderObj[key + '_baseline_value'] = sliderObj[key + '_display_value'];
+      sliderObj[key + '_default_value'] = 0;
+      sliderObj[key + '_difference_value'] = this.chartService.formatInputChartDifference(0, input);
     } else {
       // sliderObj[key + '_value'] = 50;
       sliderObj[key + '_value'] = 0;
@@ -861,6 +864,9 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         this.chartService.formatInputChartValues(0, input);
       // sliderObj[key + '_display_value'] =
         // this.chartService.formatInputChartValues((max + min) / 2, input);
+      sliderObj[key + '_baseline_value'] = sliderObj[key + '_display_value'];
+      sliderObj[key + '_default_value'] = 0;
+      sliderObj[key + '_difference_value'] = this.chartService.formatInputChartDifference(0, input);
     }
   }
   /**
@@ -906,9 +912,11 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         this.viewerP1[key] =
           (key === 'macro_T_rebuild_K' || key === 'k_cat_info__poor' || key === 'k_cat_info__nonpoor' || key === 'c_cat_info__poor' || key === 'c_cat_info__nonpoor') ?
             this.sliderValues1[key + '_original_value'] : this.sliderValues1[key + '_original_value'] / 100;
+        this.sliderValues1[key + '_default_value'] = this.viewerP1[key];
         this.viewerP2[key] =
           (key === 'macro_T_rebuild_K' || key === 'k_cat_info__poor' || key === 'k_cat_info__nonpoor' || key === 'c_cat_info__poor' || key === 'c_cat_info__nonpoor') ?
             this.sliderValues2[key + '_original_value'] : this.sliderValues2[key + '_original_value'] / 100;
+        this.sliderValues2[key + '_default_value'] = this.viewerP2[key];
         this.sliderValues1[key] = {
           min: min,
           max: max,
@@ -1270,7 +1278,10 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     sliderValues[key + '_display_value'] = this.chartService.formatInputChartValues(newValue, input);
     sliderValues[key + '_original_value'] =
       parseFloat(('' + sliderValues[key + '_display_value']).replace('$', '').replace(',', ''));
+    sliderValues[key + '_difference_value'] = this.chartService.formatInputChartDifference(newValue - sliderValues[key + '_default_value'], input);
     sliderValues[key].value = newValue;
+    console.log(sliderValues[key]);
+    console.log(sliderValues);
   }
   /**
    * @event Change - This event is triggered when a slider component of the first country set of sliders has changed of value
