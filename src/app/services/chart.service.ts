@@ -126,7 +126,7 @@ export class ChartService {
    * @param {String} percentage - GDP percentage value.
    * @param {Boolean} isSetBillion - Checks whether the GDP value is beyond a billion number.
    */
-  public calculateRiskGDPValues = (gdpDollars, percentageValue, isSetBillion?) => {
+  public calculateRiskGDPValues = (gdpDollars, percentageValue, isSetBillion?, withoutPercent?, onlyPercent?) => {
     let dollarLossGDP = (gdpDollars * (+percentageValue)) / 100;
     const aThousand = 1000;
     const aMillion = 1000000;
@@ -144,6 +144,12 @@ export class ChartService {
         }
         extraInfo = 'Billion';
         aValue = `$${asString} ${extraInfo} (${percentageValue} % of GDP)`;
+        if (withoutPercent) {
+          aValue = `$${asString} ${extraInfo}`;
+        }
+        if (onlyPercent) {
+          aValue = `(${percentageValue} % of GDP)`;
+        }
       } else if (dollarLossGDP >= aMillion) {
         dollarLossGDP /= aMillion;
         dollarLossGDP = Math.round(dollarLossGDP);
@@ -154,6 +160,12 @@ export class ChartService {
         }
         extraInfo = 'Million';
         aValue = `$${asString} ${extraInfo} (${percentageValue} % of GDP)`;
+        if (withoutPercent) {
+          aValue = `$${asString} ${extraInfo}`;
+        }
+        if (onlyPercent) {
+          aValue = `(${percentageValue} % of GDP)`;
+        }
       }
     } else if (dollarLossGDP >= aMillion) {
       dollarLossGDP /= aMillion;
@@ -165,7 +177,13 @@ export class ChartService {
       }
       extraInfo = 'Million';
       aValue = `$${asString} ${extraInfo} (${percentageValue} % of GDP)`;
-    } else {
+      if (withoutPercent) {
+        aValue = `$${asString} ${extraInfo}`;
+      }
+      if (onlyPercent) {
+        aValue = `(${percentageValue} % of GDP)`;
+      }
+  } else {
       dollarLossGDP = Math.round(dollarLossGDP);
       asString = dollarLossGDP;
       if (dollarLossGDP >= aThousand) {
@@ -173,7 +191,13 @@ export class ChartService {
         asString = asString.toFixed(3).split('.').join(',');
       }
       aValue = `$${asString} (${percentageValue} % of GDP)`;
-    }
+      if (withoutPercent) {
+        aValue = `$${asString}`;
+      }
+      if (onlyPercent) {
+        aValue = `(${percentageValue} % of GDP)`;
+      }
+  }
     return {
       dollarGDP: dollarLossGDP,
       text: aValue
@@ -187,20 +211,30 @@ export class ChartService {
    * @param numericValue 
    * @param gdpDollars 
    */
-  private calculateGDPValues (containerId, key, numericValue, gdpDollars) {
+  private calculateGDPValues (containerId, key, numericValue, gdpDollars, precision, oldValue?) {
     let percent;
     let value;
     let moreValues;
+    let defaultValue = numericValue;
+    if (oldValue != null) {
+      defaultValue = oldValue;
+    }
+    let differenceValue = numericValue - defaultValue;
+    let sign = differenceValue < 0 ? '-' : '+';
+    differenceValue = differenceValue < 0 ? -differenceValue : differenceValue;
     if (key === 'risk' || key === 'risk_to_assets') {
-      moreValues = this.calculateRiskGDPValues(gdpDollars, numericValue);
-      value = moreValues.text;
+      moreValues = this.calculateRiskGDPValues(gdpDollars, numericValue, false, false, true);
+      let defaultValues = this.calculateRiskGDPValues(gdpDollars, defaultValue, false, true);
+      let differenceValues = this.calculateRiskGDPValues(gdpDollars, differenceValue, false, true);
+      value = sign + differenceValues.text + ' (Baseline: ' + defaultValues.text + ') ' + moreValues.text;
       this._outputDomains[key]['chart'][containerId] = {
         dollarGDP: moreValues.dollarGDP,
         valueGDP: numericValue
       };
     } else {
       percent = ' %';
-      value = numericValue + percent;
+      value = sign + differenceValue.toFixed(precision) + percent;
+      value = value + '(Baseline: ' + defaultValue + percent + ')';
       this._outputDomains[key]['chart'][containerId] = numericValue;
     }
     return value;
@@ -710,7 +744,7 @@ export class ChartService {
           const precision = +output.precision;
           const brushVal = this._outputDomains[idx][outputId].brush.extent()[1];
           const numericValue = (brushVal * 100).toFixed(precision);
-          const value = me.calculateGDPValues(containerId, idx, numericValue, avgDoll);
+          const value = me.calculateGDPValues(containerId, idx, numericValue, avgDoll, precision);
           return value;
         };
 
@@ -2393,6 +2427,7 @@ export class ChartService {
       // get the value of the current input from the model
       // and update the brush extent
       let extent = brush.extent()[1];
+      let oldExtent = extent;
       if (groupName === 'GLOBAL' || !groupName) {
         extent = +model[idx];
       }
@@ -2400,7 +2435,11 @@ export class ChartService {
       const output = outputData;
       const precision = +output.precision;
       const numericValue = (brush.extent()[1] * 100).toFixed(precision);
-      const value = me.calculateGDPValues(containerId, idx, numericValue, avgDoll);
+      let oldValue = null;
+      if (!brush2) {
+        oldValue = (oldExtent * 100).toFixed(precision);
+      }
+      const value = me.calculateGDPValues(containerId, idx, numericValue, avgDoll, precision, oldValue);
       jQuery(`#${containerId} #${idx} .text-number`).html(value);
       const brushg = d3.selectAll(`#${containerId} svg#${idx} g.brush`);
       brushg.transition()
