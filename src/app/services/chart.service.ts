@@ -226,7 +226,8 @@ export class ChartService {
       moreValues = this.calculateRiskGDPValues(gdpDollars, numericValue, false, false, true);
       let defaultValues = this.calculateRiskGDPValues(gdpDollars, defaultValue, false, true);
       let differenceValues = this.calculateRiskGDPValues(gdpDollars, differenceValue, false, true);
-      value = sign + differenceValues.text + ' <br />Base: ' + defaultValues.text + ' ' + moreValues.text;
+      let differenceText = (differenceValue == 0 || differenceValue) ? '' : (sign + differenceValues.text + '<br />');
+      value = differenceText + 'Base: ' + defaultValues.text + ' ' + moreValues.text;
       this._outputDomains[key]['chart'][containerId] = {
         dollarGDP: moreValues.dollarGDP,
         valueGDP: numericValue
@@ -234,7 +235,8 @@ export class ChartService {
     } else {
       percent = '%';
       value = sign + differenceValue.toFixed(precision) + percent;
-      value = value + '<br />Base: ' + defaultValue + percent;
+      let differenceText = (differenceValue == 0 || differenceValue) ? '' : (sign + value + '<br />');
+      value = differenceText + 'Base: ' + defaultValue + percent;
       this._outputDomains[key]['chart'][containerId] = numericValue;
     }
     return value;
