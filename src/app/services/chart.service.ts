@@ -142,13 +142,13 @@ export class ChartService {
           asString = dollarLossGDP / aThousand;
           asString = asString.toFixed(3).split('.').join(',');
         }
-        extraInfo = 'Billion';
-        aValue = `$${asString} ${extraInfo} (${percentageValue} % of GDP)`;
+        extraInfo = 'B';
+        aValue = `$${asString}${extraInfo} (${percentageValue}% of GDP)`;
         if (withoutPercent) {
-          aValue = `$${asString} ${extraInfo}`;
+          aValue = `$${asString}${extraInfo}`;
         }
         if (onlyPercent) {
-          aValue = `(${percentageValue} % of GDP)`;
+          aValue = `(${percentageValue}% of GDP)`;
         }
       } else if (dollarLossGDP >= aMillion) {
         dollarLossGDP /= aMillion;
@@ -158,13 +158,13 @@ export class ChartService {
           asString = dollarLossGDP / aThousand;
           asString = asString.toFixed(3).split('.').join(',');
         }
-        extraInfo = 'Million';
-        aValue = `$${asString} ${extraInfo} (${percentageValue} % of GDP)`;
+        extraInfo = 'M';
+        aValue = `$${asString}${extraInfo} (${percentageValue}% of GDP)`;
         if (withoutPercent) {
-          aValue = `$${asString} ${extraInfo}`;
+          aValue = `$${asString}${extraInfo}`;
         }
         if (onlyPercent) {
-          aValue = `(${percentageValue} % of GDP)`;
+          aValue = `(${percentageValue}% of GDP)`;
         }
       }
     } else if (dollarLossGDP >= aMillion) {
@@ -175,13 +175,13 @@ export class ChartService {
         asString = dollarLossGDP / aThousand;
         asString = asString.toFixed(3).split('.').join(',');
       }
-      extraInfo = 'Million';
-      aValue = `$${asString} ${extraInfo} (${percentageValue} % of GDP)`;
+      extraInfo = 'M';
+      aValue = `$${asString}${extraInfo} (${percentageValue}% of GDP)`;
       if (withoutPercent) {
-        aValue = `$${asString} ${extraInfo}`;
+        aValue = `$${asString}${extraInfo}`;
       }
       if (onlyPercent) {
-        aValue = `(${percentageValue} % of GDP)`;
+        aValue = `(${percentageValue}% of GDP)`;
       }
   } else {
       dollarLossGDP = Math.round(dollarLossGDP);
@@ -190,12 +190,12 @@ export class ChartService {
         asString = dollarLossGDP / aThousand;
         asString = asString.toFixed(3).split('.').join(',');
       }
-      aValue = `$${asString} (${percentageValue} % of GDP)`;
+      aValue = `$${asString} (${percentageValue}% of GDP)`;
       if (withoutPercent) {
         aValue = `$${asString}`;
       }
       if (onlyPercent) {
-        aValue = `(${percentageValue} % of GDP)`;
+        aValue = `(${percentageValue}% of GDP)`;
       }
   }
     return {
@@ -226,15 +226,15 @@ export class ChartService {
       moreValues = this.calculateRiskGDPValues(gdpDollars, numericValue, false, false, true);
       let defaultValues = this.calculateRiskGDPValues(gdpDollars, defaultValue, false, true);
       let differenceValues = this.calculateRiskGDPValues(gdpDollars, differenceValue, false, true);
-      value = sign + differenceValues.text + ' (Baseline: ' + defaultValues.text + ') ' + moreValues.text;
+      value = sign + differenceValues.text + ' <br />Base: ' + defaultValues.text + ' ' + moreValues.text;
       this._outputDomains[key]['chart'][containerId] = {
         dollarGDP: moreValues.dollarGDP,
         valueGDP: numericValue
       };
     } else {
-      percent = ' %';
+      percent = '%';
       value = sign + differenceValue.toFixed(precision) + percent;
-      value = value + '(Baseline: ' + defaultValue + percent + ')';
+      value = value + '<br />Base: ' + defaultValue + percent;
       this._outputDomains[key]['chart'][containerId] = numericValue;
     }
     return value;
@@ -757,14 +757,14 @@ export class ChartService {
             .attr('class', 'text-results')
             .append('span')
             .attr('class', 'text-number')
-            .text(textFn);
+            .html(textFn);
         } else {
           infoEl.select('div.box-text-results')
             .append('p')
             .attr('class', 'scorecard-text-result')
             .append('span')
             .attr('class', 'text-number')
-            .text(textFn);
+            .html(textFn);
         }
 
         const line = d3.svg.line()

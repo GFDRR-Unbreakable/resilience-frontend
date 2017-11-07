@@ -574,8 +574,15 @@ template {
     padding-bottom: 15px;
   }
   .slider-text {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: bold;
+    float: right;
+    position: absolute;
+    right: 40px;
+    top: 14px;
+  }
+  .slider-text-base {
+    font-weight: normal;
   }
 
   /*VIEWER NEW CODE*/
