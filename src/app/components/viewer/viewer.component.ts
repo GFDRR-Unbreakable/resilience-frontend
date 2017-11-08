@@ -708,6 +708,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       });
     });
+    data['global'] = this.global ? 'Global' : 'Regional';
     return data;
   }
   /**
