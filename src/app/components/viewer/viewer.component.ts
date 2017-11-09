@@ -1017,6 +1017,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         scrollTop: 0
       }, 1000);
     }
+    this.chartService.type1S = this.viewerDisplay;
+    this.chartService.updateContents(this.viewerModel.firstCountry, this.viewerModel.secondCountry);
     return false;
   }
   /**

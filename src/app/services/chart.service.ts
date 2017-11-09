@@ -1,4 +1,4 @@
-import { Injectable, Output } from '@angular/core';
+import { Injectable, Output, Input } from '@angular/core';
 import {Observable} from 'rxjs/Rx';
 import {Subscription} from 'rxjs/Subscription';
 import 'rxjs/add/observable/fromPromise';
@@ -9,6 +9,8 @@ import {SERVER} from './server.conf';
 import {WebService} from '../services/web.service';
 import {ViewerModel} from '../store/model/viewer.model';
 import {URLSearchParams} from '@angular/http';
+import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class ChartService {
@@ -16,6 +18,19 @@ export class ChartService {
    * Public and private properties to be used in this service. Some of them are:
    * observables, primitive data, reusable data.
    */
+  private firstCountry: string;
+  private secondCountry: string;
+  private chart1Data: any = {
+    rta: '',
+    res: '',
+    risk: ''
+  };
+  private chart2Data: any = {
+    rta: '',
+    res: '',
+    risk: ''
+  };
+  private type: string;
   private _outputDataProm$: Observable<any>;
   private _inputDataProm$: Observable<any>;
   private _baseURL = SERVER.URL.BASE;
@@ -47,7 +62,13 @@ export class ChartService {
    * @param {WebService} webService - Service which has a custom functionality regarding the HTTP method calls. It uses default
    * @angular/http API configuration for it.
    */
-  constructor(private webService: WebService) { }
+  public type1S$: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+  set type1S(value: string) {
+   // console.log('emit: ' + value);
+    this.type1S$.next(value);
+  }
+  constructor(private webService: WebService) {
+  }
   /**
    * DEPRECATED. This method returns calculations regarding the summatory, average and counting policy-related data.
    * @param {String} policy - Scorecard policy name.
@@ -211,7 +232,15 @@ export class ChartService {
    * @param numericValue 
    * @param gdpDollars 
    */
+  subscription() {
+    this.type1S$.subscribe(val => {
+    //  console.log('subscribe');
+      this.type = val;
+     // console.log('type ', this.type);
+    });
+  }
   private calculateGDPValues (containerId, key, numericValue, gdpDollars, precision, oldValue?) {
+    this.subscription();
     let percent;
     let value;
     let moreValues;
@@ -226,7 +255,7 @@ export class ChartService {
       moreValues = this.calculateRiskGDPValues(gdpDollars, numericValue, false, false, true);
       let defaultValues = this.calculateRiskGDPValues(gdpDollars, defaultValue, false, true);
       let differenceValues = this.calculateRiskGDPValues(gdpDollars, differenceValue, false, true);
-      let differenceText = (differenceValue == 0 || differenceValue) ? '' : (sign + differenceValues.text + '<br />');
+      let differenceText = (this.type !== 'tech') ? '' : (sign + differenceValues.text + '<br />');
       value = differenceText + 'Base: ' + defaultValues.text + ' ' + moreValues.text;
       this._outputDomains[key]['chart'][containerId] = {
         dollarGDP: moreValues.dollarGDP,
@@ -234,8 +263,8 @@ export class ChartService {
       };
     } else {
       percent = '%';
-      value = sign + differenceValue.toFixed(precision) + percent;
-      let differenceText = (differenceValue == 0 || differenceValue) ? '' : (sign + value + '<br />');
+      value = differenceValue.toFixed(precision) + percent;
+      let differenceText = (this.type !== 'tech') ? '' : (sign + value + '<br />');
       value = differenceText + 'Base: ' + defaultValue + percent;
       this._outputDomains[key]['chart'][containerId] = numericValue;
     }
@@ -2391,6 +2420,80 @@ export class ChartService {
    * @param {String} selectedId - Verifies whether a country iso code or global label is set
    * @param {String} groupName - Group name a country pertains or Global label is set. 
    */
+  updateContents(first, second) {
+    this.subscription();
+    //console.log(this.type);
+    //chart 1
+    const risk_to_assetts1 = jQuery(`#outputs-1 #risk_to_assets .text-number`);
+    const resilience1 = jQuery(`#outputs-1 #resilience .text-number`);
+    const risk1 = jQuery(`#outputs-1 #risk .text-number`);
+    //chart 2
+    const risk_to_assetts2 = jQuery(`#outputs-2 #risk_to_assets .text-number`);
+    const resilience2 = jQuery(`#outputs-2 #resilience .text-number`);
+    const risk2 = jQuery(`#outputs-2 #risk .text-number`);
+    if (this.type !== 'tech') {
+      if (risk_to_assetts1.contents().length > 1) {
+        this.chart1Data.rta = risk_to_assetts1.contents()[0].nodeValue;
+        this.chart1Data.res = resilience1.contents()[0].nodeValue;
+        this.chart1Data.risk = risk1.contents()[0].nodeValue;
+        this.chart2Data.rta = risk_to_assetts2.contents()[0].nodeValue;
+        this.chart2Data.res = resilience2.contents()[0].nodeValue;
+        this.chart2Data.risk = risk2.contents()[0].nodeValue;
+
+       // console.log(risk_to_assetts1.contents());
+        risk_to_assetts1.html(risk_to_assetts1.contents()[2].nodeValue);
+        resilience1.html(resilience1.contents()[2].nodeValue);
+        risk1.html(risk1.contents()[2].nodeValue); 
+        // chart 2
+        risk_to_assetts2.html(risk_to_assetts2.contents()[2].nodeValue);
+        resilience2.html(resilience2.contents()[2].nodeValue);
+        risk2.html(risk2.contents()[2].nodeValue);
+      }
+    } else {
+    //  console.log('estoy entrando al else');
+      let dollarRTA1 = '$0';
+      let percentage1 = '+0.00%';
+      let dollarRISK1 = '$0';
+      let dollarRTA2 = '$0';
+      let percentage2 = '+0.00%';
+      let dollarRISK2 = '$0';
+      if (first === this.firstCountry) {
+        if (this.chart1Data.rta) {
+          dollarRTA1 = this.chart1Data.rta;
+          percentage1 = this.chart1Data.res;
+          dollarRISK1 = this.chart1Data.risk;
+        }
+        this.chart1Data.rta = '';
+        this.chart1Data.res = '';
+        this.chart1Data.risk = '';
+      }
+      if (second === this.secondCountry) {
+        if (this.chart2Data.rta) {
+          dollarRTA2 = this.chart2Data.rta;
+          percentage2 = this.chart2Data.res;
+          dollarRISK2 = this.chart2Data.risk;
+        }
+        this.chart2Data.rta = '';
+        this.chart2Data.res = '';
+        this.chart2Data.risk = '';
+      }
+      const contentRTA1 = `${dollarRTA1} <br /> ${risk_to_assetts1.contents()[0].nodeValue}`;
+      const contentRES1 = `${percentage1} <br /> ${resilience1.contents()[0].nodeValue}`;
+      const contentRISK1 = `${dollarRISK1} <br />${risk1.contents()[0].nodeValue}`;
+      const contentRTA2 = `${dollarRTA2} <br /> ${risk_to_assetts2.contents()[0].nodeValue}`;
+      const contentRES2 = `${percentage2} <br /> ${resilience2.contents()[0].nodeValue}`;
+      const contentRISK2 = `${dollarRISK2} <br />${risk2.contents()[0].nodeValue}`;
+      //console.log(contentRTA1);
+      risk_to_assetts1.html(contentRTA1);
+      resilience1.html(contentRES1);
+      risk1.html(contentRISK1);
+      risk_to_assetts2.html(contentRTA2);
+      resilience2.html(contentRES2);
+      risk2.html(contentRISK2);
+    }
+    this.firstCountry = first;
+    this.secondCountry = second;
+  }
   updateOutputCharts(containerId: string, selectedId?: any, groupName?: string, brush2?: boolean) {
     const domains = this.filterOutputDataByGroup(this._outputDomains, groupName);
     const me = this;
