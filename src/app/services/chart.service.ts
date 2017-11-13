@@ -821,6 +821,7 @@ export class ChartService {
         // Add manually chart styles to be integrated when converting to base64 string
         brushg.select('#' + containerId + ' #' + idx + ' g.resize.e').append('path')
           .attr('d', line)
+          .style('visibility', 'hidden')
           .style('fill', '#666')
           .style('fill-opacity', '0.8')
           .style('stroke-width', '4px')
@@ -2494,7 +2495,7 @@ export class ChartService {
     this.firstCountry = first;
     this.secondCountry = second;
   }
-  updateOutputCharts(containerId: string, selectedId?: any, groupName?: string, brush2?: boolean) {
+  updateOutputCharts(containerId: string, selectedId?: any, groupName?: string, brush2?: boolean, tech?: boolean) {
     const domains = this.filterOutputDataByGroup(this._outputDomains, groupName);
     const me = this;
     jQuery.each(domains, (idx, outputData) => {
@@ -2547,6 +2548,8 @@ export class ChartService {
       const value = me.calculateGDPValues(containerId, idx, numericValue, avgDoll, precision, oldValue);
       jQuery(`#${containerId} #${idx} .text-number`).html(value);
       const brushg = d3.selectAll(`#${containerId} svg#${idx} g.brush`);
+      const path = brushg.select('path');
+      path.style('visibility', tech? 'visible' : 'hidden');
       brushg.transition()
         .duration(750)
         .call(brush)

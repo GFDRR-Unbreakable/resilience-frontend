@@ -317,7 +317,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
             newObj[dataK] = data[dataK][viewerMod['name']];
           }
         }
-        this.chartService.updateOutputCharts(outputChartId, {model: newObj}, 'GLOBAL');
+        this.chartService.updateOutputCharts(outputChartId, {model: newObj}, 'GLOBAL', null, this.viewerDisplay === 'tech');
       });
       this.store.dispatch({type: ViewerAction[viewerActionStr], payload: viewerMod});
     }
@@ -354,7 +354,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           group: list[0].group
         });
         if (this.global) {
-          this.chartService.updateOutputCharts(idOut, list[0].code, null, true);
+          this.chartService.updateOutputCharts(idOut, list[0].code, null, true, this.viewerDisplay === 'tech');
           this.chartService.updateInputCharts(idInSoc, sliderValues, list[0].code);
           this.chartService.updateInputCharts(idInEco, sliderValues, list[0].code);
           this.chartService.updateInputCharts(idInVul, sliderValues, list[0].code);
@@ -384,14 +384,14 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           field.toLowerCase() !== this._selectedCountryList[filterIndex[0]].name.toLowerCase()) {
           this.mapService.setMapFilterByISOCode(filterIndexFromAll[0].code);
           if (this.global) {
-            this.chartService.updateOutputCharts(idOut, 'global', null, true);
+            this.chartService.updateOutputCharts(idOut, 'global', null, true, this.viewerDisplay === 'tech');
             this.chartService.updateInputCharts(idInSoc, sliderValues, 'global');
             this.chartService.updateInputCharts(idInEco, sliderValues, 'global');
             this.chartService.updateInputCharts(idInVul, sliderValues, 'global');
             this.chartService.updateInputCharts(idInExp, sliderValues, 'global');
           } else {
             this.chartService.createOutputChart(outData, idOut, 'GLOBAL');
-            this.chartService.updateOutputCharts(idOut, 'global', null, true);
+            this.chartService.updateOutputCharts(idOut, 'global', null, true, this.viewerDisplay === 'tech');
             if (!this.global) {
               this.global = !this.global;
             }
@@ -400,14 +400,14 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
                 val.name.toLowerCase() === this.viewerModel.firstCountry.toLowerCase());
               if (filterCountryVal1.length) {
                 this.chartService.createOutputChart(outData, 'outputs-1', 'GLOBAL');
-                this.chartService.updateOutputCharts('outputs-1', filterCountryVal1[0].code, null, true);
+                this.chartService.updateOutputCharts('outputs-1', filterCountryVal1[0].code, null, true, this.viewerDisplay === 'tech');
               }
             }  else if (selectedIdx === 0 && this.viewerModel.secondCountry) {
               const filterCountryVal2 = this.countryListComp.filter(val =>
                 val.name.toLowerCase() === this.viewerModel.secondCountry.toLowerCase());
               if (filterCountryVal2.length) {
                 this.chartService.createOutputChart(outData, 'outputs-2', 'GLOBAL');
-                this.chartService.updateOutputCharts('outputs-2', filterCountryVal2[0].code, null, true);
+                this.chartService.updateOutputCharts('outputs-2', filterCountryVal2[0].code, null, true, this.viewerDisplay === 'tech');
               }
             }
             this.chartService.createInputCharts(inData, idInSoc, sliderValues, 'GLOBAL');
@@ -459,7 +459,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         if (!this.viewerModel.firstCountry || filterCountryVal1.length === 0) {
           this.viewerModel.firstCountry = filteredName;
           if (this.global) {
-            this.chartService.updateOutputCharts('outputs-1', isoCode, null, true);
+            this.chartService.updateOutputCharts('outputs-1', isoCode, null, true, this.viewerDisplay === 'tech');
             this.chartService.updateInputCharts('inputSoc-1', this.sliderValues1, isoCode);
             this.chartService.updateInputCharts('inputEco-1', this.sliderValues1, isoCode);
             this.chartService.updateInputCharts('inputVul-1', this.sliderValues1, isoCode);
@@ -475,7 +475,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           index += 1;
           this.viewerModel.secondCountry = filteredName;
           if (this.global) {
-            this.chartService.updateOutputCharts('outputs-2', isoCode, null, true);
+            this.chartService.updateOutputCharts('outputs-2', isoCode, null, true, this.viewerDisplay === 'tech');
             this.chartService.updateInputCharts('inputSoc-2', this.sliderValues2, isoCode);
             this.chartService.updateInputCharts('inputEco-2', this.sliderValues2, isoCode);
             this.chartService.updateInputCharts('inputVul-2', this.sliderValues2, isoCode);
@@ -505,14 +505,14 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.viewerModel.firstCountry.length && selectedC.indexOf(this.viewerModel.firstCountry) >= 0) {
           this.viewerModel.firstCountry = '';
           if (this.global) {
-            this.chartService.updateOutputCharts('outputs-1', 'global', null, true);
+            this.chartService.updateOutputCharts('outputs-1', 'global', null, true, this.viewerDisplay === 'tech');
             this.chartService.updateInputCharts('inputExp-1', this.sliderValues1, 'global');
             this.chartService.updateInputCharts('inputSoc-1', this.sliderValues1, 'global');
             this.chartService.updateInputCharts('inputEco-1', this.sliderValues1, 'global');
             this.chartService.updateInputCharts('inputVul-1', this.sliderValues1, 'global');
           } else {
             this.chartService.createOutputChart(outData, 'outputs-1', 'GLOBAL');
-            this.chartService.updateOutputCharts('outputs-1', 'global', null, true);
+            this.chartService.updateOutputCharts('outputs-1', 'global', null, true, this.viewerDisplay === 'tech');
             if (!this.global) {
               this.global = !this.global;
             }
@@ -520,7 +520,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
               const filterCountryVal2 = this.countryListComp.filter(val =>
                 val.name.toLowerCase() === this.viewerModel.secondCountry.toLowerCase())[0];
               this.chartService.createOutputChart(outData, 'outputs-2', 'GLOBAL');
-              this.chartService.updateOutputCharts('outputs-2', filterCountryVal2.code, null, true);
+              this.chartService.updateOutputCharts('outputs-2', filterCountryVal2.code, null, true, this.viewerDisplay === 'tech');
             }
             this.chartService.createInputCharts(inData, 'inputSoc-1', this.sliderValues1, 'GLOBAL');
             this.chartService.createInputCharts(inData, 'inputEco-1', this.sliderValues1, 'GLOBAL');
@@ -531,14 +531,14 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         } else if (this.viewerModel.secondCountry.length && selectedC.indexOf(this.viewerModel.secondCountry) >= 0) {
           this.viewerModel.secondCountry = '';
           if (this.global) {
-            this.chartService.updateOutputCharts('outputs-2', 'global', null, true);
+            this.chartService.updateOutputCharts('outputs-2', 'global', null, true, this.viewerDisplay === 'tech');
             this.chartService.updateInputCharts('inputExp-2', this.sliderValues2, 'global');
             this.chartService.updateInputCharts('inputSoc-2', this.sliderValues2, 'global');
             this.chartService.updateInputCharts('inputEco-2', this.sliderValues2, 'global');
             this.chartService.updateInputCharts('inputVul-2', this.sliderValues2, 'global');
           } else {
             this.chartService.createOutputChart(outData, 'outputs-2', 'GLOBAL');
-            this.chartService.updateOutputCharts('outputs-2', 'global', null, true);
+            this.chartService.updateOutputCharts('outputs-2', 'global', null, true, this.viewerDisplay === 'tech');
             if (!this.global) {
               this.global = !this.global;
             }
@@ -546,7 +546,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
               const filterCountryVal1 = this.countryListComp.filter(val =>
                 val.name.toLowerCase() === this.viewerModel.firstCountry.toLowerCase())[0];
               this.chartService.createOutputChart(outData, 'outputs-1', 'GLOBAL');
-              this.chartService.updateOutputCharts('outputs-1', filterCountryVal1.code, null, true);
+              this.chartService.updateOutputCharts('outputs-1', filterCountryVal1.code, null, true, this.viewerDisplay === 'tech');
             }
             this.chartService.createInputCharts(inData, 'inputSoc-2', this.sliderValues2, 'GLOBAL');
             this.chartService.createInputCharts(inData, 'inputEco-2', this.sliderValues2, 'GLOBAL');
@@ -1019,7 +1019,11 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     this.chartService.type1S = this.viewerDisplay;
     this.chartService.updateContents(this.viewerModel.firstCountry, this.viewerModel.secondCountry);
-    return false;
+    this._selectedCountryList.forEach(country => {
+      const chartIndex = country.index === 0 ? '1' : '2';
+      this.chartService.updateOutputCharts(`outputs-${chartIndex}`, country.code, null, true, this.viewerDisplay === 'tech');
+    });
+  return false;
   }
   /**
    * @event Click - This event is triggered when user selects on the dropdown to display output/inputs
@@ -1032,7 +1036,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       this._selectedCountryList.forEach(country => {
         const chartIndex = country.index === 0 ? '1' : '2';
         this.chartService.createOutputChart(outData, `outputs-${chartIndex}`, 'GLOBAL', false, country.code);
-        this.chartService.updateOutputCharts(`outputs-${chartIndex}`, country.code, null, true);
+        this.chartService.updateOutputCharts(`outputs-${chartIndex}`, country.code, null, true, this.viewerDisplay === 'tech');
       });
     }
   }
@@ -1102,15 +1106,15 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
               newObj[dataK] = data[dataK][viewerMod['name']];
             }
           }
-          this.chartService.updateOutputCharts(outputChartId, {model: newObj}, 'GLOBAL', true);
+          this.chartService.updateOutputCharts(outputChartId, {model: newObj}, 'GLOBAL', true, this.viewerDisplay === 'tech');
         });
       });
     } else {
       this.viewerModel.firstCountry = '';
       this.viewerModel.secondCountry = '';
     // Update charts
-      this.chartService.updateOutputCharts('outputs-1', 'global', null, true);
-      this.chartService.updateOutputCharts('outputs-2', 'global', null, true);
+      this.chartService.updateOutputCharts('outputs-1', 'global', null, true, this.viewerDisplay === 'tech');
+      this.chartService.updateOutputCharts('outputs-2', 'global', null, true, this.viewerDisplay === 'tech');
     // Update map data
       if (this._selectedCountryList.length) {
         this._selectedCountryList.forEach(val => {
@@ -1158,7 +1162,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           this.chartService.updateInputCharts('inputEco-1', this.sliderValues1, country.code);
           this.chartService.updateInputCharts('inputVul-1', this.sliderValues1, country.code);
           if (this.global) {
-            this.chartService.updateOutputCharts('outputs-1', country.code, null, true);
+            this.chartService.updateOutputCharts('outputs-1', country.code, null, true, this.viewerDisplay === 'tech');
           }
         }
         if (country.index === 1) {
@@ -1172,7 +1176,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           this.chartService.updateInputCharts('inputEco-2', this.sliderValues2, country.code);
           this.chartService.updateInputCharts('inputVul-2', this.sliderValues2, country.code);
           if (this.global) {
-            this.chartService.updateOutputCharts('outputs-2', country.code, null, true);
+            this.chartService.updateOutputCharts('outputs-2', country.code, null, true, this.viewerDisplay === 'tech');
           }
         }
       });
