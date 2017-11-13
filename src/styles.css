@@ -6405,7 +6405,7 @@ button.close {
 
 .popover {
   position: absolute;
-  top: 20% !important;
+  /* top: 20% !important; */
   left: 0;
   z-index: 2060 !important;
   display: block;
