@@ -768,6 +768,7 @@ export class ChartService {
             brush.extent([0, this._globalExtentData[idx]]);
           }
         }
+        this._outputDomains[idx][outputId].default = this._globalExtentData[idx];
         brush.extent([0, this._outputDomains[idx][outputId].brush.extent()[1]]);
         brush.on('brush', brushmove);
 
@@ -2533,7 +2534,7 @@ export class ChartService {
       // get the value of the current input from the model
       // and update the brush extent
       let extent = brush.extent()[1];
-      let oldExtent = extent;
+      let oldExtent = outputData[outputId].default;
       if (groupName === 'GLOBAL' || !groupName) {
         extent = +model[idx];
       }
@@ -2557,6 +2558,7 @@ export class ChartService {
       // remove w resize extent handle
       d3.selectAll(`#${containerId} g.brush > g.resize.w`).remove();
       if (brush2) {
+        outputData[outputId].default = extent;
         const brushg2 = d3.selectAll(`#${containerId} svg#${idx} g.brush2`);
         brushg2.transition()
           .duration(750)
