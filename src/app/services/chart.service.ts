@@ -259,14 +259,19 @@ export class ChartService {
       value = differenceText + 'Base: ' + defaultValues.text + ' ' + moreValues.text;
       this._outputDomains[key]['chart'][containerId] = {
         dollarGDP: moreValues.dollarGDP,
-        valueGDP: numericValue
+        valueGDP: numericValue,
+        difference: sign + differenceValues.text
       };
     } else {
       percent = '%';
       value = differenceValue.toFixed(precision) + percent;
-      let differenceText = (this.type !== 'tech') ? '' : (sign + value + '<br />');
+      let differenceSignText = sign + value;
+      let differenceText = (this.type !== 'tech') ? '' : (differenceSignText + '<br />');
       value = differenceText + 'Base: ' + defaultValue + percent;
-      this._outputDomains[key]['chart'][containerId] = numericValue;
+      this._outputDomains[key]['chart'][containerId] = {
+        value: numericValue,
+        difference: differenceSignText
+      };
     }
     return value;
   }

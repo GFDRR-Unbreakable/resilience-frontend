@@ -652,8 +652,10 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         data.country1.outputs[key]['value'].dollarGDP = out.chart['outputs-1'].dollarGDP;
         data.country1.outputs[key]['value'].valueGDP = out.chart['outputs-1'].valueGDP;
+        data.country1.outputs[key]['value'].difference = out.chart['outputs-1'].difference;
         data.country2.outputs[key]['value'].dollarGDP = out.chart['outputs-2'].dollarGDP;
         data.country2.outputs[key]['value'].valueGDP = out.chart['outputs-2'].valueGDP;
+        data.country2.outputs[key]['value'].difference = out.chart['outputs-2'].difference;
       } else {
         data.country1.outputs[key]['value'] = out.chart['outputs-1'];
         data.country2.outputs[key]['value'] = out.chart['outputs-2'];
