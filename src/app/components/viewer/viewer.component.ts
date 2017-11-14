@@ -559,6 +559,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       }
       this.store.dispatch({type: ViewerAction.EDIT_VIEWER, payload: this.viewerModel});
     }
+    this.onResetTechDataEvent();
   }
   /**
    * Retrieves output-model and input-model data from the ChartService by then plot their output/input charts,
