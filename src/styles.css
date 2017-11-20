@@ -590,7 +590,7 @@ template {
     width: 100% !important;
   }
   .card-01{
-    margin-top: 25px;
+    margin-top: 15px;
     border-radius: 3px !important;
     height: 482px;
   }
@@ -606,7 +606,7 @@ template {
     padding: 15px 19px;
     border-radius: 0px 0px 3px 3px !important;
     border: 1px solid #f1f1f1;
-    height: 440px;
+    height: 530px;
   }
   .card-01 button{
     height: 40px;
