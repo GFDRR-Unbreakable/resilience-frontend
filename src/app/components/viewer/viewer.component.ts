@@ -1025,6 +1025,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this._selectedCountryList.forEach(country => {
       const chartIndex = country.index === 0 ? '1' : '2';
       this.chartService.updateOutputCharts(`outputs-${chartIndex}`, country.code, null, true, this.viewerDisplay === 'tech');
+      this.onResetTechDataEvent();
     });
   return false;
   }
