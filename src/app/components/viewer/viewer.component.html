@@ -100,9 +100,49 @@
                   <img src="assets/image/histogram-big.png" alt="">
                 </div>
                 <div class="col-md-6 text-left">
-                  <p class="country-p">Post-Model Country Value</p>
-                  <p class="value-p">Base Value</p>
+
+
+
+
+
+
+                  <p class="country-p">Policy simulation</p>
+                  <p class="value-p">Today</p>
                   <p class="global-p">Global or Regional Histogram</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card bg-light card-02">
+              <div class="card-header">Hazard Selection: Select one or multiple hazards:
+                 <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="TBD Text" triggers="mouseenter:mouseleave" popoverTitle="">
+                 <i class="mdi mdi-information-outline"></i>
+                 </button></div>
+              <div class="card-body">
+                <div class="row">
+                   <div class="col-md-12">
+                      <div class="hover-a">
+                         <a (click)="onSwitchExposure1()">
+                           <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard1" src="assets/image/flood-yellow.png" alt=""/>
+                           <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard1" src="assets/image/flood.png" alt="" />
+                         </a>
+                         <a (click)="onSwitchExposure2()">
+                           <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard2" src="assets/image/earthquake-yellow.png" alt="" />
+                           <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard2" src="assets/image/earthquake.png" alt="" />
+                         </a>
+                         <a (click)="onSwitchExposure3()">
+                           <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard3" src="assets/image/tsunami-yellow.png" alt="" />
+                           <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard3" src="assets/image/tsunami.png" alt="" />
+                         </a>
+                         <a (click)="onSwitchExposure4()">
+                           <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard4" src="assets/image/wind-yellow.png" alt="" />
+                           <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard4" src="assets/image/wind.png" alt="" />
+                         </a>
+                      </div>
+                   </div>
                 </div>
               </div>
             </div>
@@ -113,7 +153,7 @@
           <div class="col-md-12">
             <div class="card bg-light card-02">
               <div class="card-header">Output: Country Losses to Assets, Well-Being, and Socio-Economic Capacity
-                 <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Effective disaster risk management strategies are designed to both prevent hazards from turning into disasters, and improve the capacity of the population to cope and recover when a disaster occurs. You can manipulate the resilience inputs below to see how policy interventions could mitigate asset risk and well-being risk, and build socioeconomic capacity in countries around the world." triggers="mouseenter:mouseleave" popoverTitle="">
+                 <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="You can manipulate the resilience inputs below to see how policy interventions could mitigate risk to assets and well-being, and build socio-economic capacity (defined as the ration of asset to well-being losses) in countries around the world." triggers="mouseenter:mouseleave" popoverTitle="">
                  <i class="mdi mdi-information-outline"></i>
                  </button>
                  <!-- <span><i class="mdi mdi-checkbox-blank-circle box-icon-c"></i> Country</span>
@@ -157,6 +197,7 @@
             </div>
           </div>
         </div>
+
         <div class="row" [hidden]="!viewerDisplay">
           <div class="col-md-12">
             <div class="card bg-light card-02">
@@ -381,37 +422,7 @@
                                   </div>
                                </div>
                             </div> -->
-                            <div class="row">
-                              <div class="col-md-6">
-                                 <h6>Hazard Selection</h6>
-                                 <p>Select one or multiple hazards:</p>
-                              </div>
-                              <div class="col-md-6 text-right">
-                                <button type="button" class="btn btn-sm button-reset" (click)="onResetTechDataEvent()">RESET</button>
-                              </div>
-                            </div>
-                            <div class="row">
-                               <div class="col-md-12">
-                                  <div class="hover-a">
-                                     <a (click)="onSwitchExposure1()">
-                                       <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard1" src="assets/image/flood-yellow.png" alt="" />
-                                       <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard1" src="assets/image/flood.png" alt="" />
-                                     </a>
-                                     <a (click)="onSwitchExposure2()">
-                                       <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard2" src="assets/image/earthquake-yellow.png" alt="" />
-                                       <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard2" src="assets/image/earthquake.png" alt="" />
-                                     </a>
-                                     <a (click)="onSwitchExposure3()">
-                                       <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard3" src="assets/image/tsunami-yellow.png" alt="" />
-                                       <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard3" src="assets/image/tsunami.png" alt="" />
-                                     </a>
-                                     <a (click)="onSwitchExposure4()">
-                                       <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard4" src="assets/image/wind-yellow.png" alt="" />
-                                       <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard4" src="assets/image/wind.png" alt="" />
-                                     </a>
-                                  </div>
-                               </div>
-                            </div>
+
                             <div class="row">
                               <div class="col-md-12">
                                <div class="row pad-botTop10 justify-content-end">
@@ -638,7 +649,7 @@
               <div class="card-header">About Unbreakable</div>
               <div class="card-body">
                 <p>
-                  Economic losses from natural disasters totaled $210 billion in 2016.”
+                  Economic losses from natural disasters totaled $210 billion in 2016.
                   Such statements, while true, imply that the impact of disasters is limited
                   to the damage inflicted on buildings, infrastructure, and agricultural production.
                   However, $1 in losses does not mean the same thing to a rich person as it does to
@@ -655,8 +666,8 @@
                   country suffer less than 10% of aggregate asset losses, but fully 25% of aggregate
                   well-being losses. In other words, poor people suffer only a fraction of gross
                   economic losses caused by disasters, but they bear a much larger brunt of disasters’
-                  consequences. This approach provides takes fuller account of how poverty increases
-                  people’s vulnerability to disasters, and disasters trap people in poverty.
+                  consequences. This approach takes fuller account of how poverty increases people’s
+                  vulnerability to disasters, and disasters trap people in poverty.
                 </p>
 
                 <p>Learn more about <a href="https://www.gfdrr.org">GFDRR</a> and the <a href="https://www.gfdrr.org/unbreakable">Unbreakable Report.</a></p>
