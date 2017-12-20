@@ -236,7 +236,7 @@ export class MapService {
       style: 'mapbox://styles/gfdrr-dashboard/cj6qvntcf3umq2snyd8se5xir',
       center: [10, 35],
       zoom: 0.55,
-      maxZoom: 2,
+      maxZoom: 4.6,
       maxBounds: [[-180, -80], [180, 80]]
     });
   }
