@@ -72,8 +72,7 @@
                   <img src="assets/image/ic-globe.png" alt="">
                 </div>
                 <div class="col-md-7">
-                  <div ngbDropdown class="option-global">
-                     <!-- <img src="assets/image/icon-map.png" alt=""> -->
+                  <!-- <div ngbDropdown class="option-global">
                      <button [disabled]="_selectedCountryList.length !== MAX_COUNTRIES_SELECTED" class="btn btn-outline-primary btn-sm dropdown-global" id="dropdownBasic1" ngbDropdownToggle>
                        <span *ngIf="global">GLOBAL</span>
                        <span *ngIf="!global">Regional</span>
@@ -84,10 +83,17 @@
                           <span *ngIf="global">Regional</span>
                         </button>
                      </div>
-                     <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                     <i class="mdi mdi-information-outline"></i>
-                     </button> -->
-                  </div>
+                  </div> -->
+                      <div class="switch-btn">
+                          <label class="toggle-switch nolabel">
+                              <input type="checkbox" style="width: 100%;" [checked]="switchUICmpVal"/>
+                              <span>
+                              <span class="pdg-01">Global</span>
+                              <span class="pdg-02">Regional</span>
+                              </span>
+                              <a></a>
+                          </label>
+                      </div>
                 </div>
               </div>
             </div>
@@ -98,14 +104,9 @@
               <div class="row graphs-mg">
                 <div class="col-md-6">
                   <img src="assets/image/histogram-big.png" alt="">
+                  <!-- <img src="assets/image/histogram-big-01.png" alt=""> -->
                 </div>
                 <div class="col-md-6 text-left">
-
-
-
-
-
-
                   <p class="country-p">Policy simulation</p>
                   <p class="value-p">Today</p>
                   <p class="global-p">Global or Regional Histogram</p>
@@ -118,26 +119,26 @@
           <div class="col-md-12">
             <div class="card bg-light card-02">
               <div class="card-header">Hazard Selection: Select one or multiple hazards:
-                 <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="TBD Text" triggers="mouseenter:mouseleave" popoverTitle="">
+                 <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Assessment can be performed for floods, earthquakes, tsunamis, windstorm, or any combination of them." triggers="mouseenter:mouseleave" popoverTitle="">
                  <i class="mdi mdi-information-outline"></i>
                  </button></div>
               <div class="card-body">
                 <div class="row">
                    <div class="col-md-12">
                       <div class="hover-a">
-                         <a (click)="onSwitchExposure1()">
+                         <a (click)="onSwitchExposure1()" placement="top" ngbPopover="Coastal and Riverine Flooding" triggers="mouseenter:mouseleave" popoverTitle="">
                            <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard1" src="assets/image/flood-yellow.png" alt=""/>
                            <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard1" src="assets/image/flood.png" alt="" />
                          </a>
-                         <a (click)="onSwitchExposure2()">
+                         <a (click)="onSwitchExposure2()" placement="top" ngbPopover="Earthquakes" triggers="mouseenter:mouseleave" popoverTitle="">
                            <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard2" src="assets/image/earthquake-yellow.png" alt="" />
                            <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard2" src="assets/image/earthquake.png" alt="" />
                          </a>
-                         <a (click)="onSwitchExposure3()">
+                         <a (click)="onSwitchExposure3()" placement="top" ngbPopover="Tsunamis" triggers="mouseenter:mouseleave" popoverTitle="">
                            <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard3" src="assets/image/tsunami-yellow.png" alt="" />
                            <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard3" src="assets/image/tsunami.png" alt="" />
                          </a>
-                         <a (click)="onSwitchExposure4()">
+                         <a (click)="onSwitchExposure4()" placement="top" ngbPopover="Windstorms" triggers="mouseenter:mouseleave" popoverTitle="">
                            <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard4" src="assets/image/wind-yellow.png" alt="" />
                            <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard4" src="assets/image/wind.png" alt="" />
                          </a>

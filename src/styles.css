@@ -897,6 +897,9 @@ template {
   .hover-a a:hover, .hover-a a:focus {
     cursor: pointer;
   }
+  .hover-a .popover{
+    max-width: 170px;
+  }
   /*tab technical Map*/
  .nav {
    display: -webkit-box;
@@ -3782,6 +3785,7 @@ fieldset[disabled] a.btn {
   color: #fff;
   background-color: #c3d700;
   border-color: #c3d700;
+  cursor: pointer;
 }
 .btn-primary:focus, .btn-primary.focus {
   -webkit-box-shadow: 0 0 0 2px rgba(44, 62, 80, 0.5);
@@ -11197,4 +11201,13 @@ fieldset {
     padding-right: 0;
     padding-left: 0;
   }
+}
+
+
+/* SWITCH */
+.pdg-01{
+  left: 25px !important;
+}
+.pdg-02{
+  left: 15px !important;
 }
