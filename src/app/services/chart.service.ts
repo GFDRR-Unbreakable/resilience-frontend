@@ -541,7 +541,8 @@ export class ChartService {
         .style('fill-opacity', '0.8')
         .style('stroke-width', '4px')
         // .style('stroke', '#7D8F8F')
-        .style('stroke', '#50c4cf')
+        // .style('stroke', '#50c4cf')
+        .style('stroke', '#BDBDBD')
         .style('pointer-events', 'none');
 
       brushg.selectAll('#' + containerId + ' rect')
