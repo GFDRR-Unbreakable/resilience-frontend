@@ -1801,7 +1801,7 @@ export class ChartService {
           'descriptor': 'Risk to assets',
           'gradient': ['#f0f9e8', '#08589e'],
           'number_type': 'percent',
-          'precision': 3
+          'precision': 2
         },
         'resilience': {
           'descriptor': 'Socio-economic capacity',
@@ -1813,7 +1813,7 @@ export class ChartService {
           'descriptor': 'Risk to well-being',
           'gradient': ['#edf8fb', '#6e016b'],
           'number_type': 'percent',
-          'precision': 3
+          'precision': 2
         }
       },
       'inputs': ['macro_T_rebuild_K', 'macro_borrow_abi', 'macro_prepare_scaleup', 'macro_tau_tax',
