@@ -86,7 +86,7 @@
                   </div> -->
                       <div class="switch-btn">
                           <label class="toggle-switch nolabel">
-                              <input type="checkbox" style="width: 100%;" [checked]="switchUICmpVal"/>
+                              <input type="checkbox" style="width: 100%;" [checked]="!global" (click)="onSwitchGlobal()"/>
                               <span>
                               <span class="pdg-01">Global</span>
                               <span class="pdg-02">Regional</span>
@@ -209,8 +209,8 @@
                    </button>
 
                 <div class="box-download">
-                   <button [disabled]="_selectedCountryList.length !== MAX_COUNTRIES_SELECTED" type="button" class="btn btn-primary text-download" (click)="onDownloadCSVViewerReportEvent()"><img class="img-download" src="assets/image/ic-download.png" alt="">CSV</button>
-                   <button [disabled]="_selectedCountryList.length !== MAX_COUNTRIES_SELECTED" type="button" class="btn btn-primary text-download" (click)="onDownloadPDFViewerReportEvent()"><img class="img-download" src="assets/image/ic-download.png" alt="">PDF</button>
+                   <button type="button" class="btn btn-primary text-download" (click)="onDownloadCSVViewerReportEvent()"><img class="img-download" src="assets/image/ic-download.png" alt="">CSV</button>
+                   <button type="button" class="btn btn-primary text-download" (click)="onDownloadPDFViewerReportEvent()"><img class="img-download" src="assets/image/ic-download.png" alt="">PDF</button>
                 </div></div>
               <div class="card-body">
                 <div class="">
