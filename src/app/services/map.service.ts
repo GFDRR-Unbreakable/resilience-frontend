@@ -9,7 +9,7 @@ export class MapService {
    * Public and private variables are set here to be used along with the Mapbox-gl library.
    */
   public token: String
-    = 'pk.eyJ1IjoiZ2ZkcnItZGFzaGJvYXJkIiwiYSI6ImNqMnV3MWppdjAwMXUydmxhaG1weTZzaW8ifQ.drORihaTAcJEGLXFSKjvfQ';
+    = 'pk.eyJ1IjoiZ3NkcG0iLCJhIjoiY2lqbmN5eG9mMDBndHVmbTU5Mmg1djF6MiJ9.QqFCD7tcmccysN8GUClW8w';
   public map: Map;
   private _sourceId = 'dashboard';
   private _layerId = 'all-country';
@@ -233,7 +233,7 @@ export class MapService {
     this.map = new Map({
       container: mapId,
       preserveDrawingBuffer: true,
-      style: 'mapbox://styles/gfdrr-dashboard/cj6qvntcf3umq2snyd8se5xir',
+      style: 'mapbox://styles/gsdpm/cir6ljf470006bsmehhstmxeh',
       center: [10, 35],
       zoom: 0.55,
       maxZoom: 4.6,

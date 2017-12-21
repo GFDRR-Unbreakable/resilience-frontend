@@ -932,7 +932,7 @@ export class ChartService {
    * @param {String} containerId - Scorecard HTML element id.
    * @param {Object} countryList - Scorecard custom properties to be set when plotting in this chart.
    */
-  createPolicyListChart(policyData: any, containerId: string, countryList: any) {
+  createPolicyListChart(policyData: any, containerId: string, countryList: any, hideAvoidedAssetLosses?: boolean) {
     let dkTotArr = [];
     let dWTotCurrencyArr = [];
     const dKTotPercentageArr = [];
@@ -1532,6 +1532,9 @@ export class ChartService {
         .duration(500)
         .ease('bounce')
         .attr('x', (d, i) => {
+          if (hideAvoidedAssetLosses) {
+            return 0;
+          }
           const data = d.dKtot;
           let from = data;
           if (data >= 0) {
@@ -1602,6 +1605,9 @@ export class ChartService {
        // .style('font-weight', 'bold')
         .text((d) => {
           let data;
+          if (hideAvoidedAssetLosses) {
+            return '';
+          }
           if (countryList['chartType'] === 'absolute') {
             data = (d.dKtot < 0 ? '-$' + formatNumericData(d.dKtot) : '$' + formatNumericData(d.dKtot));
           } else {
@@ -1829,18 +1835,62 @@ export class ChartService {
         'hazardWindstorm': ['hazard_ratio_fa__wind']
       },
       'policyList': [
-        {'id': 'axfin', 'label': 'Universal access to finance', 'mapping': 'axfin'},
-        {'id': 'fap', 'label': 'Reduce exposure of the poor by 5% of total exposure', 'mapping': 'v_cat_info__poor'},
-        {'id': 'far', 'label': 'Reduce exposure of the nonpoor by 5% of total exposure', 'mapping': 'v_cat_info__nonpoor'},
-        {'id': 'kp', 'label': 'Increase income of the poor 10%', 'mapping': 'k_cat_info__poor'},
-        {'id': 'pdspackage', 'label': 'Postdisaster support package', 'mapping': 'optionPDS'},
-        {'id': 'prop_nonpoor', 'label': 'Develop market insurance (nonpoor people)', 'mapping': 'optionFee'},
-        {'id': 'shew', 'label': 'Universal access to early warnings', 'mapping': 'shew_for_hazard_ratio'},
-        {'id': 'social_p', 'label': 'Increase social transfers to poor people to at least 33%', 'mapping': 'gamma_SP_cat_info__poor'},
-        {'id': 't_rebuild_k', 'label': 'Accelerate reconstruction (by 33%)', 'mapping': 'macro_T_rebuild_K'},
-        {'id': 'vp', 'label': 'Reduce asset vulnerability (by 30%) of poor people (5% population)', 'mapping': 'v_cat_info__poor'},
-        {'id': 'vr',
-          'label': 'Reduce asset vulnerability (by 30%) of nonpoor people (5% population)', 'mapping': 'v_cat_info__nonpoor'}
+        {
+          'id': 'axfin',
+          'label': 'Universal access to finance',
+          'mapping': 'axfin',
+          'hideAvoidedAssetLosses': true
+        }, {
+          'id': 'fap',
+          'label': 'Reduce exposure of the poor by 5% of total exposure',
+          'mapping': 'v_cat_info__poor',
+          'hideAvoidedAssetLosses': false
+        }, {
+          'id': 'far',
+          'label': 'Reduce exposure of the nonpoor by 5% of total exposure',
+          'mapping': 'v_cat_info__nonpoor',
+          'hideAvoidedAssetLosses': false
+        }, {
+          'id': 'kp',
+          'label': 'Increase income of the poor 10%',
+          'mapping': 'k_cat_info__poor',
+          'hideAvoidedAssetLosses': false
+        }, {
+          'id': 'pdspackage',
+          'label': 'Postdisaster support package',
+          'mapping': 'optionPDS',
+          'hideAvoidedAssetLosses': true
+        }, {
+          'id': 'prop_nonpoor',
+          'label': 'Develop market insurance (nonpoor people)',
+          'mapping': 'optionFee',
+          'hideAvoidedAssetLosses': true
+        }, {
+          'id': 'shew',
+          'label': 'Universal access to early warnings',
+          'mapping': 'shew_for_hazard_ratio',
+          'hideAvoidedAssetLosses': false
+        }, {
+          'id': 'social_p',
+          'label': 'Increase social transfers to poor people to at least 33%',
+          'mapping': 'gamma_SP_cat_info__poor',
+          'hideAvoidedAssetLosses': true
+        }, {
+          'id': 't_rebuild_k',
+          'label': 'Accelerate reconstruction (by 33%)',
+          'mapping': 'macro_T_rebuild_K',
+          'hideAvoidedAssetLosses': true
+        }, {
+          'id': 'vp',
+          'label': 'Reduce asset vulnerability (by 30%) of poor people (5% population)',
+          'mapping': 'v_cat_info__poor',
+          'hideAvoidedAssetLosses': false
+        }, {
+          'id': 'vr',
+          'label': 'Reduce asset vulnerability (by 30%) of nonpoor people (5% population)',
+          'mapping': 'v_cat_info__nonpoor',
+          'hideAvoidedAssetLosses': false
+        }
       ],
       'policyMetrics': ['dK', 'dKtot', 'dWpc_currency', 'dWtot_currency'],
       'inputs_info': 'inputs_info_wrapper.csv',

@@ -27,7 +27,8 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
   public policyGroupUIList = this.chartConf.policyList.map(val => {
     return {
       id: val.id,
-      label: val.label
+      label: val.label,
+      hideAvoidedAssetLosses: val.hideAvoidedAssetLosses
     };
   });
   public selectedPolicyUIList = this.policyGroupUIList[0];
@@ -63,9 +64,9 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
     const policyObj = this.selectedPolicyUIList;
     const data = this.chartService.getMetricAllCountriesSinglePolicy(policyObj.id);
     this.chartService.createPolicyListChart(data, 'policy-measure-1',
-      {type: 'policyMeasure', chartType: 'absolute', isNew: false, region: this.selectedRegionUIList.id});
+      {type: 'policyMeasure', chartType: 'absolute', isNew: false, region: this.selectedRegionUIList.id}, policyObj.hideAvoidedAssetLosses);
     this.chartService.createPolicyListChart(data, 'policy-measure-2',
-      {type: 'policyMeasure', chartType: 'relative', isNew: false, region: this.selectedRegionUIList.id});
+      {type: 'policyMeasure', chartType: 'relative', isNew: false, region: this.selectedRegionUIList.id}, policyObj.hideAvoidedAssetLosses);
   }
   /**
    * This method builds data from ScorecardChart chart values to be
@@ -116,9 +117,9 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
       });
       const policyData = this.chartService.getMetricAllCountriesSinglePolicy(this.selectedPolicyUIList.id);
       this.chartService.createPolicyListChart(policyData, 'policy-measure-1',
-        {type: 'policyMeasure', chartType: 'absolute', isNew: true, region: this.selectedRegionUIList.id});
+        {type: 'policyMeasure', chartType: 'absolute', isNew: true, region: this.selectedRegionUIList.id}, this.selectedPolicyUIList.hideAvoidedAssetLosses);
       this.chartService.createPolicyListChart(policyData, 'policy-measure-2',
-        {type: 'policyMeasure', chartType: 'relative', region: this.selectedRegionUIList.id, isNew: true});
+        {type: 'policyMeasure', chartType: 'relative', region: this.selectedRegionUIList.id, isNew: true}, this.selectedPolicyUIList.hideAvoidedAssetLosses);
     });
   }
   /**
@@ -137,7 +138,7 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
       sort: sortType,
       isNew: false,
       region: this.selectedRegionUIList.id
-    });
+    }, this.selectedPolicyUIList.hideAvoidedAssetLosses);
   }
 
   // EVENTS
