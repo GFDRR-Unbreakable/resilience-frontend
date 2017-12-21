@@ -103,11 +103,12 @@
               <p class="text-center">Understanding the Graphics</p>
               <div class="row graphs-mg">
                 <div class="col-md-6">
-                  <img src="assets/image/histogram-big.png" alt="">
-                  <!-- <img src="assets/image/histogram-big-01.png" alt=""> -->
+                  <img src="assets/image/histogram-big.png" alt="" *ngIf="viewerDisplay == 'tech'">
+                  <img src="assets/image/histogram-big-01.png" alt="" *ngIf="viewerDisplay != 'tech'">
                 </div>
                 <div class="col-md-6 text-left">
-                  <p class="country-p">Policy simulation</p>
+                  <p class="country-p" *ngIf="viewerDisplay == 'tech'">Policy simulation</p>
+                  <p class="country-p" *ngIf="viewerDisplay != 'tech'">&nbsp;</p>
                   <p class="value-p">Today</p>
                   <p class="global-p">Global or Regional Histogram</p>
                 </div>
