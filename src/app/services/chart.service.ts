@@ -161,7 +161,7 @@ export class ChartService {
         asString = dollarLossGDP;
         if (dollarLossGDP >= aThousand) {
           asString = dollarLossGDP / aThousand;
-          asString = asString.toFixed(3).split('.').join(',');
+          asString = asString.toFixed(0).split('.').join(',');
         }
         extraInfo = 'B';
         aValue = `$${asString}${extraInfo} (${percentageValue}% of GDP)`;
@@ -177,7 +177,7 @@ export class ChartService {
         asString = dollarLossGDP;
         if (dollarLossGDP >= aThousand) {
           asString = dollarLossGDP / aThousand;
-          asString = asString.toFixed(3).split('.').join(',');
+          asString = asString.toFixed(0).split('.').join(',');
         }
         extraInfo = 'M';
         aValue = `$${asString}${extraInfo} (${percentageValue}% of GDP)`;
@@ -194,7 +194,7 @@ export class ChartService {
       asString = dollarLossGDP;
       if (dollarLossGDP >= aThousand) {
         asString = dollarLossGDP / aThousand;
-        asString = asString.toFixed(3).split('.').join(',');
+        asString = asString.toFixed(0).split('.').join(',');
       }
       extraInfo = 'M';
       aValue = `$${asString}${extraInfo} (${percentageValue}% of GDP)`;
@@ -209,7 +209,7 @@ export class ChartService {
       asString = dollarLossGDP;
       if (dollarLossGDP >= aThousand) {
         asString = dollarLossGDP / aThousand;
-        asString = asString.toFixed(3).split('.').join(',');
+        asString = asString.toFixed(0).split('.').join(',');
       }
       aValue = `$${asString} (${percentageValue}% of GDP)`;
       if (withoutPercent) {
@@ -253,10 +253,16 @@ export class ChartService {
     differenceValue = differenceValue < 0 ? -differenceValue : differenceValue;
     if (key === 'risk' || key === 'risk_to_assets') {
       moreValues = this.calculateRiskGDPValues(gdpDollars, numericValue, false, false, true);
+      let newValues = this.calculateRiskGDPValues(gdpDollars, numericValue, false, true);
       let defaultValues = this.calculateRiskGDPValues(gdpDollars, defaultValue, false, true);
       let differenceValues = this.calculateRiskGDPValues(gdpDollars, differenceValue, false, true);
       let differenceText = (this.type !== 'tech') ? '' : (sign + differenceValues.text + '<br />');
-      value = differenceText + 'Base: ' + defaultValues.text + ' ' + moreValues.text;
+      value = differenceText + 'Today: ' + defaultValues.text;
+      value = value + '<br />';
+      if (defaultValues.text != newValues.text) {
+        value = value + 'New value: ' + newValues.text;
+      }
+      value = value + '<br />' + moreValues.text;
       this._outputDomains[key]['chart'][containerId] = {
         dollarGDP: moreValues.dollarGDP,
         valueGDP: numericValue,
@@ -265,9 +271,14 @@ export class ChartService {
     } else {
       percent = '%';
       value = differenceValue.toFixed(precision) + percent;
+      let newValue = parseFloat(numericValue).toFixed(precision);
       let differenceSignText = sign + value;
       let differenceText = (this.type !== 'tech') ? '' : (differenceSignText + '<br />');
-      value = differenceText + 'Base: ' + defaultValue + percent;
+      value = differenceText + 'Today: ' + defaultValue + percent;
+      value = value + '<br />';
+      if (defaultValue != newValue) {
+        value = value + '<br />New value: ' + newValue + percent;
+      }
       this._outputDomains[key]['chart'][containerId] = {
         value: numericValue,
         difference: differenceSignText
