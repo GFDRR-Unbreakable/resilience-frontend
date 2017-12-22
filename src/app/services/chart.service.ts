@@ -1118,11 +1118,20 @@ export class ChartService {
       .domain(yDomainList)
       .rangeBands([0, height]);
 
+    const formatAxis = (v) => {
+      if (v >= 1000 || v <= -1000) {
+        return Math.round(v / 1000) + 'M'
+      }
+      return v;
+    };
+
     const xAxis = d3.svg.axis()
       .scale(xLane)
+      .tickFormat(formatAxis)
       .orient('top');
     const xAxis2 = d3.svg.axis()
       .scale(xLane)
+      .tickFormat(formatAxis)
       .orient('bottom');
     const yAxis = d3.svg.axis()
       .scale(yLane)
