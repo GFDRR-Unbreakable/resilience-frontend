@@ -20,6 +20,15 @@
 @import url("https://fonts.googleapis.com/css?family=Lato:400,700,400italic");
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
+.terms-use{
+  text-decoration: underline;
+  color: #666666;
+  float: right;
+}
+.terms-use:hover{
+  color: #666666;
+}
+
 html {
   line-height: 1.15;
   -ms-text-size-adjust: 100%;
@@ -603,7 +612,8 @@ template {
     border: none;
   }
   .card-01 .card-body{
-    background: #f1f1f1;
+    /*background: #f1f1f1;*/
+    background: #f8f7fa;
     padding: 15px 19px;
     border-radius: 0px 0px 3px 3px !important;
     border: 1px solid #f1f1f1;
@@ -651,7 +661,8 @@ template {
     border: none;
   }
   .card-02 .card-body{
-    background: #f1f1f1;
+    /*background: #f1f1f1;*/
+    background: #f8f7fa;
     padding: 15px 19px;
     border-radius: 0px 0px 3px 3px !important;
     border: 1px solid #f1f1f1;
@@ -673,7 +684,8 @@ template {
     padding: 8px 15px;
   }
   .card-03 .card-body{
-    background: #f1f1f1;
+    /*background: #f1f1f1;*/
+    background: #f8f7fa;
     padding: 8px 15px;
     border-radius: 0px 0px 3px 3px !important;
     border: 1px solid #f1f1f1;
@@ -704,7 +716,8 @@ template {
     cursor: pointer;
   }
   .tabs-dg .btn-tab{
-    background: #dbdddd;
+    /*background: #dbdddd;*/
+    background: #f8f7fa;
     color: #666666;
     opacity: 0.8;
   }
@@ -1045,7 +1058,7 @@ template {
 }
 .scorecard-input{
   display: -webkit-inline-box;
-  padding: 0 23%;
+  padding: 0 10%;
 }
 .button-map {
   background: #7D8F8F;
@@ -1264,7 +1277,7 @@ body {
   font-size: 0.9375rem;
   font-weight: normal;
   line-height: 1.5;
-  background-color: #eaeaea;
+  background-color: #f8f7fa;
   color: #666666;
   /* color: #373a3c; */
   /* background-color: #fff; */
@@ -1534,7 +1547,7 @@ hr {
 }
 .border-content{
   /* border-bottom: 1px solid #f2f3f7; */
-  border-bottom: 1px solid #dbdbdb;
+  /*border-bottom: 1px solid #dbdbdb;*/
 }
 .vertical-border{
   /* border-right: 1px solid #f2f3f7; */
@@ -3353,7 +3366,8 @@ pre code {
 
 .form-control {
   display: block;
-  width: 110px;
+  /*width: 110px;*/
+  width: 180px;
   padding: 0.7rem 0.75rem;
   font-size: 0.9375rem;
   line-height: 1.25;
@@ -10991,8 +11005,10 @@ fieldset {
   position: absolute;
   bottom: 20px;
   z-index: 1;
-  background-color: #dddfdf;
-  border: solid 8px #dddfdf;
+  /*background-color: #dddfdf;*/
+  background-color: #f8f7fa;
+  /*border: solid 8px #dddfdf;*/
+  border: solid 8px #f8f7fa;
   right: 23px;
   border-radius: 3px;
 }
