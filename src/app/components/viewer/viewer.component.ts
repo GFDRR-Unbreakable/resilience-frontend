@@ -45,7 +45,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   public hoverValue: string;
   public hoverDisplayValue: string;
   public legends: Array<any> = [];
-  public mapSlideUISelected = 'socio';
+  public mapSlideUISelected = 'well';
   public MAX_COUNTRIES_SELECTED = 2;
   public optionsLabel = {
     well: 'Well-Being Losses (%)',
@@ -744,7 +744,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     const self = this;
     this.mapService.addStylesOnMapLoading(() => {
       this.mapService.addBasemap();
-      this.legends = this.mapService.getMapLegendConf('socio');
+      this.legends = this.mapService.getMapLegendConf('well');
       this.mapService.setMapFilterByISOCodes(this.countryListIsoCodes);
       this.getChartOutputData();
       this.mapService.setClickFnMapEvent((ev) => {

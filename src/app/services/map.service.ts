@@ -98,7 +98,7 @@ export class MapService {
     }, {
       layerId: this._layerId,
       paint: {
-        'fill-color': this.getMapPaintConf('socio'),
+        'fill-color': this.getMapPaintConf('well'),
         'fill-opacity': 0.65
       }
     });
