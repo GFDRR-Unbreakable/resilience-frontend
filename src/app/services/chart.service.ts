@@ -266,7 +266,9 @@ export class ChartService {
       this._outputDomains[key]['chart'][containerId] = {
         dollarGDP: moreValues.dollarGDP,
         valueGDP: numericValue,
-        difference: sign + differenceValues.text
+        difference: sign + differenceValues.text,
+        newValue: newValues.text,
+        today: defaultValues.text
       };
     } else {
       percent = '%';
@@ -280,7 +282,9 @@ export class ChartService {
       }
       this._outputDomains[key]['chart'][containerId] = {
         value: numericValue,
-        difference: differenceSignText
+        difference: differenceSignText,
+        newValue: newValue + percent,
+        today: defaultValue + percent
       };
     }
     return value;
