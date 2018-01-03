@@ -1226,6 +1226,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       });
     }
+    this.onResetTechDataEvent();
   }
   setValueExposure(selected: boolean, key: string, key2?: string) {
     if (selected) {
