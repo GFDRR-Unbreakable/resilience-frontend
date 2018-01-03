@@ -602,7 +602,7 @@ template {
   .card-01{
     margin-top: 15px;
     border-radius: 3px !important;
-    height: 572px;
+    height: 596px;
   }
   .card-01 .card-header{
     background: #fff;
@@ -617,7 +617,7 @@ template {
     padding: 15px 19px;
     border-radius: 0px 0px 3px 3px !important;
     border: 1px solid #f1f1f1;
-    height: 530px;
+    height: 554px;
   }
   .card-01 button{
     height: 40px;
