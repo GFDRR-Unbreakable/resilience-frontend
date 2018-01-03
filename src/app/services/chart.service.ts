@@ -258,8 +258,8 @@ export class ChartService {
       let differenceValues = this.calculateRiskGDPValues(gdpDollars, differenceValue, false, true);
       let differenceText = (this.type !== 'tech') ? '' : (sign + differenceValues.text + '<br />');
       value = differenceText + 'Today: ' + defaultValues.text;
-      value = value + '<br />';
       if (defaultValues.text != newValues.text) {
+        value = value + '<br />';
         value = value + 'New value: ' + newValues.text;
       }
       value = value + '<br />' + moreValues.text;
@@ -275,7 +275,6 @@ export class ChartService {
       let differenceSignText = sign + value;
       let differenceText = (this.type !== 'tech') ? '' : (differenceSignText + '<br />');
       value = differenceText + 'Today: ' + defaultValue + percent;
-      value = value + '<br />';
       if (defaultValue != newValue) {
         value = value + '<br />New value: ' + newValue + percent;
       }
