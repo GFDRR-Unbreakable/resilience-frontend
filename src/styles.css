@@ -783,7 +783,7 @@ template {
      position: relative;
      display: block;
      padding: 15px 0;
-     background: #f1f1f1;
+     background: #f8f7fa;
      font-weight: bold;
      line-height: 3;
      cursor: pointer;
@@ -795,7 +795,7 @@ template {
    .tab-content {
      max-height: 0;
      /*overflow: hidden;*/
-     background: #f1f1f1;
+     background: #f8f7fa;
      -webkit-transition: max-height .35s;
      transition: max-height .35s;
      /*color: #a5a5a6;*/
