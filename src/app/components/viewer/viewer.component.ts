@@ -452,6 +452,10 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       const outData = this.chartService.getOutputData();
       if (selectedCountryIdx.length === 0) {
         let index = 0;
+        if (this._selectedCountryList.length >= MAX_SELECTED_COUNTRIES) {
+          this.viewerModel.firstCountry = this.viewerModel.secondCountry;
+          this.viewerModel.secondCountry = filteredName;
+        }
         const filterCountryVal1 = this.countryListComp.filter(val =>
           val.name.toLowerCase() === this.viewerModel.firstCountry.toLowerCase());
         const filterCountryVal2 = this.countryListComp.filter(val =>
@@ -487,18 +491,55 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
             this.chartService.createInputCharts(inData, 'inputVul-2', this.sliderValues2, filteredGroup);
             this.chartService.createInputCharts(inData, 'inputExp-2', this.sliderValues2, filteredGroup);
           }
+        } else {
+          index += 1;
+          const isoCodeOld = this._selectedCountryList[1].code;
+          this._selectedCountryList[1].index = 0;
         }
-        if (this._selectedCountryList.length < MAX_SELECTED_COUNTRIES) {
-          this._selectedCountryList.push({
-            index: index,
-            name: filteredName,
-            code: isoCode,
-            group: filteredGroup
-          });
+        let isThirdCountry = false;
+        if (this._selectedCountryList.length >= MAX_SELECTED_COUNTRIES) {
+          this._selectedCountryList.shift();
+          isThirdCountry = true;
+        }
+        this._selectedCountryList.push({
+          index: index,
+          name: filteredName,
+          code: isoCode,
+          group: filteredGroup
+        });
+        if (isThirdCountry) {
+          const isoCodeOld = this._selectedCountryList[0].code;
+          if (this.global) {
+            this.chartService.updateInputCharts('inputSoc-1', this.sliderValues1, isoCodeOld);
+            this.chartService.updateInputCharts('inputEco-1', this.sliderValues1, isoCodeOld);
+            this.chartService.updateInputCharts('inputVul-1', this.sliderValues1, isoCodeOld);
+            this.chartService.updateInputCharts('inputExp-1', this.sliderValues1, isoCodeOld);
+            this.chartService.updateOutputCharts('outputs-1', isoCodeOld, null, true, this.viewerDisplay === 'tech');
+            this.chartService.updateInputCharts('inputSoc-2', this.sliderValues2, isoCode);
+            this.chartService.updateInputCharts('inputEco-2', this.sliderValues2, isoCode);
+            this.chartService.updateInputCharts('inputVul-2', this.sliderValues2, isoCode);
+            this.chartService.updateInputCharts('inputExp-2', this.sliderValues2, isoCode);
+            this.chartService.updateOutputCharts('outputs-2', isoCode, null, true, this.viewerDisplay === 'tech');
+          } else {
+            this.chartService.createOutputChart(outData, 'outputs-1', filteredGroup, false, isoCodeOld);
+            this.chartService.createInputCharts(inData, 'inputSoc-1', this.sliderValues1, filteredGroup);
+            this.chartService.createInputCharts(inData, 'inputEco-1', this.sliderValues1, filteredGroup);
+            this.chartService.createInputCharts(inData, 'inputVul-1', this.sliderValues1, filteredGroup);
+            this.chartService.createInputCharts(inData, 'inputExp-1', this.sliderValues1, filteredGroup);
+            this.chartService.createOutputChart(outData, 'outputs-2', filteredGroup, false, isoCode);
+            this.chartService.createInputCharts(inData, 'inputSoc-2', this.sliderValues2, filteredGroup);
+            this.chartService.createInputCharts(inData, 'inputEco-2', this.sliderValues2, filteredGroup);
+            this.chartService.createInputCharts(inData, 'inputVul-2', this.sliderValues2, filteredGroup);
+            this.chartService.createInputCharts(inData, 'inputExp-2', this.sliderValues2, filteredGroup);
+          }
+          this.setResetValues(this.sliderValues1, this.viewerP1, 1, this._selectedCountryList[0].code);
+          this.setResetValues(this.sliderValues2, this.viewerP2, 2, this._selectedCountryList[1].code);
+        } else {
           const sliderV = index === 0 ? this.sliderValues1 : this.sliderValues2;
           const viewerP = index === 0 ? this.viewerP1 : this.viewerP2;
           const viewerType = index === 0 ? 1 : 2;
           this.setResetValues(sliderV, viewerP, viewerType, isoCode);
+          this.onResetTechDataEvent();
         }
       } else {
         const selectedC = this._selectedCountryList[selectedCountryIdx[0]].name;
@@ -556,10 +597,10 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           this.setResetValues(this.sliderValues2, this.viewerP2, 2, 'GLOBAL');
         }
         this._selectedCountryList.splice(selectedCountryIdx[0], 1);
+        this.onResetTechDataEvent();
       }
       this.store.dispatch({type: ViewerAction.EDIT_VIEWER, payload: this.viewerModel});
     }
-    this.onResetTechDataEvent();
   }
   /**
    * Retrieves output-model and input-model data from the ChartService by then plot their output/input charts,

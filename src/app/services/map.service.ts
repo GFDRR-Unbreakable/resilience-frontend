@@ -218,7 +218,10 @@ export class MapService {
       const arrIndexId = arr.indexOf(id) >= 0 ? arr.indexOf(id) : -1;
       if (arrIndexId >= 0) {
         arr.splice(arrIndexId, 1);
-      } else if (arr.length < this._MAX_COUNTRIES_SELECTED) {
+      } else {
+        if (arr.length >= this._MAX_COUNTRIES_SELECTED) {
+          arr.shift();
+        }
         arr.push(id);
       }
     } else {
