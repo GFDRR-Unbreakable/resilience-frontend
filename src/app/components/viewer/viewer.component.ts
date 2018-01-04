@@ -280,7 +280,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * @param {String} key - Input indicator name which is used to modify the new slider component data.
    * @param {Boolean} isFirstInput - Checks if the first or second slider component has been modified.
    */
-  private _changeSliderValue(key, isFirstInput, key2?) {
+  private _changeSliderValue(key, isFirstInput, key2?, moveBothBrushes?) {
     const sliderObj = isFirstInput ? this.sliderValues1 : this.sliderValues2;
     const inputIdx = isFirstInput ? 0 : 1;
     const viewerMod = isFirstInput ? this.viewerP1 : this.viewerP2;
@@ -317,7 +317,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
             newObj[dataK] = data[dataK][viewerMod['name']];
           }
         }
-        this.chartService.updateOutputCharts(outputChartId, {model: newObj}, 'GLOBAL', null, this.viewerDisplay === 'tech');
+        this.chartService.updateOutputCharts(outputChartId, {model: newObj}, 'GLOBAL', moveBothBrushes, this.viewerDisplay === 'tech');
       });
       this.store.dispatch({type: ViewerAction[viewerActionStr], payload: viewerMod});
     }
@@ -1252,11 +1252,11 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       }
       this.onSliderChangeEvent(this.sliderValues1, key2);
       this.onSliderChangeEvent(this.sliderValues2, key2);
-      this._changeSliderValue(key, true, key2);
-      this._changeSliderValue(key, false, key2);
+      this._changeSliderValue(key, true, key2, true);
+      this._changeSliderValue(key, false, key2, true);
     } else {
-      this._changeSliderValue(key, true);
-      this._changeSliderValue(key, false);
+      this._changeSliderValue(key, true, true);
+      this._changeSliderValue(key, false, true);
     }
   }
   onSwitchExposure(flood: boolean, earthquake: boolean, tsunami: boolean, windstorm: boolean) {
