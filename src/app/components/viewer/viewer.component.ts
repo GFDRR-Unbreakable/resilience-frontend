@@ -1250,8 +1250,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       this._changeSliderValue(key, true, key2, true);
       this._changeSliderValue(key, false, key2, true);
     } else {
-      this._changeSliderValue(key, true, true);
-      this._changeSliderValue(key, false, true);
+      this._changeSliderValue(key, true, key2, true);
+      this._changeSliderValue(key, false, key2, true);
     }
   }
   onSwitchExposure(flood: boolean, earthquake: boolean, tsunami: boolean, windstorm: boolean) {
