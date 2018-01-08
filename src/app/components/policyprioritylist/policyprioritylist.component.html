@@ -5,9 +5,9 @@
          <a href="" routerLink="/viewer"><button type="button" class="btn button-map"><i class="mdi mdi-keyboard-backspace"></i> Map</button></a>
          <h6>Policy Priority List</h6>
          <div class="scorecard-input">
-            <input  type="text" class="form-control" placeholder="" name="firstCountry" [ngbTypeahead]="searchCountryFn" #firstCountry="ngModel" [(ngModel)]="policyModel.firstCountry" (ngModelChange)="onFirstCountryInputChangeEvent()" placeholder="Country A"/>
+            <input  type="text" class="form-control" placeholder="" name="firstCountry" [ngbTypeahead]="searchCountryFn" #firstCountry="ngModel" [(ngModel)]="policyModel.firstCountry" (ngModelChange)="onFirstCountryInputChangeEvent()" placeholder="Type Country A"/>
             <button type="button" class="btn btn-outline-secondary icon-plus"><i class="mdi mdi-plus"></i></button>
-            <input  type="text" class="form-control" placeholder="" name="secondCountry" [ngbTypeahead]="searchCountryFn" #secondCountry="ngModel" [(ngModel)]="policyModel.secondCountry" (ngModelChange)="onSecondCountryInputChangeEvent()" placeholder="Country B"/>
+            <input  type="text" class="form-control" placeholder="" name="secondCountry" [ngbTypeahead]="searchCountryFn" #secondCountry="ngModel" [(ngModel)]="policyModel.secondCountry" (ngModelChange)="onSecondCountryInputChangeEvent()" placeholder="Type Country B"/>
          </div>
          <button type="button" class="btn btn-primary text-download box-button-pdf" [disabled]="_selectedCountryList.length < 2" (click)="onDownloadPDFFileEvent()"><img class="img-download" src="assets/image/ic-download.png" alt="">PDF</button>
       </div>
