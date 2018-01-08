@@ -15,8 +15,8 @@ export class MapService {
   private _layerId = 'all-country';
   private _layerHoverId = 'all-country-hover';
   private _layerFillId = 'all-country-fill';
-  private _layerSource = 'CountryPolygons2017';
-  private _sourceMapUrl = 'mapbox://gfdrr-dashboard.92jlkcug';
+  private _layerSource = 'WB_Country_Polygons_2017-cn19j7';
+  private _sourceMapUrl = 'mapbox://gfdrr-dashboard.3ed32cju';
   private _MAX_COUNTRIES_SELECTED = 2;
   private _isoCodesArr = [];
   private _getViewerStyleConf = {
@@ -111,7 +111,7 @@ export class MapService {
         'fill-color': '#ffe502',
         'fill-opacity': 1,
       },
-      filter: ['==', 'ISO_Codes', ''],
+      filter: ['==', 'ISO_Code', ''],
     });
     // Click-based country layer
     this.addVectorFillFromUrl({
@@ -321,7 +321,7 @@ export class MapService {
    * @param {String} isoCode - Country Iso-code 
    */
   setMapFilterByISOCode(isoCode) {
-    const defaultArr = ['in', 'ISO_Codes'];
+    const defaultArr = ['in', 'ISO_Code'];
     this.changeIsoCodeFilter(isoCode);
     this.map.setFilter(this._layerHoverId, [...defaultArr, ...this._isoCodesArr]);
   }
@@ -331,7 +331,7 @@ export class MapService {
    * @param {Array[String]} isoCodes - Set of country iso-codes.
    */
   setMapFilterByISOCodes(isoCodes) {
-    const defaultArr = ['in', 'ISO_Codes'];
+    const defaultArr = ['in', 'ISO_Code'];
     this.map.setFilter(this._layerId, [...defaultArr, ...isoCodes]);
     this.map.setFilter(this._layerFillId, [...defaultArr, ...isoCodes]);
   }

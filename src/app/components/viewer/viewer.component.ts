@@ -795,7 +795,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       this.mapService.setClickFnMapEvent((ev) => {
         const features = self.mapService.getMap().queryRenderedFeatures(ev.point, {layers: [self.mapService.getViewerFillLayer()]});
         if (features.length) {
-          const isoCode = features[0].properties['ISO_Codes'];
+          const isoCode = features[0].properties['ISO_Code'];
           const isoCodeList = this.countryListIsoCodes.filter(val => val === isoCode);
           if (isoCodeList.length) {
             self.changeCountryInputsByClick(isoCode);
@@ -805,7 +805,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       this.mapService.setHoverFnMapEvent((ev) => {
         const features = self.mapService.getMap().queryRenderedFeatures(ev.point, {layers: [self.mapService.getViewerFillLayer()]});
         if (features.length) {
-          const isoCode = features[0].properties['ISO_Codes'];
+          const isoCode = features[0].properties['ISO_Code'];
           const names = features[0].properties['Names'];
           let value = '';
           if (this.mapSlideUISelected == 'asset') {
