@@ -806,7 +806,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         const features = self.mapService.getMap().queryRenderedFeatures(ev.point, {layers: [self.mapService.getViewerFillLayer()]});
         if (features.length) {
           const isoCode = features[0].properties['ISO_Code'];
-          const names = features[0].properties['Names'];
+          const names = features[0].properties['Name'];
           let value = '';
           if (this.mapSlideUISelected == 'asset') {
             value = features[0].properties['1_Assets'];
@@ -820,9 +820,14 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           if (this.mapSlideUISelected === 'well' || this.mapSlideUISelected === 'asset') {
             const globalModelObj = this.chartService.getGlobalModelData();
             let model = globalModelObj[isoCode];
-            let avg = Math.round((+model['macro_gdp_pc_pp']) * (+model['macro_pop']));
-            const results = this.chartService.calculateRiskGDPValues(avg, this.hoverValue, true);
-            this.hoverDisplayValue = results.text;
+            if (model == null) {
+              const percent = ' %';
+              this.hoverDisplayValue = this.hoverValue + percent;
+            } else {
+              let avg = Math.round((+model['macro_gdp_pc_pp']) * (+model['macro_pop']));
+              const results = this.chartService.calculateRiskGDPValues(avg, this.hoverValue, true);
+              this.hoverDisplayValue = results.text;
+            }
           } else {
             const percent = ' %';
             this.hoverDisplayValue = this.hoverValue + percent;

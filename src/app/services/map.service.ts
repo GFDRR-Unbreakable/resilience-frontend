@@ -331,7 +331,7 @@ export class MapService {
    * @param {Array[String]} isoCodes - Set of country iso-codes.
    */
   setMapFilterByISOCodes(isoCodes) {
-    const defaultArr = ['in', 'ISO_Code'];
+    const defaultArr = ['in', 'ISO_Code', 'XXX'];
     this.map.setFilter(this._layerId, [...defaultArr, ...isoCodes]);
     this.map.setFilter(this._layerFillId, [...defaultArr, ...isoCodes]);
   }
