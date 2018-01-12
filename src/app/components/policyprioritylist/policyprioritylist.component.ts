@@ -144,7 +144,7 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
           group: list[0].group
         });
         if (this.isSetUIGlobal) {
-          this.chartService.updateOutputCharts(idOut, list[0].code);
+          this.chartService.updateOutputCharts(idOut, list[0].code, null, true);
         } else {
           this.chartService.createOutputChart(outData, idOut, list[0].group, true);
         }
@@ -201,7 +201,7 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
         if (filterIndex.length > 0 && filterIndexFromAll.length > 0 &&
           field.toLowerCase() !== this._selectedCountryList[filterIndex[0]].name.toLowerCase()) {
           if (this.isSetUIGlobal) {
-            this.chartService.updateOutputCharts(idOut, 'global');
+            this.chartService.updateOutputCharts(idOut, 'global', null, true);
           } else {
             this.chartService.createOutputChart(outData, idOut, 'GLOBAL', true);
           }
