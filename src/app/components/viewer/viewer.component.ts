@@ -2,7 +2,7 @@ import { listenToTriggers } from '@ng-bootstrap/ng-bootstrap/util/triggers';
 import { search } from '@ngrx/router-store';
 import { distinctUntilKeyChanged } from 'rxjs/operator/distinctUntilKeyChanged';
 import { distinct } from 'rxjs/operator/distinct';
-import { Viewer, ViewerModel } from '../../store/model/viewer.model';
+import { Viewer, ViewerGroup, ViewerModel } from '../../store/model/viewer.model';
 import { ViewerAction } from '../../store/action/viewer.action';
 import {AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -61,6 +61,10 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   public viewerModel: Viewer = {
     firstCountry: '',
     secondCountry: ''
+  };
+  public viewerGroupModel: ViewerGroup = {
+    firstCountryGroup: '',
+    secondCountryGroup: ''
   };
   public viewerP1Default: any = {};
   public viewerP2Default: any = {};
@@ -454,7 +458,9 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         let index = 0;
         if (this._selectedCountryList.length >= MAX_SELECTED_COUNTRIES) {
           this.viewerModel.firstCountry = this.viewerModel.secondCountry;
+          this.viewerGroupModel.firstCountryGroup = this.viewerGroupModel.secondCountryGroup;
           this.viewerModel.secondCountry = filteredName;
+          this.viewerGroupModel.secondCountryGroup = filteredGroup;
         }
         const filterCountryVal1 = this.countryListComp.filter(val =>
           val.name.toLowerCase() === this.viewerModel.firstCountry.toLowerCase());
@@ -462,6 +468,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           val.name.toLowerCase() === this.viewerModel.secondCountry.toLowerCase());
         if (!this.viewerModel.firstCountry || filterCountryVal1.length === 0) {
           this.viewerModel.firstCountry = filteredName;
+          this.viewerGroupModel.firstCountryGroup = filteredGroup;
           if (this.global) {
             this.chartService.updateOutputCharts('outputs-1', isoCode, null, true, this.viewerDisplay === 'tech');
             this.chartService.updateInputCharts('inputSoc-1', this.sliderValues1, isoCode);
@@ -478,6 +485,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         } else if (!this.viewerModel.secondCountry.trim() || filterCountryVal2.length === 0) {
           index += 1;
           this.viewerModel.secondCountry = filteredName;
+          this.viewerGroupModel.secondCountryGroup = filteredGroup;
           if (this.global) {
             this.chartService.updateOutputCharts('outputs-2', isoCode, null, true, this.viewerDisplay === 'tech');
             this.chartService.updateInputCharts('inputSoc-2', this.sliderValues2, isoCode);
@@ -545,6 +553,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         const selectedC = this._selectedCountryList[selectedCountryIdx[0]].name;
         if (this.viewerModel.firstCountry.length && selectedC.indexOf(this.viewerModel.firstCountry) >= 0) {
           this.viewerModel.firstCountry = '';
+          this.viewerGroupModel.firstCountryGroup = '';
           if (this.global) {
             this.chartService.updateOutputCharts('outputs-1', 'global', null, true, this.viewerDisplay === 'tech');
             this.chartService.updateInputCharts('inputExp-1', this.sliderValues1, 'global');
@@ -571,6 +580,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           this.setResetValues(this.sliderValues1, this.viewerP1, 1, 'GLOBAL');
         } else if (this.viewerModel.secondCountry.length && selectedC.indexOf(this.viewerModel.secondCountry) >= 0) {
           this.viewerModel.secondCountry = '';
+          this.viewerGroupModel.secondCountryGroup = '';
           if (this.global) {
             this.chartService.updateOutputCharts('outputs-2', 'global', null, true, this.viewerDisplay === 'tech');
             this.chartService.updateInputCharts('inputExp-2', this.sliderValues2, 'global');
@@ -1165,7 +1175,9 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       });
     } else {
       this.viewerModel.firstCountry = '';
+      this.viewerGroupModel.firstCountryGroup = '';
       this.viewerModel.secondCountry = '';
+      this.viewerGroupModel.secondCountryGroup = '';
     // Update charts
       this.chartService.updateOutputCharts('outputs-1', 'global', null, true, this.viewerDisplay === 'tech');
       this.chartService.updateOutputCharts('outputs-2', 'global', null, true, this.viewerDisplay === 'tech');

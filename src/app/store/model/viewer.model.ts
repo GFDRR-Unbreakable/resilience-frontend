@@ -6,6 +6,10 @@ export interface Viewer {
     firstCountry: string;
     secondCountry: string;
 };
+export interface ViewerGroup {
+    firstCountryGroup: string;
+    secondCountryGroup: string;
+};
 /**
  * The ViewerModel data interface which represents all indicators data + country properties
  * to be persisted/modified in the Viewer/TechMap pages.
