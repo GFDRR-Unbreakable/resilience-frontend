@@ -1767,6 +1767,9 @@ export class ChartService {
     let sign = data < 0 ? '-' : '+';
     let value = data < 0 ? -data : data;
     let formattedValue = this.formatInputChartValues(value, input, persistedBrush);
+    if (formattedValue.charAt(0) == '0') {
+      sign = '';
+    }
     return sign + ' ' + formattedValue;
   }
   /**
