@@ -2523,11 +2523,11 @@ export class ChartService {
 
        // console.log(risk_to_assetts1.contents());
         risk_to_assetts1.html(risk_to_assetts1.contents()[2].nodeValue);
-        resilience1.html(resilience1.contents()[2].nodeValue);
+        resilience1.html(resilience1.contents()[0].nodeValue);
         risk1.html(risk1.contents()[2].nodeValue); 
         // chart 2
         risk_to_assetts2.html(risk_to_assetts2.contents()[2].nodeValue);
-        resilience2.html(resilience2.contents()[2].nodeValue);
+        resilience2.html(resilience2.contents()[0].nodeValue);
         risk2.html(risk2.contents()[2].nodeValue);
       }
     } else {
