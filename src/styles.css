@@ -1058,7 +1058,7 @@ template {
 }
 .scorecard-input{
   display: -webkit-inline-box;
-  padding: 0 10%;
+  padding: 0 7%;
 }
 .button-map {
   background: #7D8F8F;
@@ -11514,4 +11514,8 @@ fieldset {
             transform: scale(1, 5);
     background: #195c53;
   }
+}
+.pd-12{
+  display: -webkit-inline-box;
+  padding: 0px 35px;
 }
