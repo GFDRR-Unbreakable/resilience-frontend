@@ -87,6 +87,7 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.setPolicyPriorityObservableConf();
     this.setChartsConf();
+    this.chartService.type1S = '';
   }
   /**
    * This methods gets called when the component gets removed from the UI (normally happens while changing to another page).
