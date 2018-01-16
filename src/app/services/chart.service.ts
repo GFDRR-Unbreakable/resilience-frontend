@@ -252,10 +252,10 @@ export class ChartService {
     let sign = differenceValue < 0 ? '-' : '+';
     differenceValue = differenceValue < 0 ? -differenceValue : differenceValue;
     if (key === 'risk' || key === 'risk_to_assets') {
-      moreValues = this.calculateRiskGDPValues(gdpDollars, numericValue, false, false, true);
-      let newValues = this.calculateRiskGDPValues(gdpDollars, numericValue, false, true);
-      let defaultValues = this.calculateRiskGDPValues(gdpDollars, defaultValue, false, true);
-      let differenceValues = this.calculateRiskGDPValues(gdpDollars, differenceValue, false, true);
+      moreValues = this.calculateRiskGDPValues(gdpDollars, numericValue, true, false, true);
+      let newValues = this.calculateRiskGDPValues(gdpDollars, numericValue, true, true);
+      let defaultValues = this.calculateRiskGDPValues(gdpDollars, defaultValue, true, true);
+      let differenceValues = this.calculateRiskGDPValues(gdpDollars, differenceValue, true, true);
       let differenceText = (this.type !== 'tech') ? '' : (sign + differenceValues.text + '<br />');
       value = differenceText + 'Today: ' + defaultValues.text;
       if (defaultValues.text != newValues.text) {
