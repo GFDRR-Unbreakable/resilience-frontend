@@ -50,7 +50,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   public optionsLabel = {
     well: 'Well-Being Losses (%)',
     asset: 'Asset Losses (%)',
-    socio: 'Socio-Economic Capacity (%)',
+    socio: 'Socio-Economic Resilience (%)',
   };
   public _selectedCountryList: Array<any> = [];
   public sliderValues1Default = {};
