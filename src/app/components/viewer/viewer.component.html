@@ -171,11 +171,11 @@
                        <div class="col-md-4"></div>
                        <div class="col-md-4 text-center">
                          <div>{{viewerModel.firstCountry || 'Global Average'}}</div>
-                         <div *ngIf="viewerGroupModel.firstCountryGroup != ''">{{viewerGroupModel.firstCountryGroup}}</div>
+                         <div class="region-name" *ngIf="viewerGroupModel.firstCountryGroup != ''">{{viewerGroupModel.firstCountryGroup}}</div>
                        </div>
                        <div class="col-md-4 text-center">
                          <div>{{viewerModel.secondCountry || 'Global Average'}}</div>
-                         <div *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
+                         <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
                        </div>
                      </div>
                       <!-- <div class="form-group bottom-results" [class.has-danger]="searchFailed">

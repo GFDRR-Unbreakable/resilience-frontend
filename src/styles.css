@@ -11519,3 +11519,7 @@ fieldset {
   display: -webkit-inline-box;
   padding: 0px 35px;
 }
+.region-name {
+  font-size: 12px;
+  font-style: italic;
+}
