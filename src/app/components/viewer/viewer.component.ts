@@ -517,6 +517,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         });
         if (isThirdCountry) {
           const isoCodeOld = this._selectedCountryList[0].code;
+          const filteredGroupOld = this._selectedCountryList[0].group;
           if (this.global) {
             this.chartService.updateInputCharts('inputSoc-1', this.sliderValues1, isoCodeOld);
             this.chartService.updateInputCharts('inputEco-1', this.sliderValues1, isoCodeOld);
@@ -529,7 +530,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
             this.chartService.updateInputCharts('inputExp-2', this.sliderValues2, isoCode);
             this.chartService.updateOutputCharts('outputs-2', isoCode, null, true, this.viewerDisplay === 'tech');
           } else {
-            this.chartService.createOutputChart(outData, 'outputs-1', filteredGroup, false, isoCodeOld);
+            this.chartService.createOutputChart(outData, 'outputs-1', filteredGroupOld, false, isoCodeOld);
             this.chartService.createInputCharts(inData, 'inputSoc-1', this.sliderValues1, filteredGroup);
             this.chartService.createInputCharts(inData, 'inputEco-1', this.sliderValues1, filteredGroup);
             this.chartService.createInputCharts(inData, 'inputVul-1', this.sliderValues1, filteredGroup);
