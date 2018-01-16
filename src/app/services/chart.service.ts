@@ -1824,7 +1824,7 @@ export class ChartService {
     return {
       'outputs': {
         'risk_to_assets': {
-          'descriptor': 'Risk to assets',
+          'descriptor': 'Risk to assets (% of GDP)',
           'gradient': ['#f0f9e8', '#08589e'],
           'number_type': 'percent',
           'precision': 2
@@ -1836,7 +1836,7 @@ export class ChartService {
           'precision': 2
         },
         'risk': {
-          'descriptor': 'Risk to well-being',
+          'descriptor': 'Risk to well-being (% of GDP)',
           'gradient': ['#edf8fb', '#6e016b'],
           'number_type': 'percent',
           'precision': 2

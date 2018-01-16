@@ -48,9 +48,9 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   public mapSlideUISelected = 'well';
   public MAX_COUNTRIES_SELECTED = 2;
   public optionsLabel = {
-    well: 'Well-Being Losses (%)',
-    asset: 'Asset Losses (%)',
-    socio: 'Socio-Economic Resilience (%)',
+    well: 'Well-Being Losses (% of GDP)',
+    asset: 'Risk to Assets (% of GDP)',
+    socio: 'Socio-Economic Resilience',
   };
   public _selectedCountryList: Array<any> = [];
   public sliderValues1Default = {};
