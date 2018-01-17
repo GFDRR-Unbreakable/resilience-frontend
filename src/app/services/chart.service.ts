@@ -263,7 +263,7 @@ export class ChartService {
       defaultValue = oldValue;
     }
     let differenceValue = numericValue - defaultValue;
-    let sign = differenceValue < 0 ? '-' : '+';
+    let sign = differenceValue < 0 ? '-' : (differenceValue > 0 ? '+' : '');
     differenceValue = differenceValue < 0 ? -differenceValue : differenceValue;
     if (key === 'risk' || key === 'risk_to_assets') {
       moreValues = this.calculateRiskGDPValues(gdpDollars, numericValue, true, false, true);
@@ -1781,7 +1781,7 @@ export class ChartService {
     let sign = data < 0 ? '-' : '+';
     let value = data < 0 ? -data : data;
     let formattedValue = this.formatInputChartValues(value, input, persistedBrush);
-    if (formattedValue.charAt(0) == '0') {
+    if (formattedValue == '0.0%' || formattedValue == '$0') {
       sign = '';
     }
     return sign + ' ' + formattedValue;
