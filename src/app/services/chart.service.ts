@@ -187,6 +187,20 @@ export class ChartService {
         if (onlyPercent) {
           aValue = `(${percentageValue}% of GDP)`;
         }
+      } else {
+        dollarLossGDP = Math.round(dollarLossGDP);
+        asString = dollarLossGDP;
+        if (dollarLossGDP >= aThousand) {
+          asString = dollarLossGDP / aThousand;
+          asString = asString.toFixed(0).split('.').join(',');
+        }
+        aValue = `$${asString} (${percentageValue}% of GDP)`;
+        if (withoutPercent) {
+          aValue = `$${asString}`;
+        }
+        if (onlyPercent) {
+          aValue = `(${percentageValue}% of GDP)`;
+        }
       }
     } else if (dollarLossGDP >= aMillion) {
       dollarLossGDP /= aMillion;
