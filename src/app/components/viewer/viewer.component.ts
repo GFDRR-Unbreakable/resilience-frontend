@@ -1145,13 +1145,15 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * @event Click - This event is called when the "Reset" button is clicked in order to reset default
    * slider values according to selected countries or not.
    */
-  onResetTechDataEvent() {
+  onResetTechDataEvent(keepHazards?: boolean) {
     // Reset values
-    this.hazards.hazard1 = true;
-    this.hazards.hazard2 = true;
-    this.hazards.hazard3 = true;
-    this.hazards.hazard4 = true;
-    this.onSwitchExposure(false, false, false, false);
+    if (!keepHazards) {
+      this.hazards.hazard1 = true;
+      this.hazards.hazard2 = true;
+      this.hazards.hazard3 = true;
+      this.hazards.hazard4 = true;
+      this.onSwitchExposure(false, false, false, false);
+    }
     this.viewerP1 = Object.assign({}, this.viewerP1Default);
     this.viewerP2 = Object.assign({}, this.viewerP2Default);
     this.sliderValues1 = Object.assign({}, this.sliderValues1Default);
@@ -1273,6 +1275,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   onSwitchExposure(flood: boolean, earthquake: boolean, tsunami: boolean, windstorm: boolean) {
+    this.onResetTechDataEvent(true);
     let floodKey1 = null;
     let floodKey2 = null;
     this.hazardTypes.hazardFlood.forEach((hazardType) => {
