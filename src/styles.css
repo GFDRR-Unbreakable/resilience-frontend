@@ -11523,3 +11523,6 @@ fieldset {
   font-size: 12px;
   font-style: italic;
 }
+.popover-title-viewer {
+  font-weight: bolder;
+}

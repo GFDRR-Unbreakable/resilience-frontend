@@ -162,9 +162,19 @@
                  <i class="mdi mdi-information-outline"></i>
                  </button>
                  <ng-template #popover1>
-                  You can manipulate the resilience inputs below to see how policy interventions could
-                  mitigate risk to assets and well-being, and build socio-economic resilience (defined
-                  as the ration of asset to well-being losses) in countries around the world.
+                    <p class="popover-title-viewer">What are we seeing here?</p>
+                    <p>
+                      You can manipulate the resilience outputs below to see how policy interventions could
+                      mitigate risk to assets and well-being, and build socio-economic resilience (defined
+                      as the ratio of asset to well-being losses) in countries around the world.
+                    </p>
+                    <p class="popover-title-viewer">About the Histogram</p>
+                    <p>
+                      The histogram illustrates the global (or regional) distribution of country results
+                      (expressed as a percentage of countries’ GDPs in the case of annual risks to assets
+                      and well-being). The vertical axis represents the number of countries. The value of
+                      the selected country is marked with a vertical bar.
+                    </p>
                  </ng-template>
                  <!-- <span><i class="mdi mdi-checkbox-blank-circle box-icon-c"></i> Country</span>
                  <span><img src="assets/image/icon-map.png" alt=""> Global Average</span> --></div>
@@ -218,9 +228,16 @@
           <div class="col-md-12">
             <div class="card bg-light card-02">
               <div class="card-header">Input: Country Resilience Factors
-                   <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="These are the main drivers of asset and well-being losses to natural disasters. Poverty reduction and disaster risk management are closely linked, and there are many tools governments and Bank teams can use to pursue both simultaneously." triggers="mouseenter:mouseleave" popoverTitle="">
+                   <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover2" triggers="mouseenter:mouseleave" popoverTitle="">
                    <i class="mdi mdi-information-outline"></i>
                    </button>
+                   <ng-template #popover2>
+                      <p class="popover-title-viewer">What are we seeing here?</p>
+                      <p>
+                        These are the main drivers of asset and well-being losses to natural disasters.
+                        Poverty reduction and disaster risk management are closely linked, and there are many
+                        tools governments and Bank teams can use to pursue both simultaneously.                      </p>
+                   </ng-template>
 
                 <div class="box-download">
                    <button type="button" class="btn btn-primary text-download" (click)="onResetTechDataEvent()" *ngIf="viewerDisplay == 'tech'">RESET</button>
