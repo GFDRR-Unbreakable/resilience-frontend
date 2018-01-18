@@ -1267,15 +1267,44 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       }
       this.onSliderChangeEvent(this.sliderValues1, key2);
       this.onSliderChangeEvent(this.sliderValues2, key2);
-      this._changeSliderValue(key, true, key2, true);
-      this._changeSliderValue(key, false, key2, true);
+      this._changeSliderValue(key, true, key2, false);
+      this._changeSliderValue(key, false, key2, false);
     } else {
-      this._changeSliderValue(key, true, key2, true);
-      this._changeSliderValue(key, false, key2, true);
+      this._changeSliderValue(key, true, key2, false);
+      this._changeSliderValue(key, false, key2, false);
     }
   }
   onSwitchExposure(flood: boolean, earthquake: boolean, tsunami: boolean, windstorm: boolean) {
-    this.onResetTechDataEvent(true);
+    const group1 = this.global ? 'GLOBAL' : (this._selectedCountryList.length > 0 ? this._selectedCountryList[0].group : 'GLOBAL');
+    const group2 = this.global ? 'GLOBAL' : (this._selectedCountryList.length > 1 ? this._selectedCountryList[1].group : 'GLOBAL');
+    let viewerHazardDefault1 = Object.assign({}, this.viewerP1Default);
+    let viewerHazardDefault2 = Object.assign({}, this.viewerP2Default);
+    if (!this.hazards.hazard1) {
+      this.hazardTypes.hazardFlood.forEach((hazardType) => {
+        viewerHazardDefault1[hazardType] = 0;
+        viewerHazardDefault2[hazardType] = 0;
+      });
+    }
+    if (!this.hazards.hazard2) {
+      this.hazardTypes.hazardEarthquake.forEach((hazardType) => {
+        viewerHazardDefault1[hazardType] = 0;
+        viewerHazardDefault2[hazardType] = 0;
+      });
+    }
+    if (!this.hazards.hazard3) {
+      this.hazardTypes.hazardTsunami.forEach((hazardType) => {
+        viewerHazardDefault1[hazardType] = 0;
+        viewerHazardDefault2[hazardType] = 0;
+      });
+    }
+    if (!this.hazards.hazard4) {
+      this.hazardTypes.hazardWindstorm.forEach((hazardType) => {
+        viewerHazardDefault1[hazardType] = 0;
+        viewerHazardDefault2[hazardType] = 0;
+      });
+    }
+    this.chartService.updateOutputCharts('outputs-1', {model: viewerHazardDefault1}, group1, true, this.viewerDisplay === 'tech');
+    this.chartService.updateOutputCharts('outputs-2', {model: viewerHazardDefault2}, group2, true, this.viewerDisplay === 'tech');
     let floodKey1 = null;
     let floodKey2 = null;
     this.hazardTypes.hazardFlood.forEach((hazardType) => {
