@@ -1303,40 +1303,62 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         viewerHazardDefault2[hazardType] = 0;
       });
     }
-    this.chartService.updateOutputCharts('outputs-1', {model: viewerHazardDefault1}, group1, true, this.viewerDisplay === 'tech');
-    this.chartService.updateOutputCharts('outputs-2', {model: viewerHazardDefault2}, group2, true, this.viewerDisplay === 'tech');
-    let floodKey1 = null;
-    let floodKey2 = null;
-    this.hazardTypes.hazardFlood.forEach((hazardType) => {
-      this.hazardDisplay[hazardType] = this.hazards.hazard1;
-      if (flood) {
-        if (floodKey1 == null) {
-          floodKey1 = hazardType;
-        } else if (floodKey2 == null) {
-          floodKey2 = hazardType;
+    viewerHazardDefault1['name'] = this._selectedCountryList[0].name;
+    viewerHazardDefault1['id'] = this._selectedCountryList[0].code;
+    viewerHazardDefault1['group_name'] = this._selectedCountryList[0].group;
+    this.chartService.getInputPModelData(viewerHazardDefault1).subscribe(data => {
+      const newObj = {};
+      for (const dataK in data) {
+        if (data.hasOwnProperty(dataK)) {
+          newObj[dataK] = data[dataK][viewerHazardDefault1['name']];
         }
       }
-    });
-    if (floodKey1 != null && floodKey2 != null) {
-      this.setValueExposure(this.hazards.hazard1, floodKey1, floodKey2);
-    }
-    this.hazardTypes.hazardEarthquake.forEach((hazardType) => {
-      this.hazardDisplay[hazardType] = this.hazards.hazard2;
-      if (earthquake) {
-        this.setValueExposure(this.hazards.hazard2, hazardType);
-      }
-    });
-    this.hazardTypes.hazardTsunami.forEach((hazardType) => {
-      this.hazardDisplay[hazardType] = this.hazards.hazard3;
-      if (tsunami) {
-        this.setValueExposure(this.hazards.hazard3, hazardType);
-      }
-    });
-    this.hazardTypes.hazardWindstorm.forEach((hazardType) => {
-      this.hazardDisplay[hazardType] = this.hazards.hazard4;
-      if (windstorm) {
-        this.setValueExposure(this.hazards.hazard4, hazardType);
-      }
+      this.chartService.updateOutputCharts('outputs-1', {model: newObj}, group1, true, this.viewerDisplay === 'tech');
+      viewerHazardDefault2['name'] = this._selectedCountryList[1].name;
+      viewerHazardDefault2['id'] = this._selectedCountryList[1].code;
+      viewerHazardDefault2['group_name'] = this._selectedCountryList[1].group;
+      this.chartService.getInputPModelData(viewerHazardDefault2).subscribe(data => {
+        const newObj2 = {};
+        for (const dataK in data) {
+          if (data.hasOwnProperty(dataK)) {
+            newObj2[dataK] = data[dataK][viewerHazardDefault2['name']];
+          }
+        }
+        this.chartService.updateOutputCharts('outputs-2', {model: newObj2}, group2, true, this.viewerDisplay === 'tech');
+        let floodKey1 = null;
+        let floodKey2 = null;
+        this.hazardTypes.hazardFlood.forEach((hazardType) => {
+          this.hazardDisplay[hazardType] = this.hazards.hazard1;
+          if (flood) {
+            if (floodKey1 == null) {
+              floodKey1 = hazardType;
+            } else if (floodKey2 == null) {
+              floodKey2 = hazardType;
+            }
+          }
+        });
+        if (floodKey1 != null && floodKey2 != null) {
+          this.setValueExposure(this.hazards.hazard1, floodKey1, floodKey2);
+        }
+        this.hazardTypes.hazardEarthquake.forEach((hazardType) => {
+          this.hazardDisplay[hazardType] = this.hazards.hazard2;
+          if (earthquake) {
+            this.setValueExposure(this.hazards.hazard2, hazardType);
+          }
+        });
+        this.hazardTypes.hazardTsunami.forEach((hazardType) => {
+          this.hazardDisplay[hazardType] = this.hazards.hazard3;
+          if (tsunami) {
+            this.setValueExposure(this.hazards.hazard3, hazardType);
+          }
+        });
+        this.hazardTypes.hazardWindstorm.forEach((hazardType) => {
+          this.hazardDisplay[hazardType] = this.hazards.hazard4;
+          if (windstorm) {
+            this.setValueExposure(this.hazards.hazard4, hazardType);
+          }
+        });
+      });
     });
   }
   /**
