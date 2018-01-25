@@ -337,6 +337,19 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * @param {String} field - Input-text field model
    */
   private _filterCountryByInput(list, selectedIdx, field) {
+    if (list.length === 1) {
+      if (!selectedIdx) {
+        this.viewerGroupModel.firstCountryGroup = list[0].group;
+      } else {
+        this.viewerGroupModel.secondCountryGroup = list[0].group;
+      }
+    } else {
+      if (!selectedIdx) {
+        this.viewerGroupModel.firstCountryGroup = '';
+      } else {
+        this.viewerGroupModel.secondCountryGroup = '';
+      }
+    }
     const inData = this.chartService.getInputData();
     const outData = this.chartService.getOutputData();
     const idOut = selectedIdx === 0 ? 'outputs-1' : 'outputs-2';
