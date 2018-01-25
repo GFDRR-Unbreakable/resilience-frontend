@@ -337,7 +337,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * @param {String} field - Input-text field model
    */
   private _filterCountryByInput(list, selectedIdx, field) {
-    if (list.length === 1) {
+    if (list.length >= 1) {
       if (!selectedIdx) {
         this.viewerGroupModel.firstCountryGroup = list[0].group;
       } else {
