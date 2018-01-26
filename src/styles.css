@@ -748,7 +748,7 @@ template {
   .policy-dp .dropdown-menu{
     width: auto;
   }
-  .simio {
+  .btn-left {
     margin-left: 2px !important;
     
   }
@@ -1033,7 +1033,7 @@ template {
 /*Score Card-Policy Priority List*/
 .policy-list{
   border-bottom: 3px solid #6fc2cd;
-  width: 100%;
+  width: 100.5%;
   line-height: 1.5;
 }
 .scorecard-title{
