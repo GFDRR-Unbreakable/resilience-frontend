@@ -762,6 +762,10 @@ template {
   .label-mg{
     margin-top: 15px;
   }
+  .label-mg-1{
+    margin-top: 10px;
+    margin-left: 35px;
+  }
   .policy-measure .dropdown-menu{
     width: auto;
   }
