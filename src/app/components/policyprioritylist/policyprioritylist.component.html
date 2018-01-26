@@ -1,125 +1,118 @@
 <app-navbar></app-navbar>
 <div class="container policy-dp">
-   <div class="col-md-12 scorecard-title">
-			<h3 class="policy-list">Policy Priority List </h3>
-			<a href="" routerLink="/viewer"><button type="button" class="btn button-map box-button-map"><i class="mdi mdi-keyboard-backspace"></i> Map</button></a>
-      <button type="button" class="btn btn-pdf text-download box-button-pdf" [disabled]="_selectedCountryList.length < 2" (click)="onDownloadPDFFileEvent()"><img class="img-download" src="assets/image/ic-download.png" alt="">PDF</button>
-	</div>
-   <div class="row">
-     <div class="col-lg-12 col-md-12 pd-12">
-       <h4 class="one-line">Select two countries by typing their names below:</h4>
-     </div>
-     <div class="col-lg-12 col-md-12 pd-12">
-        <div class="scorecard-input">
-            <input  type="text" class="form-control" placeholder="" name="firstCountry" [ngbTypeahead]="searchCountryFn" #firstCountry="ngModel" [(ngModel)]="policyModel.firstCountry" (ngModelChange)="onFirstCountryInputChangeEvent()" placeholder="Type Country A"/>
-            <button type="button" class="btn btn-outline-secondary icon-plus"><i class="mdi mdi-plus"></i></button>
-            <input  type="text" class="form-control" placeholder="" name="secondCountry" [ngbTypeahead]="searchCountryFn" #secondCountry="ngModel" [(ngModel)]="policyModel.secondCountry" (ngModelChange)="onSecondCountryInputChangeEvent()" placeholder="Type Country B"/>
+    <div class="row">
+        <div class="col-md-12 scorecard-title">
+            <h3 class="policy-list">Policy Priority List </h3>
+            <a href="" routerLink="/viewer"><button type="button" class="btn button-map box-button-map"><i class="mdi mdi-keyboard-backspace"></i> Map</button></a>
+            <button type="button" class="btn btn-pdf text-download box-button-pdf" [disabled]="_selectedCountryList.length < 2" (click)="onDownloadPDFFileEvent()"><img class="img-download" src="assets/image/ic-download.png" alt="">PDF</button>
         </div>
-    </div>
-   </div>
-   <div class="row">
-      <div class="col-md-6 box-policyprioritylist vertical-border">
-         <div class="col-md-12">
-            <h5>{{policyModel.firstCountry || 'Country A'}}</h5>
-            <p class="scorecard-text"><b>GDP:</b> ${{firstCountryGDP}}&nbsp;USD</p>
-            <p class="scorecard-text"><b>Population (2013 est.):</b> {{firstCountryPopulation}}</p>
-         </div>
-         <div class="col-md-12">
-           <br>
-            <h6>Losses Based on Resilience Indicators:</h6>
-            <!-- <div class="row">
-               <div class="col-md-12">
-                  <h6 class="">RESULTS
-                     <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                     <i class="mdi mdi-information-outline"></i>
-                     </button>
-                  </h6>
-                  <span><img src="assets/image/icon-map.png" alt=""> Global Histogram</span>
-               </div>
-            </div> -->
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="row" id="outputs-1"></div>
+
+        <div class="col-lg-12 col-md-12 pd-12">
+            <h4 class="one-line">Select two countries by typing their names below:</h4>
+        </div>
+        <div class="col-lg-12 col-md-12 pd-12">
+            <div class="scorecard-input">
+                <input  type="text" class="form-control" placeholder="" name="firstCountry" [ngbTypeahead]="searchCountryFn" #firstCountry="ngModel" [(ngModel)]="policyModel.firstCountry" (ngModelChange)="onFirstCountryInputChangeEvent()" placeholder="Type Country A"/>
+                <button type="button" class="btn btn-outline-secondary icon-plus"><i class="mdi mdi-plus"></i></button>
+                <input  type="text" class="form-control" placeholder="" name="secondCountry" [ngbTypeahead]="searchCountryFn" #secondCountry="ngModel" [(ngModel)]="policyModel.secondCountry" (ngModelChange)="onSecondCountryInputChangeEvent()" placeholder="Type Country B"/>
+            </div>
+        </div>
+
+        <div class="col-md-6 box-policyprioritylist vertical-border">
+            <div class="col-md-12">
+                <h5>{{policyModel.firstCountry || 'Country A'}}</h5>
+                <p class="scorecard-text"><b>GDP:</b> ${{firstCountryGDP}}&nbsp;USD</p>
+                <p class="scorecard-text"><b>Population (2013 est.):</b> {{firstCountryPopulation}}</p>
+            </div>
+            <div class="col-md-12">
+                <br>
+                <h6>Losses Based on Resilience Indicators:</h6>
+                <!-- <div class="row">
+                   <div class="col-md-12">
+                      <h6 class="">RESULTS
+                         <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
+                         <i class="mdi mdi-information-outline"></i>
+                         </button>
+                      </h6>
+                      <span><img src="assets/image/icon-map.png" alt=""> Global Histogram</span>
+                   </div>
+                </div> -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row" id="outputs-1"></div>
+                    </div>
                 </div>
             </div>
-         </div>
-      </div>
-      <div class="col-md-6 box-policyprioritylist">
-         <div class="col-md-12">
-            <h5>{{policyModel.secondCountry || 'Country B'}}</h5>
-            <p class="scorecard-text"><b>GDP:</b> ${{secondCountryGDP}}&nbsp;USD</p>
-            <p class="scorecard-text"><b>Population (2013 est.):</b> {{secondCountryPopulation}}</p>
-         </div>
-         <div class="col-md-12">
-           <br>
-           <h6>Losses Based on Resilience Indicators:</h6>
-            <!-- <div class="row">
-               <div class="col-md-12">
-                  <h6 class="">RESULTS
-                     <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                     <i class="mdi mdi-information-outline"></i>
-                     </button>
-                  </h6>
-                  <span><img src="assets/image/icon-map.png" alt=""> Global Histogram</span>
-               </div>
-            </div> -->
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="row" id="outputs-2"></div>
+        </div>
+        <div class="col-md-6 box-policyprioritylist">
+            <div class="col-md-12">
+                <h5>{{policyModel.secondCountry || 'Country B'}}</h5>
+                <p class="scorecard-text"><b>GDP:</b> ${{secondCountryGDP}}&nbsp;USD</p>
+                <p class="scorecard-text"><b>Population (2013 est.):</b> {{secondCountryPopulation}}</p>
+            </div>
+            <div class="col-md-12">
+                <br>
+                <h6>Losses Based on Resilience Indicators:</h6>
+                <!-- <div class="row">
+                   <div class="col-md-12">
+                      <h6 class="">RESULTS
+                         <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
+                         <i class="mdi mdi-information-outline"></i>
+                         </button>
+                      </h6>
+                      <span><img src="assets/image/icon-map.png" alt=""> Global Histogram</span>
+                   </div>
+                </div> -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row" id="outputs-2"></div>
+                    </div>
                 </div>
             </div>
-         </div>
-      </div>
-   </div>
-   <div class="row border-content"></div>
-   <div class="row">
-        <div class="col-md-12 box-policyprioritylist-1">
-            <div class="row">
-                <div class="col-md-12 box-title-policyprioritylist text-left">
-                    <h6 class="">How Country Policies Can Reduce Asset And Well-Being Losses
-                    </h6>
-                    <div class="line-dd">
+        </div>
+        
+        <div class="col-md-12 box-policyprioritylist">
+            <div class="col-md-12 box-title-policyprioritylist">
+                <h5 class="">How Country Policies Can Reduce Asset And Well-Being Losses
+                    <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="The figure below shows how various policies can reduce asset and well-being losses. Negative values indicate cases where the policy increases the losses. Avoided losses can be presented in absolute terms (US$ million) or relative terms (in percent of today’s losses). The policies can be ranked according to their effect on asset or well-being losses." triggers="mouseenter:mouseleave" popoverTitle="">
+                    <i class="mdi mdi-information-outline"></i>
+                    </button>
+                </h5> 
+                <div class="line-dd">
                     <label class="text-sort label-mg">
+                        Sort policies by 
                         <i class="mdi mdi-checkbox-blank-circle box-icon-a"></i>
                         Well-being
                         <img class="icon-sort" (click)="onSortChartDataEvent('1')" />
-
+                        or &nbsp;
                         <i class="mdi mdi-checkbox-blank-circle box-icon-c"></i>
-                            Assets
+                        Assets
                         <img class="icon-sort" (click)="onSortChartDataEvent('2')" />
+                        and view economic losses in terms of
                     </label>
                     <div class="row switch-position">
                         <div class="switch-btn">
                             <label class="toggle-switch nolabel">
                                 <input type="checkbox" style="width: 100%;" [checked]="switchUICmpVal" ([ngModel])="switchUICmpVal" (click)="onChangeChartTypeEvent()"/>
                                 <span>
-                                <span>Absolute</span>
-                                <span>Relative</span>
+                                    <span>Absolute</span>
+                                    <span>Relative</span>
                                 </span>
                                 <a></a>
                             </label>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value.
                         </div>
-                        <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="The figure below shows how various policies can reduce asset and well-being losses. Negative values indicate cases where the policy increases the losses. Avoided losses can be presented in absolute terms (US$ million) or relative terms (in percent of today’s losses). The policies can be ranked according to their effect on asset or well-being losses." triggers="mouseenter:mouseleave" popoverTitle="">
-                        <i class="mdi mdi-information-outline"></i>
-                        </button>
                     </div>
-                </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row"></div>
-    <div class="row scorecard-prioritylist">
-        <div class="col-md-6 box-policyprioritylist-1 vertical-border">
-            <div class="row">
-                <div class="col-md-12 text-center">
-                <h5 class="">{{policyModel.firstCountry || 'COUNTRY A'}}
+        <div class="col-md-6 box-policyprioritylist">
+            <div class="col-md-12">
+                <h5>{{policyModel.firstCountry || 'COUNTRY A'}}
                     <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
                     <i class="mdi mdi-information-outline"></i>
                     </button> -->
                 </h5>
-                <br>
-                </div>
             </div>
             <div class="row pad-botTop10">
                 <div class="col-md-12 text-center">
@@ -127,16 +120,13 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6 box-policyprioritylist-1">
-            <div class="row">
-                <div class="col-md-12 text-center">
+        <div class="col-md-6 box-policyprioritylist">
+            <div class="col-md-12">
                     <h5 class="">{{policyModel.secondCountry || 'COUNTRY B'}}
                         <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
                         <i class="mdi mdi-information-outline"></i>
                         </button> -->
                     </h5>
-                    <br>
-                </div>
             </div>
             <div class="row pad-botTop10">
                 <div class="col-md-12">
