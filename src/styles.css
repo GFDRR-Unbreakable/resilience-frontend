@@ -101,12 +101,7 @@ figure {
   margin: 1em 40px;
 }
 
-hr {
-  -webkit-box-sizing: content-box;
-          box-sizing: content-box;
-  height: 0;
-  overflow: visible;
-}
+
 
 pre {
   font-family: monospace, monospace;
@@ -754,8 +749,8 @@ template {
     width: auto;
   }
   .switch-position{
-    margin-left: 43% !important;
-    margin-top: 10px;
+    margin-left: 2% !important;
+    margin-top: 6px;
   }
   .policy-dp .btn-icon-info{
     margin-left: 38px;
@@ -1032,10 +1027,16 @@ template {
  }
 
 /*Score Card-Policy Priority List*/
+.policy-list{
+  border-bottom: 3px solid #6fc2cd;
+  width: 100%;
+  line-height: 1.5;
+}
 .scorecard-title{
   display: -webkit-inline-box;
   vertical-align: middle !important;
   padding: 13px 36px !important;
+  
 }
 .scorecard-text{
   padding: 0px;
@@ -1056,9 +1057,12 @@ template {
   padding: 0;
   font-size: 8px;
 }
+.one-line {
+  display: block;
+}
 .scorecard-input{
   display: -webkit-inline-box;
-  padding: 0 7%;
+  margin-bottom: 10px;
 }
 .button-map {
   background: #7D8F8F;
@@ -1067,18 +1071,29 @@ template {
   padding: 5px 10px !important;
   cursor: pointer;
   color: #fff;
-  margin-top: 5px;
+  margin-top: 0.2px;
   margin-right: 17px;
+}
+.line-dd{
+  display: -webkit-inline-box;
 }
 .button-map:hover {
   background: #f4f5fa;
   color: #000;
   border-color: #fff;
 }
+.box-button-map{
+  position: absolute;
+  right: 95px;
+  /*top: 15px;*/
+  height: 29px;
+  bottom: 30px;
+}
 .box-button-pdf{
   position: absolute;
   right: 32px;
-  top: 15px;
+  /*top: 15px;*/
+  bottom: 30px;
 }
 .box-icon-a{
   padding-right: 5px;
@@ -1160,7 +1175,7 @@ template {
   padding-bottom: 25px;
 }
 .box-title-terms{
-  padding: 15px 0 !important;
+  padding: 20px 0 !important;
 }
 
 div#map {
@@ -1539,11 +1554,15 @@ h6, .h6 {
   line-height: 1.1;
 }
 
-hr {
+.report {
   margin-top: 1rem;
   margin-bottom: 1rem;
   border: 0;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
+  -webkit-box-sizing: content-box;
+          box-sizing: content-box;
+  height: 0;
+  overflow: visible;
 }
 .border-content{
   /* border-bottom: 1px solid #f2f3f7; */
@@ -3784,6 +3803,12 @@ fieldset[disabled] a.btn {
 }
 .btn-icon-info:hover{
   color: #c3d700;
+}
+
+.btn-pdf {
+  color: #fff;
+  background-color: #50C4CF;
+  border-color: #50C4CF;
 }
 
 .btn-primary {
@@ -10338,6 +10363,10 @@ a.bg-inverse:focus, a.bg-inverse:hover {
   text-align: center !important;
 }
 
+.center-to-measure {
+  padding-left: 800px;
+}
+
 @media (min-width: 576px) {
   .text-sm-left {
     text-align: left !important;
@@ -11052,6 +11081,18 @@ fieldset {
 .pad-botTop10{
   padding: 10px 0;
 }
+.x-axis-lb {
+  margin-bottom: 50px;
+}
+.enter path,
+.enter line {
+  fill: none;
+  stroke: #626262;
+	shape-rendering: crispEdges;
+}
+.x-axis {
+  margin-bottom: 50px;
+}
 .x-axis path,
 .x-axis line,
 .x-axis2 path,
@@ -11162,7 +11203,7 @@ fieldset {
   width: 18px;
   background-color: #fff;
   border: 1px solid #7d8f8f;
-  border-radius: 100%;
+  /*border-radius: 100%;*/
   -webkit-transition: all 0.2s ease-out;
   -moz-transition: all 0.2s ease-out;
   transition: all 0.2s ease-out;
@@ -11184,7 +11225,7 @@ fieldset {
   top: -3px;
   background-color: #4a5958;
   border: 1px solid #7d8f8f;
-  border-radius: 30px;
+  /*border-radius: 30px;*/
   -webkit-transition: all 0.2s ease-out;
   -moz-transition: all 0.2s ease-out;
   transition: all 0.2s ease-out;

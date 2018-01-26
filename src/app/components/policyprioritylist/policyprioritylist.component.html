@@ -1,21 +1,21 @@
 <app-navbar></app-navbar>
 <div class="container policy-dp">
-   <div class="row">
-      <div class="col-md-12 scorecard-title">
-         <a href="" routerLink="/viewer"><button type="button" class="btn button-map"><i class="mdi mdi-keyboard-backspace"></i> Map</button></a>
-         <h6>Policy Priority List</h6>
-         <button type="button" class="btn btn-primary text-download box-button-pdf" [disabled]="_selectedCountryList.length < 2" (click)="onDownloadPDFFileEvent()"><img class="img-download" src="assets/image/ic-download.png" alt="">PDF</button>
-      </div>
-   </div>
+   <div class="col-md-12 scorecard-title">
+			<h3 class="policy-list">Policy Priority List </h3>
+			<a href="" routerLink="/viewer"><button type="button" class="btn button-map box-button-map"><i class="mdi mdi-keyboard-backspace"></i> Map</button></a>
+      <button type="button" class="btn btn-pdf text-download box-button-pdf" [disabled]="_selectedCountryList.length < 2" (click)="onDownloadPDFFileEvent()"><img class="img-download" src="assets/image/ic-download.png" alt="">PDF</button>
+	</div>
    <div class="row">
      <div class="col-lg-12 col-md-12 pd-12">
-       <h6>Select two countries by typing their names below:</h6>
-       <div class="scorecard-input">
-          <input  type="text" class="form-control" placeholder="" name="firstCountry" [ngbTypeahead]="searchCountryFn" #firstCountry="ngModel" [(ngModel)]="policyModel.firstCountry" (ngModelChange)="onFirstCountryInputChangeEvent()" placeholder="Type Country A"/>
-          <button type="button" class="btn btn-outline-secondary icon-plus"><i class="mdi mdi-plus"></i></button>
-          <input  type="text" class="form-control" placeholder="" name="secondCountry" [ngbTypeahead]="searchCountryFn" #secondCountry="ngModel" [(ngModel)]="policyModel.secondCountry" (ngModelChange)="onSecondCountryInputChangeEvent()" placeholder="Type Country B"/>
-       </div>
+       <h4 class="one-line">Select two countries by typing their names below:</h4>
      </div>
+     <div class="col-lg-12 col-md-12 pd-12">
+        <div class="scorecard-input">
+            <input  type="text" class="form-control" placeholder="" name="firstCountry" [ngbTypeahead]="searchCountryFn" #firstCountry="ngModel" [(ngModel)]="policyModel.firstCountry" (ngModelChange)="onFirstCountryInputChangeEvent()" placeholder="Type Country A"/>
+            <button type="button" class="btn btn-outline-secondary icon-plus"><i class="mdi mdi-plus"></i></button>
+            <input  type="text" class="form-control" placeholder="" name="secondCountry" [ngbTypeahead]="searchCountryFn" #secondCountry="ngModel" [(ngModel)]="policyModel.secondCountry" (ngModelChange)="onSecondCountryInputChangeEvent()" placeholder="Type Country B"/>
+        </div>
+    </div>
    </div>
    <div class="row">
       <div class="col-md-6 box-policyprioritylist vertical-border">
@@ -75,9 +75,10 @@
    <div class="row">
         <div class="col-md-12 box-policyprioritylist-1">
             <div class="row">
-                <div class="col-md-12 box-title-policyprioritylist text-center">
-                    <h6 class="">HOW COUNTRY POLICIES CAN REDUCE ASSET AND WELL-BEING LOSSES
+                <div class="col-md-12 box-title-policyprioritylist text-left">
+                    <h6 class="">How Country Policies Can Reduce Asset And Well-Being Losses
                     </h6>
+                    <div class="line-dd">
                     <label class="text-sort label-mg">
                         <i class="mdi mdi-checkbox-blank-circle box-icon-a"></i>
                         Well-being
@@ -103,6 +104,7 @@
                         </button>
                     </div>
                 </div>
+                </div>
             </div>
         </div>
     </div>
@@ -111,11 +113,11 @@
         <div class="col-md-6 box-policyprioritylist-1 vertical-border">
             <div class="row">
                 <div class="col-md-12 text-center">
-                <h6 class="">{{policyModel.firstCountry || 'COUNTRY A'}}
+                <h5 class="">{{policyModel.firstCountry || 'COUNTRY A'}}
                     <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
                     <i class="mdi mdi-information-outline"></i>
                     </button> -->
-                </h6>
+                </h5>
                 <br>
                 </div>
             </div>
@@ -128,11 +130,11 @@
         <div class="col-md-6 box-policyprioritylist-1">
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <h6 class="">{{policyModel.secondCountry || 'COUNTRY B'}}
+                    <h5 class="">{{policyModel.secondCountry || 'COUNTRY B'}}
                         <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
                         <i class="mdi mdi-information-outline"></i>
                         </button> -->
-                    </h6>
+                    </h5>
                     <br>
                 </div>
             </div>
