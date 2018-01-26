@@ -748,8 +748,12 @@ template {
   .policy-dp .dropdown-menu{
     width: auto;
   }
+  .simio {
+    margin-left: 2px !important;
+    
+  }
   .switch-position{
-    margin-left: 2% !important;
+    margin-left: -8px !important;
     margin-top: 6px;
   }
   .policy-dp .btn-icon-info{
