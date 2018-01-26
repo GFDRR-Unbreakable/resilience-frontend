@@ -6971,6 +6971,7 @@ a.bg-inverse:focus, a.bg-inverse:hover {
 
 .d-inline-block {
   display: inline-block !important;
+  margin-left: 5px;
 }
 
 .d-block {
@@ -10361,10 +10362,6 @@ a.bg-inverse:focus, a.bg-inverse:hover {
 
 .text-center {
   text-align: center !important;
-}
-
-.center-to-measure {
-  padding-left: 800px;
 }
 
 @media (min-width: 576px) {
