@@ -752,6 +752,9 @@ template {
     margin-left: 2px !important;
     
   }
+  .btn-icon-left {
+    margin-left: -0px !important;
+  }
   .switch-position{
     margin-left: -8px !important;
     margin-top: 6px;
