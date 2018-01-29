@@ -1,79 +1,82 @@
 <app-navbar></app-navbar>
 <div class="container policy-measure">
-   <div class="row">
+    <div class="row">
         <div class="col-md-12 scorecard-title">
             <h4 class="policy-list">Policy Scenario Across the Globe </h4>
             <a href="" routerLink="/viewer"><button type="button" class="btn button-map box-button-map"><i class="mdi mdi-keyboard-backspace"></i> Map</button></a>
             <button type="button" class="btn btn-primary text-download box-button-pdf" (click)="onDownloadPDFFileEvent()"><img class="img-download" src="assets/image/ic-download.png" alt="">PDF</button>
-         </div>
-      <div class="col-md-12 scorecard-title">
-         <h5>Select a policy scenario and region below: </h5>
-
-      </div>
-      <div class="col-md-12">
+        </div>
+        <div class="col-md-12 scorecard-title">
+            <h5>Select a policy scenario and region below: </h5>
+        </div>
+        <div class="col-md-12">
             <div ngbDropdown class="d-inline-block ">
-                    <button class="btn dropdown-politics" id="dropdownPolicy" ngbDropdownToggle>{{selectedPolicyUIList.label}}</button>
-                    <div class="dropdown-menu dropdown-politics-menu" aria-labelledby="dropdownPolicy">
-                        <div class="list" *ngFor="let policy of policyGroupUIList; let aIndex = index">
-                            <button (click)="onScorecardPolicyChange(policy)" class="dropdown-item dropdown-politics-item">{{policy.label}}</button>
-                            <!-- <div *ngIf="aIndex !== policyGroupUIList.length - 1" class="dropdown-divider-1"></div> -->
-                        </div>
+                <button class="btn dropdown-politics" id="dropdownPolicy" ngbDropdownToggle>
+                    {{selectedPolicyUIList.label}}
+                </button>
+                <div class="dropdown-menu dropdown-politics-menu" aria-labelledby="dropdownPolicy">
+                    <div class="list" *ngFor="let policy of policyGroupUIList">
+                        <!-- <div class="list" *ngFor="let policy of policyGroupUIList; let aIndex = index"> -->
+                        <button (click)="onScorecardPolicyChange(policy)" class="dropdown-item dropdown-politics-item">
+                            {{policy.label}}
+                        </button>
+                        <!-- <div *ngIf="aIndex !== policyGroupUIList.length - 1" class="dropdown-divider-1"></div> -->
                     </div>
-                 </div>
-                 by
-                 <div ngbDropdown class="d-inline-block">
-                    <button class="btn dropdown-politics" id="dropdownBasic1" ngbDropdownToggle>{{selectedRegionUIList.label}}</button>
-                    <div class="dropdown-menu dropdown-politics-menu" aria-labelledby="dropdownBasic1">
-                        <div class="list" *ngFor="let region of regionUIList; let aIndex = index">
-                            <button (click)="onScorecardRegionChange(region)" class="dropdown-item dropdown-politics-item">{{region.label}}</button>
-                            <!-- <div *ngIf="aIndex !== regionUIList.length - 1" class="dropdown-divider-1"></div> -->
-                        </div>
+                </div>
+            </div>
+            by
+            <div ngbDropdown class="d-inline-block">
+                <button class="btn dropdown-politics" id="dropdownBasic1" ngbDropdownToggle>
+                    {{selectedRegionUIList.label}}
+                </button>
+                <div class="dropdown-menu dropdown-politics-menu" aria-labelledby="dropdownBasic1">
+                    <div class="list" *ngFor="let region of regionUIList">
+                        <!-- <div class="list" *ngFor="let region of regionUIList; let aIndex = index"> -->
+                        <button (click)="onScorecardRegionChange(region)" class="dropdown-item dropdown-politics-item">
+                            {{region.label}}
+                        </button>
+                        <!-- <div *ngIf="aIndex !== regionUIList.length - 1" class="dropdown-divider-1"></div> -->
                     </div>
-                 </div>
-      </div>
-   </div>
-   <div class="row border-content"></div>
-   <div class="row">
-      <div class="col-md-6 text-center">
-         <h5 class="box-title-terms">Absolute Terms</h5>
-         <label class="text-sort">
-            <i class="mdi mdi-checkbox-blank-circle box-icon-a"></i>
-            Avoided well-being losses
-            <!-- <i class="mdi mdi-unfold-more-horizontal"></i> -->
-            <img class="icon-sort" (click)="onSortChartDataEvent('1', 'chart1')">
-         </label>
-         <label class="text-sort" [hidden]="selectedPolicyUIList.hideAvoidedAssetLosses">
-            <i class="mdi mdi-checkbox-blank-circle box-icon-c"></i>
-            Avoided asset losses
-            <!-- <i class="mdi mdi-unfold-more-horizontal"></i> -->
-            <img class="icon-sort" (click)="onSortChartDataEvent('2', 'chart1')">
-         </label>
-         <div class="row box-title-terms">
-            <div class="">
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <h5 class="box-title-terms">Absolute Terms</h5>
+            <label class="text-sort">
+                <i class="mdi mdi-checkbox-blank-circle box-icon-a"></i>
+                Avoided well-being losses
+                <!-- <i class="mdi mdi-unfold-more-horizontal"></i> -->
+                <img class="icon-sort" (click)="onSortChartDataEvent('1', 'chart1')" />
+            </label>
+            <label class="text-sort" [hidden]="selectedPolicyUIList.hideAvoidedAssetLosses">
+                <i class="mdi mdi-checkbox-blank-circle box-icon-c"></i>
+                Avoided asset losses
+                <!-- <i class="mdi mdi-unfold-more-horizontal"></i> -->
+                <img class="icon-sort" (click)="onSortChartDataEvent('2', 'chart1')" />
+            </label>
+            <div class="box-title-terms">
                 <div id="policy-measure-1"></div>
             </div>
-         </div>
-      </div>
-      <div class="col-md-6 text-center">
-         <h5 class="box-title-terms">Relative Terms</h5>
-         <label class="text-sort">
-            <i class="mdi mdi-checkbox-blank-circle box-icon-a"></i>
-            Avoided well-being losses
-            <!-- <i class="mdi mdi-unfold-more-horizontal"></i> -->
-            <img class="icon-sort" (click)="onSortChartDataEvent('1', 'chart2')">
-         </label>
-         <label class="text-sort" [hidden]="selectedPolicyUIList.hideAvoidedAssetLosses">
-            <i class="mdi mdi-checkbox-blank-circle box-icon-c"></i>
-            Avoided asset losses
-            <!-- <i class="mdi mdi-unfold-more-horizontal"></i> -->
-            <img class="icon-sort" (click)="onSortChartDataEvent('2', 'chart2')">
-         </label>
-         <div class="row box-title-terms">
-                <div class="">
-                    <div id="policy-measure-2"></div>
-                </div>
-         </div>
-      </div>
-   </div>
+        </div>
+        <div class="col-md-6">
+            <h5 class="box-title-terms">Relative Terms</h5>
+            <label class="text-sort">
+                <i class="mdi mdi-checkbox-blank-circle box-icon-a"></i>
+                Avoided well-being losses
+                <!-- <i class="mdi mdi-unfold-more-horizontal"></i> -->
+                <img class="icon-sort" (click)="onSortChartDataEvent('1', 'chart2')">
+            </label>
+            <label class="text-sort" [hidden]="selectedPolicyUIList.hideAvoidedAssetLosses">
+                <i class="mdi mdi-checkbox-blank-circle box-icon-c"></i>
+                Avoided asset losses
+                <!-- <i class="mdi mdi-unfold-more-horizontal"></i> -->
+                <img class="icon-sort" (click)="onSortChartDataEvent('2', 'chart2')">
+            </label>
+            <div class="box-title-terms">
+                <div id="policy-measure-2"></div>
+            </div>
+        </div>
+    </div>
 </div>
 <app-footer></app-footer>

@@ -1107,6 +1107,7 @@ template {
   bottom: 30px;
 }
 .box-icon-a{
+  padding-left: 18px;
   padding-right: 5px;
   /*color:#4b5455;*/
   color: #6DCCDC;
@@ -1186,7 +1187,7 @@ template {
   padding-bottom: 25px;
 }
 .box-title-terms{
-  padding: 20px 0 !important;
+  padding: 20px !important;
 }
 
 div#map {
