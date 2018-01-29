@@ -751,7 +751,7 @@ template {
   }
   .btn-left {
     margin-left: 2px !important;
-    
+
   }
   .btn-icon-left {
     margin-left: -0px !important;
@@ -1047,8 +1047,12 @@ template {
 .scorecard-title{
   display: -webkit-inline-box;
   vertical-align: middle !important;
-  padding: 13px 36px !important;
-  
+  padding: 13px 36px 0px 36px!important;
+}
+.scorecard-title-01{
+  display: -webkit-inline-box;
+  vertical-align: middle !important;
+  padding: 13px 36px 0px 36px !important;
 }
 .scorecard-text{
   padding: 0px;
@@ -1099,13 +1103,13 @@ template {
   right: 95px;
   /*top: 15px;*/
   height: 29px;
-  bottom: 30px;
+  bottom: 16px;
 }
 .box-button-pdf{
   position: absolute;
   right: 32px;
   /*top: 15px;*/
-  bottom: 30px;
+  bottom: 16px;
 }
 .box-icon-a{
   padding-left: 18px;
@@ -1123,7 +1127,7 @@ template {
   border: 0px !important;
 }
 .box-policyprioritylist{
-  padding: 22px !important;
+  padding: 0px 22px !important;
 }
 .box-policyprioritylist-1{
   padding: 17px 17px !important;
@@ -1190,7 +1194,9 @@ template {
 .box-title-terms{
   padding: 20px !important;
 }
-
+.box-title-terms-01{
+  padding: 20px 20px 0px 20px !important;
+}
 div#map {
   height: 491px;
   width: inherit;
@@ -1576,6 +1582,16 @@ h6, .h6 {
           box-sizing: content-box;
   height: 0;
   overflow: visible;
+}
+.report-01{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    box-sizing: content-box;
+    height: 0;
+    overflow: visible;
+    width: 94%;
 }
 .border-content{
   /* border-bottom: 1px solid #f2f3f7; */
@@ -11257,8 +11273,18 @@ fieldset {
   font-weight: bold;
   color: #fff;
 }
-
-
+.h5-mg{
+  margin-bottom: -5px;
+}
+.h5-mg-01{
+  margin-bottom: 25px;
+}
+.left-pd{
+  padding-left: 16% !important;
+}
+.left-pd-01{
+  padding-left: 13% !important;
+}
 /*NO GUTTERS*/
 .no-gutters {
   margin-right: 0;
