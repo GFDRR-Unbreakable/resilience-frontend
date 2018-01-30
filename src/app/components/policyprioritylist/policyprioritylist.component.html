@@ -90,7 +90,7 @@
                         <img class="icon-sort" (click)="onSortChartDataEvent('2')" />
                         and view economic losses in terms of
                     </label>
-                    <div class="row switch-position">
+                    <!-- <div class="row switch-position">
                         <div class="switch-btn">
                             <label class="toggle-switch nolabel">
                                 <input type="checkbox" style="width: 100%;" [checked]="switchUICmpVal" ([ngModel])="switchUICmpVal" (click)="onChangeChartTypeEvent()"/>
@@ -102,6 +102,13 @@
                             </label>
                         </div>
                         <label class="text-sort label-mg-1"> value. </label>
+                    </div> -->
+                    <div class="switch">
+                      <input type="radio" class="switch-input" name="view" value="week" id="week" checked>
+                      <label for="week" class="switch-label switch-label-off">Absolute</label>
+                      <input type="radio" class="switch-input" name="view" value="month" id="month">
+                      <label for="month" class="switch-label switch-label-on">Relative</label>
+                      <span class="switch-selection"></span>
                     </div>
                 </div>
             </div>

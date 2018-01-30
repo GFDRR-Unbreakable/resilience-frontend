@@ -756,10 +756,10 @@ template {
   .btn-icon-left {
     margin-left: -0px !important;
   }
-  .switch-position{
+  /* .switch-position{
     margin-left: -8px !important;
     margin-top: 6px;
-  }
+  } */
   .policy-dp .btn-icon-info{
     margin-left: 38px;
   }
@@ -862,9 +862,9 @@ template {
      content: "\F35D";
      font: normal normal normal 24px/1.5 "Material Design Icons";
    }
-   input[type=radio] + label::after {
+   /* input[type=radio] + label::after {
      content: "\25BC";
-   }
+   } */
    input[type=checkbox]:checked + label::after {
      -webkit-transform: rotate(180deg);
              transform: rotate(180deg);
@@ -11607,5 +11607,82 @@ fieldset {
   position: fixed !important;
   bottom: 0px !important;
   width: 100% !important;
-  height: 80px !important;
+  height: 79px !important;
+}
+
+
+/* switch */
+.switch {
+  position: relative;
+  margin: 12px 13px 0px 13px;
+  height: 26px;
+  width: 140px;
+  background: #4a5958;
+  border-radius: 3px;
+  -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+}
+
+.switch-label {
+  position: relative;
+  z-index: 2;
+  float: left;
+  width: 70px;
+  line-height: 26px;
+  font-size: 11px;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+}
+
+.switch-label:active {
+  font-weight: bold;
+}
+
+.switch-label-off {
+  padding-left: 2px;
+}
+
+.switch-label-on {
+  padding-right: 2px;
+}
+
+.switch-input {
+  display: none;
+}
+
+.switch-input:checked + .switch-label {
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 1px rgba(255, 255, 255, 0.25);
+  -webkit-transition: 0.15s ease-out;
+  -moz-transition: 0.15s ease-out;
+  -o-transition: 0.15s ease-out;
+  transition: 0.15s ease-out;
+}
+
+.switch-input:checked + .switch-label-on ~ .switch-selection {
+  /* Note: left: 50% doesn't transition in WebKit */
+  left: 68px;
+}
+
+.switch-selection {
+  display: block;
+  position: absolute;
+  z-index: 1;
+  top: 2px;
+  left: 2px;
+  width: 70px;
+  height: 22px;
+  background: #53CDDE;
+  border-radius: 18px;
+  -webkit-box-shadow: inset 0 1px rgba(255, 255, 255, 0.5), 0 0 2px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.5), 0 0 2px rgba(0, 0, 0, 0.2);
+  -webkit-transition: left 0.15s ease-out;
+  -moz-transition: left 0.15s ease-out;
+  -o-transition: left 0.15s ease-out;
+  transition: left 0.15s ease-out;
+  border-radius: 18px;
 }
