@@ -39,6 +39,7 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
     firstCountry: '',
     secondCountry: ''
   };
+  hasList = [0, 0];
   public secondCountryGDP: string = '0';
   public secondCountryPopulation: string = '0';
   public _selectedCountryList: Array<any> = [];
@@ -128,6 +129,7 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
    * @param {String} field - Input-text field model
    */
   private _filterCountryByInput(list, selectedIdx, field) {
+    this.hasList[selectedIdx] = list.length;
     const inData = this.chartService.getInputData();
     const outData = this.chartService.getOutputData();
     const idOut = selectedIdx === 0 ? 'outputs-1' : 'outputs-2';

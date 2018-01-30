@@ -11603,3 +11603,9 @@ fieldset {
 .popover-title-viewer {
   font-weight: bolder;
 }
+.footer-special {
+  position: fixed !important;
+  bottom: 0px !important;
+  width: 100% !important;
+  height: 80px !important;
+}
