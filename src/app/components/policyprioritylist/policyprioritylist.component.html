@@ -104,9 +104,9 @@
                         <label class="text-sort label-mg-1"> value. </label>
                     </div> -->
                     <div class="switch">
-                      <input type="radio" class="switch-input" name="view" value="week" id="week" checked>
+                      <input type="radio" class="switch-input" name="view" value="week" id="week" [checked]="switchUICmpVal" (click)="onChangeChartTypeEvent()">
                       <label for="week" class="switch-label switch-label-off">Absolute</label>
-                      <input type="radio" class="switch-input" name="view" value="month" id="month">
+                      <input type="radio" class="switch-input" name="view" value="month" id="month" [checked]="switchUICmpVal" (click)="onChangeChartTypeEvent()">
                       <label for="month" class="switch-label switch-label-on">Relative</label>
                       <span class="switch-selection"></span>
                     </div>
