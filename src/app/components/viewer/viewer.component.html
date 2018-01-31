@@ -97,10 +97,10 @@
                               <a></a>
                           </label>
                       </div> -->
-                      <div class="switch">
-                        <input type="radio" class="switch-input" name="view" value="week" id="week" checked>
+                      <div class="switch" (click)="onSwitchGlobal()">
+                        <input type="radio" class="switch-input" name="view" [checked]="global">
                         <label for="week" class="switch-label switch-label-off">Global</label>
-                        <input type="radio" class="switch-input" name="view" value="month" id="month">
+                        <input type="radio" class="switch-input" name="view" [checked]="!global">
                         <label for="month" class="switch-label switch-label-on">Regional</label>
                         <span class="switch-selection"></span>
                       </div>

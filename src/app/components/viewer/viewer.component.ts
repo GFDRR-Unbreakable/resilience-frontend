@@ -1227,8 +1227,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * charts as Global or Regional
    */
   onSwitchGlobal() {
+    this.global = !this.global;
     if (this._selectedCountryList.length === this.MAX_COUNTRIES_SELECTED) {
-      this.global = !this.global;
       const inData = this.chartService.getInputData();
       const outData = this.chartService.getOutputData();
       this._selectedCountryList.forEach(country => {
