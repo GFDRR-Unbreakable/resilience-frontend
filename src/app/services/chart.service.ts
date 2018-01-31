@@ -155,79 +155,82 @@ export class ChartService {
     let asString;
     let extraInfo;
     let aValue;
+    let negative = dollarLossGDP < 0;
+    const sign = negative ? '-' : '';
+    let dollarLossGDPPositive = negative ? -dollarLossGDP : dollarLossGDP;
     if (isSetBillion) {
-      if (dollarLossGDP >= aBillion) {
-        dollarLossGDP = Math.round(dollarLossGDP / aBillion);
-        asString = dollarLossGDP;
-        if (dollarLossGDP >= aThousand) {
-          asString = dollarLossGDP / aThousand;
+      if (dollarLossGDPPositive >= aBillion) {
+        dollarLossGDPPositive = Math.round(dollarLossGDPPositive / aBillion);
+        asString = dollarLossGDPPositive;
+        if (dollarLossGDPPositive >= aThousand) {
+          asString = dollarLossGDPPositive / aThousand;
           asString = asString.toFixed(0).split('.').join(',');
         }
         extraInfo = 'B';
-        aValue = `$${asString}${extraInfo} (${percentageValue}% of GDP)`;
+        aValue = `$${sign}${asString}${extraInfo} (${percentageValue}% of GDP)`;
         if (withoutPercent) {
-          aValue = `$${asString}${extraInfo}`;
+          aValue = `$${sign}${asString}${extraInfo}`;
         }
         if (onlyPercent) {
           aValue = `(${percentageValue}% of GDP)`;
         }
-      } else if (dollarLossGDP >= aMillion) {
-        dollarLossGDP /= aMillion;
-        dollarLossGDP = Math.round(dollarLossGDP);
-        asString = dollarLossGDP;
-        if (dollarLossGDP >= aThousand) {
-          asString = dollarLossGDP / aThousand;
+      } else if (dollarLossGDPPositive >= aMillion) {
+        dollarLossGDPPositive /= aMillion;
+        dollarLossGDPPositive = Math.round(dollarLossGDPPositive);
+        asString = dollarLossGDPPositive;
+        if (dollarLossGDPPositive >= aThousand) {
+          asString = dollarLossGDPPositive / aThousand;
           asString = asString.toFixed(0).split('.').join(',');
         }
         extraInfo = 'M';
-        aValue = `$${asString}${extraInfo} (${percentageValue}% of GDP)`;
+        aValue = `$${sign}${asString}${extraInfo} (${percentageValue}% of GDP)`;
         if (withoutPercent) {
-          aValue = `$${asString}${extraInfo}`;
+          aValue = `$${sign}${asString}${extraInfo}`;
         }
         if (onlyPercent) {
           aValue = `(${percentageValue}% of GDP)`;
         }
       } else {
-        dollarLossGDP = Math.round(dollarLossGDP);
-        asString = dollarLossGDP;
-        if (dollarLossGDP >= aThousand) {
-          asString = dollarLossGDP / aThousand;
+        dollarLossGDPPositive = Math.round(dollarLossGDPPositive);
+        asString = dollarLossGDPPositive;
+        if (dollarLossGDPPositive >= aThousand) {
+          asString = dollarLossGDPPositive / aThousand;
           asString = asString.toFixed(0).split('.').join(',');
         }
-        aValue = `$${asString} (${percentageValue}% of GDP)`;
+        aValue = `$${sign}${asString} (${percentageValue}% of GDP)`;
         if (withoutPercent) {
-          aValue = `$${asString}`;
+          aValue = `$${sign}${asString}`;
         }
         if (onlyPercent) {
           aValue = `(${percentageValue}% of GDP)`;
         }
       }
-    } else if (dollarLossGDP >= aMillion) {
-      dollarLossGDP /= aMillion;
-      dollarLossGDP = Math.round(dollarLossGDP);
-      asString = dollarLossGDP;
-      if (dollarLossGDP >= aThousand) {
-        asString = dollarLossGDP / aThousand;
+    } else if (dollarLossGDPPositive >= aMillion) {
+      dollarLossGDPPositive /= aMillion;
+      dollarLossGDPPositive = Math.round(dollarLossGDPPositive);
+      asString = dollarLossGDPPositive;
+      if (dollarLossGDPPositive >= aThousand) {
+        asString = dollarLossGDPPositive / aThousand;
         asString = asString.toFixed(0).split('.').join(',');
       }
       extraInfo = 'M';
-      aValue = `$${asString}${extraInfo} (${percentageValue}% of GDP)`;
+      aValue = `$${sign}${asString}${extraInfo} (${percentageValue}% of GDP)`;
       if (withoutPercent) {
-        aValue = `$${asString}${extraInfo}`;
+        aValue = `$${sign}${asString}${extraInfo}`;
       }
       if (onlyPercent) {
         aValue = `(${percentageValue}% of GDP)`;
       }
   } else {
-      dollarLossGDP = Math.round(dollarLossGDP);
-      asString = dollarLossGDP;
-      if (dollarLossGDP >= aThousand) {
-        asString = dollarLossGDP / aThousand;
+      dollarLossGDPPositive = Math.round(dollarLossGDPPositive);
+      asString = dollarLossGDPPositive;
+      if (dollarLossGDPPositive >= aThousand) {
+        asString = dollarLossGDPPositive / aThousand;
         asString = asString.toFixed(0).split('.').join(',');
       }
-      aValue = `$${asString} (${percentageValue}% of GDP)`;
+      aValue = `$${sign}${asString} (${percentageValue}% of GDP)`;
       if (withoutPercent) {
-        aValue = `$${asString}`;
+        aValue = `$${sign}${asString}`;
       }
       if (onlyPercent) {
         aValue = `(${percentageValue}% of GDP)`;
