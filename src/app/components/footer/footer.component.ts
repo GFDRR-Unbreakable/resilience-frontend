@@ -10,6 +10,9 @@ export class FooterComponent implements OnInit {
   constructor() { }
   isChecked = true;
   check() {
+    if (this.selection === false) {
+      this.isChecked = false;
+    }
     if (this.selection && (this.selection[0] || this.selection[1])) {
       this.isChecked = false;
     }
