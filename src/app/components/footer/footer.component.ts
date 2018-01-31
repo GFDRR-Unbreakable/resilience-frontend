@@ -13,7 +13,7 @@ export class FooterComponent implements OnInit {
     if (this.selection && (this.selection[0] || this.selection[1])) {
       this.isChecked = false;
     }
-    console.log(this.isChecked);
+    // console.log(this.isChecked);
     return this.isChecked;
   }
   ngOnInit() {
