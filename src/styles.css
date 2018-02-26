@@ -6509,6 +6509,7 @@ button.close {
 }
 .popover.popover-top, .popover.bs-tether-element-attached-bottom {
   margin-top: -10px;
+  top: -36px !important;
 }
 .popover.popover-top::before, .popover.popover-top::after, .popover.bs-tether-element-attached-bottom::before, .popover.bs-tether-element-attached-bottom::after {
   left: 50%;
