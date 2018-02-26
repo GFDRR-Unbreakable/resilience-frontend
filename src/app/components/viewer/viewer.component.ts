@@ -321,7 +321,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
             newObj[dataK] = data[dataK][viewerMod['name']];
           }
         }
-        this.chartService.updateOutputCharts(outputChartId, {model: newObj}, 'GLOBAL', moveBothBrushes, this.viewerDisplay === 'tech');
+        const group = this.global ? 'GLOBAL' : viewerMod['group_name'];
+        this.chartService.updateOutputCharts(outputChartId, {model: newObj}, group, moveBothBrushes, this.viewerDisplay === 'tech');
       });
       this.store.dispatch({type: ViewerAction[viewerActionStr], payload: viewerMod});
     }
