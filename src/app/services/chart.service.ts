@@ -2634,9 +2634,9 @@ export class ChartService {
       // and update the brush extent
       let extent = brush.extent()[1];
       let oldExtent = outputData[outputId].default;
-      if (groupName === 'GLOBAL' || !groupName) {
+      // if (groupName === 'GLOBAL' || !groupName) {
         extent = +model[idx];
-      }
+      // }
       brush.extent([0, extent]);
       const output = outputData;
       const precision = +output.precision;
