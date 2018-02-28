@@ -918,9 +918,9 @@ template {
   .hover-a a:hover, .hover-a a:focus {
     cursor: pointer;
   }
-  .hover-a .popover{
+  /* .hover-a .popover{
     max-width: 170px;
-  }
+  } */
   /*tab technical Map*/
  .nav {
    display: -webkit-box;
@@ -6605,7 +6605,7 @@ button.close {
 .popover-content {
   padding: 9px 14px;
   z-index: 3000 !important;
-  width: 255px !important;
+  /* width: 255px !important; */
 }
 
 .popover::before,
