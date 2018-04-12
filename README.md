@@ -48,3 +48,9 @@ https://www.digitalocean.com/community/tutorials/how-to-set-up-password-authenti
     </Directory>
     
 3) Ran "sudo service apache2 restart" to reset 
+
+To update packages: 
+sudo apt-get dist-upgrade
+
+To reboot node:
+sudo reboot
