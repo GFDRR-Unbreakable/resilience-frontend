@@ -28,11 +28,14 @@ Before running the tests make sure you are serving the app via `ng serve`.
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 
 ## Additional notes
-site was password protected following these instructions:\n
+site was password protected following these instructions:
+
 https://www.digitalocean.com/community/tutorials/how-to-set-up-password-authentication-with-apache-on-ubuntu-14-04
 
 1) created .htpasswd file at /etc/apache2/.htpasswd
+
 2) edited /etc/apache2/sites-enabled/000-default.conf to include:\n
+
 -- NB: replaced pre-existing line "Require <something different>" with below; other flags weren't in there yet
 
     <Directory "/var/www/html">
