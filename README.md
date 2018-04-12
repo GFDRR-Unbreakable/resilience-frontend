@@ -32,11 +32,13 @@ site was password protected following these instructions:
 
 https://www.digitalocean.com/community/tutorials/how-to-set-up-password-authentication-with-apache-on-ubuntu-14-04
 
-1) created .htpasswd file at /etc/apache2/.htpasswd
+1) created .htpasswd file at /etc/apache2/.htpasswd 
+-- Command: sudo htpasswd -c /etc/apache2/.htpasswd <username>
 
 2) edited /etc/apache2/sites-enabled/000-default.conf to include:
 
 -- NB: replaced pre-existing line "Require <something different>" with below; other flags weren't in there yet
+-- set back to "Require all granted" to eliminate password protection
 
     <Directory "/var/www/html">
         AuthType Basic
