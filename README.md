@@ -34,7 +34,7 @@ https://www.digitalocean.com/community/tutorials/how-to-set-up-password-authenti
 
 1) created .htpasswd file at /etc/apache2/.htpasswd
 
-2) edited /etc/apache2/sites-enabled/000-default.conf to include:\n
+2) edited /etc/apache2/sites-enabled/000-default.conf to include:
 
 -- NB: replaced pre-existing line "Require <something different>" with below; other flags weren't in there yet
 
