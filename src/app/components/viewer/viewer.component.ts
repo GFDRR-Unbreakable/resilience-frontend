@@ -333,7 +333,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * also modifies input & output chart and values, highlights/unhighlights a selected country on the map chart
    * and sets slider default values from the last selected country in order to be used again when user clicks on the
    * "Reset" button when the "Run Model" view is selected.
-   * @param {Array} list - Array of country properties filtered-by-input-text value. 
+   * @param {Array} list - Array of country properties filtered-by-input-text value.
    * @param {Number} selectedIdx - Determines which input field has been modified
    * @param {String} field - Input-text field model
    */
@@ -450,9 +450,11 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     document.addEventListener('wheelmove', this.onPassEv, options);
   }
   /**
-   * This method has similar functionality of @private methods called _filterCountryByInput and _changeCountryInput
-   * when the input-text value has been modified the difference is the UI event is triggered by a mouse-click event.
-   * @param {String} isoCode - Represents the country ISO code. 
+   * This method has similar functionality of @private methods called
+   * _filterCountryByInput and _changeCountryInput when the input-text value
+   * has been modified the difference is the UI event is triggered by a
+   * mouse-click event.
+   * @param {String} isoCode - Represents the country ISO code.
    */
   changeCountryInputsByClick(isoCode) {
     const filterISOCode = this.countryListComp.filter(val => val.code === isoCode);
@@ -470,50 +472,46 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       const outData = this.chartService.getOutputData();
       if (selectedCountryIdx.length === 0) {
         let index = 0;
+        // If users selects third country.
         if (this._selectedCountryList.length >= MAX_SELECTED_COUNTRIES) {
           this.viewerModel.firstCountry = this.viewerModel.secondCountry;
           this.viewerGroupModel.firstCountryGroup = this.viewerGroupModel.secondCountryGroup;
           this.viewerModel.secondCountry = filteredName;
           this.viewerGroupModel.secondCountryGroup = filteredGroup;
         }
+
         const filterCountryVal1 = this.countryListComp.filter(val =>
           val.name.toLowerCase() === this.viewerModel.firstCountry.toLowerCase());
         const filterCountryVal2 = this.countryListComp.filter(val =>
           val.name.toLowerCase() === this.viewerModel.secondCountry.toLowerCase());
+
+        // Updates first inputs & output charts.
         if (!this.viewerModel.firstCountry || filterCountryVal1.length === 0) {
           this.viewerModel.firstCountry = filteredName;
           this.viewerGroupModel.firstCountryGroup = filteredGroup;
+
           if (this.global) {
             this.chartService.updateOutputCharts('outputs-1', isoCode, null, true, this.viewerDisplay === 'tech');
-            this.chartService.updateInputCharts('inputSoc-1', this.sliderValues1, isoCode);
-            this.chartService.updateInputCharts('inputEco-1', this.sliderValues1, isoCode);
-            this.chartService.updateInputCharts('inputVul-1', this.sliderValues1, isoCode);
-            this.chartService.updateInputCharts('inputExp-1', this.sliderValues1, isoCode);
+            this.updateInputCharts(1, this.sliderValues1, isoCode);
           } else {
             this.chartService.createOutputChart(outData, 'outputs-1', filteredGroup, false, isoCode);
-            this.chartService.createInputCharts(inData, 'inputSoc-1', this.sliderValues1, filteredGroup);
-            this.chartService.createInputCharts(inData, 'inputEco-1', this.sliderValues1, filteredGroup);
-            this.chartService.createInputCharts(inData, 'inputVul-1', this.sliderValues1, filteredGroup);
-            this.chartService.createInputCharts(inData, 'inputExp-1', this.sliderValues1, filteredGroup);
+            this.createInputCharts(1, inData, this.sliderValues1, filteredGroup);
           }
-        } else if (!this.viewerModel.secondCountry.trim() || filterCountryVal2.length === 0) {
+        }
+        // Updates second inputs & output charts.
+        else if (!this.viewerModel.secondCountry.trim() || filterCountryVal2.length === 0) {
           index += 1;
           this.viewerModel.secondCountry = filteredName;
           this.viewerGroupModel.secondCountryGroup = filteredGroup;
           if (this.global) {
             this.chartService.updateOutputCharts('outputs-2', isoCode, null, true, this.viewerDisplay === 'tech');
-            this.chartService.updateInputCharts('inputSoc-2', this.sliderValues2, isoCode);
-            this.chartService.updateInputCharts('inputEco-2', this.sliderValues2, isoCode);
-            this.chartService.updateInputCharts('inputVul-2', this.sliderValues2, isoCode);
-            this.chartService.updateInputCharts('inputExp-2', this.sliderValues2, isoCode);
+            this.updateInputCharts(2, this.sliderValues1, isoCode);
           } else {
             this.chartService.createOutputChart(outData, 'outputs-2', filteredGroup, false, isoCode);
-            this.chartService.createInputCharts(inData, 'inputSoc-2', this.sliderValues2, filteredGroup);
-            this.chartService.createInputCharts(inData, 'inputEco-2', this.sliderValues2, filteredGroup);
-            this.chartService.createInputCharts(inData, 'inputVul-2', this.sliderValues2, filteredGroup);
-            this.chartService.createInputCharts(inData, 'inputExp-2', this.sliderValues2, filteredGroup);
+            this.createInputCharts(2, inData, this.sliderValues2, filteredGroup);
           }
-        } else {
+        }
+        else {
           index += 1;
           const isoCodeOld = this._selectedCountryList[1].code;
           this._selectedCountryList[1].index = 0;
@@ -529,31 +527,20 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           code: isoCode,
           group: filteredGroup
         });
+        // User has selected a third country.
         if (isThirdCountry) {
           const isoCodeOld = this._selectedCountryList[0].code;
           const filteredGroupOld = this._selectedCountryList[0].group;
           if (this.global) {
-            this.chartService.updateInputCharts('inputSoc-1', this.sliderValues1, isoCodeOld);
-            this.chartService.updateInputCharts('inputEco-1', this.sliderValues1, isoCodeOld);
-            this.chartService.updateInputCharts('inputVul-1', this.sliderValues1, isoCodeOld);
-            this.chartService.updateInputCharts('inputExp-1', this.sliderValues1, isoCodeOld);
+            this.updateInputCharts(1, this.sliderValues1, isoCodeOld);
             this.chartService.updateOutputCharts('outputs-1', isoCodeOld, null, true, this.viewerDisplay === 'tech');
-            this.chartService.updateInputCharts('inputSoc-2', this.sliderValues2, isoCode);
-            this.chartService.updateInputCharts('inputEco-2', this.sliderValues2, isoCode);
-            this.chartService.updateInputCharts('inputVul-2', this.sliderValues2, isoCode);
-            this.chartService.updateInputCharts('inputExp-2', this.sliderValues2, isoCode);
+            this.updateInputCharts(2, this.sliderValues2, isoCode);
             this.chartService.updateOutputCharts('outputs-2', isoCode, null, true, this.viewerDisplay === 'tech');
           } else {
             this.chartService.createOutputChart(outData, 'outputs-1', filteredGroupOld, false, isoCodeOld);
-            this.chartService.createInputCharts(inData, 'inputSoc-1', this.sliderValues1, filteredGroup);
-            this.chartService.createInputCharts(inData, 'inputEco-1', this.sliderValues1, filteredGroup);
-            this.chartService.createInputCharts(inData, 'inputVul-1', this.sliderValues1, filteredGroup);
-            this.chartService.createInputCharts(inData, 'inputExp-1', this.sliderValues1, filteredGroup);
+            this.createInputCharts(1, inData, this.sliderValues1, filteredGroup);
             this.chartService.createOutputChart(outData, 'outputs-2', filteredGroup, false, isoCode);
-            this.chartService.createInputCharts(inData, 'inputSoc-2', this.sliderValues2, filteredGroup);
-            this.chartService.createInputCharts(inData, 'inputEco-2', this.sliderValues2, filteredGroup);
-            this.chartService.createInputCharts(inData, 'inputVul-2', this.sliderValues2, filteredGroup);
-            this.chartService.createInputCharts(inData, 'inputExp-2', this.sliderValues2, filteredGroup);
+            this.createInputCharts(2, inData, this.sliderValues2, filteredGroup);
           }
           this.setResetValues(this.sliderValues1, this.viewerP1, 1, this._selectedCountryList[0].code);
           this.setResetValues(this.sliderValues2, this.viewerP2, 2, this._selectedCountryList[1].code);
@@ -562,19 +549,19 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           const viewerP = index === 0 ? this.viewerP1 : this.viewerP2;
           const viewerType = index === 0 ? 1 : 2;
           this.setResetValues(sliderV, viewerP, viewerType, isoCode);
-          this.onResetTechDataEvent();
+          // This causes an error. Need to figure out why it is here. May not
+          // need to fire this function.
+          // this.onResetTechDataEvent();
         }
       } else {
         const selectedC = this._selectedCountryList[selectedCountryIdx[0]].name;
+
         if (this.viewerModel.firstCountry.length && selectedC.indexOf(this.viewerModel.firstCountry) >= 0) {
           this.viewerModel.firstCountry = '';
           this.viewerGroupModel.firstCountryGroup = '';
           if (this.global) {
             this.chartService.updateOutputCharts('outputs-1', 'global', null, true, this.viewerDisplay === 'tech');
-            this.chartService.updateInputCharts('inputExp-1', this.sliderValues1, 'global');
-            this.chartService.updateInputCharts('inputSoc-1', this.sliderValues1, 'global');
-            this.chartService.updateInputCharts('inputEco-1', this.sliderValues1, 'global');
-            this.chartService.updateInputCharts('inputVul-1', this.sliderValues1, 'global');
+            this.updateInputCharts(1, this.sliderValues1, 'global');
           } else {
             this.chartService.createOutputChart(outData, 'outputs-1', 'GLOBAL');
             this.chartService.updateOutputCharts('outputs-1', 'global', null, true, this.viewerDisplay === 'tech');
@@ -587,10 +574,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
               this.chartService.createOutputChart(outData, 'outputs-2', 'GLOBAL');
               this.chartService.updateOutputCharts('outputs-2', filterCountryVal2.code, null, true, this.viewerDisplay === 'tech');
             }
-            this.chartService.createInputCharts(inData, 'inputSoc-1', this.sliderValues1, 'GLOBAL');
-            this.chartService.createInputCharts(inData, 'inputEco-1', this.sliderValues1, 'GLOBAL');
-            this.chartService.createInputCharts(inData, 'inputVul-1', this.sliderValues1, 'GLOBAL');
-            this.chartService.createInputCharts(inData, 'inputExp-1', this.sliderValues1, 'GLOBAL');
+            this.createInputCharts(1, inData, this.sliderValues1, 'GLOBAL');
+
           }
           this.setResetValues(this.sliderValues1, this.viewerP1, 1, 'GLOBAL');
         } else if (this.viewerModel.secondCountry.length && selectedC.indexOf(this.viewerModel.secondCountry) >= 0) {
@@ -598,10 +583,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           this.viewerGroupModel.secondCountryGroup = '';
           if (this.global) {
             this.chartService.updateOutputCharts('outputs-2', 'global', null, true, this.viewerDisplay === 'tech');
-            this.chartService.updateInputCharts('inputExp-2', this.sliderValues2, 'global');
-            this.chartService.updateInputCharts('inputSoc-2', this.sliderValues2, 'global');
-            this.chartService.updateInputCharts('inputEco-2', this.sliderValues2, 'global');
-            this.chartService.updateInputCharts('inputVul-2', this.sliderValues2, 'global');
+            this.updateInputCharts(2, this.sliderValues2, 'global');
+
           } else {
             this.chartService.createOutputChart(outData, 'outputs-2', 'GLOBAL');
             this.chartService.updateOutputCharts('outputs-2', 'global', null, true, this.viewerDisplay === 'tech');
@@ -614,22 +597,22 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
               this.chartService.createOutputChart(outData, 'outputs-1', 'GLOBAL');
               this.chartService.updateOutputCharts('outputs-1', filterCountryVal1.code, null, true, this.viewerDisplay === 'tech');
             }
-            this.chartService.createInputCharts(inData, 'inputSoc-2', this.sliderValues2, 'GLOBAL');
-            this.chartService.createInputCharts(inData, 'inputEco-2', this.sliderValues2, 'GLOBAL');
-            this.chartService.createInputCharts(inData, 'inputVul-2', this.sliderValues2, 'GLOBAL');
-            this.chartService.createInputCharts(inData, 'inputExp-2', this.sliderValues2, 'GLOBAL');
+            this.createInputCharts(2, inData, this.sliderValues2, 'GLOBAL');
           }
           this.setResetValues(this.sliderValues2, this.viewerP2, 2, 'GLOBAL');
         }
         this._selectedCountryList.splice(selectedCountryIdx[0], 1);
-        this.onResetTechDataEvent();
+        // This causes an error. Need to figure out why it is here. May not
+        // need to fire this function.
+        // this.onResetTechDataEvent();
       }
       this.store.dispatch({type: ViewerAction.EDIT_VIEWER, payload: this.viewerModel});
     }
   }
   /**
-   * Retrieves output-model and input-model data from the ChartService by then plot their output/input charts,
-   * build slider default values and highlight/unhighlight indicator-layer a country on the map chart.
+   * Retrieves output-model and input-model data from the ChartService by then
+   * plot their output/input charts, build slider default values and
+   * highlight/unhighlight indicator-layer a country on the map chart.
    */
   getChartOutputData() {
     this.chartService.initOutputChartConf();
@@ -637,14 +620,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       this.chartService.setInputData(data._globalModelData).then((inputData) => {
         this.inputData = inputData;
         this.inputLabels = this.chartService.getInputLabels();
-        this.chartService.createInputCharts(inputData, 'inputSoc-1', this.sliderValues1);
-        this.chartService.createInputCharts(inputData, 'inputSoc-2', this.sliderValues2);
-        this.chartService.createInputCharts(inputData, 'inputEco-1', this.sliderValues1);
-        this.chartService.createInputCharts(inputData, 'inputEco-2', this.sliderValues2);
-        this.chartService.createInputCharts(inputData, 'inputVul-1', this.sliderValues1);
-        this.chartService.createInputCharts(inputData, 'inputVul-2', this.sliderValues2);
-        this.chartService.createInputCharts(inputData, 'inputExp-1', this.sliderValues1);
-        this.chartService.createInputCharts(inputData, 'inputExp-2', this.sliderValues2);
+        this.createInputCharts(1, inputData, this.sliderValues1);
+        this.createInputCharts(2, inputData, this.sliderValues2);
         this.setSliderConfValues(inputData);
       });
       this.chartService.createOutputChart(data._outputDomains, 'outputs-1');
@@ -807,7 +784,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   /**
    * Sets default map configuration to be used when user has interaction with the map chart.
-   * The default configuration set in this method are adding a base map layer, listen "click" and "mouseover" 
+   * The default configuration set in this method are adding a base map layer, listen "click" and "mouseover"
    * UIevent on the map.
    */
   setMapConf() {
@@ -818,7 +795,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       this.mapService.setMapFilterByISOCodes(this.countryListIsoCodes);
       this.getChartOutputData();
       this.mapService.setClickFnMapEvent((ev) => {
-        const features = self.mapService.getMap().queryRenderedFeatures(ev.point, {layers: [self.mapService.getViewerFillLayer()]});
+        const features = self.mapService.getMap()
+          .queryRenderedFeatures(ev.point, {layers: [self.mapService.getViewerFillLayer()]});
         if (features.length) {
           const isoCode = features[0].properties['ISO_Code'];
           const isoCodeList = this.countryListIsoCodes.filter(val => val === isoCode);
@@ -828,7 +806,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       });
       this.mapService.setHoverFnMapEvent((ev) => {
-        const features = self.mapService.getMap().queryRenderedFeatures(ev.point, {layers: [self.mapService.getViewerFillLayer()]});
+        const features = self.mapService.getMap()
+          .queryRenderedFeatures(ev.point, {layers: [self.mapService.getViewerFillLayer()]});
         if (features.length) {
           const isoCode = features[0].properties['ISO_Code'];
           const names = features[0].properties['Name'];
@@ -870,7 +849,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * @param {Object} sliderObj - Slider model values
    * @param {Object} viewerMod - Viewer model values
    * @param {Number} viewerType - Verifies if the first or second set of slider values have been modified
-   * @param {String} isoCode - Country ISO code or 'Global' string. 
+   * @param {String} isoCode - Country ISO code or 'Global' string.
    */
   setResetValues(sliderObj, viewerMod, viewerType, isoCode) {
     const globalObj = this.chartService.getGlobalModelData();
@@ -1056,7 +1035,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
    * @event Click - This event is called when a map indicator-layer is changed to another one
    * and displays a new layer placed on this map.
-   * @param {String} mapId - Map id which represents the map-layer the map chart has to change 
+   * @param {String} mapId - Map id which represents the map-layer the map chart has to change
    */
   onChangeMapLayerEvent(mapId) {
     this.mapSlideUISelected = mapId;
@@ -1072,7 +1051,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * @event Click - This event is called when the "View Indicator" or "Run Model" button is clicked
    * and automatically the page scrolls to UI-input data configuration or to the top of the page.
    * @param {String} viewType - Sets the view type wheter is to either view indicator or run model or
-   * no one of them is selected. 
+   * no one of them is selected.
    */
   onChangeViewerIndViewEvent(viewType) {
     const bodyEl = jQuery('html, body');
@@ -1105,8 +1084,9 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   return false;
   }
   /**
-   * @event Click - This event is triggered when user selects on the dropdown to display output/inputs
-   * charts as Global when the charts are displayed as Regional and the "Run model" is triggered.
+   * @event Click - This event is triggered when user selects on the dropdown to
+   * display output/inputs charts as Global when the charts are displayed as
+   * Regional and the "Run model" is triggered.
    */
   onDisplayTechMapViewEvent() {
     if (!this.global) {
@@ -1120,8 +1100,9 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   /**
-   * @event Click - This event is fired when the user clicks on the "CSV" button to download a CSV file
-   * of the current input-output values displayed on the page.
+   * @event Click - This event is fired when the user clicks on the "CSV"
+   * button to download a CSV file of the current input-output values displayed
+   * on the page.
    */
   onDownloadCSVViewerReportEvent() {
     const data = this.processForFileJSONData();
@@ -1140,8 +1121,9 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
   /**
-   * @event Click - This event is triggered when the user click on the "PDF" button to download a PDF file
-   * of the current input-output charts and values displayed on the page.
+   * @event Click - This event is triggered when the user click on the "PDF"
+   * button to download a PDF file of the current input-output charts and values
+   * displayed on the page.
    */
   onDownloadPDFViewerReportEvent() {
     const data = this.processForFileJSONData(true);
@@ -1150,14 +1132,15 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
   /**
-   * @event Change - This event is called when the first country input field is being modified.
+   * @event Change - This event is called when the first country input field is
+   * being modified.
    */
   onFirstCountryInputChangeEvent() {
     this._changeCountryInput(true);
   }
   /**
-   * @event Click - This event is called when the "Reset" button is clicked in order to reset default
-   * slider values according to selected countries or not.
+   * @event Click - This event is called when the "Reset" button is clicked in
+   * order to reset default slider values according to selected countries or not.
    */
   onResetTechDataEvent(keepHazards?: boolean) {
     // Reset values
@@ -1236,26 +1219,14 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         const group = this.global ? 'GLOBAL' : country.group;
         if (country.index === 0) {
           this.chartService.createOutputChart(outData, 'outputs-1', group, false, country.code);
-          this.chartService.createInputCharts(inData, 'inputSoc-1', this.sliderValues1, group);
-          this.chartService.createInputCharts(inData, 'inputEco-1', this.sliderValues1, group);
-          this.chartService.createInputCharts(inData, 'inputVul-1', this.sliderValues1, group);
-          this.chartService.createInputCharts(inData, 'inputExp-1', this.sliderValues1, group);
-          this.chartService.updateInputCharts('inputExp-1', this.sliderValues1, country.code);
-          this.chartService.updateInputCharts('inputSoc-1', this.sliderValues1, country.code);
-          this.chartService.updateInputCharts('inputEco-1', this.sliderValues1, country.code);
-          this.chartService.updateInputCharts('inputVul-1', this.sliderValues1, country.code);
+          this.createInputCharts(1, inData, this.sliderValues1, group);
+          this.updateInputCharts(1, this.sliderValues1, country.code);
           this.chartService.updateOutputCharts('outputs-1', country.code, null, true, this.viewerDisplay === 'tech');
         }
         if (country.index === 1) {
           this.chartService.createOutputChart(outData, 'outputs-2', group, false, country.code);
-          this.chartService.createInputCharts(inData, 'inputSoc-2', this.sliderValues2, group);
-          this.chartService.createInputCharts(inData, 'inputEco-2', this.sliderValues2, group);
-          this.chartService.createInputCharts(inData, 'inputVul-2', this.sliderValues2, group);
-          this.chartService.createInputCharts(inData, 'inputExp-2', this.sliderValues2, group);
-          this.chartService.updateInputCharts('inputExp-2', this.sliderValues2, country.code);
-          this.chartService.updateInputCharts('inputSoc-2', this.sliderValues2, country.code);
-          this.chartService.updateInputCharts('inputEco-2', this.sliderValues2, country.code);
-          this.chartService.updateInputCharts('inputVul-2', this.sliderValues2, country.code);
+          this.createInputCharts(2, inData, this.sliderValues2, group);
+          this.updateInputCharts(2, this.sliderValues2, country.code);
           this.chartService.updateOutputCharts('outputs-2', country.code, null, true, this.viewerDisplay === 'tech');
         }
       });
@@ -1288,9 +1259,14 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       this._changeSliderValue(key, false, key2, false);
     }
   }
+
   onSwitchExposure(flood: boolean, earthquake: boolean, tsunami: boolean, windstorm: boolean) {
-    const group1 = this.global ? 'GLOBAL' : (this._selectedCountryList.length > 0 ? this._selectedCountryList[0].group : 'GLOBAL');
-    const group2 = this.global ? 'GLOBAL' : (this._selectedCountryList.length > 1 ? this._selectedCountryList[1].group : 'GLOBAL');
+
+    const group1 = this.global ? 'GLOBAL' : (this._selectedCountryList.length > 0
+      ? this._selectedCountryList[0].group : 'GLOBAL');
+    const group2 = this.global ? 'GLOBAL' : (this._selectedCountryList.length > 1
+      ? this._selectedCountryList[1].group : 'GLOBAL');
+
     let viewerHazardDefault1 = Object.assign({}, this.viewerP1Default);
     let viewerHazardDefault2 = Object.assign({}, this.viewerP2Default);
     if (!this.hazards.hazard1) {
@@ -1328,51 +1304,54 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
       this.chartService.updateOutputCharts('outputs-1', {model: newObj}, group1, true, this.viewerDisplay === 'tech');
-      viewerHazardDefault2['name'] = this._selectedCountryList[1].name;
-      viewerHazardDefault2['id'] = this._selectedCountryList[1].code;
-      viewerHazardDefault2['group_name'] = this._selectedCountryList[1].group;
-      this.chartService.getInputPModelData(viewerHazardDefault2).subscribe(data => {
-        const newObj2 = {};
-        for (const dataK in data) {
-          if (data.hasOwnProperty(dataK)) {
-            newObj2[dataK] = data[dataK][viewerHazardDefault2['name']];
-          }
-        }
-        this.chartService.updateOutputCharts('outputs-2', {model: newObj2}, group2, true, this.viewerDisplay === 'tech');
-        let floodKey1 = null;
-        let floodKey2 = null;
-        this.hazardTypes.hazardFlood.forEach((hazardType) => {
-          this.hazardDisplay[hazardType] = this.hazards.hazard1;
-          if (flood) {
-            if (floodKey1 == null) {
-              floodKey1 = hazardType;
-            } else if (floodKey2 == null) {
-              floodKey2 = hazardType;
+
+      if (!!this._selectedCountryList[1]) {
+        viewerHazardDefault2['name'] = this._selectedCountryList[1].name;
+        viewerHazardDefault2['id'] = this._selectedCountryList[1].code;
+        viewerHazardDefault2['group_name'] = this._selectedCountryList[1].group;
+        this.chartService.getInputPModelData(viewerHazardDefault2).subscribe(data => {
+          const newObj2 = {};
+          for (const dataK in data) {
+            if (data.hasOwnProperty(dataK)) {
+              newObj2[dataK] = data[dataK][viewerHazardDefault2['name']];
             }
           }
-        });
-        if (floodKey1 != null && floodKey2 != null) {
-          this.setValueExposure(this.hazards.hazard1, floodKey1, floodKey2);
-        }
-        this.hazardTypes.hazardEarthquake.forEach((hazardType) => {
-          this.hazardDisplay[hazardType] = this.hazards.hazard2;
-          if (earthquake) {
-            this.setValueExposure(this.hazards.hazard2, hazardType);
+          this.chartService.updateOutputCharts('outputs-2', {model: newObj2}, group2, true, this.viewerDisplay === 'tech');
+          let floodKey1 = null;
+          let floodKey2 = null;
+          this.hazardTypes.hazardFlood.forEach((hazardType) => {
+            this.hazardDisplay[hazardType] = this.hazards.hazard1;
+            if (flood) {
+              if (floodKey1 == null) {
+                floodKey1 = hazardType;
+              } else if (floodKey2 == null) {
+                floodKey2 = hazardType;
+              }
+            }
+          });
+          if (floodKey1 != null && floodKey2 != null) {
+            this.setValueExposure(this.hazards.hazard1, floodKey1, floodKey2);
           }
+          this.hazardTypes.hazardEarthquake.forEach((hazardType) => {
+            this.hazardDisplay[hazardType] = this.hazards.hazard2;
+            if (earthquake) {
+              this.setValueExposure(this.hazards.hazard2, hazardType);
+            }
+          });
+          this.hazardTypes.hazardTsunami.forEach((hazardType) => {
+            this.hazardDisplay[hazardType] = this.hazards.hazard3;
+            if (tsunami) {
+              this.setValueExposure(this.hazards.hazard3, hazardType);
+            }
+          });
+          this.hazardTypes.hazardWindstorm.forEach((hazardType) => {
+            this.hazardDisplay[hazardType] = this.hazards.hazard4;
+            if (windstorm) {
+              this.setValueExposure(this.hazards.hazard4, hazardType);
+            }
+          });
         });
-        this.hazardTypes.hazardTsunami.forEach((hazardType) => {
-          this.hazardDisplay[hazardType] = this.hazards.hazard3;
-          if (tsunami) {
-            this.setValueExposure(this.hazards.hazard3, hazardType);
-          }
-        });
-        this.hazardTypes.hazardWindstorm.forEach((hazardType) => {
-          this.hazardDisplay[hazardType] = this.hazards.hazard4;
-          if (windstorm) {
-            this.setValueExposure(this.hazards.hazard4, hazardType);
-          }
-        });
-      });
+      }
     });
   }
   /**
@@ -1404,7 +1383,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.onSwitchExposure(false, false, false, true);
   }
   /**
-   * This method works as a helper of the @event onSliderChangeEvent1 or @event onSliderChangeEvent1 
+   * This method works as a helper of the @event onSliderChangeEvent1 or @event onSliderChangeEvent1
    * which modifies values of the selected slider.
    * @param {Object} sliderValues - Slider model object.
    * @param {String} key - Input-indicator model name.
@@ -1442,5 +1421,19 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   onSliderInputEvent2(event: MdSliderChange, key) {
     this.sliderValues2[key + '_value'] = event.value;
     this.onSliderChangeEvent(this.sliderValues2, key);
+  }
+
+  private updateInputCharts(suffix, sliderVal, isoCode) {
+    const inputChartKeys = ['inputSoc', 'inputEco', 'inputVul', 'inputExp'];
+    inputChartKeys.forEach(key => {
+      this.chartService.updateInputCharts(`${key}-${suffix}`, sliderVal, isoCode);
+    });
+  }
+
+  private createInputCharts(suffix, data, sliderVal, filteredGroup = undefined) {
+    const inputChartKeys = ['inputSoc', 'inputEco', 'inputVul', 'inputExp'];
+    inputChartKeys.forEach(key => {
+      this.chartService.createInputCharts(data, `${key}-${suffix}`, sliderVal, filteredGroup);
+    });
   }
 }
