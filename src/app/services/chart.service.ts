@@ -59,7 +59,8 @@ export class ChartService {
   private _scoreCardDataObs$: Observable<any>;
   /**
    * Injects web service when this service is initialized by a component
-   * @param {WebService} webService - Service which has a custom functionality regarding the HTTP method calls. It uses default
+   * @param {WebService} webService - Service which has a custom functionality
+   * regarding the HTTP method calls. It uses default
    * @angular/http API configuration for it.
    */
   public type1S$: BehaviorSubject<string> = new BehaviorSubject<string>(null);
@@ -70,7 +71,8 @@ export class ChartService {
   constructor(private webService: WebService) {
   }
   /**
-   * DEPRECATED. This method returns calculations regarding the summatory, average and counting policy-related data.
+   * DEPRECATED. This method returns calculations regarding the summatory,
+   * average and counting policy-related data.
    * @param {String} policy - Scorecard policy name.
    */
   private _calculateRegionalAvgSinglePolicy(policy) {
@@ -104,15 +106,16 @@ export class ChartService {
         }
       });
       outputMetric.forEach((val) => {
-        outputMetricAvgInfo[group][`avg_${val}`] = outputMetricAvgInfo[group][`sum_${val}`] / outputMetricAvgInfo[group][`count_${val}`];
+        outputMetricAvgInfo[group][`avg_${val}`] = outputMetricAvgInfo[group][`sum_${val}`]
+          / outputMetricAvgInfo[group][`count_${val}`];
       });
     });
     return outputMetricAvgInfo;
   }
   /**
    * Returns rounded or average of GDP value from a selected country or globally.
-   * @param {String} idx - Determines which output-indicator is being set. 
-   * @param {String} groupName - Country group-name. 
+   * @param {String} idx - Determines which output-indicator is being set.
+   * @param {String} groupName - Country group-name.
    * @param {String} isoCode - Country iso code.
    */
   public calculateAVGGDPValue(idx, groupName?, isoCode?) {
@@ -242,12 +245,12 @@ export class ChartService {
     };
   }
   /**
-   * Calculates and formats main GDP values for output indicators. 
+   * Calculates and formats main GDP values for output indicators.
    * Its calculated values are stored in @public outputDomain property for every output chart.
-   * @param containerId 
-   * @param key 
-   * @param numericValue 
-   * @param gdpDollars 
+   * @param containerId
+   * @param key
+   * @param numericValue
+   * @param gdpDollars
    */
   subscription() {
     this.type1S$.subscribe(val => {
@@ -318,8 +321,8 @@ export class ChartService {
   }
   /**
    * Creates/removes input-indicator SVG charts. These charts are displayed on Viewer page.
-   * @param {Object} inputData - Input-indicator data to be used to plot the chart 
-   * @param {String} containerId - Input-indicator HTML element id. 
+   * @param {Object} inputData - Input-indicator data to be used to plot the chart
+   * @param {String} containerId - Input-indicator HTML element id.
    * @param {Object} sliderValues - Slider model to modify its data.
    * @param {String} groupName - Group name a country pertains.
    */
@@ -603,11 +606,11 @@ export class ChartService {
   /**
    * Creates/removes output-indicator SVG charts. These charts are displayed on Viewer and Scorecard Priority List pages.
    * @param {Object} outputData - Output-indicator data to be used to plot the chart.
-   * @param {String} containerId - Output-indicator HTML element id. 
-   * @param {String} groupName - Group name a country pertains. 
-   * @param {Boolean} isScoreCardPage - Determines if the displayed page is Viewer or Scorecard 
-   * in order to display differently the UI design of output-charts. 
-   * @param {String} isoCode - Country iso code. 
+   * @param {String} containerId - Output-indicator HTML element id.
+   * @param {String} groupName - Group name a country pertains.
+   * @param {Boolean} isScoreCardPage - Determines if the displayed page is Viewer or Scorecard
+   * in order to display differently the UI design of output-charts.
+   * @param {String} isoCode - Country iso code.
    */
   createOutputChart(outputData: any, containerId: string, groupName?: string, isScoreCardPage?: boolean, isoCode?: string) {
     jQuery(`div#${containerId}`).empty();
@@ -1738,7 +1741,7 @@ export class ChartService {
   }
   /**
    * Changes absolute to relative GDP values for Scorecard formatting data.
-   * @param {String} str - Absolute GDP value 
+   * @param {String} str - Absolute GDP value
    */
   private changeRelativeValue(str) {
     this._outRelative = [];
@@ -1751,9 +1754,9 @@ export class ChartService {
   }
   /**
    * Return formatted input-data values to be displayed in its respective charts.
-   * @param {String} data - The input data to format. 
-   * @param {Object} input - Input-indicator model object. 
-   * @param {d3.brush} persistedBrush - D3 brush object to get its current value. 
+   * @param {String} data - The input data to format.
+   * @param {Object} input - Input-indicator model object.
+   * @param {d3.brush} persistedBrush - D3 brush object to get its current value.
    */
   formatInputChartValues(data, input, persistedBrush?) {
     let percent = input.number_type === ('percent' || 'small_percent') ? '%' : '';
@@ -1791,9 +1794,9 @@ export class ChartService {
   }
   /**
    * Returns converted SVG charts to base64 string.
-   * @param {String} chartId - Chart id which the chart belongs to. 
+   * @param {String} chartId - Chart id which the chart belongs to.
    * @param {Boolean} isFromInOutChart - Determines whether the chart container comes from output or input charts.
-   * @param {String} innerKey - If the chart container is from output or input chart then its inner chart ids 
+   * @param {String} innerKey - If the chart container is from output or input chart then its inner chart ids
    * are used to filter matched SVG ids
    */
   formatSVGChartBase64Strings(chartId, isFromInOutChart, innerKey?) {
@@ -1829,7 +1832,7 @@ export class ChartService {
     };
   }
   /**
-   * Returns the globalModel object. 
+   * Returns the globalModel object.
    */
   getGlobalModelData() {
     return this._globalModelData;
@@ -1975,21 +1978,22 @@ export class ChartService {
     return this._inputLabels;
   }
   /**
-   * Returns persisted input-data observable. 
+   * Returns persisted input-data observable.
    */
   getInputDataObs() {
     return this._inputDataProm$;
   }
   /**
    * Returns input-chart id by general input type
-   * @param {String} type - Genreal input type 
+   * @param {String} type - Genreal input type
    */
   getInputIdChartByType(type: string) {
     const inputTypes = this.getChartsConf().inputTypes;
     return inputTypes[type];
   }
   /**
-   * Returns new output-input model data by sending it slider values from Viewer page as form-data content type.
+   * Returns new output-input model data by sending it slider values from Viewer
+   * page as form-data content type.
    * @param {Object} data - Persisted slider values.
    */
   getInputPModelData(data: ViewerModel): Observable<Response> {
@@ -2005,7 +2009,7 @@ export class ChartService {
     return this.webService.post(url, formData).map((res: Response) => res.json()).catch(this.webService.errorHandler);
   }
   /**
-   * DEPRECATED. Returns max GDP value to be set in the X-coordinate of a Scorecard chart. 
+   * DEPRECATED. Returns max GDP value to be set in the X-coordinate of a Scorecard chart.
    */
   getMaxGDPCountryValue() {
     return this._maxGDPNum;
@@ -2018,7 +2022,7 @@ export class ChartService {
   }
   /**
    * Returns a set of countries by an specific scorecard policy name.
-   * @param {String} policy -  Scorecard policy name. 
+   * @param {String} policy -  Scorecard policy name.
    */
   getMetricAllCountriesSinglePolicy(policy) {
     const allCountriesPolicy = this._newPolicyGroupedByPolicyObj;
@@ -2026,7 +2030,7 @@ export class ChartService {
   }
   /**
    * Returns a set of scorecard policies by an specific country name.
-   * @param countryName 
+   * @param countryName
    */
   getMetricAllPoliciesSingleCountry(countryName: string) {
     const allPoliciesCountry = this._newPolicyGroupedByCountryObj;
@@ -2070,7 +2074,7 @@ export class ChartService {
     return this._regionalPoliciesInfoObj;
   }
   /**
-   * Retrieves Scorecard policies data by their CSV files and encapsulates it in a observable promise data. 
+   * Retrieves Scorecard policies data by their CSV files and encapsulates it in a observable promise data.
    */
   getScorecardData() {
     const url = SERVER.URL.BASE;
@@ -2127,10 +2131,10 @@ export class ChartService {
     this.getScorecardData();
   }
   /**
-   * @event brush - This event is triggered when a D3 brush component is moved from one side to another
-   * when a input chart has updated its data.
+   * @event brush - This event is triggered when a D3 brush component is moved
+   * from one side to another when a input chart has updated its data.
    * @param {String} containerId - input chart id.
-   * @param {Object} input - Input-indicator model object. 
+   * @param {Object} input - Input-indicator model object.
    */
   _inputBrushMoveEv(containerId, input) {
     const me = this;
@@ -2167,8 +2171,8 @@ export class ChartService {
   }
   /**
    * This method merges input-model data into a complete input-model data.
-   * @param {Array} inputArr - Set of Input-indicator values. 
-   * @param {Object} _globalModelData - Global model object data. 
+   * @param {Array} inputArr - Set of Input-indicator values.
+   * @param {Object} _globalModelData - Global model object data.
    */
   private _populateInputDomains(inputArr, _globalModelData) {
     const inputIds = this.getChartsConf().inputs;
@@ -2213,7 +2217,7 @@ export class ChartService {
   }
   /**
    * Retrieves input-model data from CSV file in order to saved into a input-model object data.
-   * @param {Object} _globalModelData - Global model object data. 
+   * @param {Object} _globalModelData - Global model object data.
    */
   setInputData(_globalModelData: any) {
     const url = `${this._baseURL}${this._inputInfoURL}`;
@@ -2295,7 +2299,7 @@ export class ChartService {
     this._outputDataProm$ = Observable.fromPromise(promisedData);
   }
   /**
-   * Retrieves Scorecard data configuration in two main objects @public _newPolicyGroupedByCountryObj 
+   * Retrieves Scorecard data configuration in two main objects @public _newPolicyGroupedByCountryObj
    * and @public _newPolicyGroupedByPolicyObj to be displayed in its corresponding page.
    * @param {Object} data - Scorecard data to be used.
    */
@@ -2389,8 +2393,8 @@ export class ChartService {
   }
   /**
    * Sorts an array given its element be set as a object.
-   * @param array 
-   * @param key 
+   * @param array
+   * @param key
    */
   private _sortByKey(array, key) {
     array.sort((a, b) => {
@@ -2400,8 +2404,8 @@ export class ChartService {
   }
   /**
    * Change Scorecard chart font-type labels in order to be recognized while being converted as base64 string.
-   * @param isScoreCardList 
-   * @param isPDF 
+   * @param isScoreCardList
+   * @param isPDF
    */
   switchScoreCardChartFont(isScoreCardList, isPDF) {
     const chartId1 = isScoreCardList ? 'policy-list-1' : 'policy-measure-1';
@@ -2426,7 +2430,7 @@ export class ChartService {
    * @param {String} containerId -  Input container element id
    * @param {Object} sliderValues - Input slider object model
    * @param {String} selectedId - Verifies whether a country iso code or global label is set
-   * @param {String} groupName - Group name a country pertains or Global label is set. 
+   * @param {String} groupName - Group name a country pertains or Global label is set.
    */
   updateInputCharts(containerId: string, sliderValues: any, selectedId?: string, groupName?: string) {
     const config = this._inputConfig;
@@ -2519,7 +2523,7 @@ export class ChartService {
    * Updates output-indicator model chart and its values
    * @param {String} containerId -  Output container element id
    * @param {String} selectedId - Verifies whether a country iso code or global label is set
-   * @param {String} groupName - Group name a country pertains or Global label is set. 
+   * @param {String} groupName - Group name a country pertains or Global label is set.
    */
   updateContents(first, second) {
     this.subscription();
@@ -2544,7 +2548,7 @@ export class ChartService {
        // console.log(risk_to_assetts1.contents());
         risk_to_assetts1.html(risk_to_assetts1.contents()[2].nodeValue);
         resilience1.html(resilience1.contents()[0].nodeValue);
-        risk1.html(risk1.contents()[2].nodeValue); 
+        risk1.html(risk1.contents()[2].nodeValue);
         // chart 2
         risk_to_assetts2.html(risk_to_assetts2.contents()[2].nodeValue);
         resilience2.html(resilience2.contents()[0].nodeValue);
