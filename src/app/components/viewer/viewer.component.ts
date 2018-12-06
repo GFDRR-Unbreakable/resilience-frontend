@@ -844,7 +844,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
             }
           } else {
             this.hoverDisplayValue = `${this.hoverValue} %`;
-            console.log('this.hoverValue', this.hoverValue);
           }
         } else {
           this.hoverCountry = null;
