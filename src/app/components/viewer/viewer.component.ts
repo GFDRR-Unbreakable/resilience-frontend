@@ -169,6 +169,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   public viewerModel1Subs: Subscription;
   public viewerModel2Subs: Subscription;
   private onPassEv = e => { e.preventDefault(); };
+  private globalModelDataHash: any = {};
   /**
    * Returns a list of matches as a result of a searched string when first or second input-text is being modified.
    */
@@ -624,6 +625,10 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         this.createInputCharts(2, inputData, this.sliderValues2);
         this.setSliderConfValues(inputData);
       });
+
+      // Used to look up country data on hover.
+      this.globalModelDataHash = data._globalModelData;
+
       this.chartService.createOutputChart(data._outputDomains, 'outputs-1');
       this.chartService.createOutputChart(data._outputDomains, 'outputs-2');
       this.countryUIList = this.chartService.getOutputDataUIList();
@@ -811,30 +816,34 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         if (features.length) {
           const isoCode = features[0].properties['ISO_Code'];
           const names = features[0].properties['Name'];
-          let value = '';
-          if (this.mapSlideUISelected == 'asset') {
+          const countryData = this.globalModelDataHash[isoCode];
+
+          const value = this.mapSlideUISelected == 'asset' ? countryData.risk_to_assets
+            : this.mapSlideUISelected == 'socio' ? countryData.resilience
+            : this.mapSlideUISelected == 'well' ? countryData.risk : 0;
+
+          /*if (this.mapSlideUISelected == 'asset') {
             value = features[0].properties['1_Assets'];
           } else if (this.mapSlideUISelected == 'socio') {
             value = features[0].properties['2_SocEcon'];
           } else if (this.mapSlideUISelected == 'well') {
             value = features[0].properties['3_WeBeing'];
-          }
+          }*/
+
           this.hoverCountry = names;
           this.hoverValue = (parseFloat(value) * 100).toFixed(2);
           if (this.mapSlideUISelected === 'well' || this.mapSlideUISelected === 'asset') {
             const globalModelObj = this.chartService.getGlobalModelData();
             let model = globalModelObj[isoCode];
             if (model == null) {
-              const percent = ' %';
-              this.hoverDisplayValue = this.hoverValue + percent;
+              this.hoverDisplayValue = `${this.hoverValue} %`;
             } else {
               let avg = Math.round((+model['macro_gdp_pc_pp']) * (+model['macro_pop']));
               const results = this.chartService.calculateRiskGDPValues(avg, this.hoverValue, true);
               this.hoverDisplayValue = results.text;
             }
           } else {
-            const percent = ' %';
-            this.hoverDisplayValue = this.hoverValue + percent;
+            this.hoverDisplayValue = `${this.hoverValue} %`;
           }
         } else {
           this.hoverCountry = null;
