@@ -13,7 +13,7 @@ export const SERVER = {
     // Prod backend endpoints
     // BASE_SERVER: 'http://13.58.142.191:9090/',
     // Local python endpoints
-    //BASE_SERVER_PY: 'http://gfdrr-py.local/',
+    // BASE_SERVER_PY: 'http://gfdrr-py.local/',
     // Dev python endpoints
     BASE_SERVER_PY: 'http://18.191.153.87:9091/',
     // Prod python endpoints
