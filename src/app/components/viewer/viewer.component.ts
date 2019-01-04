@@ -506,7 +506,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           this.viewerGroupModel.secondCountryGroup = filteredGroup;
           if (this.global) {
             this.chartService.updateOutputCharts('outputs-2', isoCode, null, true, this.viewerDisplay === 'tech');
-            this.updateInputCharts(2, this.sliderValues1, isoCode);
+            this.updateInputCharts(2, this.sliderValues2, isoCode);
           } else {
             this.chartService.createOutputChart(outData, 'outputs-2', filteredGroup, false, isoCode);
             this.createInputCharts(2, inData, this.sliderValues2, filteredGroup);
@@ -1064,6 +1064,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   onChangeViewerIndViewEvent(viewType) {
     const bodyEl = jQuery('html, body');
+    // If these don't match, scroll to just below the map.
     if (!this.viewerDisplay || this.viewerDisplay !== viewType) {
       this.viewerDisplay = viewType;
       const el = jQuery('div#viewIndCtn')[0];
@@ -1077,20 +1078,27 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       bodyEl.animate({
         scrollTop: (scrollMeasure - 10)
       }, 1000);
-    } else if (this.viewerDisplay === viewType) {
+    }
+    // If these do match, scroll to top of page.
+    else if (this.viewerDisplay === viewType) {
       this.viewerDisplay = '';
       bodyEl.animate({
         scrollTop: 0
       }, 1000);
     }
+    // Don't know what type1S is used for.
     this.chartService.type1S = this.viewerDisplay;
-    this.chartService.updateContents(this.viewerModel.firstCountry, this.viewerModel.secondCountry);
-    this._selectedCountryList.forEach(country => {
+    // this.chartService.updateContents(this.viewerModel.firstCountry, this.viewerModel.secondCountry);
+
+    // This appears to be redundant, on several levels.
+    /*this._selectedCountryList.forEach(country => {
       const chartIndex = country.index === 0 ? '1' : '2';
       this.chartService.updateOutputCharts(`outputs-${chartIndex}`, country.code, null, true, this.viewerDisplay === 'tech');
       this.onResetTechDataEvent();
-    });
-  return false;
+    });*/
+
+    this.onResetTechDataEvent();
+    return false;
   }
   /**
    * @event Click - This event is triggered when user selects on the dropdown to
@@ -1152,6 +1160,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * order to reset default slider values according to selected countries or not.
    */
   onResetTechDataEvent(keepHazards?: boolean) {
+    console.log('onResetTechDataEvent')
     // Reset values
     if (!keepHazards) {
       this.hazards.hazard1 = true;
@@ -1168,11 +1177,14 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.store.dispatch({type: ViewerAction.EDIT_VIEWER, payload: this.viewerModel});
     this.store.dispatch({type: ViewerAction.EDIT_VIEWER_MODEL_1, payload: this.viewerP1});
     this.store.dispatch({type: ViewerAction.EDIT_VIEWER_MODEL_2, payload: this.viewerP2});
+
     if (this._selectedCountryList.length) {
-      this._selectedCountryList.forEach(val => {
+      // This seems to be redundant due to the actions fired above.
+      /*this._selectedCountryList.forEach(val => {
         const viewerMod = val.index === 0 ? this.viewerP1 : this.viewerP2;
         const outputChartId = val.index === 0 ? 'outputs-1' : 'outputs-2';
-        this.chartService.getInputPModelData(viewerMod).subscribe(data => {
+
+        /*this.chartService.getInputPModelData(viewerMod).subscribe(data => {
           const newObj = {};
           for (const dataK in data) {
             if (data.hasOwnProperty(dataK)) {
@@ -1181,7 +1193,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           }
           this.chartService.updateOutputCharts(outputChartId, {model: newObj}, 'GLOBAL', true, this.viewerDisplay === 'tech');
         });
-      });
+      });*/
     } else {
       this.viewerModel.firstCountry = '';
       this.viewerGroupModel.firstCountryGroup = '';
@@ -1221,7 +1233,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   onSwitchGlobal() {
     this.global = !this.global;
-    if (this._selectedCountryList.length === this.MAX_COUNTRIES_SELECTED) {
+    if (this._selectedCountryList.length <= this.MAX_COUNTRIES_SELECTED) {
       const inData = this.chartService.getInputData();
       const outData = this.chartService.getOutputData();
       this._selectedCountryList.forEach(country => {
@@ -1305,6 +1317,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     viewerHazardDefault1['name'] = this._selectedCountryList[0].name;
     viewerHazardDefault1['id'] = this._selectedCountryList[0].code;
     viewerHazardDefault1['group_name'] = this._selectedCountryList[0].group;
+
     this.chartService.getInputPModelData(viewerHazardDefault1).subscribe(data => {
       const newObj = {};
       for (const dataK in data) {
@@ -1313,11 +1326,11 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
       this.chartService.updateOutputCharts('outputs-1', {model: newObj}, group1, true, this.viewerDisplay === 'tech');
-
       if (!!this._selectedCountryList[1]) {
         viewerHazardDefault2['name'] = this._selectedCountryList[1].name;
         viewerHazardDefault2['id'] = this._selectedCountryList[1].code;
         viewerHazardDefault2['group_name'] = this._selectedCountryList[1].group;
+
         this.chartService.getInputPModelData(viewerHazardDefault2).subscribe(data => {
           const newObj2 = {};
           for (const dataK in data) {
