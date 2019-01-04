@@ -2006,7 +2006,11 @@ export class ChartService {
     formData.append('g', '');
     formData.append('m', model);
     formData.append('i_df', modelData);
-    return this.webService.post(url, formData).map((res: Response) => res.json()).catch(this.webService.errorHandler);
+
+    return this.webService.post(url, formData)
+      .map((res: Response) => {
+        return res.json();
+      }).catch(this.webService.errorHandler);
   }
   /**
    * DEPRECATED. Returns max GDP value to be set in the X-coordinate of a Scorecard chart.
@@ -2267,6 +2271,8 @@ export class ChartService {
     const promisedData = new Promise((resolve, reject) => {
       d3.csv(url, (err, data: any) => {
         if (err) { reject(err); }
+        console.log(`data from ${ url }`, data);
+
         data.forEach((value, index, arr) => {
           for (const key in value) {
             if (value.hasOwnProperty(key)) {
@@ -2527,7 +2533,6 @@ export class ChartService {
    */
   updateContents(first, second) {
     this.subscription();
-    //console.log(this.type);
     //chart 1
     const risk_to_assetts1 = jQuery(`#outputs-1 #risk_to_assets .text-number`);
     const resilience1 = jQuery(`#outputs-1 #resilience .text-number`);
@@ -2599,6 +2604,7 @@ export class ChartService {
     this.firstCountry = first;
     this.secondCountry = second;
   }
+
   updateOutputCharts(containerId: string, selectedId?: any, groupName?: string, brush2?: boolean, tech?: boolean) {
     const domains = this.filterOutputDataByGroup(this._outputDomains, groupName);
     const me = this;
@@ -2624,6 +2630,8 @@ export class ChartService {
         model = this._globalModelData[selectedId];
         avgDoll = Math.round((+model['macro_gdp_pc_pp']) * (+model['macro_pop']));
       }
+
+      // IS NOT VISIABLE. Am not sure if it has any use.
       ini.attr('x1', (d) => {
           return x(+model[idx]);
         })
@@ -2632,6 +2640,7 @@ export class ChartService {
           return x(+model[idx]);
         })
         .attr('y2', height);
+
       // get the input config
       const brush = outputData[outputId].brush;
       // get the value of the current input from the model
@@ -2641,6 +2650,7 @@ export class ChartService {
       // if (groupName === 'GLOBAL' || !groupName) {
         extent = +model[idx];
       // }
+
       brush.extent([0, extent]);
       const output = outputData;
       const precision = +output.precision;
@@ -2649,15 +2659,17 @@ export class ChartService {
       if (!brush2) {
         oldValue = (oldExtent * 100).toFixed(precision);
       }
+      // This updates this._outputDomains[key]['chart'][containerId].
       const value = me.calculateGDPValues(containerId, idx, numericValue, avgDoll, precision, oldValue);
       jQuery(`#${containerId} #${idx} .text-number`).html(value);
       const brushg = d3.selectAll(`#${containerId} svg#${idx} g.brush`);
       const path = brushg.select('path');
-      path.style('visibility', tech? 'visible' : 'hidden');
+      path.style('visibility', tech ? 'visible' : 'hidden');
       brushg.transition()
         .duration(750)
         .call(brush)
         .call(brush.event);
+
       // remove w resize extent handle
       d3.selectAll(`#${containerId} g.brush > g.resize.w`).remove();
       if (brush2) {
