@@ -2,14 +2,14 @@
   position: absolute;
   height: 100%;
   width: 50%;
-  right: 0px;
+  right: 0;
   background: rgb(0, 0, 0); /* Fallback for older browsers without RGBA-support */
   background: rgba(0, 0, 0, 0.8);
 }
 
 .callout-body-inner {
   width: 50%;
-  margin: 50px;
+  margin: 4rem;
 }
 
 .callout-img {
@@ -37,7 +37,7 @@
 }
 
 .card-deck {
-  margin-top: 20px;
+  margin-top: 1.5rem;
 }
 
 .card-img-top {
@@ -46,10 +46,10 @@
 
 .card-body {
   position: absolute;
-  bottom: 0px;
+  bottom: 0;
   background: rgb(0, 0, 0); /* Fallback for older browsers without RGBA-support */
   background: rgba(0, 0, 0, 0.8);
-  padding: 10px 15px 15px 15px;
+  padding: 1rem;
 }
 
 .card-title {
@@ -63,12 +63,14 @@
 }
 
 .card-link {
-  display: block;
   text-align: center;
+}
+
+.card-link a {
   text-transform: uppercase;
   color: #50C4CF;
 }
 
-.card-link:hover {
+.card-link a:hover {
   text-decoration: none;
 }
