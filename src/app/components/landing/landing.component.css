@@ -1,0 +1,62 @@
+.callout-body {
+  position: absolute;
+  height: 100%;
+  width: 50%;
+  right: 0px;
+  background: black;
+  opacity: .7;
+  padding: 30px;
+}
+
+.callout-img {
+  width: 100%;
+}
+
+.callout-title {
+  color: #50C4CF;
+}
+
+.callout-text {
+  color: white;
+}
+
+.callout-link {
+  color: #50C4CF;
+}
+
+.card-deck {
+  margin-top: 20px;
+}
+
+.card-img-top {
+  width: 100%;
+}
+
+.card-body {
+  position: absolute;
+  bottom: 0px;
+  background: black;
+  opacity: .7;
+  padding: 10px 15px 15px 15px;
+}
+
+.card-title {
+  color: #50C4CF;
+  font-weight: normal;
+  text-align: center;
+}
+
+.card-text {
+  color: white;
+}
+
+.card-link {
+  display: block;
+  text-align: center;
+  text-transform: uppercase;
+  color: #50C4CF;
+}
+
+.card-link:hover {
+  text-decoration: none;
+}
