@@ -3,13 +3,20 @@
   height: 100%;
   width: 50%;
   right: 0px;
-  background: black;
-  opacity: .7;
-  padding: 30px;
+  background: rgb(0, 0, 0); /* Fallback for older browsers without RGBA-support */
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.callout-body-inner {
+  width: 50%;
+  margin: 50px;
 }
 
 .callout-img {
   width: 100%;
+  height: 500px;
+  object-fit: cover;
+  object-position: 50% 100%;
 }
 
 .callout-title {
@@ -20,7 +27,12 @@
   color: white;
 }
 
-.callout-link {
+.btn-callout {
+  text-transform: uppercase;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  background-color: transparent;
+  border-color: #50C4CF;
   color: #50C4CF;
 }
 
@@ -35,8 +47,8 @@
 .card-body {
   position: absolute;
   bottom: 0px;
-  background: black;
-  opacity: .7;
+  background: rgb(0, 0, 0); /* Fallback for older browsers without RGBA-support */
+  background: rgba(0, 0, 0, 0.8);
   padding: 10px 15px 15px 15px;
 }
 
