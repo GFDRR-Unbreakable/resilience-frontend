@@ -101,6 +101,13 @@
   padding: 8px 22px 25px 22px;
 }
 
+@media (min-width: 992px) and (max-width: 1200px) {
+  .card-body {
+    height: 100%;
+    padding-top: 2.5rem;
+  }
+}
+
 .card-title {
   color: #51C5D0;
   font-weight: normal;
