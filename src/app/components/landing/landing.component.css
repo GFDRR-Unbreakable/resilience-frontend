@@ -7,10 +7,29 @@
   background: rgba(0, 0, 0, 0.8);
 }
 
+@media (max-width: 992px) {
+  .callout-body {
+    width: 70%;
+  }
+}
+
+@media (max-width: 768px) {
+  .callout-body {
+    width: 100%;
+    background: black;
+    position: static;
+  }
+}
+
 .callout-body-inner {
   width: 55%;
-  margin-left: 5.5rem;
-  margin-top: 7.5rem;
+  margin: 7.5rem 0rem 2rem 5.5rem;
+}
+
+@media (max-width: 992px) {
+  .callout-body-inner {
+    margin-top: 5rem;
+  }
 }
 
 .callout-img {
@@ -56,7 +75,7 @@
   padding: 8px 22px 25px 22px;
 }
 
-@media (max-width: 992px) and (min-width: 576px)  {
+@media (max-width: 992px) and (min-width: 576px) {
   .card-body {
     background: black;
     position: static;
