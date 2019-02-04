@@ -16,28 +16,35 @@
 @media (max-width: 768px) {
   .callout-body {
     width: 100%;
-    height: auto;
+    height: 100%;
     bottom: 0;
   }
 }
 
 .callout-body-inner {
   width: 55%;
-  margin: 7.5rem 0rem 2rem 5.5rem;
+  margin: 3rem 0rem 2rem 5.5rem;
 }
 
 @media (max-width: 992px) {
   .callout-body-inner {
-    width: 65%;
-    margin-top: 5rem;
+    width: 70%;
+    margin-left: 4rem;
   }
 }
 
+
 .callout-img {
   width: 100%;
-  height: 493px;
+  height: 400px;
   object-fit: cover;
   object-position: 50% 100%;
+}
+
+@media (max-width: 768px) {
+  .callout-img {
+    height: 300px;
+  }
 }
 
 .callout-title {
@@ -68,7 +75,17 @@
 }
 
 .card-deck {
-  margin-top: 1.5rem;
+  margin: 30px 0px 10px 0px;
+}
+
+@media (max-width: 576px) {
+ .card-deck {
+   margin-left: auto;
+   margin-right: auto;
+ }
+  .card:not(:last-child) {
+    margin-bottom: 30px;
+  }
 }
 
 .card-img-top {
@@ -78,16 +95,10 @@
 .card-body {
   position: absolute;
   bottom: 0;
+  width: 100%;
   background: rgb(0, 0, 0); /* Fallback for older browsers without RGBA-support */
   background: rgba(0, 0, 0, 0.6);
   padding: 8px 22px 25px 22px;
-}
-
-@media (max-width: 992px) and (min-width: 576px) {
-  .card-body {
-    background: black;
-    position: static;
-  }
 }
 
 .card-title {
@@ -104,17 +115,22 @@
 
 .card-link {
   text-align: center;
+  text-transform: uppercase;
+  color: #51C5D0;
+}
+
+@media (max-width: 992px) {
+  .card-text {
+    display: none;
+  }
+  .card-link {
+    display: none;
+  }
 }
 
 .card-link svg {
   height: 10px;
 }
 
-.card-link a {
-  text-transform: uppercase;
-  color: #51C5D0;
-}
 
-.card-link a:hover {
-  text-decoration: none;
-}
+
