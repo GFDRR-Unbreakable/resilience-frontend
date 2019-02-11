@@ -6,12 +6,12 @@ import {ScorecardComponent} from './components/scorecard/scorecard.component';
 import {SpecificpolicymeasureComponent} from './components/specificpolicymeasure/specificpolicymeasure.component';
 import {TechnicalmapComponent} from './components/technicalmap/technicalmap.component';
 import {ViewerComponent} from './components/viewer/viewer.component';
+import {LandingPageComponent} from './components/landing/landingpage.component';
 
 export const appRoutes: Routes = [
   {
     path: '',
-    redirectTo: '/viewer',
-    pathMatch: 'full'
+    component: LandingPageComponent,
   }, {
     path: 'about',
     component: AboutComponent

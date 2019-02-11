@@ -18,6 +18,7 @@ import { SpecificpolicymeasureComponent } from './components/specificpolicymeasu
 import { PolicyprioritylistComponent } from './components/policyprioritylist/policyprioritylist.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { LoadingMaskComponent } from './components/loadingmask/loadingmask.component';
+import { LandingPageComponent} from './components/landing/landingpage.component';
 
 import {routing} from './app.routes';
 import {store} from './app.store';
@@ -42,7 +43,8 @@ import {FileService} from './services/files.service';
     SpecificpolicymeasureComponent,
     PolicyprioritylistComponent,
     FooterComponent,
-    LoadingMaskComponent
+    LoadingMaskComponent,
+    LandingPageComponent,
   ],
   imports: [
     BrowserModule,
