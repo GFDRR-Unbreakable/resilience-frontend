@@ -446,10 +446,12 @@ template {
    /*color:#f3a277;*/
    color: #C3D700;
  }
+ .row {
+   border-bottom: 1px solid #F00 !important;
+ }
  .map-background{
-   /* background: #f2f4f8; */
-   /*background: #4B5757;*/
-   padding: 15px 17px 10px 17px!important;
+   position: relative;
+   margin-bottom: 2rem;
  }
  .map-background .carousel-ctn{
    z-index: 10;
@@ -592,7 +594,13 @@ template {
   }
 
   /*VIEWER NEW CODE*/
-    .input-wd{
+
+.mappage__header {
+  color: #6fc2cd;
+  font-size: 0.9375rem;
+}
+
+.input-wd{
     width: 100% !important;
   }
   .card-01{

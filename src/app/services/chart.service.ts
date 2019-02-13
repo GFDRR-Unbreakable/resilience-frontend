@@ -327,6 +327,7 @@ export class ChartService {
    * @param {String} groupName - Group name a country pertains.
    */
   createInputCharts(inputData: any, containerId: string, sliderValues: any, groupName?: string) {
+    console.log("STUB");
     jQuery(`div#${containerId}`).empty();
     const filteredInputData = this.filterInputDataByGroup(inputData, groupName);
     const inputTypeTxt = containerId.split('-')[0];
@@ -613,6 +614,7 @@ export class ChartService {
    * @param {String} isoCode - Country iso code.
    */
   createOutputChart(outputData: any, containerId: string, groupName?: string, isScoreCardPage?: boolean, isoCode?: string) {
+    console.log("output stub");
     jQuery(`div#${containerId}`).empty();
     const finalOutput = this.filterOutputDataByGroup(outputData, groupName);
     const me = this;

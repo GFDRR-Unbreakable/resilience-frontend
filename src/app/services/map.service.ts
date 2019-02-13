@@ -237,10 +237,10 @@ export class MapService {
       container: mapId,
       preserveDrawingBuffer: true,
       style: 'mapbox://styles/gsdpm/cir6ljf470006bsmehhstmxeh',
-      center: [10, 35],
-      zoom: 0.55,
+      center: [0, 20],
+      zoom: 0.85,
       maxZoom: 4.6,
-      maxBounds: [[-180, -80], [180, 80]]
+      scrollZoom: false
     });
   }
   /**
