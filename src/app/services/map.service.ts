@@ -108,7 +108,8 @@ export class MapService {
     }, {
       layerId: this._layerHoverId,
       paint: {
-        'fill-color': '#ffe502',
+        'fill-outline-color': '#222222',
+        'fill-color': 'rgba(0, 0, 0, 0)',
         'fill-opacity': 1,
       },
       filter: ['==', 'ISO_Code', ''],

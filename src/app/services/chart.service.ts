@@ -614,7 +614,6 @@ export class ChartService {
    * @param {String} isoCode - Country iso code.
    */
   createOutputChart(outputData: any, containerId: string, groupName?: string, isScoreCardPage?: boolean, isoCode?: string) {
-    console.log("output stub");
     jQuery(`div#${containerId}`).empty();
     const finalOutput = this.filterOutputDataByGroup(outputData, groupName);
     const me = this;
@@ -963,6 +962,222 @@ export class ChartService {
       }
     });
   }
+
+  createSingleOutputChart(outputData, containerId, groupName, isoCode) {
+    jQuery('#' + containerId).text("FOOBAR");
+    // @TODO: Figure out how to set outputData to just the info we need for a single chart, uncomment out createPlot.
+
+    const createPlot = (container) => {
+      // const tdElement = container;
+      //
+      // let width = 40;
+      // let height = 40;
+      // let margin = {
+      //   left: 0,
+      //   right: 0,
+      //   top: 0,
+      //   bottom: 0
+      // };
+      //
+      // const data: Array<number> = outputData.resilience.domain.sort((a, b) => {
+      //   return a - b;
+      // });
+      //
+      // let idx = 'foobar';
+      // const kde = science.stats.kde().sample(data);
+      //
+      // const svg = tdElement.append('svg')
+      // .attr('width', width + margin.left + margin.right)
+      // .attr('height', height + margin.top + margin.bottom)
+      // .attr('xmlns', 'http://www.w3.org/2000/svg')
+      // .attr('id', idx)
+      // .append('g')
+      // .attr('transform',
+      //   'translate(' + margin.left + ',' + margin.top + ')')
+      // .style('pointer-events', 'none')
+      // .style('border-bottom', '1px solid lightgrey');
+      // // add gaussian curve
+      // const gaus = svg.append('g')
+      //   .attr('id', idx)
+      //   .attr('class', 'gaussian');
+      // gaus.selectAll('#' + containerId + ' g#' + idx + ' .gaussian')
+      // // Multivariant Density Estimation
+      // // http://bit.ly/1Y3jEcD
+      //   .data([science['stats'].bandwidth.nrd0])
+      //   .enter()
+      //   .append('path')
+      //   .attr('d', (d) => {
+      //     return l(kde.bandwidth(d)(data));
+      //   });
+      // // Add manually chart styles to be integrated when converting to base64 string
+      // gaus.selectAll('path')
+      // // .style('stroke', '#000')
+      //   .style('stroke', '#7D8F8F')
+      //   .style('stroke-width', '3px')
+      //   .style('fill', 'none')
+      //   .style('shape-rendering', 'auto');
+      // // add gaussian curve
+      // const area = svg.append('g')
+      //   .attr('id', 'area-' + idx)
+      //   .attr('class', 'area');
+      // area.selectAll('#' + containerId + ' g#area-' + idx + ' .area')
+      //   .data([science['stats'].bandwidth.nrd0])
+      //   .enter()
+      //   .append('path')
+      //   .attr('d', (d) => {
+      //     return a(kde.bandwidth(d)(data));
+      //   });
+      // // Add manually chart styles to be integrated when converting to base64 string
+      // area.selectAll('path')
+      // // .style('fill', '#5E6A6A');
+      //   .style('fill', '#e4e4e4');
+      // // add placeholder for initial model value
+      // const initial = svg.append('g')
+      //   .attr('id', 'initial-' + idx)
+      //   .attr('class', 'initial')
+      //   .append('line');
+      // // Add manually chart styles to be integrated when converting to base64 string
+      // svg.selectAll('g.initial line')
+      //   .style('fill', 'none')
+      //   // .style('stroke', '#2f4f4f')
+      //   .style('stroke', 'transparent')
+      //   .style('stroke-width', '2px')
+      //   .style('opacity', '0.8');
+      //
+      // let infoEl;
+      //
+      // const brushstart = () => {
+      //   svg.classed('selecting-output', true);
+      // };
+      // const brushmove = () => {
+      //   d3.select('#' + containerId + ' #' + idx + ' g.resize.e path')
+      //     .attr('d', 'M 0, 0 ' + ' L 0 ' + height);
+      // };
+      // const brushend = () => {
+      //   svg.classed('selecting', !d3.event.target.empty());
+      // };
+      // const brush = d3.svg.brush()
+      //   .x(x);
+      // // keep a reference to the brush for the output domain
+      // output.x = x;
+      // output.height = height;
+      // const outputId = containerId.indexOf('1') >= 0 ? 'output1' : 'output2';
+      // if (!this._outputDomains[idx][outputId]) {
+      //   this._outputDomains[idx][outputId] = Object.assign({}, output);
+      // }
+      // if ((groupName === 'GLOBAL' || !groupName) && !this._outputDomains[idx][outputId].brush) {
+      //   this._outputDomains[idx][outputId].brush = brush;
+      //   if (this._globalExtentData[idx]) {
+      //     brush.extent([0, this._globalExtentData[idx]]);
+      //   }
+      // } else {
+      //   if (this._globalExtentData[idx]) {
+      //     brush.extent([0, this._globalExtentData[idx]]);
+      //   }
+      // }
+      // this._outputDomains[idx][outputId].default = this._globalExtentData[idx];
+      // brush.extent([0, this._outputDomains[idx][outputId].brush.extent()[1]]);
+      // brush.on('brush', brushmove);
+      //
+      // const textFn = () => {
+      //   const precision = +output.precision;
+      //   const brushVal = this._outputDomains[idx][outputId].brush.extent()[1];
+      //   const numericValue = (brushVal * 100).toFixed(precision);
+      //   const value = me.calculateGDPValues(containerId, idx, numericValue, avgDoll, precision);
+      //   return value;
+      // };
+      //
+      // infoEl.select('div.box-text-results')
+      //     .append('p')
+      //     .attr('class', 'scorecard-text-result')
+      //     .append('span')
+      //     .attr('class', 'text-number')
+      //     .html(textFn);
+      //
+      // const line = d3.svg.line()
+      //   .x((d) => {
+      //     return d3.mean(data);
+      //   })
+      //   .y((d) => {
+      //     return height;
+      //   });
+      //
+      // const brushg = svg.append('g')
+      //   .attr('class', 'brush')
+      //   .style('pointer-events', 'none')
+      //   .call(brush);
+      //
+      // brushg.call(brush.event)
+      //   .transition()
+      //   .duration(750)
+      //   .call(brush.extent([0, d3.mean(data)]))
+      //   .call(brush.event);
+      //
+      // brushg.selectAll('#' + containerId + ' g.resize.w').remove();
+      // // Add manually chart styles to be integrated when converting to base64 string
+      // brushg.select('#' + containerId + ' #' + idx + ' g.resize.e').append('path')
+      //   .attr('d', line)
+      //   .style('visibility', 'hidden')
+      //   .style('fill', '#666')
+      //   .style('fill-opacity', '0.8')
+      //   .style('stroke-width', '4px')
+      //   // .style('stroke', '#C3D700')
+      //   .style('stroke', '#50c4cf')
+      //   .style('pointer-events', 'none');
+      // // Add manually chart styles to be integrated when converting to base64 string
+      // brushg.select('rect.extent')
+      //   .style('fill-opacity', '0')
+      //   .style('shape-rendering', 'crispEdges');
+      //
+      // brushg.selectAll('#' + containerId + ' rect')
+      //   .attr('height', height)
+      //   .style('pointer-events', 'none');
+      //
+      // const line2 = d3.svg.line()
+      //   .x((d) => {
+      //     return d3.mean(data);
+      //   })
+      //   .y((d) => {
+      //     return height;
+      //   });
+      //
+      // const brushg2 = svg.append('g')
+      //   .attr('class', 'brush2')
+      //   .style('pointer-events', 'none')
+      //   .call(brush);
+      //
+      // brushg2.call(brush.event)
+      //   .transition()
+      //   .duration(750)
+      //   .call(brush.extent([0, d3.mean(data)]))
+      //   .call(brush.event);
+      //
+      // brushg2.selectAll('#' + containerId + ' g.resize.w').remove();
+      // // Add manually chart styles to be integrated when converting to base64 string
+      // brushg2.select('#' + containerId + ' #' + idx + ' g.resize.e').append('path')
+      //   .attr('d', line2)
+      //   .style('fill', '#666')
+      //   .style('fill-opacity', '0.8')
+      //   .style('stroke-width', '4px')
+      //   // .style('stroke', '#C3D700')
+      //   .style('stroke', '#000000')
+      //   .style('pointer-events', 'none');
+      // // Add manually chart styles to be integrated when converting to base64 string
+      // brushg2.select('rect.extent')
+      //   .style('fill-opacity', '0')
+      //   .style('shape-rendering', 'crispEdges');
+      //
+      // brushg2.selectAll('#' + containerId + ' rect')
+      //   .attr('height', height)
+      //   .style('pointer-events', 'none');
+      // let brushg2El = brushg2.select('#' + containerId + ' #' + idx + ' g.resize.e rect')[0][0];
+      // brushg2El.style.visibility = "visible";
+      // brushg2El.style['fill-opacity'] = 0.2;
+      // brushg2El.width.baseVal.value = 3;
+    };
+
+  }
+
   /**
    * Creates/updates/removes scorecard SVG charts (priority-list or measure one). These charts are displayed in both Scorecard pages.
    * @param {Object} policyData - Scorecard data to be used to plot the chart.
@@ -2609,6 +2824,7 @@ export class ChartService {
 
   updateOutputCharts(containerId: string, selectedId?: any, groupName?: string, brush2?: boolean, tech?: boolean) {
     const domains = this.filterOutputDataByGroup(this._outputDomains, groupName);
+    console.log('domains', domains);
     const me = this;
     jQuery.each(domains, (idx, outputData) => {
       const ini = d3.select(`#${containerId} svg#${idx} g.initial line`);

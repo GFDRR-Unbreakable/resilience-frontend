@@ -282,6 +282,11 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       }
       this.store.dispatch({type: ViewerAction.EDIT_VIEWER, payload: this.viewerModel});
     }
+
+    // @TODO: Find cleaner way to trigger model run.
+    if (fromListFilter.length > 0) {
+      this.onChangeViewerIndViewEvent('viewer');
+    }
   }
   /**
    * This method sends modified values from the slider component and the global modal object
@@ -645,6 +650,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   createMapPageOutputChartTable(data:any, containerId:string, groupName?:any, isoCode?: any):any {
+    console.log("stub", data);
+    this.chartService.createSingleOutputChart(data, 'output-risks_to_assets_1', groupName, isoCode);
     this.chartService.createOutputChart(data, containerId, groupName, false, isoCode);
   }
   /**
@@ -808,15 +815,15 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       this.mapService.setMapFilterByISOCodes(this.countryListIsoCodes);
       this.getChartOutputData();
       this.mapService.setClickFnMapEvent((ev) => {
-        const features = self.mapService.getMap()
-          .queryRenderedFeatures(ev.point, {layers: [self.mapService.getViewerFillLayer()]});
-        if (features.length) {
-          const isoCode = features[0].properties['ISO_Code'];
-          const isoCodeList = this.countryListIsoCodes.filter(val => val === isoCode);
-          if (isoCodeList.length) {
-            self.changeCountryInputsByClick(isoCode);
-          }
-        }
+        // const features = self.mapService.getMap()
+        //   .queryRenderedFeatures(ev.point, {layers: [self.mapService.getViewerFillLayer()]});
+        // if (features.length) {
+        //   const isoCode = features[0].properties['ISO_Code'];
+        //   const isoCodeList = this.countryListIsoCodes.filter(val => val === isoCode);
+        //   if (isoCodeList.length) {
+        //     self.changeCountryInputsByClick(isoCode);
+        //   }
+        // }
       });
       this.mapService.setHoverFnMapEvent((ev) => {
         const features = self.mapService.getMap()
@@ -1083,16 +1090,16 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       if (elDimension.y > bodyDimension.y) {
         scrollMeasure = elDimension.y - bodyDimension.y;
       }
-      bodyEl.animate({
-        scrollTop: (scrollMeasure - 10)
-      }, 1000);
+      // bodyEl.animate({
+      //   scrollTop: (scrollMeasure - 10)
+      // }, 1000);
     }
     // If these do match, scroll to top of page.
     else if (this.viewerDisplay === viewType) {
       this.viewerDisplay = '';
-      bodyEl.animate({
-        scrollTop: 0
-      }, 1000);
+      // bodyEl.animate({
+      //   scrollTop: 0
+      // }, 1000);
     }
     // Don't know what type1S is used for.
     this.chartService.type1S = this.viewerDisplay;
