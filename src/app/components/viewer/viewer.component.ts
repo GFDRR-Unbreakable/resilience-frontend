@@ -650,9 +650,16 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   createMapPageOutputChartTable(data:any, containerId:string, groupName?:any, isoCode?: any):any {
-    console.log("stub", data);
-    this.chartService.createSingleOutputChart(data, 'output-risks_to_assets_1', groupName, isoCode);
-    this.chartService.createOutputChart(data, containerId, groupName, false, isoCode);
+    console.log(data);
+    this.chartService.createSingleOutputChart(data.risk_to_assets, 'risk_to_assets', 'output-risks_to_assets_1', groupName, isoCode);
+    this.chartService.createSingleOutputChart(data.risk, 'risk', 'output-risk_1', groupName, isoCode);
+    this.chartService.createSingleOutputChart(data.resilience, 'resilience', 'output-resilience_1', groupName, isoCode);
+
+    this.chartService.createSingleOutputChart(data.risk_to_assets, 'risk_to_assets', 'output-risks_to_assets_2', groupName, isoCode);
+    this.chartService.createSingleOutputChart(data.risk, 'risk', 'output-risk_2', groupName, isoCode);
+    this.chartService.createSingleOutputChart(data.resilience, 'resilience', 'output-resilience_2', groupName, isoCode);
+
+    //this.chartService.createOutputChart(data, containerId, groupName, false, isoCode);
   }
   /**
    * This method builds data from Output & Input, country input fields and chart default values to be

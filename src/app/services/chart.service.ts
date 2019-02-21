@@ -327,7 +327,6 @@ export class ChartService {
    * @param {String} groupName - Group name a country pertains.
    */
   createInputCharts(inputData: any, containerId: string, sliderValues: any, groupName?: string) {
-    console.log("STUB");
     jQuery(`div#${containerId}`).empty();
     const filteredInputData = this.filterInputDataByGroup(inputData, groupName);
     const inputTypeTxt = containerId.split('-')[0];
@@ -616,6 +615,7 @@ export class ChartService {
   createOutputChart(outputData: any, containerId: string, groupName?: string, isScoreCardPage?: boolean, isoCode?: string) {
     jQuery(`div#${containerId}`).empty();
     const finalOutput = this.filterOutputDataByGroup(outputData, groupName);
+    console.log(finalOutput, outputData, groupName);
     const me = this;
     jQuery.each(finalOutput, (idx, output) => {
       const s1 = output.gradient[0];
@@ -721,7 +721,7 @@ export class ChartService {
         // Multivariant Density Estimation
         // http://bit.ly/1Y3jEcD
           .data([science['stats'].bandwidth.nrd0])
-            .enter()
+          .enter()
           .append('path')
           .attr('d', (d) => {
             return l(kde.bandwidth(d)(data));
@@ -963,219 +963,284 @@ export class ChartService {
     });
   }
 
-  createSingleOutputChart(outputData, containerId, groupName, isoCode) {
-    jQuery('#' + containerId).text("FOOBAR");
-    // @TODO: Figure out how to set outputData to just the info we need for a single chart, uncomment out createPlot.
+  createSingleOutputChart(outputData, idx, containerId, groupName, isoCode) {
+    jQuery(`div#${containerId}`).empty();
 
-    const createPlot = (container) => {
-      // const tdElement = container;
-      //
-      // let width = 40;
-      // let height = 40;
-      // let margin = {
-      //   left: 0,
-      //   right: 0,
-      //   top: 0,
-      //   bottom: 0
-      // };
-      //
-      // const data: Array<number> = outputData.resilience.domain.sort((a, b) => {
-      //   return a - b;
-      // });
-      //
-      // let idx = 'foobar';
-      // const kde = science.stats.kde().sample(data);
-      //
-      // const svg = tdElement.append('svg')
-      // .attr('width', width + margin.left + margin.right)
-      // .attr('height', height + margin.top + margin.bottom)
-      // .attr('xmlns', 'http://www.w3.org/2000/svg')
-      // .attr('id', idx)
-      // .append('g')
-      // .attr('transform',
-      //   'translate(' + margin.left + ',' + margin.top + ')')
-      // .style('pointer-events', 'none')
-      // .style('border-bottom', '1px solid lightgrey');
-      // // add gaussian curve
-      // const gaus = svg.append('g')
-      //   .attr('id', idx)
-      //   .attr('class', 'gaussian');
-      // gaus.selectAll('#' + containerId + ' g#' + idx + ' .gaussian')
-      // // Multivariant Density Estimation
-      // // http://bit.ly/1Y3jEcD
-      //   .data([science['stats'].bandwidth.nrd0])
-      //   .enter()
-      //   .append('path')
-      //   .attr('d', (d) => {
-      //     return l(kde.bandwidth(d)(data));
-      //   });
-      // // Add manually chart styles to be integrated when converting to base64 string
-      // gaus.selectAll('path')
-      // // .style('stroke', '#000')
-      //   .style('stroke', '#7D8F8F')
-      //   .style('stroke-width', '3px')
-      //   .style('fill', 'none')
-      //   .style('shape-rendering', 'auto');
-      // // add gaussian curve
-      // const area = svg.append('g')
-      //   .attr('id', 'area-' + idx)
-      //   .attr('class', 'area');
-      // area.selectAll('#' + containerId + ' g#area-' + idx + ' .area')
-      //   .data([science['stats'].bandwidth.nrd0])
-      //   .enter()
-      //   .append('path')
-      //   .attr('d', (d) => {
-      //     return a(kde.bandwidth(d)(data));
-      //   });
-      // // Add manually chart styles to be integrated when converting to base64 string
-      // area.selectAll('path')
-      // // .style('fill', '#5E6A6A');
-      //   .style('fill', '#e4e4e4');
-      // // add placeholder for initial model value
-      // const initial = svg.append('g')
-      //   .attr('id', 'initial-' + idx)
-      //   .attr('class', 'initial')
-      //   .append('line');
-      // // Add manually chart styles to be integrated when converting to base64 string
-      // svg.selectAll('g.initial line')
-      //   .style('fill', 'none')
-      //   // .style('stroke', '#2f4f4f')
-      //   .style('stroke', 'transparent')
-      //   .style('stroke-width', '2px')
-      //   .style('opacity', '0.8');
-      //
-      // let infoEl;
-      //
-      // const brushstart = () => {
-      //   svg.classed('selecting-output', true);
-      // };
-      // const brushmove = () => {
-      //   d3.select('#' + containerId + ' #' + idx + ' g.resize.e path')
-      //     .attr('d', 'M 0, 0 ' + ' L 0 ' + height);
-      // };
-      // const brushend = () => {
-      //   svg.classed('selecting', !d3.event.target.empty());
-      // };
-      // const brush = d3.svg.brush()
-      //   .x(x);
-      // // keep a reference to the brush for the output domain
-      // output.x = x;
-      // output.height = height;
-      // const outputId = containerId.indexOf('1') >= 0 ? 'output1' : 'output2';
-      // if (!this._outputDomains[idx][outputId]) {
-      //   this._outputDomains[idx][outputId] = Object.assign({}, output);
-      // }
-      // if ((groupName === 'GLOBAL' || !groupName) && !this._outputDomains[idx][outputId].brush) {
-      //   this._outputDomains[idx][outputId].brush = brush;
-      //   if (this._globalExtentData[idx]) {
-      //     brush.extent([0, this._globalExtentData[idx]]);
-      //   }
-      // } else {
-      //   if (this._globalExtentData[idx]) {
-      //     brush.extent([0, this._globalExtentData[idx]]);
-      //   }
-      // }
-      // this._outputDomains[idx][outputId].default = this._globalExtentData[idx];
-      // brush.extent([0, this._outputDomains[idx][outputId].brush.extent()[1]]);
-      // brush.on('brush', brushmove);
-      //
-      // const textFn = () => {
-      //   const precision = +output.precision;
-      //   const brushVal = this._outputDomains[idx][outputId].brush.extent()[1];
-      //   const numericValue = (brushVal * 100).toFixed(precision);
-      //   const value = me.calculateGDPValues(containerId, idx, numericValue, avgDoll, precision);
-      //   return value;
-      // };
-      //
-      // infoEl.select('div.box-text-results')
-      //     .append('p')
-      //     .attr('class', 'scorecard-text-result')
-      //     .append('span')
-      //     .attr('class', 'text-number')
-      //     .html(textFn);
-      //
-      // const line = d3.svg.line()
-      //   .x((d) => {
-      //     return d3.mean(data);
-      //   })
-      //   .y((d) => {
-      //     return height;
-      //   });
-      //
-      // const brushg = svg.append('g')
-      //   .attr('class', 'brush')
-      //   .style('pointer-events', 'none')
-      //   .call(brush);
-      //
-      // brushg.call(brush.event)
-      //   .transition()
-      //   .duration(750)
-      //   .call(brush.extent([0, d3.mean(data)]))
-      //   .call(brush.event);
-      //
-      // brushg.selectAll('#' + containerId + ' g.resize.w').remove();
-      // // Add manually chart styles to be integrated when converting to base64 string
-      // brushg.select('#' + containerId + ' #' + idx + ' g.resize.e').append('path')
-      //   .attr('d', line)
-      //   .style('visibility', 'hidden')
-      //   .style('fill', '#666')
-      //   .style('fill-opacity', '0.8')
-      //   .style('stroke-width', '4px')
-      //   // .style('stroke', '#C3D700')
-      //   .style('stroke', '#50c4cf')
-      //   .style('pointer-events', 'none');
-      // // Add manually chart styles to be integrated when converting to base64 string
-      // brushg.select('rect.extent')
-      //   .style('fill-opacity', '0')
-      //   .style('shape-rendering', 'crispEdges');
-      //
-      // brushg.selectAll('#' + containerId + ' rect')
-      //   .attr('height', height)
-      //   .style('pointer-events', 'none');
-      //
-      // const line2 = d3.svg.line()
-      //   .x((d) => {
-      //     return d3.mean(data);
-      //   })
-      //   .y((d) => {
-      //     return height;
-      //   });
-      //
-      // const brushg2 = svg.append('g')
-      //   .attr('class', 'brush2')
-      //   .style('pointer-events', 'none')
-      //   .call(brush);
-      //
-      // brushg2.call(brush.event)
-      //   .transition()
-      //   .duration(750)
-      //   .call(brush.extent([0, d3.mean(data)]))
-      //   .call(brush.event);
-      //
-      // brushg2.selectAll('#' + containerId + ' g.resize.w').remove();
-      // // Add manually chart styles to be integrated when converting to base64 string
-      // brushg2.select('#' + containerId + ' #' + idx + ' g.resize.e').append('path')
-      //   .attr('d', line2)
-      //   .style('fill', '#666')
-      //   .style('fill-opacity', '0.8')
-      //   .style('stroke-width', '4px')
-      //   // .style('stroke', '#C3D700')
-      //   .style('stroke', '#000000')
-      //   .style('pointer-events', 'none');
-      // // Add manually chart styles to be integrated when converting to base64 string
-      // brushg2.select('rect.extent')
-      //   .style('fill-opacity', '0')
-      //   .style('shape-rendering', 'crispEdges');
-      //
-      // brushg2.selectAll('#' + containerId + ' rect')
-      //   .attr('height', height)
-      //   .style('pointer-events', 'none');
-      // let brushg2El = brushg2.select('#' + containerId + ' #' + idx + ' g.resize.e rect')[0][0];
-      // brushg2El.style.visibility = "visible";
-      // brushg2El.style['fill-opacity'] = 0.2;
-      // brushg2El.width.baseVal.value = 3;
+    const output = outputData; // @TODO: Refactor.
+
+    const s1 = output.gradient[0];
+    const s2 = output.gradient[1];
+
+    if (!this._outputDomains[idx]['chart']) {
+      this._outputDomains[idx]['chart'] = {};
+    }
+    if (!this._outputDomains[idx]['chart'][containerId]) {
+      this._outputDomains[idx]['chart'][containerId] = '';
+    }
+
+    // sort the distribution
+    const data: Array<number> = output.domain.sort((a, b) => {
+      return a - b;
+    });
+    if (!this._globalExtentData) {
+      this._globalExtentData = {};
+    }
+
+    if ((groupName === 'GLOBAL' || !groupName) && !this._globalExtentData[idx]) {
+      this._globalExtentData[idx] = d3.mean(data);
+    }
+
+    const avgDoll = this.calculateAVGGDPValue(idx, groupName, isoCode);
+    const bounds = d3.extent(data);
+    const margin = {
+      top: 5,
+      right: 2,
+      bottom: 0,
+      left: 2
     };
 
+    const width = 110 - margin.left - margin.right;
+    const height = 40 - margin.top - margin.bottom;
+
+    const kde = science['stats'].kde().sample(data);
+    const bw = kde.bandwidth(science['stats'].bandwidth.nrd0)(data);
+    const x = d3.scale.linear()
+      .domain(bounds)
+      .range([0, width])
+      .clamp(true);
+    const d1Y = d3.max(bw, (d) => {
+      return d[1];
+    });
+
+    const y = d3.scale.linear()
+      .domain([0, d1Y])
+      .range([height, 0]);
+    // gaussian curve
+    const l = d3.svg.line()
+      .x((d) => {
+        return x(d[0]);
+      })
+      .y((d) => {
+        return y(d[1]);
+      });
+    // area under gaussian curve
+    const a = d3.svg.area()
+      .x((d) => {
+        return x(d[0]);
+      })
+      .y0(height)
+      .y1((d) => {
+        return y(d[1]);
+      });
+    // bisect data array at brush selection point
+    const b = d3.bisector((d) => {
+      return d;
+    }).left;
+
+    const div = d3.select(`#${containerId}`)
+      .append('div')
+      .attr('id', idx)
+      .attr('class', 'col-sm-8')
+      .attr('data-output', idx)
+      .attr('data-output-title', output.descriptor)
+      .style('pointer-events', 'all');
+
+    // Old start of createPlot
+    let tdElement = div;
+
+    const svg = tdElement.append('svg')
+      .attr('width', width + margin.left + margin.right)
+      .attr('height', height + margin.top + margin.bottom)
+      .attr('xmlns', 'http://www.w3.org/2000/svg')
+      .attr('id', idx)
+      .append('g')
+      .attr('transform',
+        'translate(' + margin.left + ',' + margin.top + ')')
+      .style('pointer-events', 'none')
+      .style('border-bottom', '1px solid lightgrey');
+
+    const gaus = svg.append('g')
+      .attr('id', idx)
+      .attr('class', 'gaussian');
+    gaus.selectAll('#' + containerId + ' g#' + idx + ' .gaussian')
+    // Multivariant Density Estimation
+    // http://bit.ly/1Y3jEcD
+      .data([science['stats'].bandwidth.nrd0])
+      .enter()
+      .append('path')
+      .attr('d', (d) => {
+        return l(kde.bandwidth(d)(data));
+      });
+    // Add manually chart styles to be integrated when converting to base64 string
+    gaus.selectAll('path')
+    // .style('stroke', '#000')
+      .style('stroke', '#7D8F8F')
+      .style('stroke-width', '3px')
+      .style('fill', 'none')
+      .style('shape-rendering', 'auto');
+
+    // add gaussian curve
+    const area = svg.append('g')
+      .attr('id', 'area-' + idx)
+      .attr('class', 'area');
+    area.selectAll('#' + containerId + ' g#area-' + idx + ' .area')
+      .data([science['stats'].bandwidth.nrd0])
+      .enter()
+      .append('path')
+      .attr('d', (d) => {
+        return a(kde.bandwidth(d)(data));
+      });
+    // Add manually chart styles to be integrated when converting to base64 string
+    area.selectAll('path')
+    // .style('fill', '#5E6A6A');
+      .style('fill', '#e4e4e4');
+
+    // add placeholder for initial model value
+    const initial = svg.append('g')
+      .attr('id', 'initial-' + idx)
+      .attr('class', 'initial')
+      .append('line');
+    // Add manually chart styles to be integrated when converting to base64 string
+    svg.selectAll('g.initial line')
+      .style('fill', 'none')
+      // .style('stroke', '#2f4f4f')
+      .style('stroke', 'transparent')
+      .style('stroke-width', '2px')
+      .style('opacity', '0.8');
+
+    let infoEl;
+
+    const brushstart = () => {
+      svg.classed('selecting-output', true);
+    };
+    const brushmove = () => {
+      d3.select('#' + containerId + ' #' + idx + ' g.resize.e path')
+        .attr('d', 'M 0, 0 ' + ' L 0 ' + height);
+    };
+    const brushend = () => {
+      svg.classed('selecting', !d3.event.target.empty());
+    };
+    const brush = d3.svg.brush()
+      .x(x);
+    // keep a reference to the brush for the output domain
+    output.x = x;
+    output.height = height;
+    const outputId = containerId.indexOf('1') >= 0 ? 'output1' : 'output2';
+    if (!this._outputDomains[idx][outputId]) {
+      this._outputDomains[idx][outputId] = Object.assign({}, output);
+    }
+    if ((groupName === 'GLOBAL' || !groupName) && !this._outputDomains[idx][outputId].brush) {
+      this._outputDomains[idx][outputId].brush = brush;
+      if (this._globalExtentData[idx]) {
+        brush.extent([0, this._globalExtentData[idx]]);
+      }
+    } else {
+      if (this._globalExtentData[idx]) {
+        brush.extent([0, this._globalExtentData[idx]]);
+      }
+    }
+    this._outputDomains[idx][outputId].default = this._globalExtentData[idx];
+    brush.extent([0, this._outputDomains[idx][outputId].brush.extent()[1]]);
+    brush.on('brush', brushmove);
+
+    const line = d3.svg.line()
+      .x((d) => {
+        return d3.mean(data);
+      })
+      .y((d) => {
+        return height;
+      });
+
+    const brushg = svg.append('g')
+      .attr('class', 'brush')
+      .style('pointer-events', 'none')
+      .call(brush);
+
+    brushg.call(brush.event)
+      .transition()
+      .duration(750)
+      .call(brush.extent([0, d3.mean(data)]))
+      .call(brush.event);
+
+    brushg.selectAll('#' + containerId + ' g.resize.w').remove();
+    // Add manually chart styles to be integrated when converting to base64 string
+    brushg.select('#' + containerId + ' #' + idx + ' g.resize.e').append('path')
+      .attr('d', line)
+      .style('visibility', 'hidden')
+      .style('fill', '#666')
+      .style('fill-opacity', '0.8')
+      .style('stroke-width', '4px')
+      // .style('stroke', '#C3D700')
+      .style('stroke', '#50c4cf')
+      .style('pointer-events', 'none');
+    // Add manually chart styles to be integrated when converting to base64 string
+    brushg.select('rect.extent')
+      .style('fill-opacity', '0')
+      .style('shape-rendering', 'crispEdges');
+
+    brushg.selectAll('#' + containerId + ' rect')
+      .attr('height', height)
+      .style('pointer-events', 'none');
+
+    const line2 = d3.svg.line()
+      .x((d) => {
+        return d3.mean(data);
+      })
+      .y((d) => {
+        return height;
+      });
+
+    const brushg2 = svg.append('g')
+      .attr('class', 'brush2')
+      .style('pointer-events', 'none')
+      .call(brush);
+
+    brushg2.call(brush.event)
+      .transition()
+      .duration(750)
+      .call(brush.extent([0, d3.mean(data)]))
+      .call(brush.event);
+
+    brushg2.selectAll('#' + containerId + ' g.resize.w').remove();
+    // Add manually chart styles to be integrated when converting to base64 string
+    brushg2.select('#' + containerId + ' #' + idx + ' g.resize.e').append('path')
+      .attr('d', line2)
+      .style('fill', '#666')
+      .style('fill-opacity', '0.8')
+      .style('stroke-width', '4px')
+      // .style('stroke', '#C3D700')
+      .style('stroke', '#000000')
+      .style('pointer-events', 'none');
+    // Add manually chart styles to be integrated when converting to base64 string
+    brushg2.select('rect.extent')
+      .style('fill-opacity', '0')
+      .style('shape-rendering', 'crispEdges');
+
+    brushg2.selectAll('#' + containerId + ' rect')
+      .attr('height', height)
+      .style('pointer-events', 'none');
+    let brushg2El = brushg2.select('#' + containerId + ' #' + idx + ' g.resize.e rect')[0][0];
+    brushg2El.style.visibility = "visible";
+    brushg2El.style['fill-opacity'] = 0.2;
+    brushg2El.width.baseVal.value = 3;
+
+    const textFn = () => {
+      const precision = +output.precision;
+      const brushVal = this._outputDomains[idx][outputId].brush.extent()[1];
+      const numericValue = (brushVal * 100).toFixed(precision);
+      const value = this.calculateGDPValues(containerId, idx, numericValue, avgDoll, precision);
+      return value;
+    };
+
+    infoEl = d3.select(tdElement.node().parentElement);
+    const td = infoEl.append('div');
+    td.style('padding', '0.75rem 0')
+      .attr('class', 'col-sm-4');
+    td.append('p')
+      .attr('class', 'text-results')
+      .append('span')
+      .attr('class', 'text-number')
+      .html(textFn);
   }
 
   /**
@@ -2824,10 +2889,13 @@ export class ChartService {
 
   updateOutputCharts(containerId: string, selectedId?: any, groupName?: string, brush2?: boolean, tech?: boolean) {
     const domains = this.filterOutputDataByGroup(this._outputDomains, groupName);
+    console.log(containerId);
+
     console.log('domains', domains);
     const me = this;
     jQuery.each(domains, (idx, outputData) => {
       const ini = d3.select(`#${containerId} svg#${idx} g.initial line`);
+      console.log('ini', ini);
       const outputId = containerId.indexOf('1') >= 0 ? 'output1' : 'output2';
       const x = outputData[outputId].x;
       const height = outputData[outputId].height;
