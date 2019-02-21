@@ -670,6 +670,7 @@ template {
   color: #6fc2cd;
   font-size: 20px;
   font-weight: normal;
+  line-height: 1.5;
 }
 
 .input-wd{
@@ -3912,7 +3913,7 @@ fieldset[disabled] a.btn {
   background-color: rgba(250,250,250, 0.0);
   border-color: rgba(250,250,250, 0.0);
   font-size: 17px;
-  padding: 0.5rem 0.1rem;
+  padding: 0.1rem;
   cursor: pointer;
 }
 .btn-icon-info:hover{
@@ -3926,9 +3927,9 @@ fieldset[disabled] a.btn {
 }
 
 .btn-primary {
-  color: #fff;
-  background-color: #50C4CF;
-  border-color: #50C4CF;
+  color: #51c5d0;
+  background-color: #f8f7fa;
+  border-color: #51c5d0;
 }
 .card-body .wt-dv .btn-primary {
   height: 40px;
@@ -3946,14 +3947,15 @@ fieldset[disabled] a.btn {
           box-shadow: 0 0 0 2px rgba(44, 62, 80, 0.5);
 }
 .btn-primary.disabled, .btn-primary:disabled {
-  background-color: #2C3E50;
-  border-color: #2C3E50;
+  background-color: #dfdee1;
+  border-color: #666666;
+  color: #666666;
 }
 .btn-primary:active, .btn-primary.active, .show > .btn-primary.dropdown-toggle {
   color: #fff;
-  background-color: #1a252f;
+  background-color: #51c5d0;
   background-image: none;
-  border-color: #161f29;
+  border-color: #51c5d0;
 }
 
 .btn-secondary {

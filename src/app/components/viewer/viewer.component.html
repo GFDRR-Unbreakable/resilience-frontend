@@ -64,7 +64,7 @@
           <p class="country-p" *ngIf="viewerDisplay == 'tech'">Policy simulation</p>
           <p class="country-p" *ngIf="viewerDisplay != 'tech'">&nbsp;</p>
           <p class="value-p">Today</p>
-          <p class="global-p">Global or Regional Histogram</p>
+          <p class="global-p">Global Histogram</p>
         </div>
       </div>
     </div>
@@ -145,18 +145,18 @@
 
 
   <div class="row" id="viewIndCtn">
-    <div class="col-md-4">
+    <div class="col-md-6">
       <h2 class="mappage__header">Select a View</h2>
       <p>View the risk indicators of losses in assets and well-being and changes in socio-economic resilience due to natural disasters in an average year for one or two countries.</p>
       <div class="btn-group wt-dv" role="group" aria-label="Set viewer view">
-        <button type="button" class="btn btn-primary wt-lb" [ngClass]="{active: viewerDisplay === 'viewer'}" (click)="onChangeViewerIndViewEvent('viewer')">VIEW INDICATORS</button>
+        <button type="button" class="btn btn-primary wt-lb" [disabled]='_selectedCountryList.length === 0' [ngClass]="{active: viewerDisplay === 'viewer'}" (click)="onChangeViewerIndViewEvent('viewer')">VIEW INDICATORS</button>
         <span class="wt-sp">&nbsp;</span>
-        <button type="button" class="btn btn-primary wt-lb" [ngClass]="{active: viewerDisplay === 'tech'}" (click)="onChangeViewerIndViewEvent('tech')">RUN MODEL</button>
+        <button type="button" class="btn btn-primary wt-lb" [disabled]='_selectedCountryList.length === 0' [ngClass]="{active: viewerDisplay === 'tech'}" (click)="onChangeViewerIndViewEvent('tech')">RUN MODEL</button>
       </div>
     </div>
 
 
-    <div class="col-md-4">
+    <div class="col-md-4 d-none">
       <div class="cards-bg">
         <p class="text-center mar-p">
           <!-- Compare each Countries' Asset and Well-Being Losses and Socio-Economic Capacity across the Region or the Entire World. -->
@@ -201,12 +201,46 @@
       </div>
     </div>
 
+
+    <div class="col-md-6" [hidden]="!viewerDisplay || viewerDisplay !== 'tech'">
+      <h2 class="mappage__header">Hazards Selection
+        <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Assessment can be performed for floods, earthquakes, tsunamis, windstorm, or any combination of them." triggers="mouseenter:mouseleave" popoverTitle="">
+          <i class="mdi mdi-information-outline"></i>
+        </button>
+      </h2>
+      <p>Select one or multiple hazards.</p>
+      <div class="">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="hover-a">
+              <a (click)="onSwitchExposure1()" placement="top" ngbPopover="Coastal and Riverine Flooding" triggers="mouseenter:mouseleave" popoverTitle="">
+                <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard1" src="assets/image/flood-yellow.png" alt=""/>
+                <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard1" src="assets/image/flood.png" alt="" />
+              </a>
+              <a (click)="onSwitchExposure2()" placement="top" ngbPopover="Earthquakes" triggers="mouseenter:mouseleave" popoverTitle="">
+                <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard2" src="assets/image/earthquake-yellow.png" alt="" />
+                <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard2" src="assets/image/earthquake.png" alt="" />
+              </a>
+              <a (click)="onSwitchExposure3()" placement="top" ngbPopover="Tsunamis" triggers="mouseenter:mouseleave" popoverTitle="">
+                <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard3" src="assets/image/tsunami-yellow.png" alt="" />
+                <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard3" src="assets/image/tsunami.png" alt="" />
+              </a>
+              <a (click)="onSwitchExposure4()" placement="top" ngbPopover="Windstorms" triggers="mouseenter:mouseleave" popoverTitle="">
+                <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard4" src="assets/image/wind-yellow.png" alt="" />
+                <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard4" src="assets/image/wind.png" alt="" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <div class="row" [hidden]="!viewerDisplay">
     <div class="col-md-12">
       <div class="">
-        <h2 class="mappage__header">Input: Country Resilience Factors
+        <h2 class="mappage__header">Country Resilience Factors
           <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover2" triggers="mouseenter:mouseleave" popoverTitle="">
             <i class="mdi mdi-information-outline"></i>
           </button>
@@ -215,7 +249,7 @@
             <p>
               These are the main drivers of asset and well-being losses to natural disasters.
               Poverty reduction and disaster risk management are closely linked, and there are many
-              tools governments and Bank teams can use to pursue both simultaneously.                      </p>
+              tools governments and Bank teams can use to pursue both simultaneously.</p>
           </ng-template>
 
           <div class="box-download">
@@ -225,7 +259,6 @@
           </div></h2>
         <div class="">
           <div class="">
-
             <!-- <ngb-tabset type="pills">
                <ngb-tab title="Viewer">
                   <ng-template ngbTabContent> -->
@@ -340,23 +373,22 @@
             </div>
 
             <div [hidden]="!viewerDisplay || viewerDisplay === 'viewer'">
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="row pad-botTop10 justify-content-end">
-                    <div class="col-md-4">
-                      <span class="text-bold country-text-input"><b>{{viewerModel.firstCountry}}</b></span>
-                    </div>
-                    <div class="col-md-4">
-                      <span class="text-bold country-text-input"><b>{{viewerModel.secondCountry}}</b></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <!--<div class="row">-->
+                <!--<div class="col-md-12">-->
+                  <!--<div class="row pad-botTop10 justify-content-end">-->
+                    <!--<div class="col-md-4">-->
+                      <!--<span class="text-bold country-text-input"><b>{{viewerModel.firstCountry}}</b></span>-->
+                    <!--</div>-->
+                    <!--<div class="col-md-4">-->
+                      <!--<span class="text-bold country-text-input"><b>{{viewerModel.secondCountry}}</b></span>-->
+                    <!--</div>-->
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</div>-->
               <div class="row border-content"></div>
               <div class="row">
                 <div class="col-md-12 box-tab">
-                  <div class="tab">
-                    <input id="tab-one_tech" type="checkbox" name="tabs">
+                    <input id="tab-one_tech" type="radio" name="input-tabs" class="tab-input" checked="checked">
                     <label for="tab-one_tech">Social Protection
                       <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
                       <i class="mdi mdi-information-outline"></i>
@@ -401,10 +433,7 @@
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="row border-content"></div>
-                  <div class="tab">
-                    <input id="tab-two_tech" type="checkbox" name="tabs">
+                    <input id="tab-two_tech" type="radio" name="input-tabs" class="tab-input">
                     <label for="tab-two_tech">Economic
                       <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
                       <i class="mdi mdi-information-outline"></i>
@@ -449,10 +478,7 @@
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="row border-content"></div>
-                  <div class="tab">
-                    <input id="tab-three_tech" type="checkbox" name="tabs">
+                    <input id="tab-three_tech" type="radio" name="input-tabs" class="tab-input">
                     <label for="tab-three_tech">Vulnerability
                       <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
                       <i class="mdi mdi-information-outline"></i>
@@ -497,10 +523,7 @@
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="row border-content"></div>
-                  <div class="tab">
-                    <input id="tab-four_tech" type="checkbox" name="tabs">
+                    <input id="tab-four_tech" type="radio" name="input-tabs" class="tab-input">
                     <label for="tab-four_tech">Exposure
                       <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
                       <i class="mdi mdi-information-outline"></i>
@@ -545,8 +568,6 @@
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="row border-content"></div>
                 </div>
               </div>
             </div>
@@ -558,66 +579,6 @@
   </div>
 
 </div>
-<!-- Old layout -->
-
-<div class="container">
-   <div class="row">
-     <div class="col-md-8 vertical-border col-mg">
-        <div class="row">
-        </div>
-        <div class="row" [hidden]="!viewerDisplay || viewerDisplay !== 'tech'">
-          <div class="col-md-12">
-            <div class="card bg-light card-02">
-              <div class="card-header">Hazard Selection: Select one or multiple hazards:
-                 <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Assessment can be performed for floods, earthquakes, tsunamis, windstorm, or any combination of them." triggers="mouseenter:mouseleave" popoverTitle="">
-                 <i class="mdi mdi-information-outline"></i>
-                 </button></div>
-              <div class="card-body">
-                <div class="row">
-                   <div class="col-md-12">
-                      <div class="hover-a">
-                         <a (click)="onSwitchExposure1()" placement="top" ngbPopover="Coastal and Riverine Flooding" triggers="mouseenter:mouseleave" popoverTitle="">
-                           <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard1" src="assets/image/flood-yellow.png" alt=""/>
-                           <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard1" src="assets/image/flood.png" alt="" />
-                         </a>
-                         <a (click)="onSwitchExposure2()" placement="top" ngbPopover="Earthquakes" triggers="mouseenter:mouseleave" popoverTitle="">
-                           <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard2" src="assets/image/earthquake-yellow.png" alt="" />
-                           <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard2" src="assets/image/earthquake.png" alt="" />
-                         </a>
-                         <a (click)="onSwitchExposure3()" placement="top" ngbPopover="Tsunamis" triggers="mouseenter:mouseleave" popoverTitle="">
-                           <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard3" src="assets/image/tsunami-yellow.png" alt="" />
-                           <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard3" src="assets/image/tsunami.png" alt="" />
-                         </a>
-                         <a (click)="onSwitchExposure4()" placement="top" ngbPopover="Windstorms" triggers="mouseenter:mouseleave" popoverTitle="">
-                           <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard4" src="assets/image/wind-yellow.png" alt="" />
-                           <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard4" src="assets/image/wind.png" alt="" />
-                         </a>
-                      </div>
-                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-
-
-
-        <div class="row border-content">
-           <div class="col-md-12">
-              <h6 class="title-results">
-              </h6>
-           </div>
-        </div>
-
-
-
-     </div>
-
- </div>
-</div>
-
 
 <div class="row d-none">
   <div class="col-md-12">
