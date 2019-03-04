@@ -26,12 +26,22 @@
   </div>
 
   <!-- Buttons/tabs -->
-  <div class="btn-group tabs-dg" role="group" aria-label="Basic example">
+  <div class="btn-group tabs-dg" role="group" aria-label="Map dataviz UI">
     <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'well'}" (click)="onChangeMapLayerEvent('well')">{{optionsLabel['well']}}</button>
     <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'asset'}" (click)="onChangeMapLayerEvent('asset')">{{optionsLabel['asset']}}</button>
     <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'socio'}" (click)="onChangeMapLayerEvent('socio')">{{optionsLabel['socio']}}</button>
   </div>
   <!-- End Buttons/tabs -->
+
+  <div class="callout-body">
+    <div class="callout-body-trigger">&rsaquo;</div>
+    <div class="callout-body-inner">
+      <h2>Unbreakable Resilience Indicator</h2>
+      <div class="content">
+        <p>This tool is designed to examine how natural disasters affect people's well-being, and how policy and financial tools available to governments and the World Bank can mitigate these losses, helping more people to escape poverty.</p>
+      </div>
+    </div>
+  </div>
 
 </div>
 <div class="container">
@@ -254,8 +264,8 @@
 
           <div class="box-download">
             <button type="button" class="btn btn-primary text-download" (click)="onResetTechDataEvent()" *ngIf="viewerDisplay == 'tech'">RESET</button>
-            <button type="button" class="btn btn-primary text-download" (click)="onDownloadCSVViewerReportEvent()"><img class="img-download" src="assets/image/ic-download.png" alt="">CSV</button>
-            <button type="button" class="btn btn-primary text-download" (click)="onDownloadPDFViewerReportEvent()"><img class="img-download" src="assets/image/ic-download.png" alt="">PDF</button>
+            <button type="button" class="btn btn-primary text-download" (click)="onDownloadCSVViewerReportEvent()"><img class="img-download" src="assets/image/ic-download-green.png" alt="">CSV</button>
+            <button type="button" class="btn btn-primary text-download" (click)="onDownloadPDFViewerReportEvent()"><img class="img-download" src="assets/image/ic-download-green.png" alt="">PDF</button>
           </div></h2>
         <div class="">
           <div class="">

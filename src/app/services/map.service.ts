@@ -241,7 +241,8 @@ export class MapService {
       center: [0, 20],
       zoom: 0.85,
       maxZoom: 4.6,
-      scrollZoom: false
+      scrollZoom: false,
+      renderWorldCopies: false,
     });
   }
   /**

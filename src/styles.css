@@ -11111,28 +11111,29 @@ fieldset {
         padding-left: 0;
         padding-right: 0;
     }
-.tab .mat-accent {
+.mat-accent {
   min-width: 130px;
 }
-.tab .mat-accent .mat-slider-wrapper,
-.tab .mat-accent .mat-slider-wrapper .mat-slider-ticks-container,
-.tab .mat-accent .mat-slider-wrapper .mat-slider-track-background,
-.tab .mat-accent .mat-slider-wrapper .mat-slider-ticks {
+.mat-accent .mat-slider-wrapper,
+.mat-accent .mat-slider-wrapper .mat-slider-ticks-container,
+.mat-accent .mat-slider-wrapper .mat-slider-track-background,
+.mat-accent .mat-slider-wrapper .mat-slider-ticks {
   height: 7px;
 }
-.tab .mat-accent .mat-slider-wrapper .mat-slider-thumb {
+.mat-accent .mat-slider-wrapper .mat-slider-thumb {
   bottom: -12px;
 }
-.tab .mat-accent .mat-slider-thumb, .tab .mat-accent .mat-slider-thumb-label, .tab .mat-accent .mat-slider-track-fill {
+.mat-accent .mat-slider-thumb, .mat-accent .mat-slider-thumb-label, .mat-accent .mat-slider-track-fill {
   /* background-color: #0cbd8f; */
-  background-color: #6dccdc;
+  background-color: #6dccdc !important;
 }
-.tab .mat-accent .mat-slider-thumb {
+.mat-accent .mat-slider-thumb {
   height: 25px;
   width: 25px;
   background-color: #dbdde3;
+  border-color: transparent !important;
 }
-.tab .mat-accent .mat-slider-track-fill, .tab .mat-slider-horizontal .mat-slider-track-wrapper {
+.mat-accent .mat-slider-track-fill, .mat-slider-horizontal .mat-slider-track-wrapper {
   height: 7px;
   border-radius: 5px
 }
