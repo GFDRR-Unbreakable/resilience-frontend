@@ -6,6 +6,15 @@
   top: 0;
   background: rgb(0, 0, 0); /* Fallback for older browsers without RGBA-support */
   background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  z-index: 500;
+  transition: right 500ms;
+}
+
+.callout-body.closed {
+  right: calc(-50% + 3rem);
 }
 
 @media (max-width: 1200px) {
@@ -55,6 +64,8 @@
   left: 1rem;
   top: auto;
   bottom: auto;
+  font-family: "Helvetica", sans-serif;
+  cursor: pointer;
 }
 
 .callout-body-trigger {

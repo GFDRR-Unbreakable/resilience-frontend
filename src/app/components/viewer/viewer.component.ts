@@ -35,6 +35,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   public countryListIsoCodes: Array<any> = [];
   public getOutputDataSubs: Subscription;
   public global = true;
+  public mapComponentOpen = true;
   public hazards = {
     hazard1: true,
     hazard2: true,
@@ -1479,5 +1480,9 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     inputChartKeys.forEach(key => {
       this.chartService.createInputCharts(data, `${key}-${suffix}`, sliderVal, filteredGroup);
     });
+  }
+
+  public toggleMapComponent() {
+    this.mapComponentOpen = !this.mapComponentOpen;
   }
 }
