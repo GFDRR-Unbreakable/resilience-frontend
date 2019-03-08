@@ -76,7 +76,8 @@ section {
   display: block;
 }
 nav .logo-img{
-  width: 60%;
+  width: 100%;
+  margin-left: 1rem;
 }
 footer .footer-logo {
   margin-right: 15px;
@@ -323,10 +324,16 @@ template {
 }
 
 .navbar-brand {
-  display: inline-block;
-  padding-top: .25rem;
-  padding-bottom: .25rem;
-  margin-right: 1rem;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-left: 22px;
+  margin-top: 0 !important;
+  padding: 0;
+  width: 450px;
+  margin-right: 0;
   font-size: 12px;
   line-height: inherit;
   white-space: nowrap;
@@ -10725,13 +10732,6 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
   color: #2C3E50;
 }
 
-.navbar-brand {
-    margin-left: 22px;
-}
-.icon-img{
-  /* padding-right: 6px; */
-  margin-top: -13px;
-}
 .navbar-nav .nav-item + .nav-item {
   margin-left: 2rem;
 }
