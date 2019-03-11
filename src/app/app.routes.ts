@@ -33,6 +33,10 @@ export const appRoutes: Routes = [
   }, {
     path: 'viewer',
     component: ViewerComponent
+  },
+  {
+    path: 'full-analysis',
+    component: ViewerComponent
   }
 ];
 

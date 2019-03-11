@@ -2,6 +2,7 @@ import { listenToTriggers } from '@ng-bootstrap/ng-bootstrap/util/triggers';
 import { search } from '@ngrx/router-store';
 import { distinctUntilKeyChanged } from 'rxjs/operator/distinctUntilKeyChanged';
 import { distinct } from 'rxjs/operator/distinct';
+import { ActivatedRoute } from '@angular/router';
 import { Viewer, ViewerGroup, ViewerModel } from '../../store/model/viewer.model';
 import { ViewerAction } from '../../store/action/viewer.action';
 import {AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
@@ -42,6 +43,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     hazard3: true,
     hazard4: true
   };
+  public url;
   public chartConf = {};
   public hoverCountry: string;
   public hoverValue: string;
@@ -216,10 +218,15 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     private mapService: MapService,
     private chartService: ChartService,
     private store: Store<AppStore>,
-    private fileService: FileService) {
+    private fileService: FileService,
+    private router: ActivatedRoute ) {
       this.viewer$ = store.select('viewer');
       this.viewerModel1$ = store.select('viewerModel1');
       this.viewerModel2$ = store.select('viewerModel2');
+      router.url.subscribe((url) => {
+        this.url = url;
+        console.log(url[0].path);
+      });
     }
   // LIFE-CYCLE METHODS
   /**
@@ -286,7 +293,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // @TODO: Find cleaner way to trigger model run.
     if (fromListFilter.length > 0) {
-      this.onChangeViewerIndViewEvent('viewer');
+      this.onChangeViewerIndViewEvent((this.url[0].path === 'viewer') ? 'viewer' : 'tech');
     }
   }
   /**
@@ -651,7 +658,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   createMapPageOutputChartTable(data:any, containerId:string, groupName?:any, isoCode?: any):any {
-    console.log(data);
     this.chartService.createSingleOutputChart(data.risk_to_assets, 'risk_to_assets', 'output-risks_to_assets_1', groupName, isoCode);
     this.chartService.createSingleOutputChart(data.risk, 'risk', 'output-risk_1', groupName, isoCode);
     this.chartService.createSingleOutputChart(data.resilience, 'resilience', 'output-resilience_1', groupName, isoCode);
