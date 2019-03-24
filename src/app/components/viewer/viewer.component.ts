@@ -63,7 +63,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   public sliderValues2 = {};
   public viewerDisplay: string = '';
   public viewerModel: Viewer = {
-    firstCountry: '',
+    firstCountry: '', // @TODO: TMP
     secondCountry: ''
   };
   public viewerGroupModel: ViewerGroup = {
@@ -184,7 +184,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       if (!term.length) {
         return this.countryUIList.slice(0, 10);
       } else {
-        return this.countryUIList.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10);
+        return this.countryUIList.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) === 0).slice(0, 10);
       }
     };
     return map.call(distinctUntilChangedFn, searchCb);
@@ -269,6 +269,10 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.setViewerObservableConf();
     this.setViewerModel1ObservableConf();
     this.setViewerModel2ObservableConf();
+
+    // // @TODO: TMP
+    // this.onChangeViewerIndViewEvent((this.url[0].path === 'viewer') ? 'viewer' : 'tech');
+
   }
   // METHODS
   /**
@@ -666,7 +670,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.chartService.createSingleOutputChart(data.risk, 'risk', 'output-risk_2', groupName, isoCode);
     this.chartService.createSingleOutputChart(data.resilience, 'resilience', 'output-resilience_2', groupName, isoCode);
 
-    //this.chartService.createOutputChart(data, containerId, groupName, false, isoCode);
+    // this.chartService.createOutputChart(data, containerId, groupName, false, isoCode);
   }
   /**
    * This method builds data from Output & Input, country input fields and chart default values to be
@@ -850,14 +854,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           const value = this.mapSlideUISelected == 'asset' ? countryData.risk_to_assets
             : this.mapSlideUISelected == 'socio' ? countryData.resilience
             : this.mapSlideUISelected == 'well' ? countryData.risk : 0;
-
-          /*if (this.mapSlideUISelected == 'asset') {
-            value = features[0].properties['1_Assets'];
-          } else if (this.mapSlideUISelected == 'socio') {
-            value = features[0].properties['2_SocEcon'];
-          } else if (this.mapSlideUISelected == 'well') {
-            value = features[0].properties['3_WeBeing'];
-          }*/
 
           this.hoverCountry = names;
           this.hoverValue = (parseFloat(value) * 100).toFixed(2);

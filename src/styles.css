@@ -919,10 +919,11 @@ template {
    .box-tab-text{
      /* padding-top: 15px; */
      /* padding-bottom: 15px; */
-     font-size: 12px;
+     font-size: 16px;
      color: #666;
-     line-height: 13px;
-     height: 70px;
+     line-height: 1.2;
+     /*height: 70px;*/
+     min-height: 90px;
      padding-top: 5px;
    }
    .td-label-txt {
@@ -11774,4 +11775,114 @@ fieldset {
   -o-transition: left 0.15s ease-out;
   transition: left 0.15s ease-out;
   border-radius: 18px;
+}
+
+/**
+ @TODO: Add to viewer.component.css
+ */
+
+.tab-content__flip-table-axis {
+  border: 1px solid #F00 !important;
+}
+
+.tab-content__flip-table-axis table {
+  display: block;
+}
+
+.tab-content__flip-table-axis tbody {
+  display: flex;
+}
+
+.tab-content__flip-table-axis tr,
+.tab-content__flip-table-axis td {
+  display: block;
+  width: auto;
+}
+
+.tab-content__flip-table-axis tr {
+  flex: 1;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.input__fip-table-axis {
+  display: flex;
+  width: 100%;
+}
+
+.tab-content__flip-table-axis .input-row {
+  flex: 1;
+}
+
+.tab-content__flip-table-axis {
+  width: 100%;
+}
+
+.input_charts-label-text {
+  color: #666666;
+}
+
+.input-charts__wrapper {
+  display: flex;
+  width: 100%;
+  margin-left: 15px;
+  margin-right: 15px;
+  align-items: flex-end;
+}
+
+.input-charts__wrapper .input_charts-label-text {
+  flex: 1 1 200px;
+  width: 200px;
+  min-width: 200px;
+}
+
+.input_charts-label-text {
+  width: 300px;
+  padding-bottom: 0.9em;
+}
+
+.label-text {
+  display: flex;
+  margin-left: 15px;
+  margin-right: 15px;
+  width: 100%;
+}
+
+.label-text table {
+  width: 100%;
+}
+
+.label-text .input_charts-label-text {
+  width: 200px;
+  min-width: 200px;
+}
+
+.chart-table tr {
+  display: flex !important;
+  align-items: center;
+}
+
+.chart-table tr > * {
+  flex: 1 1 auto;
+}
+
+.input-charts__flip-axis {
+  display: block;
+}
+
+.input-charts__flip-axis > * {
+  width: 100%;
+}
+
+.tab-content__flip-row-axis {
+  display: flex;
+}
+.tab-content__flip-row-axis > * {
+  flex: 1 1 20%;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.mat-slider-horizontal {
+  /*min-width: 90px !important;*/
 }

@@ -259,7 +259,7 @@ export class ChartService {
      // console.log('type ', this.type);
     });
   }
-  private calculateGDPValues (containerId, key, numericValue, gdpDollars, precision, oldValue?) {
+  private calculateGDPValues(containerId, key, numericValue, gdpDollars, precision, oldValue?) {
     this.subscription();
     let percent;
     let value;
@@ -431,6 +431,8 @@ export class ChartService {
         return d;
       }).left;
 
+      console.log(containerId);
+
       const div = d3.select(`div#${containerId}`)
         .append('div')
         .attr('class', 'input-row');
@@ -438,7 +440,7 @@ export class ChartService {
 
       const table = div.append('table')
         .attr('width', '100%')
-        .attr('class', 'table table-responsive')
+        .attr('class', 'table table-responsive chart-table')
         .attr('id', 'table-' + input.key)
         .style('pointer-events', 'none')
         .style('overflow-x', 'hidden');

@@ -284,9 +284,10 @@
 
                     <input id="tab-one" type="radio" name="tabs" class="tab-input" checked="checked">
                     <label for="tab-one" class="tab-label">Social Protection</label>
-                    <div class="tab-content">
+                    <div class="tab-content tab-content__flip-table-axis">
                       <div class="row align-items-start">
-                        <div class="col-md-4 label-text">
+                        <div class="label-text">
+                          <div class="input_charts-label-text">&nbsp;</div>
                           <table>
                             <tbody>
                             <tr *ngFor="let inputType of inputTypes.inputSoc">
@@ -295,11 +296,13 @@
                             </tbody>
                           </table>
                         </div>
-                        <div class="col-md-4">
-                          <div id="inputSoc-1"></div>
+                        <div class="input-charts__wrapper">
+                          <div class="input_charts-label-text">{{viewerModel.firstCountry}}</div>
+                          <div id="inputSoc-1" class="input__fip-table-axis"></div>
                         </div>
-                        <div class="col-md-4">
-                          <div id="inputSoc-2"></div>
+                        <div class="input-charts__wrapper">
+                          <div class="input_charts-label-text">{{viewerModel.secondCountry}}</div>
+                          <div id="inputSoc-2" class="input__fip-table-axis"></div>
                         </div>
                       </div>
                     </div>
@@ -309,9 +312,10 @@
                        <i class="mdi mdi-information-outline"></i>
                       </button> -->
                     </label>
-                    <div class="tab-content">
+                    <div class="tab-content tab-content__flip-table-axis">
                       <div class="row">
-                        <div class="col-md-4 label-text">
+                        <div class="label-text">
+                          <div class="input_charts-label-text">&nbsp;</div>
                           <table>
                             <tbody>
                             <tr *ngFor="let inputType of inputTypes.inputEco">
@@ -320,11 +324,13 @@
                             </tbody>
                           </table>
                         </div>
-                        <div class="col-md-4">
-                          <div id="inputEco-1"></div>
+                        <div class="input-charts__wrapper">
+                          <div class="input_charts-label-text">{{viewerModel.firstCountry}}</div>
+                          <div id="inputEco-1" class="input__fip-table-axis"></div>
                         </div>
-                        <div class="col-md-4">
-                          <div id="inputEco-2"></div>
+                        <div class="input-charts__wrapper">
+                          <div class="input_charts-label-text">{{viewerModel.secondCountry}}</div>
+                          <div id="inputEco-2" class="input__fip-table-axis"></div>
                         </div>
                       </div>
                     </div>
@@ -334,9 +340,10 @@
                        <i class="mdi mdi-information-outline"></i>
                       </button> -->
                     </label>
-                    <div class="tab-content">
+                    <div class="tab-content tab-content__flip-table-axis">
                       <div class="row">
-                        <div class="col-md-4 label-text">
+                        <div class="label-text">
+                          <div class="input_charts-label-text">&nbsp;</div>
                           <table>
                             <tbody>
                             <tr *ngFor="let inputType of inputTypes.inputVul">
@@ -345,11 +352,13 @@
                             </tbody>
                           </table>
                         </div>
-                        <div class="col-md-4">
-                          <div id="inputVul-1"></div>
+                        <div class="input-charts__wrapper">
+                          <div class="input_charts-label-text">{{viewerModel.firstCountry}}</div>
+                          <div id="inputVul-1" class="input__fip-table-axis"></div>
                         </div>
-                        <div class="col-md-4">
-                          <div id="inputVul-2"></div>
+                        <div class="input-charts__wrapper">
+                          <div class="input_charts-label-text">{{viewerModel.secondCountry}}</div>
+                          <div id="inputVul-2" class="input__fip-table-axis"></div>
                         </div>
                       </div>
                     </div>
@@ -359,9 +368,10 @@
                         <i class="mdi mdi-information-outline"></i>
                       </button> -->
                     </label>
-                    <div class="tab-content">
+                    <div class="tab-content tab-content__flip-table-axis">
                       <div class="row">
-                        <div class="col-md-4 label-text">
+                        <div class="label-text">
+                          <div class="input_charts-label-text">&nbsp;</div>
                           <table>
                             <tbody>
                             <tr *ngFor="let inputType of inputTypes.inputExp">
@@ -370,11 +380,13 @@
                             </tbody>
                           </table>
                         </div>
-                        <div class="col-md-4">
-                          <div id="inputExp-1"></div>
+                        <div class="input-charts__wrapper">
+                          <div class="input_charts-label-text">{{viewerModel.firstCountry}}</div>
+                          <div id="inputExp-1" class="input__fip-table-axis"></div>
                         </div>
-                        <div class="col-md-4">
-                          <div id="inputExp-2"></div>
+                        <div class="input-charts__wrapper">
+                          <div class="input_charts-label-text">{{viewerModel.secondCountry}}</div>
+                          <div id="inputExp-2" class="input__fip-table-axis"></div>
                         </div>
                       </div>
                     </div>
@@ -405,42 +417,50 @@
                       </button> -->
                     </label>
                     <div class="tab-content">
-                      <div class="row" *ngFor="let inputType of inputTypes.inputSoc">
-                        <div class="col-md-4 box-tab-text">
-                          {{inputLabels[inputType] ? inputLabels[inputType].descriptor : inputType}}
+                      <div class="tab-content__flip-row-axis">
+                        <div class="row input-charts__flip-axis">
+                          <div class="box-tab-text">&nbsp;</div>
+                          <div class="input_charts-label-text" style="min-height: 80px;">{{viewerModel.firstCountry}}</div>
+                          <div class="input_charts-label-text" style="min-height: 80px;">{{viewerModel.secondCountry}}</div>
                         </div>
-                        <div class="col-md-4">
-                          <md-slider
-                            [min]="sliderValues1[inputType + '_min']"
-                            [max]="sliderValues1[inputType + '_max']"
-                            [step]="sliderValues1[inputType + '_step']"
-                            [value]="sliderValues1[inputType + '_value']"
-                            [(ngModel)]="sliderValues1[inputType + '_value']"
-                            (change)="onSliderChangeEvent1(inputType)"
-                            (input)="onSliderInputEvent1($event, inputType)"
-                          >
-                          </md-slider>
-                          <span class="text-right slider-text">
+                        <div class="row input-charts__flip-axis" *ngFor="let inputType of inputTypes.inputSoc">
+                          <div class="box-tab-text">
+                            {{inputLabels[inputType] ? inputLabels[inputType].descriptor : inputType}}
+                          </div>
+                          <div class="" style="position: relative; min-height: 80px;">
+                            <md-slider
+                              [min]="sliderValues1[inputType + '_min']"
+                              [max]="sliderValues1[inputType + '_max']"
+                              [step]="sliderValues1[inputType + '_step']"
+                              [value]="sliderValues1[inputType + '_value']"
+                              [(ngModel)]="sliderValues1[inputType + '_value']"
+                              (change)="onSliderChangeEvent1(inputType)"
+                              (input)="onSliderInputEvent1($event, inputType)"
+                            >
+                            </md-slider>
+                            <span class="text-right slider-text">
                                               {{sliderValues1[inputType + '_difference_value']}} <br /> <span class="slider-text-base">Base: {{sliderValues1[inputType + '_baseline_value']}}</span>
                                               <br /> <span class="slider-text-base">New Value: {{sliderValues1[inputType + '_display_value']}}</span>
                                             </span>
-                        </div>
-                        <div class="col-md-4">
-                          <md-slider
-                            [min]="sliderValues2[inputType + '_min']"
-                            [max]="sliderValues2[inputType + '_max']"
-                            [step]="sliderValues2[inputType + '_step']"
-                            [value]="sliderValues2[inputType + '_value']"
-                            [(ngModel)]="sliderValues2[inputType + '_value']"
-                            (change)="onSliderChangeEvent2(inputType)"
-                            (input)="onSliderInputEvent2($event, inputType)"
-                          >
-                          </md-slider>
-                          <span class="text-right slider-text">
+                          </div>
+                          <div class="" style="position: relative; min-height: 80px;">
+                            <md-slider
+                              [min]="sliderValues2[inputType + '_min']"
+                              [max]="sliderValues2[inputType + '_max']"
+                              [step]="sliderValues2[inputType + '_step']"
+                              [value]="sliderValues2[inputType + '_value']"
+                              [(ngModel)]="sliderValues2[inputType + '_value']"
+                              (change)="onSliderChangeEvent2(inputType)"
+                              (input)="onSliderInputEvent2($event, inputType)"
+                            >
+                            </md-slider>
+                            <span class="text-right slider-text">
                                               {{sliderValues2[inputType + '_difference_value']}} <br /> <span class="slider-text-base">Base: {{sliderValues2[inputType + '_baseline_value']}}</span>
                                               <br /> <span class="slider-text-base">New Value: {{sliderValues2[inputType + '_display_value']}}</span>
                                             </span>
+                          </div>
                         </div>
+
                       </div>
                     </div>
                     <input id="tab-two_tech" type="radio" name="input-tabs" class="tab-input">
