@@ -1088,39 +1088,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * no one of them is selected.
    */
   onChangeViewerIndViewEvent(viewType) {
-    const bodyEl = jQuery('html, body');
-    // If these don't match, scroll to just below the map.
-    if (!this.viewerDisplay || this.viewerDisplay !== viewType) {
-      this.viewerDisplay = viewType;
-      const el = jQuery('div#viewIndCtn')[0];
-      const body = jQuery('body')[0];
-      const bodyDimension = body.getBoundingClientRect();
-      const elDimension = el.getBoundingClientRect();
-      let scrollMeasure;
-      if (elDimension.y > bodyDimension.y) {
-        scrollMeasure = elDimension.y - bodyDimension.y;
-      }
-      // bodyEl.animate({
-      //   scrollTop: (scrollMeasure - 10)
-      // }, 1000);
-    }
-    // If these do match, scroll to top of page.
-    else if (this.viewerDisplay === viewType) {
-      this.viewerDisplay = '';
-      // bodyEl.animate({
-      //   scrollTop: 0
-      // }, 1000);
-    }
-    // Don't know what type1S is used for.
-    this.chartService.type1S = this.viewerDisplay;
-    // this.chartService.updateContents(this.viewerModel.firstCountry, this.viewerModel.secondCountry);
-
-    // This appears to be redundant, on several levels.
-    /*this._selectedCountryList.forEach(country => {
-      const chartIndex = country.index === 0 ? '1' : '2';
-      this.chartService.updateOutputCharts(`outputs-${chartIndex}`, country.code, null, true, this.viewerDisplay === 'tech');
-      this.onResetTechDataEvent();
-    });*/
+    this.viewerDisplay = viewType;
 
     this.onResetTechDataEvent();
     return false;

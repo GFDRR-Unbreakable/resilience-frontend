@@ -11782,7 +11782,6 @@ fieldset {
  */
 
 .tab-content__flip-table-axis {
-  border: 1px solid #F00 !important;
 }
 
 .tab-content__flip-table-axis table {
@@ -11881,8 +11880,15 @@ fieldset {
   flex: 1 1 20%;
   margin-left: 0;
   margin-right: 0;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
 
 .mat-slider-horizontal {
-  /*min-width: 90px !important;*/
+  /*min-width: 108px !important;*/
+}
+
+.tab-content__flip-row-axis .slider-text {
+  float: none;
+  right: 0;
 }
