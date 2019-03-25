@@ -2891,11 +2891,12 @@ export class ChartService {
 
   updateOutputCharts(containerId: string, selectedId?: any, groupName?: string, brush2?: boolean, tech?: boolean) {
     const domains = this.filterOutputDataByGroup(this._outputDomains, groupName);
-    console.log(containerId);
 
-    console.log('domains', domains);
     const me = this;
     jQuery.each(domains, (idx, outputData) => {
+      const numericSection = containerId.substring(containerId.length - 1);
+      const chartId = `output-${(idx === 'risk_to_assets') ? 'risks_to_assets' : idx}_${numericSection}`;
+
       const ini = d3.select(`#${containerId} svg#${idx} g.initial line`);
       console.log('ini', ini);
       const outputId = containerId.indexOf('1') >= 0 ? 'output1' : 'output2';
@@ -2949,7 +2950,8 @@ export class ChartService {
       }
       // This updates this._outputDomains[key]['chart'][containerId].
       const value = me.calculateGDPValues(containerId, idx, numericValue, avgDoll, precision, oldValue);
-      jQuery(`#${containerId} #${idx} .text-number`).html(value);
+      console.log("debug", chartId, value);
+      jQuery(`#${containerId} #${chartId} .text-number`).html(value);
       const brushg = d3.selectAll(`#${containerId} svg#${idx} g.brush`);
       const path = brushg.select('path');
       path.style('visibility', tech ? 'visible' : 'hidden');
