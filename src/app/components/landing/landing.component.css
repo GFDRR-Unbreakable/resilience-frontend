@@ -90,6 +90,12 @@
 
 .card-img-top {
   width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card {
+  overflow: hidden;
 }
 
 .card-body {
@@ -98,7 +104,18 @@
   width: 100%;
   background: rgb(0, 0, 0); /* Fallback for older browsers without RGBA-support */
   background: rgba(0, 0, 0, 0.6);
-  padding: 8px 22px 25px 22px;
+  padding: 8px 22px;
+}
+
+.card__content-wrapper {
+  overflow: hidden;
+  transition: max-height 0.5s;
+  max-height: 0;
+  height: auto;
+}
+
+.card__hover .card__content-wrapper {
+  max-height: 15rem;
 }
 
 @media (min-width: 992px) and (max-width: 1200px) {

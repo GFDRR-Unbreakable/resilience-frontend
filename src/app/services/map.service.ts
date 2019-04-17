@@ -108,7 +108,8 @@ export class MapService {
     }, {
       layerId: this._layerHoverId,
       paint: {
-        'fill-color': '#ffe502',
+        'fill-outline-color': '#222222',
+        'fill-color': 'rgba(0, 0, 0, 0)',
         'fill-opacity': 1,
       },
       filter: ['==', 'ISO_Code', ''],
@@ -237,10 +238,11 @@ export class MapService {
       container: mapId,
       preserveDrawingBuffer: true,
       style: 'mapbox://styles/gsdpm/cir6ljf470006bsmehhstmxeh',
-      center: [10, 35],
-      zoom: 0.55,
+      center: [0, 20],
+      zoom: 0.85,
       maxZoom: 4.6,
-      maxBounds: [[-180, -80], [180, 80]]
+      scrollZoom: false,
+      renderWorldCopies: false,
     });
   }
   /**
