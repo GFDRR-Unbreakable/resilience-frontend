@@ -47,19 +47,19 @@
 <div class="container">
   <div class="row">
     <div class="col-md-8">
-      <h2 class="mappage__header">Select Countries</h2>
-      <p>Select two countries by typing their names below.</p>
+      <h2 class="mappage__header">Select Country</h2>
+      <p>Select a country by typing its name below.</p>
       <div class="box-dropdown row">
         <div class="form-group col-md-6" [class.has-danger]="searchFailed">
           <input id="country-1Txt" type="text" class="form-control input-wd" [(ngModel)]="viewerModel.firstCountry" [ngbTypeahead]="searchCountryFn" #country1="ngModel" (ngModelChange)="onFirstCountryInputChangeEvent()" placeholder="Country A"/>
           <span *ngIf="searching">searching...</span>
           <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
         </div>
-        <div class="form-group col-md-6" [class.has-danger]="searchFailed">
-          <input id="country-2Txt" type="text" class="form-control input-wd" [(ngModel)]="viewerModel.secondCountry" [ngbTypeahead]="searchCountryFn" #country2="ngModel" (ngModelChange)="onSecondCountryInputChangeEvent()" placeholder="Country B"/>
-          <span *ngIf="searching">searching...</span>
-          <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
-        </div>
+<!--        <div class="form-group col-md-6" [class.has-danger]="searchFailed">-->
+<!--          <input id="country-2Txt" type="text" class="form-control input-wd" [(ngModel)]="viewerModel.secondCountry" [ngbTypeahead]="searchCountryFn" #country2="ngModel" (ngModelChange)="onSecondCountryInputChangeEvent()" placeholder="Country B"/>-->
+<!--          <span *ngIf="searching">searching...</span>-->
+<!--          <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>-->
+<!--        </div>-->
       </div>
     </div>
 
@@ -157,11 +157,12 @@
   <div class="row" id="viewIndCtn">
     <div class="col-md-6">
       <h2 class="mappage__header">Select a View</h2>
-      <p>View the risk indicators of losses in assets and well-being and changes in socio-economic resilience due to natural disasters in an average year for one or two countries.</p>
+      <p>View the risk indicators of losses in assets and well-being and changes in socio-economic resilience due to natural disasters in an average year for your selected country.</p>
+      <p *ngIf="viewerModel.firstCountry"><a routerLink="/policyprioritylist" [queryParams]="{country: viewerModel.firstCountry}">View specific policy impacts for {{viewerModel.firstCountry}}</a></p>
       <div class="btn-group wt-dv" role="group" aria-label="Set viewer view">
         <button type="button" class="btn btn-primary wt-lb" [disabled]='_selectedCountryList.length === 0' [ngClass]="{active: viewerDisplay === 'viewer'}" (click)="onChangeViewerIndViewEvent('viewer')">VIEW INDICATORS</button>
         <span class="wt-sp">&nbsp;</span>
-        <button type="button" class="btn btn-primary wt-lb" [disabled]='_selectedCountryList.length === 0' [ngClass]="{active: viewerDisplay === 'tech'}" (click)="onChangeViewerIndViewEvent('tech')">RUN MODEL</button>
+        <button type="button" class="btn btn-primary wt-lb" [disabled]='_selectedCountryList.length === 0' [ngClass]="{active: viewerDisplay === 'tech'}" (click)="onChangeViewerIndViewEvent('tech')">ACCESS RUN MODEL</button>
       </div>
     </div>
 
@@ -212,13 +213,13 @@
     </div>
 
 
-    <div class="col-md-6" [hidden]="!viewerDisplay || viewerDisplay !== 'tech'">
+    <div class="col-md-6">
       <h2 class="mappage__header">Hazards Selection
         <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Assessment can be performed for floods, earthquakes, tsunamis, windstorm, or any combination of them." triggers="mouseenter:mouseleave" popoverTitle="">
           <i class="mdi mdi-information-outline"></i>
         </button>
       </h2>
-      <p>Select one or multiple hazards.</p>
+      <p [hidden]="!viewerDisplay || viewerDisplay !== 'tech'">Select one or multiple hazards.</p>
       <div class="">
         <div class="row">
           <div class="col-md-12">
@@ -705,21 +706,12 @@
     <div class="card-header">Unbreakable Resilience Indicator</div>
     <div class="card-body">
       This tool is designed to examine how natural disasters affect people’s well-being, and how policy and financial tools available to governments and the World Bank can mitigate these losses, helping more people to escape poverty. Click <a href="https://www.gfdrr.org/unbreakable">here</a>  to learn more.
-      <!-- Every year worldwide, poor people suffer only a fraction of gross economic
-      losses caused by natural disasters, but they bear a much larger brunt of natural disasters’
-      consequences. This is because each dollar lost in a natural disaster means much more
-      to a poor person than to a wealthy one.
-      <br /><br />
-      This tool is designed to examine how natural disasters affect people’s
-      well-being, and how policy and financial tools available to governments and
-      the World Bank can mitigate these losses, helping more people to escape poverty.
-      Click <a href="https://www.gfdrr.org/unbreakable">here</a> to learn more. -->
       <hr class="report">
       <div class="row">
         <div class="col-md-12">
 
-          <p>View the risk indicators of losses in assets and well-being and changes in socio-economic resilience due to natural disasters in an average year for one or two countries.</p>
-          <p>Or click on 'Run Model' so you can manipulate the resilience inputs under the map to see how policy interventions could mitigate asset risk and well-being risk, and build socioeconomic resilience in countries around the world.</p>
+          <p>View the risk indicators of losses in assets and well-being and changes in socio-economic resilience due to natural disasters in an average year for your selected country.</p>
+          <p>Or click on 'Access Run Model' so you can manipulate the resilience inputs under the map to see how policy interventions could mitigate asset risk and well-being risk, and build socioeconomic resilience in countries around the world.</p>
           <!-- <p>View losses on assets and well-being and changes in
           socio-economic capacity for one or two countries.</p> -->
           <p>Select two countries from the map or type their names:</p>
@@ -729,17 +721,6 @@
 
       </div>
       <br>
-      <!-- <button type="button" name="button" class="btn btn-primary btn-block"> NEXT <img src="assets/image/ic-next.png" alt=""></button> -->
-
-      <!-- <div [(ngModel)]="viewerDisplay" (ngModelChange)="onChangeViewerIndViewEvent()" ngbRadioGroup class="wt-dv">
-        <label ngbButtonLabel class="nav-pills wt-lb">
-          <input ngbButton type="radio" [value]="viewer">VIEW INDICATORS
-        </label>
-        <span class="wt-sp"><strong>OR</strong></span>
-        <label ngbButtonLabel class="nav-pills wt-lb">
-          <input ngbButton type="radio" [value]="tech">RUN MODEL
-        </label>
-      </div> -->
     </div>
   </div>
 
