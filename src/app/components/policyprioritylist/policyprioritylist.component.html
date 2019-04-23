@@ -21,7 +21,7 @@
         <div class="col-md-6 box-policyprioritylist vertical-border">
             <div class="col-md-12">
                 <h5>{{policyModel.firstCountry || 'Country A'}}</h5>
-                <p class="scorecard-text"><b>GDP:</b> ${{firstCountryGDP}}&nbsp;USD</p>
+                <p class="scorecard-text"><b>GDP:</b> US$ {{firstCountryGDP}}</p>
                 <p class="scorecard-text"><b>Population (2013 est.):</b> {{firstCountryPopulation}}</p>
             </div>
             <div class="col-md-12">
@@ -47,7 +47,7 @@
         <div class="col-md-6 box-policyprioritylist">
             <div class="col-md-12">
                 <h5>{{policyModel.secondCountry || 'Country B'}}</h5>
-                <p class="scorecard-text"><b>GDP:</b> ${{secondCountryGDP}}&nbsp;USD</p>
+                <p class="scorecard-text"><b>GDP:</b> US$ {{secondCountryGDP}}</p>
                 <p class="scorecard-text"><b>Population (2013 est.):</b> {{secondCountryPopulation}}</p>
             </div>
             <div class="col-md-12">
@@ -79,17 +79,17 @@
                     </button>
                 </h5>
                 <div class="line-dd">
-                    <label class="text-sort label-mg">
-                        Sort policies by
-                        <i class="mdi mdi-checkbox-blank-circle box-icon-a"></i>
-                        Well-being
-                        <img class="icon-sort" (click)="onSortChartDataEvent('1')" />
-                        or &nbsp;
-                        <i class="mdi mdi-checkbox-blank-circle box-icon-c"></i>
-                        Assets
-                        <img class="icon-sort" (click)="onSortChartDataEvent('2')" />
-                        and view economic losses in terms of
-                    </label>
+<!--                    <label class="text-sort label-mg">-->
+<!--                        Sort policies by-->
+<!--                        <i class="mdi mdi-checkbox-blank-circle box-icon-a"></i>-->
+<!--                        Well-being-->
+<!--                        <img class="icon-sort" (click)="onSortChartDataEvent('1')" />-->
+<!--                        or &nbsp;-->
+<!--                        <i class="mdi mdi-checkbox-blank-circle box-icon-c"></i>-->
+<!--                        Assets-->
+<!--                        <img class="icon-sort" (click)="onSortChartDataEvent('2')" />-->
+<!--                        and view economic losses in terms of-->
+<!--                    </label>-->
                     <!-- <div class="row switch-position">
                         <div class="switch-btn">
                             <label class="toggle-switch nolabel">

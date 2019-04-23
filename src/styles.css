@@ -932,11 +932,10 @@ template {
    .box-tab-text{
      /* padding-top: 15px; */
      /* padding-bottom: 15px; */
-     font-size: 16px;
      color: #666;
      line-height: 1.2;
      /*height: 70px;*/
-     min-height: 90px;
+     min-height: 60px;
      padding-top: 5px;
    }
    .td-label-txt {
@@ -1299,7 +1298,7 @@ template {
   padding-bottom: 25px;
 }
 .box-title-terms{
-  padding: 20px !important;
+  padding: 20px 0 !important;
 }
 .box-title-terms-01{
   padding: 0px 20px 0px 20px !important;
@@ -11797,6 +11796,7 @@ fieldset {
  */
 
 .tab-content__flip-table-axis {
+  padding-top: 1rem;
 }
 
 .tab-content__flip-table-axis table {
