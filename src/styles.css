@@ -23,10 +23,13 @@
 .terms-use{
   text-decoration: underline;
   color: #666666;
-  float: right;
 }
 .terms-use:hover{
   color: #666666;
+}
+.term-use-wrapper {
+  text-align: center;
+  padding: 30px 0 15px;
 }
 
 html {
