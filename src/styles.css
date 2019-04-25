@@ -23,10 +23,13 @@
 .terms-use{
   text-decoration: underline;
   color: #666666;
-  float: right;
 }
 .terms-use:hover{
   color: #666666;
+}
+.term-use-wrapper {
+  text-align: center;
+  padding: 30px 0 15px;
 }
 
 html {
@@ -330,7 +333,8 @@ template {
   justify-content: space-between;
 
   margin-left: 22px;
-  margin-top: 0 !important;
+  /*margin-top: 0 !important;*/
+  margin-top: 7px;
   padding: 0;
   width: 450px;
   margin-right: 0;
@@ -339,6 +343,13 @@ template {
   white-space: nowrap;
   font-weight: bold;
 }
+
+@media (min-width: 992px) {
+  .navbar-brand {
+    margin-top: 0;
+  }
+}
+
 .navbar-brand:focus, .navbar-brand:hover {
   text-decoration: none;
 }
@@ -725,24 +736,24 @@ template {
     margin-bottom: 14px;
   }
   .country-p{
-    padding: 0 0 0 15px;
+    padding: 0 0 0 0; /*15px;*/
     margin-top: -2px;
-    margin-left: 10px;
+    margin-left: 25px;
     font-size: 11px;
     /*line-height: 1;*/
     white-space: nowrap;
   }
   .global-p{
-    padding: 0 0 0 15px;
+    padding: 0 0 0 0;/*15px;*/
     margin-top: 5px;
-    margin-left: 10px;
+    margin-left: 25px;
     font-size: 11px;
     white-space: nowrap;
   }
   .value-p{
-    padding: 0 0 0 15px;
+    padding: 0 0 0 0; /*15px;*/
     font-size: 11px;
-    margin-left: 10px;
+    margin-left: 25px;
     margin-top: 5px;
     white-space: nowrap;
   }
@@ -932,13 +943,15 @@ template {
    .box-tab-text{
      /* padding-top: 15px; */
      /* padding-bottom: 15px; */
+     font-size: 12px; /*16px;*/
      color: #666;
-     line-height: 1.2;
-     /*height: 70px;*/
+     /*line-height: 1.2;
+     height: 70px;*/
      min-height: 60px;
      padding-top: 5px;
    }
    .td-label-txt {
+    padding-top: 5px;
     font-size: 12px;
     color: #666;
     /* padding: 0px; */
@@ -5335,7 +5348,7 @@ tbody.collapse.show {
 .navbar-inverse .navbar-brand,
 .navbar-inverse .navbar-toggler {
   color: white;
-  margin-top: 15px;
+  /*margin-top: 15px;*/
 }
 .navbar-inverse .navbar-brand:focus, .navbar-inverse .navbar-brand:hover,
 .navbar-inverse .navbar-toggler:focus,
@@ -10751,7 +10764,7 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
   margin-left: 2rem;
 }
 .navbar-nav .nav-link {
-  padding-top: 30px;
+  padding-top: 22px;
   padding-bottom: 22px;
 }
 
@@ -11906,4 +11919,8 @@ fieldset {
 .tab-content__flip-row-axis .slider-text {
   float: none;
   right: 0;
+}
+
+.hazard-buttons {
+  padding: 10px 0;
 }

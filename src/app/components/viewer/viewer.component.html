@@ -46,7 +46,7 @@
 </div>
 <div class="container">
   <div class="row">
-    <div class="col-md-7 col-lg-8 col-xl-9">
+    <div class="col-md-7 col-lg-8 col-xl-8">
       <h2 class="mappage__header">Select Country</h2>
       <p>Select a country by typing its name below.</p>
       <div class="box-dropdown row">
@@ -83,7 +83,7 @@
   <div class="row">
     <div class="col-md-12">
       <div class="card-02">
-        <h2 class="mappage__header">Output: Country Losses to Assets, Well-Being, and Socio-Economic Resilience
+        <h2 class="mappage__header">Output: Country Losses to Assets, Socio-Economic Resilience, and Well-Being
           <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover1" triggers="mouseenter:mouseleave" popoverTitle="">
             <i class="mdi mdi-information-outline"></i>
           </button>
@@ -111,10 +111,10 @@
               {{ this.chartConf.outputs.risk_to_assets.descriptor }}
             </div>
             <div class="col-md-3">
-              {{ this.chartConf.outputs.risk.descriptor }}
+              {{ this.chartConf.outputs.resilience.descriptor }}
             </div>
             <div class="col-md-3">
-              {{ this.chartConf.outputs.resilience.descriptor }}
+              {{ this.chartConf.outputs.risk.descriptor }}
             </div>
           </div>
           <div id='outputs-1' class="row">
@@ -126,10 +126,10 @@
               <div id="output-risks_to_assets_1" class="chart-container"></div>
             </div>
             <div class="col-md-3">
-              <div id="output-risk_1" class="chart-container"></div>
+              <div id="output-resilience_1" class="chart-container"></div>
             </div>
             <div class="col-md-3">
-              <div id="output-resilience_1" class="chart-container"></div>
+              <div id="output-risk_1" class="chart-container"></div>
             </div>
           </div>
           <div id='outputs-2' class="row">
@@ -140,11 +140,12 @@
             <div class="col-md-3">
               <div id="output-risks_to_assets_2" class="chart-container"></div>
             </div>
-            <div class="col-md-3">
-              <div id="output-risk_2" class="chart-container"></div>
-            </div>
+
             <div class="col-md-3">
               <div id="output-resilience_2" class="chart-container"></div>
+            </div>
+            <div class="col-md-3">
+              <div id="output-risk_2" class="chart-container"></div>
             </div>
           </div>
         </div>
@@ -223,7 +224,7 @@
       <div class="">
         <div class="row">
           <div class="col-md-12">
-            <div class="hover-a">
+            <div class="hover-a hazard-buttons" >
               <a (click)="onSwitchExposure1()" placement="top" ngbPopover="Coastal and Riverine Flooding" triggers="mouseenter:mouseleave" popoverTitle="">
                 <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard1" src="assets/image/flood-yellow.png" alt=""/>
                 <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard1" src="assets/image/flood.png" alt="" />
@@ -289,7 +290,7 @@
                       <div class="row align-items-start">
                         <div class="label-text">
                           <div class="input_charts-label-text">&nbsp;</div>
-                          <table>
+                          <table >
                             <tbody>
                             <tr *ngFor="let inputType of inputTypes.inputSoc">
                               <td class="td-label-txt">{{inputLabels[inputType] ? inputLabels[inputType].descriptor : inputType}}</td>
@@ -304,7 +305,7 @@
                           <div id="inputSoc-1" class="input__fip-table-axis"></div>
                         </div>
                         <div class="input-charts__wrapper">
-                          <div class="input_charts-label-text">{{viewerModel.secondCountry}}
+                          <div class="input_charts-label-text">{{viewerModel.secondCountry || 'Global Average'}}
                             <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
                           </div>
                           <div id="inputSoc-2" class="input__fip-table-axis"></div>
@@ -336,7 +337,7 @@
                           <div id="inputEco-1" class="input__fip-table-axis"></div>
                         </div>
                         <div class="input-charts__wrapper">
-                          <div class="input_charts-label-text">{{viewerModel.secondCountry}}
+                          <div class="input_charts-label-text">{{viewerModel.secondCountry || 'Global Average'}}
                             <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
                           </div>
                           <div id="inputEco-2" class="input__fip-table-axis"></div>
@@ -368,7 +369,7 @@
                           <div id="inputVul-1" class="input__fip-table-axis"></div>
                         </div>
                         <div class="input-charts__wrapper">
-                          <div class="input_charts-label-text">{{viewerModel.secondCountry}}
+                          <div class="input_charts-label-text">{{viewerModel.secondCountry || 'Global Average'}}
                             <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
                           </div>
                           <div id="inputVul-2" class="input__fip-table-axis"></div>
@@ -400,7 +401,7 @@
                           <div id="inputExp-1" class="input__fip-table-axis"></div>
                         </div>
                         <div class="input-charts__wrapper">
-                          <div class="input_charts-label-text">{{viewerModel.secondCountry}}
+                          <div class="input_charts-label-text">{{viewerModel.secondCountry || 'Global Average'}}
                             <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
                           </div>
                           <div id="inputExp-2" class="input__fip-table-axis"></div>
@@ -611,7 +612,7 @@
                           <div class="input_charts-label-text" style="min-height: 80px;">{{viewerModel.firstCountry}}
                             <div class="region-name" *ngIf="viewerGroupModel.firstCountryGroup != ''">{{viewerGroupModel.firstCountryGroup}}</div>
                           </div>
-                          <div class="input_charts-label-text" style="min-height: 80px;">{{viewerModel.secondCountry}}
+                          <div class="input_charts-label-text" style="min-height: 80px;">{{viewerModel.secondCountry }}
                             <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
                           </div>
                         </div>
@@ -635,7 +636,7 @@
                                               <br /> <span class="slider-text-base">New Value: {{sliderValues1[inputType + '_display_value']}}</span>
                                             </span>
                           </div>
-                          <div class="" style="position: relative; min-height: 80px;" [hidden]="!hazardDisplay[inputType] && viewerModel.secondCountry === ''">
+                          <!--<div class="" style="position: relative; min-height: 80px;" [hidden]="!hazardDisplay[inputType] && viewerModel.secondCountry === ''">
                             <md-slider
                               [min]="sliderValues2[inputType + '_min']"
                               [max]="sliderValues2[inputType + '_max']"
@@ -650,7 +651,7 @@
                                               {{sliderValues2[inputType + '_difference_value']}} <br /> <span class="slider-text-base">Base: {{sliderValues2[inputType + '_baseline_value']}}</span>
                                               <br /> <span class="slider-text-base">New Value: {{sliderValues2[inputType + '_display_value']}}</span>
                                             </span>
-                          </div>
+                          </div>-->
                         </div>
 
                       </div>
