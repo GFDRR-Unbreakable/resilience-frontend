@@ -1440,8 +1440,8 @@ h1, h2, h3, h4, h5, h6, p, span, label {
 }
 .form-control {
   color: #fff !important;
-  border-color: #d8d8d8!important;
-  background-color: #eaeaea !important;
+  border-color: #6fc2cd !important;
+  background-color: #fff !important;
   height: 40px;
 }
 .form-control-01{
@@ -5393,7 +5393,7 @@ tbody.collapse.show {
   background: #fff;
   margin-top: 5px;
   /* border-color:#4b5757; */
-  width: 170px;
+  width: auto;
   padding: 8px 0px;
 }
 .navbar-item{
@@ -11178,9 +11178,9 @@ fieldset {
   bottom: 20px;
   z-index: 1;
   /*background-color: #dddfdf;*/
-  background-color: #f8f7fa;
+  background-color: rgba(255, 255, 255, 1);
   /*border: solid 8px #dddfdf;*/
-  border: solid 8px #f8f7fa;
+  border: solid 8px rgba(255, 255, 255, 1);
   right: 45px; /*23px;*/
   border-radius: 3px;
 }
