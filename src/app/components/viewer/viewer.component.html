@@ -46,31 +46,31 @@
 </div>
 <div class="container">
   <div class="row">
-    <div class="col-md-7 col-lg-8 col-xl-8">
-      <h2 class="mappage__header">Select Country</h2>
-      <p>Select a country by typing its name below.</p>
+    <div class="col-md-8">
+      <h2 class="mappage__header">Select Countries</h2>
+      <p>Select two countries by typing their names below.</p>
       <div class="box-dropdown row">
         <div class="form-group col-md-6" [class.has-danger]="searchFailed">
           <input id="country-1Txt" type="text" class="form-control input-wd" [(ngModel)]="viewerModel.firstCountry" [ngbTypeahead]="searchCountryFn" #country1="ngModel" (ngModelChange)="onFirstCountryInputChangeEvent()" placeholder="Country A"/>
           <span *ngIf="searching">searching...</span>
           <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
         </div>
-<!--        <div class="form-group col-md-6" [class.has-danger]="searchFailed">-->
-<!--          <input id="country-2Txt" type="text" class="form-control input-wd" [(ngModel)]="viewerModel.secondCountry" [ngbTypeahead]="searchCountryFn" #country2="ngModel" (ngModelChange)="onSecondCountryInputChangeEvent()" placeholder="Country B"/>-->
-<!--          <span *ngIf="searching">searching...</span>-->
-<!--          <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>-->
-<!--        </div>-->
+        <div class="form-group col-md-6" [class.has-danger]="searchFailed">
+          <input id="country-2Txt" type="text" class="form-control input-wd" [(ngModel)]="viewerModel.secondCountry" [ngbTypeahead]="searchCountryFn" #country2="ngModel" (ngModelChange)="onSecondCountryInputChangeEvent()" placeholder="Country B"/>
+          <span *ngIf="searching">searching...</span>
+          <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
+        </div>
       </div>
     </div>
 
-    <div class="col-md-5 col-lg-4 col-xl-3">
-      <h3 class="mappage__header mappage__header--sub">Understanding the Graphics</h3>
+    <div class="col-md-4">
+      <h2 class="mappage__header">Understanding the Graphics</h2>
       <div class="row graphs-mg">
-        <div class="col-sm-7">
+        <div class="col-md-6">
           <img src="assets/image/histogram-big.png" alt="" *ngIf="viewerDisplay == 'tech'">
           <img src="assets/image/histogram-big-01.png" alt="" *ngIf="viewerDisplay != 'tech'">
         </div>
-        <div class="col-sm-5 text-left">
+        <div class="col-md-6 text-left">
           <p class="country-p" *ngIf="viewerDisplay == 'tech'">Policy simulation</p>
           <p class="country-p" *ngIf="viewerDisplay != 'tech'">&nbsp;</p>
           <p class="value-p">Today</p>
@@ -83,7 +83,7 @@
   <div class="row">
     <div class="col-md-12">
       <div class="card-02">
-        <h2 class="mappage__header">Output: Country Losses to Assets, Socio-Economic Resilience, and Well-Being
+        <h2 class="mappage__header">Output: Country Losses to Assets, Well-Being, and Socio-Economic Resilience
           <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover1" triggers="mouseenter:mouseleave" popoverTitle="">
             <i class="mdi mdi-information-outline"></i>
           </button>
@@ -111,10 +111,10 @@
               {{ this.chartConf.outputs.risk_to_assets.descriptor }}
             </div>
             <div class="col-md-3">
-              {{ this.chartConf.outputs.resilience.descriptor }}
+              {{ this.chartConf.outputs.risk.descriptor }}
             </div>
             <div class="col-md-3">
-              {{ this.chartConf.outputs.risk.descriptor }}
+              {{ this.chartConf.outputs.resilience.descriptor }}
             </div>
           </div>
           <div id='outputs-1' class="row">
@@ -126,10 +126,10 @@
               <div id="output-risks_to_assets_1" class="chart-container"></div>
             </div>
             <div class="col-md-3">
-              <div id="output-resilience_1" class="chart-container"></div>
+              <div id="output-risk_1" class="chart-container"></div>
             </div>
             <div class="col-md-3">
-              <div id="output-risk_1" class="chart-container"></div>
+              <div id="output-resilience_1" class="chart-container"></div>
             </div>
           </div>
           <div id='outputs-2' class="row">
@@ -140,12 +140,11 @@
             <div class="col-md-3">
               <div id="output-risks_to_assets_2" class="chart-container"></div>
             </div>
-
-            <div class="col-md-3">
-              <div id="output-resilience_2" class="chart-container"></div>
-            </div>
             <div class="col-md-3">
               <div id="output-risk_2" class="chart-container"></div>
+            </div>
+            <div class="col-md-3">
+              <div id="output-resilience_2" class="chart-container"></div>
             </div>
           </div>
         </div>
@@ -158,12 +157,11 @@
   <div class="row" id="viewIndCtn">
     <div class="col-md-6">
       <h2 class="mappage__header">Select a View</h2>
-      <p>View the risk indicators of losses in assets and well-being and changes in socio-economic resilience due to natural disasters in an average year for your selected country.</p>
-      <p *ngIf="viewerModel.firstCountry"><a routerLink="/policyprioritylist" [queryParams]="{country: viewerModel.firstCountry}">View specific policy impacts for {{viewerModel.firstCountry}}</a></p>
+      <p>View the risk indicators of losses in assets and well-being and changes in socio-economic resilience due to natural disasters in an average year for one or two countries.</p>
       <div class="btn-group wt-dv" role="group" aria-label="Set viewer view">
         <button type="button" class="btn btn-primary wt-lb" [disabled]='_selectedCountryList.length === 0' [ngClass]="{active: viewerDisplay === 'viewer'}" (click)="onChangeViewerIndViewEvent('viewer')">VIEW INDICATORS</button>
         <span class="wt-sp">&nbsp;</span>
-        <button type="button" class="btn btn-primary wt-lb" [disabled]='_selectedCountryList.length === 0' [ngClass]="{active: viewerDisplay === 'tech'}" (click)="onChangeViewerIndViewEvent('tech')">ACCESS FULL MODEL</button>
+        <button type="button" class="btn btn-primary wt-lb" [disabled]='_selectedCountryList.length === 0' [ngClass]="{active: viewerDisplay === 'tech'}" (click)="onChangeViewerIndViewEvent('tech')">RUN MODEL</button>
       </div>
     </div>
 
@@ -214,17 +212,17 @@
     </div>
 
 
-    <div class="col-md-6">
+    <div class="col-md-6" [hidden]="!viewerDisplay || viewerDisplay !== 'tech'">
       <h2 class="mappage__header">Hazards Selection
         <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Assessment can be performed for floods, earthquakes, tsunamis, windstorm, or any combination of them." triggers="mouseenter:mouseleave" popoverTitle="">
           <i class="mdi mdi-information-outline"></i>
         </button>
       </h2>
-      <p [hidden]="!viewerDisplay || viewerDisplay !== 'tech'">Select one or multiple hazards.</p>
+      <p>Select one or multiple hazards.</p>
       <div class="">
         <div class="row">
           <div class="col-md-12">
-            <div class="hover-a hazard-buttons" >
+            <div class="hover-a">
               <a (click)="onSwitchExposure1()" placement="top" ngbPopover="Coastal and Riverine Flooding" triggers="mouseenter:mouseleave" popoverTitle="">
                 <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard1" src="assets/image/flood-yellow.png" alt=""/>
                 <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard1" src="assets/image/flood.png" alt="" />
@@ -290,7 +288,7 @@
                       <div class="row align-items-start">
                         <div class="label-text">
                           <div class="input_charts-label-text">&nbsp;</div>
-                          <table >
+                          <table>
                             <tbody>
                             <tr *ngFor="let inputType of inputTypes.inputSoc">
                               <td class="td-label-txt">{{inputLabels[inputType] ? inputLabels[inputType].descriptor : inputType}}</td>
@@ -305,7 +303,7 @@
                           <div id="inputSoc-1" class="input__fip-table-axis"></div>
                         </div>
                         <div class="input-charts__wrapper">
-                          <div class="input_charts-label-text">{{viewerModel.secondCountry || 'Global Average'}}
+                          <div class="input_charts-label-text">{{viewerModel.secondCountry}}
                             <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
                           </div>
                           <div id="inputSoc-2" class="input__fip-table-axis"></div>
@@ -337,7 +335,7 @@
                           <div id="inputEco-1" class="input__fip-table-axis"></div>
                         </div>
                         <div class="input-charts__wrapper">
-                          <div class="input_charts-label-text">{{viewerModel.secondCountry || 'Global Average'}}
+                          <div class="input_charts-label-text">{{viewerModel.secondCountry}}
                             <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
                           </div>
                           <div id="inputEco-2" class="input__fip-table-axis"></div>
@@ -369,7 +367,7 @@
                           <div id="inputVul-1" class="input__fip-table-axis"></div>
                         </div>
                         <div class="input-charts__wrapper">
-                          <div class="input_charts-label-text">{{viewerModel.secondCountry || 'Global Average'}}
+                          <div class="input_charts-label-text">{{viewerModel.secondCountry}}
                             <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
                           </div>
                           <div id="inputVul-2" class="input__fip-table-axis"></div>
@@ -401,7 +399,7 @@
                           <div id="inputExp-1" class="input__fip-table-axis"></div>
                         </div>
                         <div class="input-charts__wrapper">
-                          <div class="input_charts-label-text">{{viewerModel.secondCountry || 'Global Average'}}
+                          <div class="input_charts-label-text">{{viewerModel.secondCountry}}
                             <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
                           </div>
                           <div id="inputExp-2" class="input__fip-table-axis"></div>
@@ -612,7 +610,7 @@
                           <div class="input_charts-label-text" style="min-height: 80px;">{{viewerModel.firstCountry}}
                             <div class="region-name" *ngIf="viewerGroupModel.firstCountryGroup != ''">{{viewerGroupModel.firstCountryGroup}}</div>
                           </div>
-                          <div class="input_charts-label-text" style="min-height: 80px;">{{viewerModel.secondCountry }}
+                          <div class="input_charts-label-text" style="min-height: 80px;">{{viewerModel.secondCountry}}
                             <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
                           </div>
                         </div>
@@ -636,7 +634,7 @@
                                               <br /> <span class="slider-text-base">New Value: {{sliderValues1[inputType + '_display_value']}}</span>
                                             </span>
                           </div>
-                          <!--<div class="" style="position: relative; min-height: 80px;" [hidden]="!hazardDisplay[inputType] && viewerModel.secondCountry === ''">
+                          <div class="" style="position: relative; min-height: 80px;" [hidden]="!hazardDisplay[inputType] && viewerModel.secondCountry === ''">
                             <md-slider
                               [min]="sliderValues2[inputType + '_min']"
                               [max]="sliderValues2[inputType + '_max']"
@@ -651,7 +649,7 @@
                                               {{sliderValues2[inputType + '_difference_value']}} <br /> <span class="slider-text-base">Base: {{sliderValues2[inputType + '_baseline_value']}}</span>
                                               <br /> <span class="slider-text-base">New Value: {{sliderValues2[inputType + '_display_value']}}</span>
                                             </span>
-                          </div>-->
+                          </div>
                         </div>
 
                       </div>
@@ -707,12 +705,21 @@
     <div class="card-header">Unbreakable Resilience Indicator</div>
     <div class="card-body">
       This tool is designed to examine how natural disasters affect people’s well-being, and how policy and financial tools available to governments and the World Bank can mitigate these losses, helping more people to escape poverty. Click <a href="https://www.gfdrr.org/unbreakable">here</a>  to learn more.
+      <!-- Every year worldwide, poor people suffer only a fraction of gross economic
+      losses caused by natural disasters, but they bear a much larger brunt of natural disasters’
+      consequences. This is because each dollar lost in a natural disaster means much more
+      to a poor person than to a wealthy one.
+      <br /><br />
+      This tool is designed to examine how natural disasters affect people’s
+      well-being, and how policy and financial tools available to governments and
+      the World Bank can mitigate these losses, helping more people to escape poverty.
+      Click <a href="https://www.gfdrr.org/unbreakable">here</a> to learn more. -->
       <hr class="report">
       <div class="row">
         <div class="col-md-12">
 
-          <p>View the risk indicators of losses in assets and well-being and changes in socio-economic resilience due to natural disasters in an average year for your selected country.</p>
-          <p>Or click on 'Access Full Model' so you can manipulate the resilience inputs under the map to see how policy interventions could mitigate asset risk and well-being risk, and build socioeconomic resilience in countries around the world.</p>
+          <p>View the risk indicators of losses in assets and well-being and changes in socio-economic resilience due to natural disasters in an average year for one or two countries.</p>
+          <p>Or click on 'Run Model' so you can manipulate the resilience inputs under the map to see how policy interventions could mitigate asset risk and well-being risk, and build socioeconomic resilience in countries around the world.</p>
           <!-- <p>View losses on assets and well-being and changes in
           socio-economic capacity for one or two countries.</p> -->
           <p>Select two countries from the map or type their names:</p>
@@ -722,6 +729,17 @@
 
       </div>
       <br>
+      <!-- <button type="button" name="button" class="btn btn-primary btn-block"> NEXT <img src="assets/image/ic-next.png" alt=""></button> -->
+
+      <!-- <div [(ngModel)]="viewerDisplay" (ngModelChange)="onChangeViewerIndViewEvent()" ngbRadioGroup class="wt-dv">
+        <label ngbButtonLabel class="nav-pills wt-lb">
+          <input ngbButton type="radio" [value]="viewer">VIEW INDICATORS
+        </label>
+        <span class="wt-sp"><strong>OR</strong></span>
+        <label ngbButtonLabel class="nav-pills wt-lb">
+          <input ngbButton type="radio" [value]="tech">RUN MODEL
+        </label>
+      </div> -->
     </div>
   </div>
 

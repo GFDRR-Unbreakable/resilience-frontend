@@ -170,9 +170,9 @@ export class ChartService {
           asString = asString.toFixed(0).split('.').join(',');
         }
         extraInfo = 'B';
-        aValue = `US$ ${sign}${asString}${extraInfo} (${percentageValue}% of GDP)`;
+        aValue = `$${sign}${asString}${extraInfo} (${percentageValue}% of GDP)`;
         if (withoutPercent) {
-          aValue = `US$ ${sign}${asString}${extraInfo}`;
+          aValue = `$${sign}${asString}${extraInfo}`;
         }
         if (onlyPercent) {
           aValue = `(${percentageValue}% of GDP)`;
@@ -186,9 +186,9 @@ export class ChartService {
           asString = asString.toFixed(0).split('.').join(',');
         }
         extraInfo = 'M';
-        aValue = `US$ ${sign}${asString}${extraInfo} (${percentageValue}% of GDP)`;
+        aValue = `$${sign}${asString}${extraInfo} (${percentageValue}% of GDP)`;
         if (withoutPercent) {
-          aValue = `US$ ${sign}${asString}${extraInfo}`;
+          aValue = `$${sign}${asString}${extraInfo}`;
         }
         if (onlyPercent) {
           aValue = `(${percentageValue}% of GDP)`;
@@ -200,9 +200,9 @@ export class ChartService {
           asString = dollarLossGDPPositive / aThousand;
           asString = asString.toFixed(0).split('.').join(',');
         }
-        aValue = `US$ ${sign}${asString} (${percentageValue}% of GDP)`;
+        aValue = `$${sign}${asString} (${percentageValue}% of GDP)`;
         if (withoutPercent) {
-          aValue = `US$ ${sign}${asString}`;
+          aValue = `$${sign}${asString}`;
         }
         if (onlyPercent) {
           aValue = `(${percentageValue}% of GDP)`;
@@ -217,9 +217,9 @@ export class ChartService {
         asString = asString.toFixed(0).split('.').join(',');
       }
       extraInfo = 'M';
-      aValue = `US$ ${sign}${asString}${extraInfo} (${percentageValue}% of GDP)`;
+      aValue = `$${sign}${asString}${extraInfo} (${percentageValue}% of GDP)`;
       if (withoutPercent) {
-        aValue = `US$ ${sign}${asString}${extraInfo}`;
+        aValue = `$${sign}${asString}${extraInfo}`;
       }
       if (onlyPercent) {
         aValue = `(${percentageValue}% of GDP)`;
@@ -231,9 +231,9 @@ export class ChartService {
         asString = dollarLossGDPPositive / aThousand;
         asString = asString.toFixed(0).split('.').join(',');
       }
-      aValue = `US$ ${sign}${asString} (${percentageValue}% of GDP)`;
+      aValue = `$${sign}${asString} (${percentageValue}% of GDP)`;
       if (withoutPercent) {
-        aValue = `US$ ${sign}${asString}`;
+        aValue = `$${sign}${asString}`;
       }
       if (onlyPercent) {
         aValue = `(${percentageValue}% of GDP)`;
@@ -1315,6 +1315,62 @@ export class ChartService {
         })[0];
       });
     } else {
+      // Comparing countries min and max values to change in x coordinates range values
+      // const policyData = dkTotArr.concat(dWTotCurrencyArr);
+      // const maxCountryVal = d3.max(policyData);
+      // const minCountryVal = d3.min(policyData);
+      // const MAX_SELECTED_COUNTRIES = 2;
+      // if (this._maxMinCountryXValues.length < MAX_SELECTED_COUNTRIES) {
+      //   const filterContainer = this._maxMinCountryXValues.filter(val => val.chart === containerId);
+      //   if (!filterContainer.length) {
+      //     this._maxMinCountryXValues.push({
+      //       chart: containerId,
+      //       type: countryList['chartType'],
+      //       maxVal: maxCountryVal,
+      //       minVal: minCountryVal
+      //     });
+      //   } else {
+      //     this._maxMinCountryXValues.forEach(val => {
+      //       if (val.chart === containerId) {
+      //         if (val.type !== countryList['chartType']) {
+      //           this._maxGDPNum = 0;
+      //           this._minGDPNum = 0;
+      //         }
+      //         val.type = countryList['chartType'];
+      //         val.maxVal = maxCountryVal;
+      //         val.minVal = minCountryVal;
+      //       }
+      //     });
+      //   }
+      // } else {
+      //   const filterChartType = this._maxMinCountryXValues.filter(val => val.type === countryList['chartType']);
+      //   if (!filterChartType.length && this.countPolicyListCharts() === 2) {
+      //     this._maxGDPNum = 0;
+      //     this._minGDPNum = 0;
+      //     this._maxMinCountryXValues.forEach(val => {val.type = countryList['chartType']; val.maxVal = 0; val.minVal = 0; });
+      //   } else {
+      //     this._maxGDPNum = d3.max(this._maxMinCountryXValues, d => d.maxVal);
+      //     this._minGDPNum = d3.min(this._maxMinCountryXValues, d => d.minVal);
+      //   }
+      //   this._maxMinCountryXValues.forEach(val => {
+      //     if (val.chart === containerId) {
+      //       val.maxVal = maxCountryVal;
+      //       val.minVal = minCountryVal;
+      //     }
+      //   });
+      // }
+      // const maxVal = d3.max(this._maxMinCountryXValues, (d) => {
+      //   return d.maxVal;
+      // });
+      // const minVal = d3.min(this._maxMinCountryXValues, (d) => {
+      //   return d.minVal;
+      // });
+      // if (maxVal > this._maxGDPNum) {
+      //   this._maxGDPNum = maxVal;
+      // }
+      // if (minVal < this._minGDPNum) {
+      //   this._minGDPNum = minVal;
+      // }
       policyList = this.getChartsConf().policyList;
       policyList.forEach((val, idx) => {
         if (val.id === allData[idx].id) {
@@ -1338,7 +1394,9 @@ export class ChartService {
       }
       return 1400;
     };
-
+    // const maxValue = isPolicyListObject ? this._maxGDPNum : d3.max(allData, (d) => {
+    //   return d.dWtot_currency;
+    // });
     let maxFirstBarValue = d3.max(allData, (d) => {
       return d.dWtot_currency;
     });
@@ -1347,10 +1405,11 @@ export class ChartService {
     });
     let minValues = [maxFirstBarValue, maxSecondBarValue];
     let min = d3.min(minValues);
+    // let maxValue = isPolicyListObject ? this._maxGDPNum : d3.max([maxFirstBarValue, maxSecondBarValue]);
     let maxValue = d3.max([maxFirstBarValue, maxSecondBarValue]);
     let w;
     if (isCountryListObject) {
-      w = 720;
+      w = 690;
     } else if (isPolicyListObject) {
       w = 800;
     } else {
@@ -1359,7 +1418,7 @@ export class ChartService {
     const h = isCountryListObject ? recalculateChartHeight() : 1000;
     const margin = {
       left: isPolicyListObject ? 170 : 130,
-      right: 70,
+      right: 60,
       bottom: 35,
       top: 35
     };
@@ -1628,7 +1687,7 @@ export class ChartService {
           // Add right y-position bar labels container
           barLabels = laneChart.append('g')
           .classed('bar-labels', true)
-          .attr('transform', 'translate(-10,' + margin.top + ')');
+          .attr('transform', 'translate(0,' + margin.top + ')');
       } else {
         eBar = laneChart.select('.e-bar');
         dataBars = laneChart.select('.bar-charts');
@@ -1850,7 +1909,7 @@ export class ChartService {
           let data;
             if (countryList['chartType'] === 'absolute') {
               data = (d.dWtot_currency < 0 ?
-                '-US$ ' + formatNumericData(d.dWtot_currency) : 'US$ ' + formatNumericData(d.dWtot_currency));
+                '-$' + formatNumericData(d.dWtot_currency) : '$' + formatNumericData(d.dWtot_currency));
             } else {
               data = (d.dWtot_currency).toFixed(1) + '%';
             }

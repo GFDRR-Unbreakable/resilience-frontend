@@ -23,13 +23,10 @@
 .terms-use{
   text-decoration: underline;
   color: #666666;
+  float: right;
 }
 .terms-use:hover{
   color: #666666;
-}
-.term-use-wrapper {
-  text-align: center;
-  padding: 30px 0 15px;
 }
 
 html {
@@ -333,8 +330,7 @@ template {
   justify-content: space-between;
 
   margin-left: 22px;
-  /*margin-top: 0 !important;*/
-  margin-top: 7px;
+  margin-top: 0 !important;
   padding: 0;
   width: 450px;
   margin-right: 0;
@@ -343,13 +339,6 @@ template {
   white-space: nowrap;
   font-weight: bold;
 }
-
-@media (min-width: 992px) {
-  .navbar-brand {
-    margin-top: 0;
-  }
-}
-
 .navbar-brand:focus, .navbar-brand:hover {
   text-decoration: none;
 }
@@ -691,11 +680,6 @@ template {
   line-height: 1.5;
 }
 
-.mappage__header--sub {
-  font-size: 16px;
-  line-height: 30px;
-}
-
 .input-wd{
     width: 100% !important;
   }
@@ -736,26 +720,18 @@ template {
     margin-bottom: 14px;
   }
   .country-p{
-    padding: 0 0 0 0; /*15px;*/
+    padding: 0px;
     margin-top: -2px;
-    margin-left: 25px;
-    font-size: 11px;
-    /*line-height: 1;*/
-    white-space: nowrap;
+    margin-left: 10px
   }
   .global-p{
-    padding: 0 0 0 0;/*15px;*/
-    margin-top: 5px;
-    margin-left: 25px;
-    font-size: 11px;
-    white-space: nowrap;
+    margin-top: -6px;
+    margin-left: 10px;
   }
   .value-p{
-    padding: 0 0 0 0; /*15px;*/
-    font-size: 11px;
-    margin-left: 25px;
+    padding: 0px;
+    margin-left: 10px;
     margin-top: 5px;
-    white-space: nowrap;
   }
   .card-02{
     margin-top: 10px;
@@ -811,7 +787,7 @@ template {
     padding-left:  5px !important;
   }
   .graphs-mg{
-    margin-top: 30px;
+    margin-top: 15px;
     padding: 0px 9px;
   }
   .tabs-dg{
@@ -838,7 +814,7 @@ template {
   .ct-risk{
     position: absolute;
     top: -4px;
-    right: 45px;
+    right: 23px;
     text-align: center;
   }
   .ct-risk p{
@@ -943,15 +919,14 @@ template {
    .box-tab-text{
      /* padding-top: 15px; */
      /* padding-bottom: 15px; */
-     font-size: 12px; /*16px;*/
+     font-size: 16px;
      color: #666;
-     /*line-height: 1.2;
-     height: 70px;*/
-     min-height: 60px;
+     line-height: 1.2;
+     /*height: 70px;*/
+     min-height: 90px;
      padding-top: 5px;
    }
    .td-label-txt {
-    padding-top: 5px;
     font-size: 12px;
     color: #666;
     /* padding: 0px; */
@@ -1311,10 +1286,10 @@ template {
   padding-bottom: 25px;
 }
 .box-title-terms{
-  padding: 20px 0 !important;
+  padding: 20px !important;
 }
 .box-title-terms-01{
-  padding: 0px 20px 0px 20px !important;
+  padding: 20px 20px 0px 20px !important;
 }
 div#map {
   height: 491px;
@@ -1440,8 +1415,8 @@ h1, h2, h3, h4, h5, h6, p, span, label {
 }
 .form-control {
   color: #fff !important;
-  border-color: #6fc2cd !important;
-  background-color: #fff !important;
+  border-color: #d8d8d8!important;
+  background-color: #eaeaea !important;
   height: 40px;
 }
 .form-control-01{
@@ -3983,8 +3958,6 @@ fieldset[disabled] a.btn {
   background-color: #dfdee1;
   border-color: #666666;
   color: #666666;
-  opacity: 0.3;
-  cursor: not-allowed;
 }
 .btn-primary:active, .btn-primary.active, .show > .btn-primary.dropdown-toggle {
   color: #fff;
@@ -5348,7 +5321,7 @@ tbody.collapse.show {
 .navbar-inverse .navbar-brand,
 .navbar-inverse .navbar-toggler {
   color: white;
-  /*margin-top: 15px;*/
+  margin-top: 15px;
 }
 .navbar-inverse .navbar-brand:focus, .navbar-inverse .navbar-brand:hover,
 .navbar-inverse .navbar-toggler:focus,
@@ -5357,11 +5330,11 @@ tbody.collapse.show {
 }
 .navbar-inverse .navbar-nav .nav-link {
   color: #7D8F8F;
-  border-bottom: 3px solid transparent;
 }
 .navbar-inverse .navbar-nav .nav-link:focus, .navbar-inverse .navbar-nav .nav-link:hover {
   color: #50C4CF;
   border-bottom: 3px solid #50C4CF;
+  margin-top: -2px;
 }
 /*.navbar-collapse ul li a:hover, .navbar-collapse ul li a:focus, .navbar-collapse ul li a:active, .navbar-collapse ul li a.active
  {
@@ -5393,7 +5366,7 @@ tbody.collapse.show {
   background: #fff;
   margin-top: 5px;
   /* border-color:#4b5757; */
-  width: auto;
+  width: 170px;
   padding: 8px 0px;
 }
 .navbar-item{
@@ -10764,7 +10737,7 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
   margin-left: 2rem;
 }
 .navbar-nav .nav-link {
-  padding-top: 22px;
+  padding-top: 32px;
   padding-bottom: 22px;
 }
 
@@ -11178,10 +11151,10 @@ fieldset {
   bottom: 20px;
   z-index: 1;
   /*background-color: #dddfdf;*/
-  background-color: rgba(255, 255, 255, 1);
+  background-color: #f8f7fa;
   /*border: solid 8px #dddfdf;*/
-  border: solid 8px rgba(255, 255, 255, 1);
-  right: 45px; /*23px;*/
+  border: solid 8px #f8f7fa;
+  right: 23px;
   border-radius: 3px;
 }
 .map-legend-text {
@@ -11809,7 +11782,6 @@ fieldset {
  */
 
 .tab-content__flip-table-axis {
-  padding-top: 1rem;
 }
 
 .tab-content__flip-table-axis table {
@@ -11919,8 +11891,4 @@ fieldset {
 .tab-content__flip-row-axis .slider-text {
   float: none;
   right: 0;
-}
-
-.hazard-buttons {
-  padding: 10px 0;
 }

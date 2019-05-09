@@ -20,7 +20,7 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
   private chartConf = this.chartService.getChartsConf();
   public regionUIList = [{
     id: 'GLOBAL',
-    label: 'Global'
+    label: 'Region'
   }];
   public sortUISelected = 0;
   public sortBtnPressedId = '';
@@ -92,7 +92,7 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
     return data;
   }
   /**
-   * Inits ScorecardMeasure data configuration through output-indicator model data.
+   * Inits ScorecardMeasure data configuration through output-indicator model data. 
    */
   setChartsConfig() {
     this.chartService.initOutputChartConf();
