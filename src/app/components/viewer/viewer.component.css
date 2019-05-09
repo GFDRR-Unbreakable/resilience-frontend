@@ -2,7 +2,8 @@
   position: absolute;
   height: 100%;
   width: 50%;
-  right: 0;
+  /*right: 0;*/
+  left: 50%;
   top: 0;
   background: rgb(0, 0, 0); /* Fallback for older browsers without RGBA-support */
   background: rgba(0, 0, 0, 0.6);
@@ -10,11 +11,12 @@
   align-items: center;
   justify-content: flex-start;
   z-index: 500;
-  transition: right 500ms;
+  transition: left 500ms;
 }
 
 .callout-body.closed {
-  right: calc(-50% + 3rem);
+  /*right: calc(-50% + 3rem);*/
+  left: calc(100% - 3rem);
 }
 
 @media (max-width: 1200px) {
@@ -57,6 +59,9 @@
 
 .map-background {
   position: relative;
+
+  background-color: #E0EBFE;
+  overflow: hidden;
 }
 
 .callout-body-trigger {

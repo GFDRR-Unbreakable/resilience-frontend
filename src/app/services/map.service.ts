@@ -102,16 +102,13 @@ export class MapService {
         'fill-opacity': 0.65
       }
     });
-    this.addVectorFillFromUrl({
+    this.addVectorLinesFromUrl({
       id: this._sourceId,
-      layer: this._layerSource
+      layer: this._layerSource,
     }, {
       layerId: this._layerHoverId,
-      paint: {
-        'fill-outline-color': '#222222',
-        'fill-color': 'rgba(0, 0, 0, 0)',
-        'fill-opacity': 1,
-      },
+      color: '#d8d60a',
+      lineWidth: 3,
       filter: ['==', 'ISO_Code', ''],
     });
     // Click-based country layer
@@ -170,6 +167,8 @@ export class MapService {
     if (mapParams.filter) {
       layerObj.filter = mapParams.filter;
     }
+
+    console.log("LAYER OBJECT", layerObj);
     this.map.addLayer(layerObj);
   }
   /**

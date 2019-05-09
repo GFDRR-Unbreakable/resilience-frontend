@@ -63,7 +63,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   public sliderValues2 = {};
   public viewerDisplay: string = '';
   public viewerModel: Viewer = {
-    firstCountry: '', // @TODO: TMP
+    firstCountry: '',
     secondCountry: ''
   };
   public viewerGroupModel: ViewerGroup = {
@@ -269,10 +269,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.setViewerObservableConf();
     this.setViewerModel1ObservableConf();
     this.setViewerModel2ObservableConf();
-
-    // // @TODO: TMP
-    // this.onChangeViewerIndViewEvent((this.url[0].path === 'viewer') ? 'viewer' : 'tech');
-
   }
   // METHODS
   /**
@@ -1097,6 +1093,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * @event Click - This event is triggered when user selects on the dropdown to
    * display output/inputs charts as Global when the charts are displayed as
    * Regional and the "Run model" is triggered.
+   * @deprecated
    */
   onDisplayTechMapViewEvent() {
     if (!this.global) {
@@ -1373,29 +1370,37 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * @event Click - This event is triggered when the first hazard button is selected/deselected on the "Run model" view
    */
   onSwitchExposure1() {
-    this.hazards.hazard1 = !this.hazards.hazard1;
-    this.onSwitchExposure(true, false, false ,false);
+    if (this.viewerDisplay === 'tech') {
+      this.hazards.hazard1 = !this.hazards.hazard1;
+      this.onSwitchExposure(true, false, false ,false);
+    }
   }
   /**
    * @event Click - This event is triggered when the second hazard button is selected/deselected on the "Run model" view
    */
   onSwitchExposure2() {
-    this.hazards.hazard2 = !this.hazards.hazard2;
-    this.onSwitchExposure(false, true, false, false);
+    if (this.viewerDisplay === 'tech') {
+      this.hazards.hazard2 = !this.hazards.hazard2;
+      this.onSwitchExposure(false, true, false, false);
+    }
   }
   /**
    * @event Click - This event is triggered when the third hazard button is selected/deselected on the "Run model" view
    */
   onSwitchExposure3() {
-    this.hazards.hazard3 = !this.hazards.hazard3;
-    this.onSwitchExposure(false, false, true, false);
+    if (this.viewerDisplay === 'tech') {
+      this.hazards.hazard3 = !this.hazards.hazard3;
+      this.onSwitchExposure(false, false, true, false);
+    }
   }
   /**
    * @event Click - This event is triggered when the fourth hazard button is selected/deselected on the "Run model" view
    */
   onSwitchExposure4() {
-    this.hazards.hazard4 = !this.hazards.hazard4;
-    this.onSwitchExposure(false, false, false, true);
+    if (this.viewerDisplay === 'tech') {
+      this.hazards.hazard4 = !this.hazards.hazard4;
+      this.onSwitchExposure(false, false, false, true);
+    }
   }
   /**
    * This method works as a helper of the @event onSliderChangeEvent1 or @event onSliderChangeEvent1
