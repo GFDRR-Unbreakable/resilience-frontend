@@ -12,7 +12,7 @@ export class NavbarComponent implements OnInit {
   /**
    * Component constructor which is first invoked when the app is rendering.
    * It has injected a modal service which refers to Angular-bootstrap modal component.
-   * @param modalService 
+   * @param modalService
    */
   constructor(private modalService: NgbModal) {}
 
@@ -32,15 +32,16 @@ export class NavbarComponent implements OnInit {
    * it opens a "About" info modal component.
    */
   onScrollAboutElEvent() {
-    let el = jQuery('div#about');
+    /*let el = jQuery('div#about');
+    console.log(el.length)
     if (el.length) {
       el = el[0];
       jQuery('html, body').animate({
           scrollTop: (el.getBoundingClientRect().y - 10)
       }, 1000);
       return false;
-    } else {
+    } else {*/
       this.onOpenModalEvent();
-    }
+    //}
   }
 }
