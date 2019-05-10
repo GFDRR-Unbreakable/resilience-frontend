@@ -671,7 +671,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
    * This method builds data from Output & Input, country input fields and chart default values to be
    * send as params to CSV or PDF-generation API endpoint.
-   * @param {Boolean} isPDF - Verifies the reques data has to be generated for a PDF or CSV file.
+   * @param {Boolean} isPDF - Verifies the request data has to be generated for a PDF or CSV file.
    */
   private processForFileJSONData(isPDF?: boolean): any {
     const outputData = this.chartService.getOutputData();
@@ -713,6 +713,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     data.country1.name = !firstInput || countryFInput.length === 0 ? 'Global' : firstInput;
     data.country2.name = !secondInput || countrySInput.length === 0 ? 'Global' : secondInput;
+
     jQuery.each(outputData, (key, out) => {
       if (!data.country1.outputs[key]) {
         data.country1.outputs[key] = {};
@@ -721,6 +722,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         data.country2.outputs[key] = {};
       }
       if (key.indexOf('risk') >= 0) {
+        const cleanedKey = (key === 'risk_to_assets') ? 'risks_to_assets' : key;
         if (!data.country1.outputs[key]['value']) {
           data.country1.outputs[key]['value'] = {};
         }
@@ -732,11 +734,12 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         data.country1.outputs[key]['value'].difference = out.chart['outputs-1'].difference;
         data.country1.outputs[key]['value'].newValue = out.chart['outputs-1'].newValue;
         data.country1.outputs[key]['value'].today = out.chart['outputs-1'].today;
-        data.country2.outputs[key]['value'].dollarGDP = out.chart['outputs-2'].dollarGDP;
-        data.country2.outputs[key]['value'].valueGDP = out.chart['outputs-2'].valueGDP;
-        data.country2.outputs[key]['value'].difference = out.chart['outputs-2'].difference;
-        data.country2.outputs[key]['value'].newValue = out.chart['outputs-2'].newValue;
-        data.country2.outputs[key]['value'].today = out.chart['outputs-2'].today;
+
+        data.country2.outputs[key]['value'].dollarGDP = out.chart[`output-${cleanedKey}_2`].dollarGDP;
+        data.country2.outputs[key]['value'].valueGDP = out.chart[`output-${cleanedKey}_2`].valueGDP;
+        data.country2.outputs[key]['value'].difference = out.chart[`output-${cleanedKey}_2`].difference;
+        data.country2.outputs[key]['value'].newValue = out.chart[`output-${cleanedKey}_2`].newValue;
+        data.country2.outputs[key]['value'].today = out.chart[`output-${cleanedKey}_2`].today;
       } else {
         data.country1.outputs[key]['value'] = out.chart['outputs-1'];
         data.country2.outputs[key]['value'] = out.chart['outputs-2'];
