@@ -2836,7 +2836,7 @@ export class ChartService {
     const me = this;
     jQuery.each(domains, (idx, outputData) => {
       const numericSection = containerId.substring(containerId.length - 1);
-      const chartId = `output-${(idx === 'risk_to_assets') ? 'risks_to_assets' : idx}_${numericSection}`;
+      const chartId = `output-${(idx === 'risk_to_assets') ? 'risk_to_assets' : idx}_${numericSection}`;
 
       const ini = d3.select(`#${containerId} svg#${idx} g.initial line`);
       console.log('ini', ini);
@@ -2891,8 +2891,12 @@ export class ChartService {
       }
       // This updates this._outputDomains[key]['chart'][containerId].
       const value = me.calculateGDPValues(containerId, idx, numericValue, avgDoll, precision, oldValue);
+      const newChartId = chartId.slice(0, -2).replace('output-', '');
       console.log("debug", chartId, value);
+
       jQuery(`#${containerId} #${chartId} .text-number`).html(value);
+      // Hack for updating chart text on policy priority list
+      jQuery(`#${containerId} #${newChartId} .text-number`).html(value);
       const brushg = d3.selectAll(`#${containerId} svg#${idx} g.brush`);
       const path = brushg.select('path');
       path.style('visibility', tech ? 'visible' : 'hidden');
