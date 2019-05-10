@@ -124,7 +124,7 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
    * This private method is called by the @private _changeCountryInput method set it in this component
    * which creates/updates/removes selected countries data in a @public array called _selectedCountryList,
    * also modifies output chart and values.
-   * @param {Array} list - Array of country properties filtered-by-input-text value. 
+   * @param {Array} list - Array of country properties filtered-by-input-text value.
    * @param {Number} selectedIdx - Determines which input field has been modified
    * @param {String} field - Input-text field model
    */
@@ -222,8 +222,8 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
   }
   /**
    * Plots ScoreCardPriorityList chart in the page with some chart configurations needed.
-   * @param {String} name - Country name persisted from the input-text field. 
-   * @param {String} chartId - Chart UI element id. 
+   * @param {String} name - Country name persisted from the input-text field.
+   * @param {String} chartId - Chart UI element id.
    * @param {Boolean} chartExist - Determines wheter the chart has already plotted in the page or not.
    */
   plotScorecardPolicyChart(name, chartId, chartExist) {
@@ -257,7 +257,7 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
     const defaultOpts = {type: 'policyList', isNew: !chartExist, chartType: this.switchUICmpVal ? 'relative' : 'absolute' };
     const opts = extraOpts ? Object.assign({}, defaultOpts, extraOpts) : defaultOpts;
     this.chartService.createPolicyListChart(data, chartId, opts);
-    // Comparing countries min and max values to change their x coordinates range values 
+    // Comparing countries min and max values to change their x coordinates range values
     // const MAX_SELECTED_COUNTRIES = 2;
     // if (this.chartService.countPolicyListCharts() === MAX_SELECTED_COUNTRIES) {
     //   const chart1 = 'policy-list-1';
@@ -507,7 +507,7 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
    * @event Click - This event is fired when the sort buttons (up & down arrows) are clicked on the page.
    * It sorts Scorcard data according of which button has been clicked either sorting by well-being or assets data and
    * displays its chart with sorted data.
-   * @param {String} barT - Determines which bar type will be sorted either well-being or assets bar chart data. 
+   * @param {String} barT - Determines which bar type will be sorted either well-being or assets bar chart data.
    */
   onSortChartDataEvent(barT) {
     const barType = barT;

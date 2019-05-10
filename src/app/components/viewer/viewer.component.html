@@ -88,19 +88,18 @@
             <i class="mdi mdi-information-outline"></i>
           </button>
           <ng-template #popover1>
-            <p class="popover-title-viewer">What are we seeing here?</p>
-            <p>
-              You can manipulate the resilience outputs below to see how policy interventions could
-              mitigate risk to assets and well-being, and build socio-economic resilience (defined
-              as the ratio of asset to well-being losses) in countries around the world.
-            </p>
-            <p class="popover-title-viewer">About the Histogram</p>
-            <p>
-              The histogram illustrates the global (or regional) distribution of country results
-              (expressed as a percentage of countries’ GDPs in the case of annual risks to assets
-              and well-being). The vertical axis represents the number of countries. The value of
-              the selected country is marked with a vertical bar.
-            </p>
+
+            <p ><b>Risk to assets (% of GDP)</b> is the value of assets at risk,
+               considering hazard exposure and asset vulnerability.</p>
+
+            <p><b>Socioeconomic resilience:</b> The ability of the population to recover
+              from disasters (the ratio of asset losses to well-being losses).</p>
+
+            <p><b>Risk to well-being (% of GDP)</b> is the potential impact of asset
+              losses on consumption. </p>
+
+            <p>For more details, please click on <b>Report</b> in the main navigation</p>
+
           </ng-template>
           <!-- <span><i class="mdi mdi-checkbox-blank-circle box-icon-c"></i> Country</span>
           <span><img src="assets/image/icon-map.png" alt=""> Global Average</span> --></h2>
@@ -123,7 +122,7 @@
                 <div class="region-name" *ngIf="viewerGroupModel.firstCountryGroup != ''">{{viewerGroupModel.firstCountryGroup}}</div>
               </div>
             <div class="col-md-3">
-              <div id="output-risks_to_assets_1" class="chart-container"></div>
+              <div id="output-risk_to_assets_1" class="chart-container"></div>
             </div>
             <div class="col-md-3">
               <div id="output-resilience_1" class="chart-container"></div>
@@ -138,7 +137,7 @@
               <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
             </div>
             <div class="col-md-3">
-              <div id="output-risks_to_assets_2" class="chart-container"></div>
+              <div id="output-risk_to_assets_2" class="chart-container"></div>
             </div>
 
             <div class="col-md-3">
