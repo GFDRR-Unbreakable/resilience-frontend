@@ -735,11 +735,11 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         data.country1.outputs[key]['value'].newValue = out.chart['outputs-1'].newValue;
         data.country1.outputs[key]['value'].today = out.chart['outputs-1'].today;
 
-        data.country2.outputs[key]['value'].dollarGDP = out.chart[`output-${cleanedKey}_2`].dollarGDP;
-        data.country2.outputs[key]['value'].valueGDP = out.chart[`output-${cleanedKey}_2`].valueGDP;
-        data.country2.outputs[key]['value'].difference = out.chart[`output-${cleanedKey}_2`].difference;
-        data.country2.outputs[key]['value'].newValue = out.chart[`output-${cleanedKey}_2`].newValue;
-        data.country2.outputs[key]['value'].today = out.chart[`output-${cleanedKey}_2`].today;
+        data.country2.outputs[key]['value'].dollarGDP = out.chart[`output-${key}_2`].dollarGDP;
+        data.country2.outputs[key]['value'].valueGDP = out.chart[`output-${key}_2`].valueGDP;
+        data.country2.outputs[key]['value'].difference = out.chart[`output-${key}_2`].difference;
+        data.country2.outputs[key]['value'].newValue = out.chart[`output-${key}_2`].newValue;
+        data.country2.outputs[key]['value'].today = out.chart[`output-${key}_2`].today;
       } else {
         data.country1.outputs[key]['value'] = out.chart['outputs-1'];
         data.country2.outputs[key]['value'] = out.chart['outputs-2'];
