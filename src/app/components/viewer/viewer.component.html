@@ -301,13 +301,13 @@
                           <div class="input_charts-label-text">{{viewerModel.firstCountry}}
                             <div class="region-name" *ngIf="viewerGroupModel.firstCountryGroup != ''">{{viewerGroupModel.firstCountryGroup}}</div>
                           </div>
-                          <div id="inputSoc-1" class="input__fip-table-axis"></div>
+                          <div id="inputSoc-1" class="input__fip-table-axis inputcharts--1"></div>
                         </div>
                         <div class="input-charts__wrapper">
                           <div class="input_charts-label-text">{{viewerModel.secondCountry || 'Global Average'}}
                             <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
                           </div>
-                          <div id="inputSoc-2" class="input__fip-table-axis"></div>
+                          <div id="inputSoc-2" class="input__fip-table-axis inputcharts--2"></div>
                         </div>
                       </div>
                     </div>
@@ -333,13 +333,13 @@
                           <div class="input_charts-label-text">{{viewerModel.firstCountry}}
                             <div class="region-name" *ngIf="viewerGroupModel.firstCountryGroup != ''">{{viewerGroupModel.firstCountryGroup}}</div>
                           </div>
-                          <div id="inputEco-1" class="input__fip-table-axis"></div>
+                          <div id="inputEco-1" class="input__fip-table-axis inputcharts--1"></div>
                         </div>
                         <div class="input-charts__wrapper">
                           <div class="input_charts-label-text">{{viewerModel.secondCountry || 'Global Average'}}
                             <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
                           </div>
-                          <div id="inputEco-2" class="input__fip-table-axis"></div>
+                          <div id="inputEco-2" class="input__fip-table-axis inputcharts--2"></div>
                         </div>
                       </div>
                     </div>
@@ -365,13 +365,13 @@
                           <div class="input_charts-label-text">{{viewerModel.firstCountry}}
                             <div class="region-name" *ngIf="viewerGroupModel.firstCountryGroup != ''">{{viewerGroupModel.firstCountryGroup}}</div>
                           </div>
-                          <div id="inputVul-1" class="input__fip-table-axis"></div>
+                          <div id="inputVul-1" class="input__fip-table-axis inputcharts--1"></div>
                         </div>
                         <div class="input-charts__wrapper">
                           <div class="input_charts-label-text">{{viewerModel.secondCountry || 'Global Average'}}
                             <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
                           </div>
-                          <div id="inputVul-2" class="input__fip-table-axis"></div>
+                          <div id="inputVul-2" class="input__fip-table-axis inputcharts--2"></div>
                         </div>
                       </div>
                     </div>
@@ -397,13 +397,13 @@
                           <div class="input_charts-label-text">{{viewerModel.firstCountry}}
                             <div class="region-name" *ngIf="viewerGroupModel.firstCountryGroup != ''">{{viewerGroupModel.firstCountryGroup}}</div>
                           </div>
-                          <div id="inputExp-1" class="input__fip-table-axis"></div>
+                          <div id="inputExp-1" class="input__fip-table-axis inputcharts--1"></div>
                         </div>
                         <div class="input-charts__wrapper">
                           <div class="input_charts-label-text">{{viewerModel.secondCountry || 'Global Average'}}
                             <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
                           </div>
-                          <div id="inputExp-2" class="input__fip-table-axis"></div>
+                          <div id="inputExp-2" class="input__fip-table-axis inputcharts--2"></div>
                         </div>
                       </div>
                     </div>
@@ -464,7 +464,7 @@
                                               <br /> <span class="slider-text-base">New Value: {{sliderValues1[inputType + '_display_value']}}</span>
                                             </span>
                           </div>
-                          <div class="" style="position: relative; min-height: 80px;" [hidden]="viewerModel.secondCountry === ''">
+                          <!--<div class="" style="position: relative; min-height: 80px;" [hidden]="viewerModel.secondCountry !== ''">
                             <md-slider
                               [min]="sliderValues2[inputType + '_min']"
                               [max]="sliderValues2[inputType + '_max']"
@@ -479,7 +479,7 @@
                                               {{sliderValues2[inputType + '_difference_value']}} <br /> <span class="slider-text-base">Base: {{sliderValues2[inputType + '_baseline_value']}}</span>
                                               <br /> <span class="slider-text-base">New Value: {{sliderValues2[inputType + '_display_value']}}</span>
                                             </span>
-                          </div>
+                          </div>-->
                         </div>
 
                       </div>
@@ -521,7 +521,7 @@
                                               <br /> <span class="slider-text-base">New Value: {{sliderValues1[inputType + '_display_value']}}</span>
                                             </span>
                           </div>
-                          <div class="" style="position: relative; min-height: 80px;" [hidden]="viewerModel.secondCountry === ''">
+                          <!--<div class="" style="position: relative; min-height: 80px;" [hidden]="viewerModel.secondCountry === ''">
                             <md-slider
                               [min]="sliderValues2[inputType + '_min']"
                               [max]="sliderValues2[inputType + '_max']"
@@ -536,7 +536,7 @@
                                               {{sliderValues2[inputType + '_difference_value']}} <br /> <span class="slider-text-base">Base: {{sliderValues2[inputType + '_baseline_value']}}</span>
                                               <br /> <span class="slider-text-base">New Value: {{sliderValues2[inputType + '_display_value']}}</span>
                                             </span>
-                          </div>
+                          </div>-->
                         </div>
 
                       </div>
@@ -578,7 +578,7 @@
                                               <br /> <span class="slider-text-base">New Value: {{sliderValues1[inputType + '_display_value']}}</span>
                                             </span>
                           </div>
-                          <div class="" style="position: relative; min-height: 80px;" [hidden]="viewerModel.secondCountry === ''">
+                          <!--<div class="" style="position: relative; min-height: 80px;" [hidden]="viewerModel.secondCountry === ''">
                             <md-slider
                               [min]="sliderValues2[inputType + '_min']"
                               [max]="sliderValues2[inputType + '_max']"
@@ -593,7 +593,7 @@
                                               {{sliderValues2[inputType + '_difference_value']}} <br /> <span class="slider-text-base">Base: {{sliderValues2[inputType + '_baseline_value']}}</span>
                                               <br /> <span class="slider-text-base">New Value: {{sliderValues2[inputType + '_display_value']}}</span>
                                             </span>
-                          </div>
+                          </div>-->
                         </div>
 
                       </div>
@@ -650,7 +650,7 @@
                                               {{sliderValues2[inputType + '_difference_value']}} <br /> <span class="slider-text-base">Base: {{sliderValues2[inputType + '_baseline_value']}}</span>
                                               <br /> <span class="slider-text-base">New Value: {{sliderValues2[inputType + '_display_value']}}</span>
                                             </span>
-                          </div>-->
+                          </div>
                         </div>
 
                       </div>
@@ -713,8 +713,8 @@
           <p>View the risk indicators of losses in assets and well-being and changes in socio-economic resilience due to natural disasters in an average year for your selected country.</p>
           <p>Or click on 'Access Full Model' so you can manipulate the resilience inputs under the map to see how policy interventions could mitigate asset risk and well-being risk, and build socioeconomic resilience in countries around the world.</p>
           <!-- <p>View losses on assets and well-being and changes in
-          socio-economic capacity for one or two countries.</p> -->
-          <p>Select two countries from the map or type their names:</p>
+          socio-economic capacity for one or two countries.</p> 
+          <p>Select two countries from the map or type their names:</p>-->
         </div>
       </div>
       <div class="row box-general box-cu">

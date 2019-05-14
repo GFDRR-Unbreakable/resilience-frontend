@@ -20,6 +20,7 @@ import {AppStore} from '../../store/default.store';
 // import * as enablePassiveEvent from 'default-passive-events/default-passive-events.js';
 import {MdSliderChange} from '@angular/material/';
 
+import * as d3 from 'd3/d3.js';
 @Component({
   selector: 'app-viewer',
   templateUrl: './viewer.component.html',
@@ -777,7 +778,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           value: this.sliderValues1[inpKey].value
         };
         data.country2.inputs[key][inpKey]['value'] = {
-          label: this.sliderValues2[inpKey + '_display_value'],
+          //label: this.sliderValues2[inpKey + '_display_value'],
+          label: d3.select(`.inputcharts--2 #table-${ inpKey } span.value`).text(),
           value: this.sliderValues2[inpKey].value
         };
 
@@ -1153,7 +1155,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * order to reset default slider values according to selected countries or not.
    */
   onResetTechDataEvent(keepHazards?: boolean) {
-    console.log('onResetTechDataEvent')
     // Reset values
     if (!keepHazards) {
       this.hazards.hazard1 = true;
