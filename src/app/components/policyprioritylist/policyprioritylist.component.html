@@ -2,7 +2,7 @@
 <div class="container policy-dp">
     <div class="row">
         <div class="col-md-12 scorecard-title">
-            <h3 class="policy-list">Policy Priority List </h3>
+            <h3 class="policy-list">Policy Ranking by Country</h3>
             <a href="" routerLink="/viewer"><button type="button" class="btn button-map box-button-map"><i class="mdi mdi-keyboard-backspace"></i> Map</button></a>
             <button type="button" class="btn btn-pdf text-download box-button-pdf" [disabled]="_selectedCountryList.length < 2" (click)="onDownloadPDFFileEvent()"><img class="img-download" src="assets/image/ic-download.png" alt="">PDF</button>
         </div>
@@ -120,6 +120,16 @@
                     <i class="mdi mdi-information-outline"></i>
                     </button> -->
                 </h5>
+                <div class="legend">
+                    <label class="text-sort">
+                        <i class="mdi mdi-checkbox-blank-circle box-icon-a"></i>
+                        Avoided well-being losses
+                    </label>
+                    <label class="text-sort">
+                        <i class="mdi mdi-checkbox-blank-circle box-icon-c"></i>
+                        Avoided asset losses
+                    </label>
+                </div>
             </div>
             <div class="row pad-botTop10">
                 <div class="col-md-12 text-center">
@@ -134,6 +144,16 @@
                         <i class="mdi mdi-information-outline"></i>
                         </button> -->
                     </h5>
+                    <div class="legend">
+                        <label class="text-sort">
+                            <i class="mdi mdi-checkbox-blank-circle box-icon-a"></i>
+                            Avoided well-being losses
+                        </label>
+                        <label class="text-sort">
+                            <i class="mdi mdi-checkbox-blank-circle box-icon-c"></i>
+                            Avoided asset losses
+                        </label>
+                    </div>
             </div>
             <div class="row pad-botTop10">
                 <div class="col-md-12">

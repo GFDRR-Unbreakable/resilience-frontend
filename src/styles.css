@@ -11394,7 +11394,7 @@ fieldset {
   margin-bottom: -5px;
 }
 .h5-mg-01{
-  margin-bottom: 25px;
+  /*margin-bottom: 25px;*/
 }
 .left-pd{
   padding-left: 16% !important;
@@ -11923,4 +11923,14 @@ fieldset {
 
 .hazard-buttons {
   padding: 10px 0;
+}
+
+
+.box-policyprioritylist .box-icon-a,
+.box-policyprioritylist .box-icon-c {
+  padding-left: 0;
+}
+
+.box-policyprioritylist .legend {
+  margin-bottom: 25px;
 }

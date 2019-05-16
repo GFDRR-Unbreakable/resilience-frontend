@@ -2,7 +2,7 @@
 <div class="container policy-measure">
     <div class="row">
         <div class="col-md-12 scorecard-title">
-            <h4 class="policy-list">Policy Scenario Across the Globe </h4>
+            <h4 class="policy-list">Specific Policy Measure</h4>
             <a href="" routerLink="/viewer"><button type="button" class="btn button-map box-button-map"><i class="mdi mdi-keyboard-backspace"></i> Map</button></a>
             <button type="button" class="btn btn-primary text-download box-button-pdf" (click)="onDownloadPDFFileEvent()"><img class="img-download" src="assets/image/ic-download.png" alt="">PDF</button>
         </div>
@@ -52,7 +52,7 @@
                 <!-- <i class="mdi mdi-unfold-more-horizontal"></i> -->
                 <!--<img class="icon-sort" (click)="onSortChartDataEvent('1', 'chart1')" />-->
             </label>
-            <label class="text-sort" [hidden]="selectedPolicyUIList.hideAvoidedAssetLosses">
+            <label class="text-sort" [hidden]="selectedPolicyUIList.hideAvoidedAssetLosses && 0">
                 <i class="mdi mdi-checkbox-blank-circle box-icon-c"></i>
                 Avoided asset losses
                 <!-- <i class="mdi mdi-unfold-more-horizontal"></i> -->
@@ -70,7 +70,7 @@
                 <!-- <i class="mdi mdi-unfold-more-horizontal"></i> -->
                 <!--<img class="icon-sort" (click)="onSortChartDataEvent('1', 'chart2')">-->
             </label>
-            <label class="text-sort left-pd-01" [hidden]="selectedPolicyUIList.hideAvoidedAssetLosses">
+            <label class="text-sort left-pd-01" [hidden]="selectedPolicyUIList.hideAvoidedAssetLosses && 0">
                 <i class="mdi mdi-checkbox-blank-circle box-icon-c"></i>
                 Avoided asset losses
                 <!-- <i class="mdi mdi-unfold-more-horizontal"></i> -->
