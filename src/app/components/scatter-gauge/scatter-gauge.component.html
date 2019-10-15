@@ -1,0 +1,6 @@
+<div class="scatter-gauge">
+  <div *ngFor="let p of data"
+  class="scatter-gauge__point" [attr.title]="p.id + ' ' + p.value"
+  [style.left.%]="pointPosition(p)"
+  [class.is-active]="p.id === id"></div>
+</div>

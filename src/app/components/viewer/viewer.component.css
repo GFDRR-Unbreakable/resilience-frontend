@@ -77,3 +77,28 @@
   color: #51c5d0;
   font-size: 48px;
 }
+
+
+.country-select__label {
+  font-size: 16px;
+  color: var(--teal);
+  font-style: italic;
+  margin-left: 10px;
+}
+
+.country-select__container {
+  width: 100%;
+}
+
+.country-select__wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.viewer__header {
+  display: flex;
+  align-items: center;
+}
+.viewer__switch {
+  display: inline;
+}

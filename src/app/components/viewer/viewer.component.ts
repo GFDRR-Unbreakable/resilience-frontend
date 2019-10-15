@@ -57,18 +57,23 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     asset: 'Risk to Assets (% of GDP)',
     socio: 'Socio-Economic Resilience',
   };
-  public _selectedCountryList: Array<any> = [];
+  public _selectedCountryList: Array<any> = [{
+    index: 0,
+    name: "United States",
+    code: "USA",
+    group: "North America"
+  }];
   public sliderValues1Default = {};
   public sliderValues2Default = {};
   public sliderValues1 = {};
   public sliderValues2 = {};
-  public viewerDisplay: string = '';
+  public viewerDisplay: string = 'viewer';
   public viewerModel: Viewer = {
-    firstCountry: '',
+    firstCountry: 'United States',
     secondCountry: ''
   };
   public viewerGroupModel: ViewerGroup = {
-    firstCountryGroup: '',
+    firstCountryGroup: 'North America',
     secondCountryGroup: ''
   };
   public viewerP1Default: any = {};
@@ -205,6 +210,20 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   public hazardDisplay = {};
   public inputData = {};
   public inputLabels = {};
+
+  public gaugeData = {
+    'risk_to_assets': [],
+    'resilience': [],
+    'risk': [],
+  };
+  selectedCountry = 'USA';
+
+  public inputGaugeData:any = {};
+
+  switchValue = 'focus';
+  switchOptions = ['focus', 'all'];
+  switchLabels = ['Focus', 'All'];
+
   /**
    * Component constructor which is first invoked when the app is rendering.
    * Inits accessing stored state-like data from the app root store data.
@@ -221,14 +240,15 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     private store: Store<AppStore>,
     private fileService: FileService,
     private router: ActivatedRoute ) {
-      this.viewer$ = store.select('viewer');
-      this.viewerModel1$ = store.select('viewerModel1');
-      this.viewerModel2$ = store.select('viewerModel2');
-      router.url.subscribe((url) => {
-        this.url = url;
-        console.log(url[0].path);
-      });
-    }
+
+    this.viewer$ = store.select('viewer');
+    this.viewerModel1$ = store.select('viewerModel1');
+    this.viewerModel2$ = store.select('viewerModel2');
+    router.url.subscribe((url) => {
+      this.url = url;
+      console.log(url[0].path);
+    });
+  }
   // LIFE-CYCLE METHODS
   /**
    * This method gets called after the component has invoked its constructor.
@@ -279,17 +299,19 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * @param {Boolean} isFirstInput - Determines if the viewer input text field is from the first or the second one.
    */
   private _changeCountryInput(isFirstInput) {
-    const input = isFirstInput ? this.viewerModel.firstCountry : this.viewerModel.secondCountry;
     const fromListFilter = this.countryListComp.filter(
-      val => val.name.toLowerCase() === input.toLowerCase());
-    const MAX_SELECTED_COUNTRIES = 2;
-    if (this._selectedCountryList.length <= MAX_SELECTED_COUNTRIES) {
-      if (isFirstInput) {
-        this._filterCountryByInput(fromListFilter, 0, this.viewerModel.firstCountry);
-      } else {
-        this._filterCountryByInput(fromListFilter, 1, this.viewerModel.secondCountry);
-      }
+      val => val.name.toLowerCase() === this.viewerModel.firstCountry.toLowerCase());
+    if (this._selectedCountryList.length <= 2) {
+
+      this._filterCountryByInput(fromListFilter, 0, this.viewerModel.firstCountry);
+
       this.store.dispatch({type: ViewerAction.EDIT_VIEWER, payload: this.viewerModel});
+    }
+
+    if (this.url[0].path === 'viewer') {
+      // Set selected country for gagues.
+      this.selectedCountry = fromListFilter.length ? fromListFilter[0].code
+      : 'AVG';
     }
 
     // @TODO: Find cleaner way to trigger model run.
@@ -297,6 +319,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       this.onChangeViewerIndViewEvent((this.url[0].path === 'viewer') ? 'viewer' : 'tech');
     }
   }
+
   /**
    * This method sends modified values from the slider component and the global modal object
    * to a Python Model endpoint which delivers new data to update Output chart and values
@@ -357,6 +380,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * @param {String} field - Input-text field model
    */
   private _filterCountryByInput(list, selectedIdx, field) {
+    console.log('_filterCountryByInput', list, selectedIdx, field)
     if (list.length >= 1) {
       if (!selectedIdx) {
         this.viewerGroupModel.firstCountryGroup = list[0].group;
@@ -377,6 +401,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     const idInEco = selectedIdx === 0 ? 'inputEco-1' : 'inputEco-2';
     const idInVul = selectedIdx === 0 ? 'inputVul-1' : 'inputVul-2';
     const idInExp = selectedIdx === 0 ? 'inputExp-1' : 'inputExp-2';
+
     const sliderValues = selectedIdx === 0 ? this.sliderValues1 : this.sliderValues2;
     const viewerMod = selectedIdx === 0 ? this.viewerP1 : this.viewerP2;
     if (list.length) {
@@ -397,6 +422,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           this.chartService.updateInputCharts(idInVul, sliderValues, list[0].code);
           this.chartService.updateInputCharts(idInExp, sliderValues, list[0].code);
         } else {
+
           this.createMapPageOutputChartTable(outData, idOut, list[0].group, list[0].code);
           this.chartService.createInputCharts(inData, idInSoc, sliderValues, list[0].group);
           this.chartService.createInputCharts(inData, idInEco, sliderValues, list[0].group);
@@ -468,166 +494,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     document.addEventListener('wheel', this.onPassEv, options);
     document.addEventListener('wheelmove', this.onPassEv, options);
   }
-  /**
-   * This method has similar functionality of @private methods called
-   * _filterCountryByInput and _changeCountryInput when the input-text value
-   * has been modified the difference is the UI event is triggered by a
-   * mouse-click event.
-   * @param {String} isoCode - Represents the country ISO code.
-   */
-  changeCountryInputsByClick(isoCode) {
-    const filterISOCode = this.countryListComp.filter(val => val.code === isoCode);
-    if (filterISOCode.length > 0) {
-      this.mapService.setMapFilterByISOCode(isoCode);
-      const filteredName = filterISOCode[0].name;
-      const filteredGroup = filterISOCode[0].group;
-      const selectedCountryIdx = this._selectedCountryList.map((val, index) => {
-        if (val.name.toLowerCase() === filteredName.toLowerCase()) {
-          return index;
-        }
-      }).filter(isFinite);
-      const MAX_SELECTED_COUNTRIES = 2;
-      const inData = this.chartService.getInputData();
-      const outData = this.chartService.getOutputData();
-      if (selectedCountryIdx.length === 0) {
-        let index = 0;
-        // If users selects third country.
-        if (this._selectedCountryList.length >= MAX_SELECTED_COUNTRIES) {
-          this.viewerModel.firstCountry = this.viewerModel.secondCountry;
-          this.viewerGroupModel.firstCountryGroup = this.viewerGroupModel.secondCountryGroup;
-          this.viewerModel.secondCountry = filteredName;
-          this.viewerGroupModel.secondCountryGroup = filteredGroup;
-        }
 
-        const filterCountryVal1 = this.countryListComp.filter(val =>
-          val.name.toLowerCase() === this.viewerModel.firstCountry.toLowerCase());
-        const filterCountryVal2 = this.countryListComp.filter(val =>
-          val.name.toLowerCase() === this.viewerModel.secondCountry.toLowerCase());
-
-        // Updates first inputs & output charts.
-        if (!this.viewerModel.firstCountry || filterCountryVal1.length === 0) {
-          this.viewerModel.firstCountry = filteredName;
-          this.viewerGroupModel.firstCountryGroup = filteredGroup;
-
-          if (this.global) {
-            this.chartService.updateOutputCharts('outputs-1', isoCode, null, true, this.viewerDisplay === 'tech');
-            this.updateInputCharts(1, this.sliderValues1, isoCode);
-          } else {
-            this.createMapPageOutputChartTable(outData, 'outputs-1', filteredGroup, isoCode);
-            this.createInputCharts(1, inData, this.sliderValues1, filteredGroup);
-          }
-        }
-        // Updates second inputs & output charts.
-        else if (!this.viewerModel.secondCountry.trim() || filterCountryVal2.length === 0) {
-          index += 1;
-          this.viewerModel.secondCountry = filteredName;
-          this.viewerGroupModel.secondCountryGroup = filteredGroup;
-          if (this.global) {
-            this.chartService.updateOutputCharts('outputs-2', isoCode, null, true, this.viewerDisplay === 'tech');
-            this.updateInputCharts(2, this.sliderValues2, isoCode);
-          } else {
-            this.createMapPageOutputChartTable(outData, 'outputs-2', filteredGroup, isoCode);
-            this.createInputCharts(2, inData, this.sliderValues2, filteredGroup);
-          }
-        }
-        else {
-          index += 1;
-          const isoCodeOld = this._selectedCountryList[1].code;
-          this._selectedCountryList[1].index = 0;
-        }
-        let isThirdCountry = false;
-        if (this._selectedCountryList.length >= MAX_SELECTED_COUNTRIES) {
-          this._selectedCountryList.shift();
-          isThirdCountry = true;
-        }
-        this._selectedCountryList.push({
-          index: index,
-          name: filteredName,
-          code: isoCode,
-          group: filteredGroup
-        });
-        // User has selected a third country.
-        if (isThirdCountry) {
-          const isoCodeOld = this._selectedCountryList[0].code;
-          const filteredGroupOld = this._selectedCountryList[0].group;
-          if (this.global) {
-            this.updateInputCharts(1, this.sliderValues1, isoCodeOld);
-            this.chartService.updateOutputCharts('outputs-1', isoCodeOld, null, true, this.viewerDisplay === 'tech');
-            this.updateInputCharts(2, this.sliderValues2, isoCode);
-            this.chartService.updateOutputCharts('outputs-2', isoCode, null, true, this.viewerDisplay === 'tech');
-          } else {
-            this.createMapPageOutputChartTable(outData, 'outputs-1', filteredGroupOld, isoCodeOld);
-            this.createInputCharts(1, inData, this.sliderValues1, filteredGroup);
-            this.createMapPageOutputChartTable(outData, 'outputs-2', filteredGroup, isoCode);
-            this.createInputCharts(2, inData, this.sliderValues2, filteredGroup);
-          }
-          this.setResetValues(this.sliderValues1, this.viewerP1, 1, this._selectedCountryList[0].code);
-          this.setResetValues(this.sliderValues2, this.viewerP2, 2, this._selectedCountryList[1].code);
-        } else {
-          const sliderV = index === 0 ? this.sliderValues1 : this.sliderValues2;
-          const viewerP = index === 0 ? this.viewerP1 : this.viewerP2;
-          const viewerType = index === 0 ? 1 : 2;
-          this.setResetValues(sliderV, viewerP, viewerType, isoCode);
-          // This causes an error. Need to figure out why it is here. May not
-          // need to fire this function.
-          // this.onResetTechDataEvent();
-        }
-      } else {
-        const selectedC = this._selectedCountryList[selectedCountryIdx[0]].name;
-
-        if (this.viewerModel.firstCountry.length && selectedC.indexOf(this.viewerModel.firstCountry) >= 0) {
-          this.viewerModel.firstCountry = '';
-          this.viewerGroupModel.firstCountryGroup = '';
-          if (this.global) {
-            this.chartService.updateOutputCharts('outputs-1', 'global', null, true, this.viewerDisplay === 'tech');
-            this.updateInputCharts(1, this.sliderValues1, 'global');
-          } else {
-            this.createMapPageOutputChartTable(outData, 'outputs-1', 'GLOBAL');
-            this.chartService.updateOutputCharts('outputs-1', 'global', null, true, this.viewerDisplay === 'tech');
-            if (!this.global) {
-              this.global = !this.global;
-            }
-            if (this.viewerModel.secondCountry) {
-              const filterCountryVal2 = this.countryListComp.filter(val =>
-                val.name.toLowerCase() === this.viewerModel.secondCountry.toLowerCase())[0];
-              this.createMapPageOutputChartTable(outData, 'outputs-2', 'GLOBAL');
-              this.chartService.updateOutputCharts('outputs-2', filterCountryVal2.code, null, true, this.viewerDisplay === 'tech');
-            }
-            this.createInputCharts(1, inData, this.sliderValues1, 'GLOBAL');
-
-          }
-          this.setResetValues(this.sliderValues1, this.viewerP1, 1, 'GLOBAL');
-        } else if (this.viewerModel.secondCountry.length && selectedC.indexOf(this.viewerModel.secondCountry) >= 0) {
-          this.viewerModel.secondCountry = '';
-          this.viewerGroupModel.secondCountryGroup = '';
-          if (this.global) {
-            this.chartService.updateOutputCharts('outputs-2', 'global', null, true, this.viewerDisplay === 'tech');
-            this.updateInputCharts(2, this.sliderValues2, 'global');
-
-          } else {
-            this.createMapPageOutputChartTable(outData, 'outputs-2', 'GLOBAL');
-            this.chartService.updateOutputCharts('outputs-2', 'global', null, true, this.viewerDisplay === 'tech');
-            if (!this.global) {
-              this.global = !this.global;
-            }
-            if (this.viewerModel.firstCountry) {
-              const filterCountryVal1 = this.countryListComp.filter(val =>
-                val.name.toLowerCase() === this.viewerModel.firstCountry.toLowerCase())[0];
-              this.createMapPageOutputChartTable(outData, 'outputs-1', 'GLOBAL');
-              this.chartService.updateOutputCharts('outputs-1', filterCountryVal1.code, null, true, this.viewerDisplay === 'tech');
-            }
-            this.createInputCharts(2, inData, this.sliderValues2, 'GLOBAL');
-          }
-          this.setResetValues(this.sliderValues2, this.viewerP2, 2, 'GLOBAL');
-        }
-        this._selectedCountryList.splice(selectedCountryIdx[0], 1);
-        // This causes an error. Need to figure out why it is here. May not
-        // need to fire this function.
-        // this.onResetTechDataEvent();
-      }
-      this.store.dispatch({type: ViewerAction.EDIT_VIEWER, payload: this.viewerModel});
-    }
-  }
   /**
    * Retrieves output-model and input-model data from the ChartService by then
    * plot their output/input charts, build slider default values and
@@ -646,20 +513,27 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
 
       // Used to look up country data on hover.
       this.globalModelDataHash = data._globalModelData;
+      console.log('## getChartOutputData ##', data)
+      this.createMapPageOutputChartTable(data._outputDomains, 'outputs-1', undefined, undefined, '## getChartOutputData ##', data);
 
-      this.createMapPageOutputChartTable(data._outputDomains, 'outputs-1');
+      this.populateScatterGauges(data, 'outputs-1');
       this.createMapPageOutputChartTable(data._outputDomains, 'outputs-2');
       this.countryUIList = this.chartService.getOutputDataUIList();
       this.countryListComp = this.chartService.getOutputList();
       this.countryListIsoCodes = this.countryListComp.map(val => val.code);
       this.mapService.setMapFilterByISOCodes(this.countryListIsoCodes);
+
+      // this.onFirstCountryInputChangeEvent();
     }, err => {
       console.log(err);
     });
   }
 
-  createMapPageOutputChartTable(data:any, containerId:string, groupName?:any, isoCode?: any):any {
+  createMapPageOutputChartTable(data:any, containerId:string, groupName:any = undefined, isoCode: any = undefined, origin: string = 'No origin', allData?: any):any {
+    // console.log('createMapPageOutputChartTable', data, allData);
+
     this.chartService.createSingleOutputChart(data.risk_to_assets, 'risk_to_assets', 'output-risk_to_assets_1', groupName, isoCode);
+
     this.chartService.createSingleOutputChart(data.risk, 'risk', 'output-risk_1', groupName, isoCode);
     this.chartService.createSingleOutputChart(data.resilience, 'resilience', 'output-resilience_1', groupName, isoCode);
 
@@ -669,6 +543,46 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // this.chartService.createOutputChart(data, containerId, groupName, false, isoCode);
   }
+
+  populateScatterGauges(allData: any, containerId:string) {
+    const countryData = allData._globalModelData;
+
+    ['risk_to_assets', 'resilience', 'risk'].reduce((acc, key) => {
+      const rows = Object.keys(countryData).map(id => {
+        return {id, value: countryData[id][key]};
+      });
+      const avgRow = {
+        id: 'AVG',
+        value: rows.reduce((a, r) => a + r.value, 0) / rows.length
+      };
+      acc[key] = [...rows, avgRow];
+      return acc;
+    }, this.gaugeData);
+
+    this.inputGaugeData = ['inputSoc', 'inputEco', 'inputVul', 'inputExp']
+    .reduce((acc, input) => {
+      const keys = this.chartService.getInputIdChartByType(input);
+      acc[input] = keys.reduce((acc2, key) => {
+        return this.mapGaugeRows(acc2, key, countryData);
+      }, {} as any)
+      return acc;
+    }, {} as any);
+
+    console.log('populateScatterGauges', this.inputGaugeData);
+  }
+
+  private mapGaugeRows(acc, key, countryData) {
+    const rows = Object.keys(countryData).map(id => {
+      return {id, value: countryData[id][key]};
+    });
+    const avgRow = {
+      id: 'AVG',
+      value: rows.reduce((a, r) => a + r.value, 0) / rows.length
+    };
+    acc[key] = [...rows, avgRow];
+    return acc;
+  }
+
   /**
    * This method builds data from Output & Input, country input fields and chart default values to be
    * send as params to CSV or PDF-generation API endpoint.
@@ -833,17 +747,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       this.legends = this.mapService.getMapLegendConf('well');
       this.mapService.setMapFilterByISOCodes(this.countryListIsoCodes);
       this.getChartOutputData();
-      this.mapService.setClickFnMapEvent((ev) => {
-        // const features = self.mapService.getMap()
-        //   .queryRenderedFeatures(ev.point, {layers: [self.mapService.getViewerFillLayer()]});
-        // if (features.length) {
-        //   const isoCode = features[0].properties['ISO_Code'];
-        //   const isoCodeList = this.countryListIsoCodes.filter(val => val === isoCode);
-        //   if (isoCodeList.length) {
-        //     self.changeCountryInputsByClick(isoCode);
-        //   }
-        // }
-      });
+
       this.mapService.setHoverFnMapEvent((ev) => {
         const features = self.mapService.getMap()
           .queryRenderedFeatures(ev.point, {layers: [self.mapService.getViewerFillLayer()]});
@@ -918,6 +822,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     const viewerPropDefault = viewerType === 1 ? 'viewerP1Default' : 'viewerP2Default';
     const sliderPropDefault = viewerType === 1 ? 'sliderValues1Default' : 'sliderValues2Default';
+    console.log('setResetValues', viewerPropDefault, viewerMod)
     this[viewerPropDefault] = Object.assign({}, viewerMod);
     this[sliderPropDefault] = Object.assign({}, sliderObj);
   }
@@ -967,6 +872,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * @param {Object} inputData - Input-indicator model object.
    */
   setSliderConfValues(inputData) {
+    console.log('setSliderConfValues', inputData)
     for (const inputDataIndex in inputData) {
       if (inputData.hasOwnProperty(inputDataIndex)) {
         const key = inputData[inputDataIndex].key;
@@ -1028,7 +934,10 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.sliderValues1['c_cat_info__poor'].max = this.sliderValues1['c_cat_info__nonpoor'].max;
     this.sliderValues2['c_cat_info__poor'].min = this.sliderValues2['c_cat_info__nonpoor'].min;
     this.sliderValues2['c_cat_info__poor'].max = this.sliderValues2['c_cat_info__nonpoor'].max;
+
     this.viewerP1Default = Object.assign({}, this.viewerP1);
+    console.log('viewerP1', this.viewerP1)
+    console.log('viewerP1Default is set')
     this.viewerP2Default = Object.assign({}, this.viewerP2);
     this.sliderValues1Default = Object.assign({}, this.sliderValues1);
     this.sliderValues2Default = Object.assign({}, this.sliderValues2);
@@ -1156,6 +1065,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   onResetTechDataEvent(keepHazards?: boolean) {
     // Reset values
+    console.log('onResetTechDataEvent', this.viewerP1Default, this.viewerP1)
+
     if (!keepHazards) {
       this.hazards.hazard1 = true;
       this.hazards.hazard2 = true;
@@ -1171,24 +1082,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.store.dispatch({type: ViewerAction.EDIT_VIEWER, payload: this.viewerModel});
     this.store.dispatch({type: ViewerAction.EDIT_VIEWER_MODEL_1, payload: this.viewerP1});
     this.store.dispatch({type: ViewerAction.EDIT_VIEWER_MODEL_2, payload: this.viewerP2});
-
-    if (this._selectedCountryList.length) {
-      // This seems to be redundant due to the actions fired above.
-      /*this._selectedCountryList.forEach(val => {
-        const viewerMod = val.index === 0 ? this.viewerP1 : this.viewerP2;
-        const outputChartId = val.index === 0 ? 'outputs-1' : 'outputs-2';
-
-        /*this.chartService.getInputPModelData(viewerMod).subscribe(data => {
-          const newObj = {};
-          for (const dataK in data) {
-            if (data.hasOwnProperty(dataK)) {
-              newObj[dataK] = data[dataK][viewerMod['name']];
-            }
-          }
-          this.chartService.updateOutputCharts(outputChartId, {model: newObj}, 'GLOBAL', true, this.viewerDisplay === 'tech');
-        });
-      });*/
-    } else {
+    if (!this._selectedCountryList.length) {
       this.viewerModel.firstCountry = '';
       this.viewerGroupModel.firstCountryGroup = '';
       this.viewerModel.secondCountry = '';
@@ -1204,16 +1098,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         this._selectedCountryList = [];
       }
     }
-    // Update charts
-    // this.chartService.updateOutputCharts('outputs-1', 'global');
-    // this.chartService.updateOutputCharts('outputs-2', 'global');
-    // Update map data
-    // if (this._selectedCountryList.length) {
-      // this._selectedCountryList.forEach(val => {
-      //   this.mapService.setMapFilterByISOCode(val.code);
-      // });
-      // this._selectedCountryList = [];
-    // }
   }
   /**
    * @event Change - This event is called when the second country input field is being modified.
@@ -1277,10 +1161,12 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onSwitchExposure(flood: boolean, earthquake: boolean, tsunami: boolean, windstorm: boolean) {
 
-    const group1 = this.global ? 'GLOBAL' : (this._selectedCountryList.length > 0
-      ? this._selectedCountryList[0].group : 'GLOBAL');
-    const group2 = this.global ? 'GLOBAL' : (this._selectedCountryList.length > 1
-      ? this._selectedCountryList[1].group : 'GLOBAL');
+    const group1 = this.global ? 'GLOBAL'
+    : (this._selectedCountryList.length > 0
+    ? this._selectedCountryList[0].group : 'GLOBAL');
+    const group2 = this.global ? 'GLOBAL'
+    : (this._selectedCountryList.length > 1
+    ? this._selectedCountryList[1].group : 'GLOBAL');
 
     let viewerHazardDefault1 = Object.assign({}, this.viewerP1Default);
     let viewerHazardDefault2 = Object.assign({}, this.viewerP2Default);
@@ -1311,7 +1197,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     viewerHazardDefault1['name'] = this._selectedCountryList[0].name;
     viewerHazardDefault1['id'] = this._selectedCountryList[0].code;
     viewerHazardDefault1['group_name'] = this._selectedCountryList[0].group;
-
+    console.log('getInputPModelData', viewerHazardDefault1)
     this.chartService.getInputPModelData(viewerHazardDefault1).subscribe(data => {
       const newObj = {};
       for (const dataK in data) {
@@ -1320,7 +1206,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
       this.chartService.updateOutputCharts('outputs-1', {model: newObj}, group1, true, this.viewerDisplay === 'tech');
-      if (!!this._selectedCountryList[1]) {
+
+      /*if (!!this._selectedCountryList[1]) {
         viewerHazardDefault2['name'] = this._selectedCountryList[1].name;
         viewerHazardDefault2['id'] = this._selectedCountryList[1].code;
         viewerHazardDefault2['group_name'] = this._selectedCountryList[1].group;
@@ -1367,7 +1254,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
             }
           });
         });
-      }
+      }*/
     });
   }
   /**

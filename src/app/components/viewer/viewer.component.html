@@ -45,37 +45,17 @@
 
 </div>
 <div class="container">
-  <div class="row">
-    <div class="col-md-7 col-lg-8 col-xl-8">
-      <h2 class="mappage__header">Select Country</h2>
-      <p>Select a country by typing its name below.</p>
-      <div class="box-dropdown row">
-        <div class="form-group col-md-6" [class.has-danger]="searchFailed">
-          <input id="country-1Txt" type="text" class="form-control input-wd" [(ngModel)]="viewerModel.firstCountry" [ngbTypeahead]="searchCountryFn" #country1="ngModel" (ngModelChange)="onFirstCountryInputChangeEvent()" placeholder="Country A"/>
-          <span *ngIf="searching">searching...</span>
-          <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
-        </div>
-<!--        <div class="form-group col-md-6" [class.has-danger]="searchFailed">-->
-<!--          <input id="country-2Txt" type="text" class="form-control input-wd" [(ngModel)]="viewerModel.secondCountry" [ngbTypeahead]="searchCountryFn" #country2="ngModel" (ngModelChange)="onSecondCountryInputChangeEvent()" placeholder="Country B"/>-->
-<!--          <span *ngIf="searching">searching...</span>-->
-<!--          <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>-->
-<!--        </div>-->
-      </div>
-    </div>
+  <div class="country-select__container">
+    <h2 class="mappage__header">Select Country</h2>
+    <div class="box-dropdown row">
+      <div class="country-select__wrapper form-group col-md-6" [class.has-danger]="searchFailed">
+        <input id="country-1Txt" type="text" class="form-control input-wd"
+        [(ngModel)]="viewerModel.firstCountry"
+        [ngbTypeahead]="searchCountryFn" #country1="ngModel"
+        (ngModelChange)="onFirstCountryInputChangeEvent()"
+        placeholder="Select a country"/>
+        <span class="country-select__label">Try another country!</span>
 
-    <div class="col-md-5 col-lg-4 col-xl-3">
-      <h3 class="mappage__header mappage__header--sub">Understanding the Graphics</h3>
-      <div class="row graphs-mg">
-        <div class="col-sm-7">
-          <img src="assets/image/histogram-big.png" alt="" *ngIf="viewerDisplay == 'tech'">
-          <img src="assets/image/histogram-big-01.png" alt="" *ngIf="viewerDisplay != 'tech'">
-        </div>
-        <div class="col-sm-5 text-left">
-          <p class="country-p" *ngIf="viewerDisplay == 'tech'">Policy simulation</p>
-          <p class="country-p" *ngIf="viewerDisplay != 'tech'">&nbsp;</p>
-          <p class="value-p">Today</p>
-          <p class="global-p">Global Histogram</p>
-        </div>
       </div>
     </div>
   </div>
@@ -83,7 +63,10 @@
   <div class="row">
     <div class="col-md-12">
       <div class="card-02">
-        <h2 class="mappage__header">Output: Country Losses to Assets, Socio-Economic Resilience, and Well-Being
+        <h2 class="mappage__header viewer__header">Output: Country Losses to Assets, Socio-Economic Resilience, and Well-Being
+          <app-switch class="viewer__switch" [value]="switchValue"
+          [options]="switchOptions" [labels]="switchLabels"
+          (onChange)="switchValue = $event"></app-switch>{{switchValue}}
           <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover1" triggers="mouseenter:mouseleave" popoverTitle="">
             <i class="mdi mdi-information-outline"></i>
           </button>
@@ -123,12 +106,21 @@
               </div>
             <div class="col-md-3">
               <div id="output-risk_to_assets_1" class="chart-container"></div>
+              <app-gauge-display [view]="switchValue"
+              [data]="gaugeData['risk_to_assets']"
+              [id]="selectedCountry"></app-gauge-display>
             </div>
             <div class="col-md-3">
               <div id="output-resilience_1" class="chart-container"></div>
+              <app-gauge-display [view]="switchValue"
+              [data]="gaugeData['resilience']"
+              [id]="selectedCountry"></app-gauge-display>
             </div>
             <div class="col-md-3">
               <div id="output-risk_1" class="chart-container"></div>
+              <app-gauge-display [view]="switchValue"
+              [data]="gaugeData['risk']"
+              [id]="selectedCountry"></app-gauge-display>
             </div>
           </div>
           <div id='outputs-2' class="row">
@@ -138,13 +130,19 @@
             </div>
             <div class="col-md-3">
               <div id="output-risk_to_assets_2" class="chart-container"></div>
+              <app-gauge-display [view]="switchValue"
+              [data]="gaugeData['risk_to_assets']"></app-gauge-display>
             </div>
 
             <div class="col-md-3">
               <div id="output-resilience_2" class="chart-container"></div>
+              <app-gauge-display [view]="switchValue"
+              [data]="gaugeData['resilience']"></app-gauge-display>
             </div>
             <div class="col-md-3">
               <div id="output-risk_2" class="chart-container"></div>
+              <app-gauge-display [view]="switchValue"
+              [data]="gaugeData['risk']"></app-gauge-display>
             </div>
           </div>
         </div>
@@ -160,9 +158,9 @@
       <p>View the risk indicators of losses in assets and well-being and changes in socio-economic resilience due to natural disasters in an average year for your selected country.</p>
       <p *ngIf="viewerModel.firstCountry"><a routerLink="/policyprioritylist" [queryParams]="{country: viewerModel.firstCountry}">View specific policy impacts for {{viewerModel.firstCountry}}</a></p>
       <div class="btn-group wt-dv" role="group" aria-label="Set viewer view">
-        <button type="button" class="btn btn-primary wt-lb" [disabled]='_selectedCountryList.length === 0' [ngClass]="{active: viewerDisplay === 'viewer'}" (click)="onChangeViewerIndViewEvent('viewer')">VIEW INDICATORS</button>
+        <button type="button" class="btn btn-primary wt-lb" [disabled]='_selectedCountryList.length === 0 && 0' [ngClass]="{active: viewerDisplay === 'viewer'}" (click)="onChangeViewerIndViewEvent('viewer')">VIEW INDICATORS</button>
         <span class="wt-sp">&nbsp;</span>
-        <button type="button" class="btn btn-primary wt-lb" [disabled]='_selectedCountryList.length === 0' [ngClass]="{active: viewerDisplay === 'tech'}" (click)="onChangeViewerIndViewEvent('tech')">ACCESS FULL MODEL</button>
+        <button type="button" class="btn btn-primary wt-lb" [disabled]='_selectedCountryList.length === 0 && 0' [ngClass]="{active: viewerDisplay === 'tech'}" (click)="onChangeViewerIndViewEvent('tech')">ACCESS FULL MODEL</button>
       </div>
     </div>
 
@@ -251,7 +249,10 @@
   <div class="row" [hidden]="!viewerDisplay">
     <div class="col-md-12">
       <div class="">
-        <h2 class="mappage__header">Country Resilience Factors
+        <h2 class="mappage__header viewer__header">Country Resilience Factors
+          <app-switch class="viewer__switch" [value]="switchValue"
+          [options]="switchOptions" [labels]="switchLabels"
+          (onChange)="switchValue = $event"></app-switch>
           <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover2" triggers="mouseenter:mouseleave" popoverTitle="">
             <i class="mdi mdi-information-outline"></i>
           </button>
@@ -270,48 +271,60 @@
           </div></h2>
         <div class="">
           <div class="">
-            <!-- <ngb-tabset type="pills">
-               <ngb-tab title="Viewer">
-                  <ng-template ngbTabContent> -->
-            <div [hidden]="!viewerDisplay || viewerDisplay === 'tech'">
+            <div [hidden]="viewerDisplay === 'tech'">
               <div class="row">
                 <div class="col-md-12 box-tab">
-                  <!--<div class="row">-->
-                    <!--<div class="col-md-4"></div>-->
-                    <!--<div class="col-md-4"><b class="country-text">{{viewerModel.firstCountry || 'Global Average'}}</b></div>-->
-                    <!--<div class="col-md-4"><b class="country-text">{{viewerModel.secondCountry || 'Global Average'}}</b></div>-->
-                  <!--</div>-->
-
-
-                    <input id="tab-one" type="radio" name="tabs" class="tab-input" checked="checked">
-                    <label for="tab-one" class="tab-label">Social Protection</label>
-                    <div class="tab-content tab-content__flip-table-axis">
-                      <div class="row align-items-start">
-                        <div class="label-text">
-                          <div class="input_charts-label-text">&nbsp;</div>
-                          <table >
-                            <tbody>
+                  <input id="tab-one" type="radio" name="tabs" class="tab-input" checked="checked">
+                  <label for="tab-one" class="tab-label">Social Protection</label>
+                  <div class="tab-content tab-content__flip-table-axis">
+                    <div class="row align-items-start">
+                      <div class="label-text">
+                        <div class="input_charts-label-text">&nbsp;</div>
+                        <table >
+                          <tbody>
                             <tr *ngFor="let inputType of inputTypes.inputSoc">
                               <td class="td-label-txt">{{inputLabels[inputType] ? inputLabels[inputType].descriptor : inputType}}</td>
                             </tr>
-                            </tbody>
-                          </table>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="input-charts__wrapper">
+                        <div class="input_charts-label-text">{{viewerModel.firstCountry}}
+                          <div class="region-name" *ngIf="viewerGroupModel.firstCountryGroup != ''">{{viewerGroupModel.firstCountryGroup}}</div>
                         </div>
-                        <div class="input-charts__wrapper">
-                          <div class="input_charts-label-text">{{viewerModel.firstCountry}}
-                            <div class="region-name" *ngIf="viewerGroupModel.firstCountryGroup != ''">{{viewerGroupModel.firstCountryGroup}}</div>
+                        <div id="inputSoc-1" class="input__fip-table-axis inputcharts--1"></div>
+                      </div>
+
+                      <div [style.width.%]="20">
+                        <ng-container *ngFor="let key of ['gamma_SP_cat_info__poor',  'macro_tau_tax', 'macro_borrow_abi', 'macro_prepare_scaleup', 'macro_T_rebuild_K']">
+                          <div *ngIf="inputGaugeData.hasOwnProperty('inputSoc') && inputGaugeData['inputSoc'].hasOwnProperty(key)">
+                            <app-gauge-display [view]="switchValue"
+                            [id]="selectedCountry"
+                            [data]="inputGaugeData['inputSoc'][key]"></app-gauge-display>
                           </div>
-                          <div id="inputSoc-1" class="input__fip-table-axis inputcharts--1"></div>
-                        </div>
+                        </ng-container>
+                      </div>
+
                         <div class="input-charts__wrapper">
                           <div class="input_charts-label-text">{{viewerModel.secondCountry || 'Global Average'}}
                             <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
                           </div>
+
                           <div id="inputSoc-2" class="input__fip-table-axis inputcharts--2"></div>
+                        </div>
+
+                        <div [style.width.%]="20">
+                          <ng-container *ngFor="let key of ['gamma_SP_cat_info__poor',  'macro_tau_tax', 'macro_borrow_abi', 'macro_prepare_scaleup', 'macro_T_rebuild_K']">
+                            <div *ngIf="inputGaugeData.hasOwnProperty('inputSoc') && inputGaugeData['inputSoc'].hasOwnProperty(key)">
+                              <app-gauge-display [view]="switchValue"
+                              [data]="inputGaugeData['inputSoc'][key]"></app-gauge-display>
+                            </div>
+                          </ng-container>
                         </div>
                       </div>
                     </div>
                     <input id="tab-two" type="radio" name="tabs" class="tab-input">
+
                     <label for="tab-two">Economic
                       <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
                        <i class="mdi mdi-information-outline"></i>
@@ -335,12 +348,31 @@
                           </div>
                           <div id="inputEco-1" class="input__fip-table-axis inputcharts--1"></div>
                         </div>
+                        <div [style.width.%]="20">
+                          <ng-container *ngFor="let key of ['axfin_cat_info__poor', 'axfin_cat_info__nonpoor',  'c_cat_info__poor', 'c_cat_info__nonpoor']">
+                            <div *ngIf="inputGaugeData.hasOwnProperty('inputEco') && inputGaugeData['inputEco'].hasOwnProperty(key)">
+                              <app-gauge-display [view]="switchValue"
+                              [id]="selectedCountry"
+                              [data]="inputGaugeData['inputEco'][key]"></app-gauge-display>
+                            </div>
+                          </ng-container>
+                        </div>
+
                         <div class="input-charts__wrapper">
                           <div class="input_charts-label-text">{{viewerModel.secondCountry || 'Global Average'}}
                             <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
                           </div>
                           <div id="inputEco-2" class="input__fip-table-axis inputcharts--2"></div>
                         </div>
+                        <div [style.width.%]="20">
+                          <ng-container *ngFor="let key of ['axfin_cat_info__poor', 'axfin_cat_info__nonpoor',  'c_cat_info__poor', 'c_cat_info__nonpoor']">
+                            <div *ngIf="inputGaugeData.hasOwnProperty('inputEco') && inputGaugeData['inputEco'].hasOwnProperty(key)">
+                              <app-gauge-display [view]="switchValue"
+                              [data]="inputGaugeData['inputEco'][key]"></app-gauge-display>
+                            </div>
+                          </ng-container>
+                        </div>
+
                       </div>
                     </div>
                     <input id="tab-three" type="radio" name="tabs" class="tab-input">
@@ -367,19 +399,35 @@
                           </div>
                           <div id="inputVul-1" class="input__fip-table-axis inputcharts--1"></div>
                         </div>
+                        <div [style.width.%]="20">
+                          <ng-container *ngFor="let key of ['v_cat_info__poor', 'v_cat_info__nonpoor', 'shew_for_hazard_ratio']">
+                            <div *ngIf="inputGaugeData.hasOwnProperty('inputVul') && inputGaugeData['inputVul'].hasOwnProperty(key)">
+                              <app-gauge-display [view]="switchValue"
+                              [id]="selectedCountry"
+                              [data]="inputGaugeData['inputVul'][key]"></app-gauge-display>
+                            </div>
+                          </ng-container>
+                        </div>
+
                         <div class="input-charts__wrapper">
                           <div class="input_charts-label-text">{{viewerModel.secondCountry || 'Global Average'}}
                             <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
                           </div>
                           <div id="inputVul-2" class="input__fip-table-axis inputcharts--2"></div>
                         </div>
+                        <div [style.width.%]="20">
+                          <ng-container *ngFor="let key of ['v_cat_info__poor', 'v_cat_info__nonpoor','shew_for_hazard_ratio']">
+                            <div *ngIf="inputGaugeData.hasOwnProperty('inputVul') && inputGaugeData['inputVul'].hasOwnProperty(key)">
+
+                              <app-gauge-display [view]="switchValue"
+                              [data]="inputGaugeData['inputVul'][key]"></app-gauge-display>
+                            </div>
+                          </ng-container>
+                        </div>
                       </div>
                     </div>
                     <input id="tab-four" type="radio" name="tabs" class="tab-input">
                     <label for="tab-four">Exposure
-                      <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                        <i class="mdi mdi-information-outline"></i>
-                      </button> -->
                     </label>
                     <div class="tab-content tab-content__flip-table-axis">
                       <div class="row">
@@ -399,40 +447,44 @@
                           </div>
                           <div id="inputExp-1" class="input__fip-table-axis inputcharts--1"></div>
                         </div>
+                        <div [style.width.%]="20">
+                          <ng-container *ngFor="let key of ['hazard_ratio_flood_poor', 'hazard_ratio_fa__flood','hazard_ratio_fa__earthquake', 'hazard_ratio_fa__tsunami', 'hazard_ratio_fa__wind']">
+                            <div *ngIf="inputGaugeData.hasOwnProperty('inputExp') && inputGaugeData['inputExp'].hasOwnProperty(key)">
+                              <app-gauge-display [view]="switchValue"
+                              [id]="selectedCountry"
+                              [data]="inputGaugeData['inputExp'][key]"></app-gauge-display>
+                            </div>
+                          </ng-container>
+                        </div>
+
                         <div class="input-charts__wrapper">
                           <div class="input_charts-label-text">{{viewerModel.secondCountry || 'Global Average'}}
                             <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
                           </div>
                           <div id="inputExp-2" class="input__fip-table-axis inputcharts--2"></div>
                         </div>
+                        <div [style.width.%]="20">
+                          <ng-container *ngFor="let key of ['hazard_ratio_flood_poor', 'hazard_ratio_fa__flood','hazard_ratio_fa__earthquake', 'hazard_ratio_fa__tsunami', 'hazard_ratio_fa__wind']">
+                            <div *ngIf="inputGaugeData.hasOwnProperty('inputExp') && inputGaugeData['inputExp'].hasOwnProperty(key)">
+                              <app-gauge-display [view]="switchValue"
+                              [id]="selectedCountry"
+                              [data]="inputGaugeData['inputExp'][key]"></app-gauge-display>
+                            </div>
+                          </ng-container>
+                        </div>
+
                       </div>
                     </div>
                 </div>
               </div>
             </div>
 
-            <div [hidden]="!viewerDisplay || viewerDisplay === 'viewer'">
-              <!--<div class="row">-->
-                <!--<div class="col-md-12">-->
-                  <!--<div class="row pad-botTop10 justify-content-end">-->
-                    <!--<div class="col-md-4">-->
-                      <!--<span class="text-bold country-text-input"><b>{{viewerModel.firstCountry}}</b></span>-->
-                    <!--</div>-->
-                    <!--<div class="col-md-4">-->
-                      <!--<span class="text-bold country-text-input"><b>{{viewerModel.secondCountry}}</b></span>-->
-                    <!--</div>-->
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
+            <div [hidden]="viewerDisplay === 'viewer'">
               <div class="row border-content"></div>
               <div class="row">
                 <div class="col-md-12 box-tab">
                     <input id="tab-one_tech" type="radio" name="input-tabs" class="tab-input" checked="checked">
-                    <label for="tab-one_tech">Social Protection
-                      <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                      <i class="mdi mdi-information-outline"></i>
-                      </button> -->
-                    </label>
+                    <label for="tab-one_tech">Social Protection</label>
                     <div class="tab-content">
                       <div class="tab-content__flip-row-axis">
                         <div class="row input-charts__flip-axis">
@@ -485,11 +537,7 @@
                       </div>
                     </div>
                     <input id="tab-two_tech" type="radio" name="input-tabs" class="tab-input">
-                    <label for="tab-two_tech">Economic
-                      <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                      <i class="mdi mdi-information-outline"></i>
-                      </button> -->
-                    </label>
+                    <label for="tab-two_tech">Economic</label>
                     <div class="tab-content">
                       <div class="tab-content__flip-row-axis">
                         <div class="row input-charts__flip-axis">
@@ -542,11 +590,7 @@
                       </div>
                     </div>
                     <input id="tab-three_tech" type="radio" name="input-tabs" class="tab-input">
-                    <label for="tab-three_tech">Vulnerability
-                      <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                      <i class="mdi mdi-information-outline"></i>
-                      </button> -->
-                    </label>
+                    <label for="tab-three_tech">Vulnerability</label>
                     <div class="tab-content">
                       <div class="tab-content__flip-row-axis">
                         <div class="row input-charts__flip-axis">
@@ -599,11 +643,7 @@
                       </div>
                     </div>
                     <input id="tab-four_tech" type="radio" name="input-tabs" class="tab-input">
-                    <label for="tab-four_tech">Exposure
-                      <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                      <i class="mdi mdi-information-outline"></i>
-                      </button> -->
-                    </label>
+                    <label for="tab-four_tech">Exposure</label>
                     <div class="tab-content">
                       <div class="tab-content__flip-row-axis">
                         <div class="row input-charts__flip-axis">
@@ -631,9 +671,9 @@
                             >
                             </md-slider>
                             <span class="text-right slider-text">
-                                              {{sliderValues1[inputType + '_difference_value']}} <br /> <span class="slider-text-base">Base: {{sliderValues1[inputType + '_baseline_value']}}</span>
-                                              <br /> <span class="slider-text-base">New Value: {{sliderValues1[inputType + '_display_value']}}</span>
-                                            </span>
+                             {{sliderValues1[inputType + '_difference_value']}} <br /> <span class="slider-text-base">Base: {{sliderValues1[inputType + '_baseline_value']}}</span>
+                              <br /> <span class="slider-text-base">New Value: {{sliderValues1[inputType + '_display_value']}}</span>
+                            </span>
                           </div>
                           <!--<div class="" style="position: relative; min-height: 80px;" [hidden]="!hazardDisplay[inputType] && viewerModel.secondCountry === ''">
                             <md-slider
@@ -713,7 +753,7 @@
           <p>View the risk indicators of losses in assets and well-being and changes in socio-economic resilience due to natural disasters in an average year for your selected country.</p>
           <p>Or click on 'Access Full Model' so you can manipulate the resilience inputs under the map to see how policy interventions could mitigate asset risk and well-being risk, and build socioeconomic resilience in countries around the world.</p>
           <!-- <p>View losses on assets and well-being and changes in
-          socio-economic capacity for one or two countries.</p> 
+          socio-economic capacity for one or two countries.</p>
           <p>Select two countries from the map or type their names:</p>-->
         </div>
       </div>

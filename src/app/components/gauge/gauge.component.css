@@ -1,0 +1,15 @@
+.gauge {
+  width: 100%;
+  padding-top: 10px;
+  background-color: gray;
+  position: relative;
+}
+
+.gauge__bar {
+  position: absolute;
+  top: 0;
+  width: 0;
+  height: 100%;
+  background-color: blue;
+  transition: 2s width;
+}

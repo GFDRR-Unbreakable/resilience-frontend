@@ -1,0 +1,74 @@
+.switch {
+  position: relative;
+  margin: 0px 13px;
+  height: 20px;
+  width: 140px;
+  background: transparent;
+  border-radius: 3px;
+  box-shadow: none;
+  border-radius: 18px;
+  border: 1px solid var(--gray-dark);
+}
+
+.switch__label {
+  position: relative;
+  z-index: 2;
+  float: left;
+  width: 69px;
+  line-height: 18px;
+  font-size: 11px;
+  color: var(--gray-dark);
+  text-align: center;
+  text-shadow: none;
+  cursor: pointer;
+}
+
+.switch__label:active {
+  font-weight: normal;
+}
+
+.switch__label--a {
+  padding-left: 0px;
+}
+
+.switch__label--b {
+  padding-right: 0px;
+}
+
+.switch__input {
+  display: none;
+}
+
+.switch__input.is-checked + .switch__label,
+.switch__input:checked + .switch__label {
+  font-weight: normal;
+  color: #fff;
+  text-shadow: none;
+  -webkit-transition: 0.15s ease-out;
+  -moz-transition: 0.15s ease-out;
+  -o-transition: 0.15s ease-out;
+  transition: 0.15s ease-out;
+}
+.switch__input.is-checked + .switch__label--b ~ .switch__selection,
+.switch__input:checked + .switch__label--b ~ .switch__selection {
+  /* Note: left: 50% doesn't transition in WebKit */
+  left: 70px;
+}
+
+.switch__selection {
+  display: block;
+  position: absolute;
+  z-index: 1;
+  top: -1px;
+  left: 0px;
+  width: 70px;
+  height: 20px;
+  background-color: var(--gray-dark);
+  border-radius: 18px;
+  box-shadow: none;
+  -webkit-transition: left 0.15s ease-out;
+  -moz-transition: left 0.15s ease-out;
+  -o-transition: left 0.15s ease-out;
+  transition: left 0.15s ease-out;
+  border-radius: 18px;
+}

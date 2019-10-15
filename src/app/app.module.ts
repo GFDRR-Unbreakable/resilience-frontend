@@ -30,6 +30,10 @@ export function httpServiceFactory(backend: XHRBackend, defaultOptions: RequestO
   return new WebService(backend, defaultOptions, loadingMaskService);
 }
 import {FileService} from './services/files.service';
+import { ScatterGaugeComponent } from './components/scatter-gauge/scatter-gauge.component';
+import { GaugeComponent } from './components/gauge/gauge.component';
+import { SwitchComponent } from './components/switch/switch.component';
+import { GaugeDisplayComponent } from './components/gauge-display/gauge-display.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +49,10 @@ import {FileService} from './services/files.service';
     FooterComponent,
     LoadingMaskComponent,
     LandingPageComponent,
+    ScatterGaugeComponent,
+    GaugeComponent,
+    SwitchComponent,
+    GaugeDisplayComponent,
   ],
   imports: [
     BrowserModule,

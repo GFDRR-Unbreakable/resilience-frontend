@@ -1,0 +1,24 @@
+.scatter-gauge {
+  width: 100%;
+  padding-top: 5px;
+  margin-bottom: 10px;
+  background-color: pink;
+  position: relative;
+}
+
+.scatter-gauge__point {
+  position: absolute;
+  top: 0;
+  width: 10px;
+  height: 10px;
+  margin-left: -5px;
+  border-radius: 100%;
+  background-color: transparent;
+  opacity: 0.2;
+  border:1px solid gray;
+}
+
+.scatter-gauge__point.is-active {
+  opacity: 1;
+  background-color: red;
+}

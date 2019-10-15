@@ -20,6 +20,11 @@
 @import url("https://fonts.googleapis.com/css?family=Lato:400,700,400italic");
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
+:root {
+  --teal: #51c5d0;
+  --gray-dark: #707070;
+}
+
 .terms-use{
   text-decoration: underline;
   color: #666666;
@@ -696,9 +701,9 @@ template {
   line-height: 30px;
 }
 
-.input-wd{
-    width: 100% !important;
-  }
+.input-wd.form-control {
+  width: 260px;
+}
   .card-01{
     margin-top: 15px;
     border-radius: 3px !important;
@@ -1430,10 +1435,10 @@ body {
   font-size: 0.9375rem;
   font-weight: normal;
   line-height: 1.5;
-  background-color: #f8f7fa;
+  /*background-color: #f8f7fa;*/
   color: #666666;
   /* color: #373a3c; */
-  /* background-color: #fff; */
+  background-color: #fff;
 }
 h1, h2, h3, h4, h5, h6, p, span, label {
   color: #666666;
@@ -11934,3 +11939,4 @@ fieldset {
 .box-policyprioritylist .legend {
   margin-bottom: 25px;
 }
+

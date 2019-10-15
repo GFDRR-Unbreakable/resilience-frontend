@@ -339,6 +339,15 @@ export class ChartService {
         return val.key === type;
       })[0];
     });
+
+    /*if (containerId === 'inputSoc-1') {
+      console.log('######################')
+      console.log('createInputCharts', containerId, inputData)
+      console.log('inputTypeTxt', inputTypeTxt)
+      console.log('inputTypes', inputTypes)
+      console.log('filterInputType', filterInputType)
+    }*/
+
     // Reorder input properties
     jQuery.each(filterInputType, (key, val) => {
       val.propInd = inputTypes.indexOf(val.key);
@@ -430,8 +439,6 @@ export class ChartService {
       const b = d3.bisector((d) => {
         return d;
       }).left;
-
-      console.log(containerId);
 
       const div = d3.select(`div#${containerId}`)
         .append('div')
@@ -2231,7 +2238,7 @@ export class ChartService {
     formData.append('g', '');
     formData.append('m', model);
     formData.append('i_df', modelData);
-
+    console.log(url, data)
     return this.webService.post(url, formData)
       .map((res: Response) => {
         return res.json();
@@ -2839,7 +2846,7 @@ export class ChartService {
       const chartId = `output-${(idx === 'risk_to_assets') ? 'risk_to_assets' : idx}_${numericSection}`;
 
       const ini = d3.select(`#${containerId} svg#${idx} g.initial line`);
-      console.log('ini', ini);
+
       const outputId = containerId.indexOf('1') >= 0 ? 'output1' : 'output2';
       const x = outputData[outputId].x;
       const height = outputData[outputId].height;
@@ -2892,7 +2899,6 @@ export class ChartService {
       // This updates this._outputDomains[key]['chart'][containerId].
       const value = me.calculateGDPValues(containerId, idx, numericValue, avgDoll, precision, oldValue);
       const newChartId = chartId.slice(0, -2).replace('output-', '');
-      console.log("debug", chartId, value);
 
       jQuery(`#${containerId} #${chartId} .text-number`).html(value);
       // Hack for updating chart text on policy priority list

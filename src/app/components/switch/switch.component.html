@@ -1,0 +1,14 @@
+<div class="switch">
+  <input type="radio" class="switch__input" name="selection"
+  [value]="options[0]" [id]="options[0] + '--' + idSuffix[0]"
+  [checked]="value === options[0]" (click)="switchChange(options[0])"
+  [class.is-checked]="value === options[0]">
+  <label [for]="options[0] + '--' + idSuffix[0]" class="switch__label switch__label--a">{{ labels[0] }}</label>
+
+  <input type="radio" class="switch__input" name="selection"
+  [value]="options[1]" [id]="options[1] + '--' + idSuffix[1]"
+  [checked]="value === options[1]" (click)="switchChange(options[1])"
+  [class.is-checked]="value === options[1]">
+  <label [for]="options[1] + '--' + idSuffix[1]" class="switch__label switch__label--b">{{ labels[1] }}</label>
+  <span class="switch__selection"></span>
+</div>
