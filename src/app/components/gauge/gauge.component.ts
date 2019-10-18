@@ -11,6 +11,9 @@ export class GaugeComponent implements OnInit {
   activeRow  = ROW_DEFAULT;
   @Input() data: {id: string, value: number}[];
   @Input() id: string = 'AVG';
+  @Input() max: number = 1;
+  @Input() formatter: Function = (x) => x;
+
   constructor() { }
 
   ngOnInit() {
@@ -19,5 +22,9 @@ export class GaugeComponent implements OnInit {
 
   ngOnChanges() {
     this.activeRow = this.data.find(row => row.id === this.id) || ROW_DEFAULT;
+  }
+
+  barWidth() {
+    return this.activeRow.value * 100 / this.max;
   }
 }

@@ -34,6 +34,7 @@ import { ScatterGaugeComponent } from './components/scatter-gauge/scatter-gauge.
 import { GaugeComponent } from './components/gauge/gauge.component';
 import { SwitchComponent } from './components/switch/switch.component';
 import { GaugeDisplayComponent } from './components/gauge-display/gauge-display.component';
+import { IndicatorTabsComponent } from './components/indicator-tabs/indicator-tabs.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { GaugeDisplayComponent } from './components/gauge-display/gauge-display.
     GaugeComponent,
     SwitchComponent,
     GaugeDisplayComponent,
+    IndicatorTabsComponent,
   ],
   imports: [
     BrowserModule,

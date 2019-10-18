@@ -1,7 +1,8 @@
 .gauge {
   width: 100%;
-  padding-top: 10px;
-  background-color: gray;
+  margin-top: 20px;
+  height: 20px;
+  background-color: var(--gray-light);
   position: relative;
 }
 
@@ -10,6 +11,21 @@
   top: 0;
   width: 0;
   height: 100%;
-  background-color: blue;
+  background-color: var(--teal);
   transition: 2s width;
+}
+
+.is-avg .gauge__bar {
+  background-color: var(--gray-green);
+}
+
+.gauge__stat {
+  position: absolute;
+  top: -20px;
+  text-align: center;
+  width: 50px;
+  margin-left: -25px;
+  font-size: 14px;
+  left: 0;
+  transition: 2s left;
 }

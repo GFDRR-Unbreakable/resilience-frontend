@@ -1,0 +1,55 @@
+<div class="indicator-tabs" *ngIf="renderTable">
+  <div class="box-tab">
+    <ng-container *ngFor="let tab of tabs; let f = first;">
+      <input [attr.id]="'tab-' + tab.id" type="radio" name="tabs"
+      class="indicator-tabs__tab-input tab-input" [checked]="f">
+      <label [attr.for]="'tab-' + tab.id"
+      class="indicator-tabs__tab-label tab-label">{{ tab.label }}</label>
+      <div class="indicator-tabs__content tab-content">
+        <div class="indicator-tabs__row indicator-tabs__row--labels"
+        [ngClass]="'cols-' + (inputTypes[tab.id].length + 1)">
+          <div class="indicator-tabs__col ">&nbsp;</div>
+          <div *ngFor="let key of inputTypes[tab.id]"
+          class="indicator-tabs__col">
+            <span class="indicator-tabs__col--label">
+              {{inputLabels[key] ? inputLabels[key].descriptor : inputType}}
+            </span>
+          </div>
+        </div>
+
+        <div class="indicator-tabs__row indicator-tabs__row--charts"
+        [ngClass]="'cols-' + (inputTypes[tab.id].length + 1)">
+          <div class="indicator-tabs__col indicator-tabs__col--country">
+            <span class="indicator-tabs__country">
+              {{viewerModel.firstCountry}}
+            </span>
+          </div>
+          <div *ngFor="let key of inputTypes[tab.id]"
+          class="indicator-tabs__col">
+            <ng-container *ngIf="inputGaugeData.hasOwnProperty(tab.id) && inputGaugeData[tab.id].hasOwnProperty(key)">
+              <app-gauge-display [view]="view" [id]="selectedCountry"
+              [data]="inputGaugeData[tab.id][key]" [type]="gaugeType(key)">
+              </app-gauge-display>
+            </ng-container>
+          </div>
+        </div>
+
+        <div class="indicator-tabs__row indicator-tabs__row--charts"
+        [ngClass]="'cols-' + (inputTypes[tab.id].length + 1)">
+          <div class="indicator-tabs__col indicator-tabs__col--country">
+            <span class="indicator-tabs__country">
+              {{viewerModel.secondCountry || 'Global Average'}}
+            </span>
+          </div>
+          <div *ngFor="let key of inputTypes[tab.id]"
+          class="indicator-tabs__col">
+            <ng-container *ngIf="inputGaugeData.hasOwnProperty(tab.id) && inputGaugeData[tab.id].hasOwnProperty(key)">
+              <app-gauge-display [view]="view" [type]="gaugeType(key)"
+              [data]="inputGaugeData[tab.id][key]"></app-gauge-display>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

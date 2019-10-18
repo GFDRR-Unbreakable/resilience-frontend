@@ -49,7 +49,8 @@
     <h2 class="mappage__header">Select Country</h2>
     <div class="box-dropdown row">
       <div class="country-select__wrapper form-group col-md-6" [class.has-danger]="searchFailed">
-        <input id="country-1Txt" type="text" class="form-control input-wd"
+        <input id="country-1Txt" type="text"
+        class="form-control input-wd country-select__input"
         [(ngModel)]="viewerModel.firstCountry"
         [ngbTypeahead]="searchCountryFn" #country1="ngModel"
         (ngModelChange)="onFirstCountryInputChangeEvent()"
@@ -66,81 +67,88 @@
         <h2 class="mappage__header viewer__header">Output: Country Losses to Assets, Socio-Economic Resilience, and Well-Being
           <app-switch class="viewer__switch" [value]="switchValue"
           [options]="switchOptions" [labels]="switchLabels"
-          (onChange)="switchValue = $event"></app-switch>{{switchValue}}
+          (onChange)="switchValue = $event"></app-switch>
           <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover1" triggers="mouseenter:mouseleave" popoverTitle="">
             <i class="mdi mdi-information-outline"></i>
           </button>
           <ng-template #popover1>
 
-            <p ><b>Risk to assets (% of GDP)</b> is the value of assets at risk,
-               considering hazard exposure and asset vulnerability.</p>
+            <p><b>Risk to assets (% of GDP)</b> is the value of assets at risk,
+            considering hazard exposure and asset vulnerability.</p>
 
-            <p><b>Socioeconomic resilience:</b> The ability of the population to recover
-              from disasters (the ratio of asset losses to well-being losses).</p>
+            <p><b>Socioeconomic resilience:</b> The ability of the population
+            to recover from disasters (the ratio of asset losses to well-being
+            losses).</p>
 
-            <p><b>Risk to well-being (% of GDP)</b> is the potential impact of asset
-              losses on consumption. </p>
+            <p><b>Risk to well-being (% of GDP)</b> is the potential impact of
+            asset losses on consumption.</p>
 
-            <p>For more details, please click on <b>Report</b> in the main navigation</p>
+            <p>For more details, please click on <b>Report</b> in the main
+            navigation</p>
 
           </ng-template>
           <!-- <span><i class="mdi mdi-checkbox-blank-circle box-icon-c"></i> Country</span>
-          <span><img src="assets/image/icon-map.png" alt=""> Global Average</span> --></h2>
+          <span><img src="assets/image/icon-map.png" alt=""> Global Average</span> -->
+        </h2>
         <div class="">
-
-          <div class="row">
-            <div class="col-md-3 offset-md-3">
+          <div class="outputs__labels xrow">
+            <div class="outputs__label">
               {{ this.chartConf.outputs.risk_to_assets.descriptor }}
             </div>
-            <div class="col-md-3">
+            <div class="outputs__label">
               {{ this.chartConf.outputs.resilience.descriptor }}
             </div>
-            <div class="col-md-3">
+            <div class="outputs__label">
               {{ this.chartConf.outputs.risk.descriptor }}
             </div>
           </div>
-          <div id='outputs-1' class="row">
-              <div class="col-md-3">
-                <div>{{viewerModel.firstCountry || 'Global Average'}}</div>
-                <div class="region-name" *ngIf="viewerGroupModel.firstCountryGroup != ''">{{viewerGroupModel.firstCountryGroup}}</div>
+
+          <div id='outputs-1' class="outputs__row">
+            <div class="outputs__col output__country-label">
+              <div class="output__country">{{viewerModel.firstCountry || 'Global Average'}}</div>
+              <div *ngIf="viewerGroupModel.firstCountryGroup != ''"
+              class="region-name output__region">
+                {{viewerGroupModel.firstCountryGroup}}
               </div>
-            <div class="col-md-3">
-              <div id="output-risk_to_assets_1" class="chart-container"></div>
+            </div>
+            <div class="outputs__col">
+              <!-- <div id="output-risk_to_assets_1" class="chart-container"></div> -->
               <app-gauge-display [view]="switchValue"
               [data]="gaugeData['risk_to_assets']"
               [id]="selectedCountry"></app-gauge-display>
             </div>
-            <div class="col-md-3">
-              <div id="output-resilience_1" class="chart-container"></div>
+            <div class="outputs__col">
+              <!--<div id="output-resilience_1" class="chart-container"></div>-->
               <app-gauge-display [view]="switchValue"
               [data]="gaugeData['resilience']"
               [id]="selectedCountry"></app-gauge-display>
             </div>
-            <div class="col-md-3">
-              <div id="output-risk_1" class="chart-container"></div>
+            <div class="outputs__col">
+              <!--<div id="output-risk_1" class="chart-container"></div>-->
               <app-gauge-display [view]="switchValue"
               [data]="gaugeData['risk']"
               [id]="selectedCountry"></app-gauge-display>
             </div>
           </div>
-          <div id='outputs-2' class="row">
-            <div class="col-md-3">
-              <div>{{viewerModel.secondCountry || 'Global Average'}}</div>
+
+          <div id='outputs-2' class="outputs__row">
+            <div class="outputs__col output__country-label">
+              <div class="output__country">{{viewerModel.secondCountry || 'Global Average'}}</div>
               <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
             </div>
-            <div class="col-md-3">
-              <div id="output-risk_to_assets_2" class="chart-container"></div>
+            <div class="outputs__col">
+              <!--<div id="output-risk_to_assets_2" class="chart-container"></div>-->
               <app-gauge-display [view]="switchValue"
               [data]="gaugeData['risk_to_assets']"></app-gauge-display>
             </div>
 
-            <div class="col-md-3">
-              <div id="output-resilience_2" class="chart-container"></div>
+            <div class="outputs__col">
+              <!--<div id="output-resilience_2" class="chart-container"></div>-->
               <app-gauge-display [view]="switchValue"
               [data]="gaugeData['resilience']"></app-gauge-display>
             </div>
-            <div class="col-md-3">
-              <div id="output-risk_2" class="chart-container"></div>
+            <div class="outputs__col">
+              <!--<div id="output-risk_2" class="chart-container"></div>-->
               <app-gauge-display [view]="switchValue"
               [data]="gaugeData['risk']"></app-gauge-display>
             </div>
@@ -152,23 +160,30 @@
 
 
 
-  <div class="row" id="viewIndCtn">
-    <div class="col-md-6">
-      <h2 class="mappage__header">Select a View</h2>
-      <p>View the risk indicators of losses in assets and well-being and changes in socio-economic resilience due to natural disasters in an average year for your selected country.</p>
-      <p *ngIf="viewerModel.firstCountry"><a routerLink="/policyprioritylist" [queryParams]="{country: viewerModel.firstCountry}">View specific policy impacts for {{viewerModel.firstCountry}}</a></p>
-      <div class="btn-group wt-dv" role="group" aria-label="Set viewer view">
-        <button type="button" class="btn btn-primary wt-lb" [disabled]='_selectedCountryList.length === 0 && 0' [ngClass]="{active: viewerDisplay === 'viewer'}" (click)="onChangeViewerIndViewEvent('viewer')">VIEW INDICATORS</button>
-        <span class="wt-sp">&nbsp;</span>
-        <button type="button" class="btn btn-primary wt-lb" [disabled]='_selectedCountryList.length === 0 && 0' [ngClass]="{active: viewerDisplay === 'tech'}" (click)="onChangeViewerIndViewEvent('tech')">ACCESS FULL MODEL</button>
+  <div class="view-select xrow" id="viewIndCtn">
+    <h2 class="mappage__header">Select a View</h2>
+    <div class="xcol-md-6 view-select__heading">
+      <div class="view-select__heading-col">
+        <p>View the risk indicators of losses in assets and well-being and changes in socio-economic resilience due to natural disasters in an average year for your selected country.</p>
+        <!--<p *ngIf="viewerModel.firstCountry"><a routerLink="/policyprioritylist" [queryParams]="{country: viewerModel.firstCountry}">View specific policy impacts for {{viewerModel.firstCountry}}</a></p>-->
+      </div>
+      <div class="view-select__heading-col xbtn-group"
+      role="group" aria-label="Set viewer view">
+        <div class="view-select__button-group">
+          <button type="button" class="view-select__button btn btn-primary wt-lb"
+          [disabled]='_selectedCountryList.length === 0 && 0'
+          [ngClass]="{active: viewerDisplay === 'viewer'}"
+          (click)="onChangeViewerIndViewEvent('viewer')">VIEW INDICATORS</button>
+
+          <button type="button" class="view-select__button btn btn-primary wt-lb" [disabled]='_selectedCountryList.length === 0 && 0' [ngClass]="{active: viewerDisplay === 'tech'}" >POLICY PRIORITY</button>
+          <button type="button" class="btn btn-primary wt-lb" [disabled]='_selectedCountryList.length === 0 && 0' [ngClass]="{active: viewerDisplay === 'tech'}" (click)="onChangeViewerIndViewEvent('tech')">ACCESS FULL MODEL</button>
+        </div>
       </div>
     </div>
-
 
     <div class="col-md-4 d-none">
       <div class="cards-bg">
         <p class="text-center mar-p">
-          <!-- Compare each Countries' Asset and Well-Being Losses and Socio-Economic Capacity across the Region or the Entire World. -->
           Compare each country’s Asset and Well-Being Losses and Socio-Economic Resilience across the region or the entire world.
         </p>
         <div class="row ">
@@ -176,28 +191,6 @@
             <img src="assets/image/ic-globe.png" alt="">
           </div>
           <div class="col-md-7">
-            <!-- <div ngbDropdown class="option-global">
-               <button [disabled]="_selectedCountryList.length !== MAX_COUNTRIES_SELECTED" class="btn btn-outline-primary btn-sm dropdown-global" id="dropdownBasic1" ngbDropdownToggle>
-                 <span *ngIf="global">GLOBAL</span>
-                 <span *ngIf="!global">Regional</span>
-               </button>
-               <div class="dropdown-menu box-item" aria-labelledby="dropdownBasic1">
-                  <button class="dropdown-item global-btn-ht" (click)="onSwitchGlobal()">
-                    <span *ngIf="!global">Global</span>
-                    <span *ngIf="global">Regional</span>
-                  </button>
-               </div>
-            </div> -->
-            <!-- <div class="switch-btn">
-                <label class="toggle-switch nolabel">
-                    <input type="checkbox" style="width: 100%;" [checked]="!global" (click)="onSwitchGlobal()"/>
-                    <span>
-                    <span class="pdg-01">Global</span>
-                    <span class="pdg-02">Regional</span>
-                    </span>
-                    <a></a>
-                </label>
-            </div> -->
             <div class="switch" (click)="onSwitchGlobal()">
               <input type="radio" class="switch-input" name="view" [checked]="global">
               <label for="week" class="switch-label switch-label-off">Global</label>
@@ -211,7 +204,7 @@
     </div>
 
 
-    <div class="col-md-6">
+    <!-- <div class="col-md-6">
       <h2 class="mappage__header">Hazards Selection
         <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Assessment can be performed for floods, earthquakes, tsunamis, windstorm, or any combination of them." triggers="mouseenter:mouseleave" popoverTitle="">
           <i class="mdi mdi-information-outline"></i>
@@ -242,7 +235,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div>-->
 
   </div>
 
@@ -250,9 +243,6 @@
     <div class="col-md-12">
       <div class="">
         <h2 class="mappage__header viewer__header">Country Resilience Factors
-          <app-switch class="viewer__switch" [value]="switchValue"
-          [options]="switchOptions" [labels]="switchLabels"
-          (onChange)="switchValue = $event"></app-switch>
           <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover2" triggers="mouseenter:mouseleave" popoverTitle="">
             <i class="mdi mdi-information-outline"></i>
           </button>
@@ -264,13 +254,21 @@
               tools governments and Bank teams can use to pursue both simultaneously.</p>
           </ng-template>
 
+          <app-switch class="viewer__switch" [value]="switchValue"
+          [options]="switchOptions" [labels]="switchLabels"
+          (onChange)="switchValue = $event"></app-switch>
+
           <div class="box-download">
             <button type="button" class="btn btn-primary text-download" (click)="onResetTechDataEvent()" *ngIf="viewerDisplay == 'tech'">RESET</button>
             <button type="button" class="btn btn-primary text-download" (click)="onDownloadCSVViewerReportEvent()"><img class="img-download" src="assets/image/ic-download-green.png" alt="">CSV</button>
             <button type="button" class="btn btn-primary text-download" (click)="onDownloadPDFViewerReportEvent()"><img class="img-download" src="assets/image/ic-download-green.png" alt="">PDF</button>
-          </div></h2>
-        <div class="">
-          <div class="">
+          </div>
+        </h2>
+
+        <app-indicator-tabs [viewerModel]="viewerModel" [view]="switchValue"
+        [viewerGroupModel]="viewerGroupModel" [countryData]="countryData"
+        [inputLabels]="inputLabels" [selectedCountry]="selectedCountry">
+        </app-indicator-tabs>
             <div [hidden]="viewerDisplay === 'tech'">
               <div class="row">
                 <div class="col-md-12 box-tab">
@@ -326,9 +324,7 @@
                     <input id="tab-two" type="radio" name="tabs" class="tab-input">
 
                     <label for="tab-two">Economic
-                      <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                       <i class="mdi mdi-information-outline"></i>
-                      </button> -->
+
                     </label>
                     <div class="tab-content tab-content__flip-table-axis">
                       <div class="row">
@@ -377,9 +373,6 @@
                     </div>
                     <input id="tab-three" type="radio" name="tabs" class="tab-input">
                     <label for="tab-three">Vulnerability
-                      <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                       <i class="mdi mdi-information-outline"></i>
-                      </button> -->
                     </label>
                     <div class="tab-content tab-content__flip-table-axis">
                       <div class="row">
@@ -479,230 +472,175 @@
               </div>
             </div>
 
-            <div [hidden]="viewerDisplay === 'viewer'">
+            <!--<div [hidden]="viewerDisplay === 'viewer'">
               <div class="row border-content"></div>
               <div class="row">
                 <div class="col-md-12 box-tab">
-                    <input id="tab-one_tech" type="radio" name="input-tabs" class="tab-input" checked="checked">
-                    <label for="tab-one_tech">Social Protection</label>
-                    <div class="tab-content">
-                      <div class="tab-content__flip-row-axis">
-                        <div class="row input-charts__flip-axis">
-                          <div class="box-tab-text">&nbsp;</div>
-                          <div class="input_charts-label-text" style="min-height: 80px;">{{viewerModel.firstCountry}}
-                            <div class="region-name" *ngIf="viewerGroupModel.firstCountryGroup != ''">{{viewerGroupModel.firstCountryGroup}}</div>
-                          </div>
-                          <div class="input_charts-label-text" style="min-height: 80px;">{{viewerModel.secondCountry}}
-                            <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
-                          </div>
+                  <input id="tab-one_tech" type="radio" name="input-tabs" class="tab-input" checked="checked">
+                  <label for="tab-one_tech">Social Protection</label>
+                  <div class="tab-content">
+                    <div class="tab-content__flip-row-axis">
+                      <div class="row input-charts__flip-axis">
+                        <div class="box-tab-text">&nbsp;</div>
+                        <div class="input_charts-label-text" style="min-height: 80px;">
+                          {{viewerModel.firstCountry}}
+                          <div class="region-name" *ngIf="viewerGroupModel.firstCountryGroup != ''">{{viewerGroupModel.firstCountryGroup}}</div>
                         </div>
-                        <div class="row input-charts__flip-axis" *ngFor="let inputType of inputTypes.inputSoc">
-                          <div class="box-tab-text">
-                            {{inputLabels[inputType] ? inputLabels[inputType].descriptor : inputType}}
-                          </div>
-                          <div class="" style="position: relative; min-height: 80px;">
-                            <md-slider
-                              [min]="sliderValues1[inputType + '_min']"
-                              [max]="sliderValues1[inputType + '_max']"
-                              [step]="sliderValues1[inputType + '_step']"
-                              [value]="sliderValues1[inputType + '_value']"
-                              [(ngModel)]="sliderValues1[inputType + '_value']"
-                              (change)="onSliderChangeEvent1(inputType)"
-                              (input)="onSliderInputEvent1($event, inputType)"
-                            >
-                            </md-slider>
-                            <span class="text-right slider-text">
-                                              {{sliderValues1[inputType + '_difference_value']}} <br /> <span class="slider-text-base">Base: {{sliderValues1[inputType + '_baseline_value']}}</span>
-                                              <br /> <span class="slider-text-base">New Value: {{sliderValues1[inputType + '_display_value']}}</span>
-                                            </span>
-                          </div>
-                          <!--<div class="" style="position: relative; min-height: 80px;" [hidden]="viewerModel.secondCountry !== ''">
-                            <md-slider
-                              [min]="sliderValues2[inputType + '_min']"
-                              [max]="sliderValues2[inputType + '_max']"
-                              [step]="sliderValues2[inputType + '_step']"
-                              [value]="sliderValues2[inputType + '_value']"
-                              [(ngModel)]="sliderValues2[inputType + '_value']"
-                              (change)="onSliderChangeEvent2(inputType)"
-                              (input)="onSliderInputEvent2($event, inputType)"
-                            >
-                            </md-slider>
-                            <span class="text-right slider-text">
-                                              {{sliderValues2[inputType + '_difference_value']}} <br /> <span class="slider-text-base">Base: {{sliderValues2[inputType + '_baseline_value']}}</span>
-                                              <br /> <span class="slider-text-base">New Value: {{sliderValues2[inputType + '_display_value']}}</span>
-                                            </span>
-                          </div>-->
+                        <div class="input_charts-label-text" style="min-height: 80px;">
+                            {{viewerModel.secondCountry}}
+                          <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
                         </div>
-
                       </div>
-                    </div>
-                    <input id="tab-two_tech" type="radio" name="input-tabs" class="tab-input">
-                    <label for="tab-two_tech">Economic</label>
-                    <div class="tab-content">
-                      <div class="tab-content__flip-row-axis">
-                        <div class="row input-charts__flip-axis">
-                          <div class="box-tab-text">&nbsp;</div>
-                          <div class="input_charts-label-text" style="min-height: 80px;">{{viewerModel.firstCountry}}
-                            <div class="region-name" *ngIf="viewerGroupModel.firstCountryGroup != ''">{{viewerGroupModel.firstCountryGroup}}</div>
-                          </div>
-                          <div class="input_charts-label-text" style="min-height: 80px;">{{viewerModel.secondCountry}}
-                            <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
-                          </div>
+                      <div class="row input-charts__flip-axis" *ngFor="let inputType of inputTypes.inputSoc">
+                        <div class="box-tab-text">
+                          {{inputLabels[inputType] ? inputLabels[inputType].descriptor : inputType}}
                         </div>
-                        <div class="row input-charts__flip-axis" *ngFor="let inputType of inputTypes.inputEco">
-                          <div class="box-tab-text">
-                            {{inputLabels[inputType] ? inputLabels[inputType].descriptor : inputType}}
-                          </div>
-                          <div class="" style="position: relative; min-height: 80px;">
-                            <md-slider
-                              [min]="sliderValues1[inputType + '_min']"
-                              [max]="sliderValues1[inputType + '_max']"
-                              [step]="sliderValues1[inputType + '_step']"
-                              [value]="sliderValues1[inputType + '_value']"
-                              [(ngModel)]="sliderValues1[inputType + '_value']"
-                              (change)="onSliderChangeEvent1(inputType)"
-                              (input)="onSliderInputEvent1($event, inputType)"
-                            >
-                            </md-slider>
-                            <span class="text-right slider-text">
-                                              {{sliderValues1[inputType + '_difference_value']}} <br /> <span class="slider-text-base">Base: {{sliderValues1[inputType + '_baseline_value']}}</span>
-                                              <br /> <span class="slider-text-base">New Value: {{sliderValues1[inputType + '_display_value']}}</span>
-                                            </span>
-                          </div>
-                          <!--<div class="" style="position: relative; min-height: 80px;" [hidden]="viewerModel.secondCountry === ''">
-                            <md-slider
-                              [min]="sliderValues2[inputType + '_min']"
-                              [max]="sliderValues2[inputType + '_max']"
-                              [step]="sliderValues2[inputType + '_step']"
-                              [value]="sliderValues2[inputType + '_value']"
-                              [(ngModel)]="sliderValues2[inputType + '_value']"
-                              (change)="onSliderChangeEvent2(inputType)"
-                              (input)="onSliderInputEvent2($event, inputType)"
-                            >
-                            </md-slider>
-                            <span class="text-right slider-text">
-                                              {{sliderValues2[inputType + '_difference_value']}} <br /> <span class="slider-text-base">Base: {{sliderValues2[inputType + '_baseline_value']}}</span>
-                                              <br /> <span class="slider-text-base">New Value: {{sliderValues2[inputType + '_display_value']}}</span>
-                                            </span>
-                          </div>-->
-                        </div>
-
-                      </div>
-                    </div>
-                    <input id="tab-three_tech" type="radio" name="input-tabs" class="tab-input">
-                    <label for="tab-three_tech">Vulnerability</label>
-                    <div class="tab-content">
-                      <div class="tab-content__flip-row-axis">
-                        <div class="row input-charts__flip-axis">
-                          <div class="box-tab-text">&nbsp;</div>
-                          <div class="input_charts-label-text" style="min-height: 80px;">{{viewerModel.firstCountry}}
-                            <div class="region-name" *ngIf="viewerGroupModel.firstCountryGroup != ''">{{viewerGroupModel.firstCountryGroup}}</div>
-                          </div>
-                          <div class="input_charts-label-text" style="min-height: 80px;">{{viewerModel.secondCountry}}
-                            <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
-                          </div>
-                        </div>
-                        <div class="row input-charts__flip-axis" *ngFor="let inputType of inputTypes.inputVul">
-                          <div class="box-tab-text">
-                            {{inputLabels[inputType] ? inputLabels[inputType].descriptor : inputType}}
-                          </div>
-                          <div class="" style="position: relative; min-height: 80px;">
-                            <md-slider
-                              [min]="sliderValues1[inputType + '_min']"
-                              [max]="sliderValues1[inputType + '_max']"
-                              [step]="sliderValues1[inputType + '_step']"
-                              [value]="sliderValues1[inputType + '_value']"
-                              [(ngModel)]="sliderValues1[inputType + '_value']"
-                              (change)="onSliderChangeEvent1(inputType)"
-                              (input)="onSliderInputEvent1($event, inputType)"
-                            >
-                            </md-slider>
-                            <span class="text-right slider-text">
-                                              {{sliderValues1[inputType + '_difference_value']}} <br /> <span class="slider-text-base">Base: {{sliderValues1[inputType + '_baseline_value']}}</span>
-                                              <br /> <span class="slider-text-base">New Value: {{sliderValues1[inputType + '_display_value']}}</span>
-                                            </span>
-                          </div>
-                          <!--<div class="" style="position: relative; min-height: 80px;" [hidden]="viewerModel.secondCountry === ''">
-                            <md-slider
-                              [min]="sliderValues2[inputType + '_min']"
-                              [max]="sliderValues2[inputType + '_max']"
-                              [step]="sliderValues2[inputType + '_step']"
-                              [value]="sliderValues2[inputType + '_value']"
-                              [(ngModel)]="sliderValues2[inputType + '_value']"
-                              (change)="onSliderChangeEvent2(inputType)"
-                              (input)="onSliderInputEvent2($event, inputType)"
-                            >
-                            </md-slider>
-                            <span class="text-right slider-text">
-                                              {{sliderValues2[inputType + '_difference_value']}} <br /> <span class="slider-text-base">Base: {{sliderValues2[inputType + '_baseline_value']}}</span>
-                                              <br /> <span class="slider-text-base">New Value: {{sliderValues2[inputType + '_display_value']}}</span>
-                                            </span>
-                          </div>-->
-                        </div>
-
-                      </div>
-                    </div>
-                    <input id="tab-four_tech" type="radio" name="input-tabs" class="tab-input">
-                    <label for="tab-four_tech">Exposure</label>
-                    <div class="tab-content">
-                      <div class="tab-content__flip-row-axis">
-                        <div class="row input-charts__flip-axis">
-                          <div class="box-tab-text">&nbsp;</div>
-                          <div class="input_charts-label-text" style="min-height: 80px;">{{viewerModel.firstCountry}}
-                            <div class="region-name" *ngIf="viewerGroupModel.firstCountryGroup != ''">{{viewerGroupModel.firstCountryGroup}}</div>
-                          </div>
-                          <div class="input_charts-label-text" style="min-height: 80px;">{{viewerModel.secondCountry }}
-                            <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
-                          </div>
-                        </div>
-                        <div class="row input-charts__flip-axis" *ngFor="let inputType of inputTypes.inputExp">
-                          <div class="box-tab-text" [hidden]="!hazardDisplay[inputType]">
-                            {{inputLabels[inputType] ? inputLabels[inputType].descriptor : inputType}}
-                          </div>
-                          <div class="" style="position: relative; min-height: 80px;" [hidden]="!hazardDisplay[inputType]">
-                            <md-slider
-                              [min]="sliderValues1[inputType + '_min']"
-                              [max]="sliderValues1[inputType + '_max']"
-                              [step]="sliderValues1[inputType + '_step']"
-                              [value]="sliderValues1[inputType + '_value']"
-                              [(ngModel)]="sliderValues1[inputType + '_value']"
-                              (change)="onSliderChangeEvent1(inputType)"
-                              (input)="onSliderInputEvent1($event, inputType)"
-                            >
-                            </md-slider>
-                            <span class="text-right slider-text">
-                             {{sliderValues1[inputType + '_difference_value']}} <br /> <span class="slider-text-base">Base: {{sliderValues1[inputType + '_baseline_value']}}</span>
-                              <br /> <span class="slider-text-base">New Value: {{sliderValues1[inputType + '_display_value']}}</span>
+                        <div class="" style="position: relative; min-height: 80px;">
+                          <md-slider
+                            [min]="sliderValues1[inputType + '_min']"
+                            [max]="sliderValues1[inputType + '_max']"
+                            [step]="sliderValues1[inputType + '_step']"
+                            [value]="sliderValues1[inputType + '_value']"
+                            [(ngModel)]="sliderValues1[inputType + '_value']"
+                            (change)="onSliderChangeEvent1(inputType)"
+                            (input)="onSliderInputEvent1($event, inputType)">
+                          </md-slider>
+                          <span class="text-right slider-text">
+                            {{sliderValues1[inputType + '_difference_value']}} <br /> <span class="slider-text-base">Base: {{sliderValues1[inputType + '_baseline_value']}}
                             </span>
-                          </div>
-                          <!--<div class="" style="position: relative; min-height: 80px;" [hidden]="!hazardDisplay[inputType] && viewerModel.secondCountry === ''">
-                            <md-slider
-                              [min]="sliderValues2[inputType + '_min']"
-                              [max]="sliderValues2[inputType + '_max']"
-                              [step]="sliderValues2[inputType + '_step']"
-                              [value]="sliderValues2[inputType + '_value']"
-                              [(ngModel)]="sliderValues2[inputType + '_value']"
-                              (change)="onSliderChangeEvent2(inputType)"
-                              (input)="onSliderInputEvent2($event, inputType)"
-                            >
-                            </md-slider>
-                            <span class="text-right slider-text">
-                                              {{sliderValues2[inputType + '_difference_value']}} <br /> <span class="slider-text-base">Base: {{sliderValues2[inputType + '_baseline_value']}}</span>
-                                              <br /> <span class="slider-text-base">New Value: {{sliderValues2[inputType + '_display_value']}}</span>
-                                            </span>
-                          </div>
+                            <br />
+                            <span class="slider-text-base">
+                              New Value: {{sliderValues1[inputType + '_display_value']}}
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                  <input id="tab-two_tech" type="radio" name="input-tabs" class="tab-input">
+                  <label for="tab-two_tech">Economic</label>
+                  <div class="tab-content">
+                    <div class="tab-content__flip-row-axis">
+                      <div class="row input-charts__flip-axis">
+                        <div class="box-tab-text">&nbsp;</div>
+                        <div class="input_charts-label-text" style="min-height: 80px;">{{viewerModel.firstCountry}}
+                          <div class="region-name" *ngIf="viewerGroupModel.firstCountryGroup != ''">{{viewerGroupModel.firstCountryGroup}}</div>
+                        </div>
+                        <div class="input_charts-label-text" style="min-height: 80px;">{{viewerModel.secondCountry}}
+                          <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
+                        </div>
+                      </div>
+                      <div class="row input-charts__flip-axis" *ngFor="let inputType of inputTypes.inputEco">
+                        <div class="box-tab-text">
+                          {{inputLabels[inputType] ? inputLabels[inputType].descriptor : inputType}}
+                        </div>
+                        <div class="" style="position: relative; min-height: 80px;">
+                          <md-slider
+                            [min]="sliderValues1[inputType + '_min']"
+                            [max]="sliderValues1[inputType + '_max']"
+                            [step]="sliderValues1[inputType + '_step']"
+                            [value]="sliderValues1[inputType + '_value']"
+                            [(ngModel)]="sliderValues1[inputType + '_value']"
+                            (change)="onSliderChangeEvent1(inputType)"
+                            (input)="onSliderInputEvent1($event, inputType)">
+                          </md-slider>
+                          <span class="text-right slider-text">
+                            {{sliderValues1[inputType + '_difference_value']}} <br />
+                            <span class="slider-text-base">Base: {{sliderValues1[inputType + '_baseline_value']}}</span>
+                            <br />
+                            <span class="slider-text-base">
+                              New Value: {{sliderValues1[inputType + '_display_value']}}
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <input id="tab-three_tech" type="radio" name="input-tabs" class="tab-input">
+                  <label for="tab-three_tech">Vulnerability</label>
+                  <div class="tab-content">
+                    <div class="tab-content__flip-row-axis">
+                      <div class="row input-charts__flip-axis">
+                        <div class="box-tab-text">&nbsp;</div>
+                        <div class="input_charts-label-text" style="min-height: 80px;">{{viewerModel.firstCountry}}
+                          <div class="region-name" *ngIf="viewerGroupModel.firstCountryGroup != ''">{{viewerGroupModel.firstCountryGroup}}</div>
+                        </div>
+                        <div class="input_charts-label-text" style="min-height: 80px;">{{viewerModel.secondCountry}}
+                          <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
+                        </div>
+                      </div>
+                      <div class="row input-charts__flip-axis" *ngFor="let inputType of inputTypes.inputVul">
+                        <div class="box-tab-text">
+                          {{inputLabels[inputType] ? inputLabels[inputType].descriptor : inputType}}
+                        </div>
+                        <div class="" style="position: relative; min-height: 80px;">
+                          <md-slider
+                            [min]="sliderValues1[inputType + '_min']"
+                            [max]="sliderValues1[inputType + '_max']"
+                            [step]="sliderValues1[inputType + '_step']"
+                            [value]="sliderValues1[inputType + '_value']"
+                            [(ngModel)]="sliderValues1[inputType + '_value']"
+                            (change)="onSliderChangeEvent1(inputType)"
+                            (input)="onSliderInputEvent1($event, inputType)">
+                          </md-slider>
+                          <span class="text-right slider-text">
+                            {{sliderValues1[inputType + '_difference_value']}} <br />
+                            <span class="slider-text-base">Base: {{sliderValues1[inputType + '_baseline_value']}}</span>
+                             <br />
+                             <span class="slider-text-base">New Value: {{sliderValues1[inputType + '_display_value']}}</span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <input id="tab-four_tech" type="radio" name="input-tabs" class="tab-input">
+                  <label for="tab-four_tech">Exposure</label>
+                  <div class="tab-content">
+                    <div class="tab-content__flip-row-axis">
+                      <div class="row input-charts__flip-axis">
+                        <div class="box-tab-text">&nbsp;</div>
+                        <div class="input_charts-label-text" style="min-height: 80px;">{{viewerModel.firstCountry}}
+                          <div class="region-name" *ngIf="viewerGroupModel.firstCountryGroup != ''">{{viewerGroupModel.firstCountryGroup}}</div>
+                        </div>
+                        <div class="input_charts-label-text" style="min-height: 80px;">{{viewerModel.secondCountry }}
+                          <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
+                        </div>
+                      </div>
+                      <div class="row input-charts__flip-axis" *ngFor="let inputType of inputTypes.inputExp">
+                        <div class="box-tab-text" [hidden]="!hazardDisplay[inputType]">
+                          {{inputLabels[inputType] ? inputLabels[inputType].descriptor : inputType}}
+                        </div>
+                        <div class="" style="position: relative; min-height: 80px;" [hidden]="!hazardDisplay[inputType]">
+                          <md-slider
+                            [min]="sliderValues1[inputType + '_min']"
+                            [max]="sliderValues1[inputType + '_max']"
+                            [step]="sliderValues1[inputType + '_step']"
+                            [value]="sliderValues1[inputType + '_value']"
+                            [(ngModel)]="sliderValues1[inputType + '_value']"
+                            (change)="onSliderChangeEvent1(inputType)"
+                            (input)="onSliderInputEvent1($event, inputType)">
+                          </md-slider>
+                          <span class="text-right slider-text">
+                            {{sliderValues1[inputType + '_difference_value']}} <br />
+                            <span class="slider-text-base">Base: {{sliderValues1[inputType + '_baseline_value']}}</span>
+                            <br />
+                            <span class="slider-text-base">New Value: {{sliderValues1[inputType + '_display_value']}}
+
+                            </span>
+                          </span>
                         </div>
 
                       </div>
 
                     </div>
+
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </div>-->
 
-        </div>
-      </div>
     </div>
   </div>
 

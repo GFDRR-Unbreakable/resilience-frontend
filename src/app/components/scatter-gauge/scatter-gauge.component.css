@@ -1,24 +1,53 @@
 .scatter-gauge {
   width: 100%;
-  padding-top: 5px;
-  margin-bottom: 10px;
-  background-color: pink;
+  padding-top: 8px;
+  margin-top: 20px;
+  margin-bottom: 7px;
+  border-bottom: 1px solid var(--gray-dark);
   position: relative;
 }
 
 .scatter-gauge__point {
   position: absolute;
   top: 0;
-  width: 10px;
-  height: 10px;
-  margin-left: -5px;
+  width: 16px;
+  height: 16px;
+  margin-left: -8px;
   border-radius: 100%;
-  background-color: transparent;
-  opacity: 0.2;
-  border:1px solid gray;
+  background-color: var(--teal);
+  opacity: 0.1;
+  cursor: crosshair;
+  left: 0;
+  transition: 2s left;
 }
 
 .scatter-gauge__point.is-active {
   opacity: 1;
-  background-color: red;
+  border: 2px solid var(--gray-dark);
+  z-index: 10;
+}
+
+.scatter-gauge__tooltip {
+  position: absolute;
+  z-index: 100;
+  top: 15px;
+  padding: 5px 10px;
+  background-color: var(--white);
+  border: 1px solid var(--gray-light);
+  font-size: 14px;
+}
+
+.scatter-gauge__row {
+  display: block;
+  white-space: nowrap;
+}
+
+.scatter-gauge__stat {
+  position: absolute;
+  top: -20px;
+  text-align: center;
+  width: 50px;
+  margin-left: -25px;
+  font-size: 14px;
+  left: 0;
 }

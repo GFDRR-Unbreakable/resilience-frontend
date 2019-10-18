@@ -59,9 +59,9 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   };
   public _selectedCountryList: Array<any> = [{
     index: 0,
-    name: "United States",
-    code: "USA",
-    group: "North America"
+    name: "Malawi",
+    code: "MWI",
+    group: "Sub-Saharan Africa"
   }];
   public sliderValues1Default = {};
   public sliderValues2Default = {};
@@ -69,11 +69,11 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   public sliderValues2 = {};
   public viewerDisplay: string = 'viewer';
   public viewerModel: Viewer = {
-    firstCountry: 'United States',
+    firstCountry: 'Malawi',
     secondCountry: ''
   };
   public viewerGroupModel: ViewerGroup = {
-    firstCountryGroup: 'North America',
+    firstCountryGroup: 'Sub-Saharan Africa',
     secondCountryGroup: ''
   };
   public viewerP1Default: any = {};
@@ -216,9 +216,10 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     'resilience': [],
     'risk': [],
   };
-  selectedCountry = 'USA';
+  selectedCountry = 'MWI';
 
-  public inputGaugeData:any = {};
+  inputGaugeData:any = {};
+  countryData: any[] = [];
 
   switchValue = 'focus';
   switchOptions = ['focus', 'all'];
@@ -380,7 +381,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * @param {String} field - Input-text field model
    */
   private _filterCountryByInput(list, selectedIdx, field) {
-    console.log('_filterCountryByInput', list, selectedIdx, field)
     if (list.length >= 1) {
       if (!selectedIdx) {
         this.viewerGroupModel.firstCountryGroup = list[0].group;
@@ -513,7 +513,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
 
       // Used to look up country data on hover.
       this.globalModelDataHash = data._globalModelData;
-      console.log('## getChartOutputData ##', data)
       this.createMapPageOutputChartTable(data._outputDomains, 'outputs-1', undefined, undefined, '## getChartOutputData ##', data);
 
       this.populateScatterGauges(data, 'outputs-1');
@@ -532,24 +531,25 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   createMapPageOutputChartTable(data:any, containerId:string, groupName:any = undefined, isoCode: any = undefined, origin: string = 'No origin', allData?: any):any {
     // console.log('createMapPageOutputChartTable', data, allData);
 
-    this.chartService.createSingleOutputChart(data.risk_to_assets, 'risk_to_assets', 'output-risk_to_assets_1', groupName, isoCode);
+    // this.chartService.createSingleOutputChart(data.risk_to_assets, 'risk_to_assets', 'output-risk_to_assets_1', groupName, isoCode);
 
-    this.chartService.createSingleOutputChart(data.risk, 'risk', 'output-risk_1', groupName, isoCode);
-    this.chartService.createSingleOutputChart(data.resilience, 'resilience', 'output-resilience_1', groupName, isoCode);
+    // this.chartService.createSingleOutputChart(data.resilience, 'resilience', 'output-resilience_1', groupName, isoCode);
+    // this.chartService.createSingleOutputChart(data.risk, 'risk', 'output-risk_1', groupName, isoCode);
 
-    this.chartService.createSingleOutputChart(data.risk_to_assets, 'risk_to_assets', 'output-risk_to_assets_2', groupName, isoCode);
-    this.chartService.createSingleOutputChart(data.risk, 'risk', 'output-risk_2', groupName, isoCode);
-    this.chartService.createSingleOutputChart(data.resilience, 'resilience', 'output-resilience_2', groupName, isoCode);
+
+    // this.chartService.createSingleOutputChart(data.risk_to_assets, 'risk_to_assets', 'output-risk_to_assets_2', groupName, isoCode);
+    // this.chartService.createSingleOutputChart(data.risk, 'risk', 'output-risk_2', groupName, isoCode);
+    // this.chartService.createSingleOutputChart(data.resilience, 'resilience', 'output-resilience_2', groupName, isoCode);
 
     // this.chartService.createOutputChart(data, containerId, groupName, false, isoCode);
   }
 
   populateScatterGauges(allData: any, containerId:string) {
-    const countryData = allData._globalModelData;
+    this.countryData = allData._globalModelData;
 
     ['risk_to_assets', 'resilience', 'risk'].reduce((acc, key) => {
-      const rows = Object.keys(countryData).map(id => {
-        return {id, value: countryData[id][key]};
+      const rows = Object.keys(this.countryData).map(id => {
+        return {id, value: this.countryData[id][key]};
       });
       const avgRow = {
         id: 'AVG',
@@ -563,12 +563,11 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     .reduce((acc, input) => {
       const keys = this.chartService.getInputIdChartByType(input);
       acc[input] = keys.reduce((acc2, key) => {
-        return this.mapGaugeRows(acc2, key, countryData);
+        return this.mapGaugeRows(acc2, key, this.countryData);
       }, {} as any)
       return acc;
     }, {} as any);
 
-    console.log('populateScatterGauges', this.inputGaugeData);
   }
 
   private mapGaugeRows(acc, key, countryData) {

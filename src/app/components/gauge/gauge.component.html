@@ -1,5 +1,7 @@
-<div class="gauge">
+<div class="gauge" [class.is-avg]="activeRow.id === 'AVG'">
+  <span class="gauge__stat" [style.left.%]="barWidth()">
+    {{formatter(activeRow.value)}}
+  </span>
   <div
-  class="gauge__bar" [attr.title]="activeRow.id"
-  [style.width.%]="activeRow.value * 100"></div>
+  class="gauge__bar" [style.width.%]="barWidth()"></div>
 </div>

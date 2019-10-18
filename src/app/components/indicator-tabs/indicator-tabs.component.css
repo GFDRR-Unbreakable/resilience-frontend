@@ -1,0 +1,50 @@
+.indicator-tabs__row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.indicator-tabs__row--charts {
+  align-content: flex-end;
+}
+
+.indicator-tabs__content {
+  padding: 15px 0;
+}
+
+.indicator-tabs__col {
+  margin-bottom: 30px;
+}
+
+.indicator-tabs__col:first-child {
+  flex: 0 0 200px;
+  width: 200px;
+}
+
+.cols-6 .indicator-tabs__col:not(:first-child) {
+  /* (100 / 5) - (200 / 5) - 30 */
+  flex: 0 0 calc(20% - 70px);
+}
+.cols-5 .indicator-tabs__col:not(:first-child) {
+  /* (100 / 4) - (200 / 4) - 30*/
+  flex: 0 0 calc(25% - 80px);
+}
+
+.cols-4 .indicator-tabs__col:not(:first-child) {
+  /* (100 / 3) - (200 / 3) - 30*/
+  flex: 0 0 calc(33.3333% - 96.6666px);
+}
+
+.indicator-tabs__col--label {
+  font-size: 14px;
+}
+
+.indicator-tabs__col--country {
+  display: flex;
+  align-items: flex-end;
+}
+
+.indicator-tabs__country {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 20px;
+}

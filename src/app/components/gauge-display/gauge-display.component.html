@@ -1,4 +1,6 @@
 <div class="gauge-display">
-  <app-scatter-gauge *ngIf="view === 'all'" [data]="data" [id]="id"></app-scatter-gauge>
-  <app-gauge *ngIf="view !== 'all'" [data]="data" [id]="id"></app-gauge>
+  <app-scatter-gauge *ngIf="view === 'all'" [data]="data"
+  [id]="id" [max]="maxValue" [formatter]="formatter"></app-scatter-gauge>
+  <app-gauge *ngIf="view !== 'all'" [data]="data" [id]="id"
+  [max]="maxValue" [formatter]="formatter"></app-gauge>
 </div>

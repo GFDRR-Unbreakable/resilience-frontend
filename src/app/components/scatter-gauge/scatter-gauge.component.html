@@ -1,6 +1,16 @@
 <div class="scatter-gauge">
+  <span class="scatter-gauge__stat" [style.left.%]="pointPosition(activeRow)">
+    {{formatter(activeRow.value)}}
+  </span>
+
   <div *ngFor="let p of data"
-  class="scatter-gauge__point" [attr.title]="p.id + ' ' + p.value"
-  [style.left.%]="pointPosition(p)"
-  [class.is-active]="p.id === id"></div>
+  class="scatter-gauge__point" [style.left.%]="pointPosition(p)"
+  [class.is-active]="p.id === id" (mouseenter)="mouseEnter(p)"
+  (mouseleave)="mouseLeave()"></div>
+
+  <div *ngIf="!!hoverRow" class="scatter-gauge__tooltip"
+  [style.left.%]="pointPosition(hoverRow)">
+    <span class="scatter-gauge__row">{{ countryMap[hoverRow.id] }}</span>
+    <span class="scatter-gauge__row">{{ formatter(hoverRow.value) }}</span>
+  </div>
 </div>
