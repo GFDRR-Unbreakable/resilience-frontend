@@ -111,6 +111,13 @@
   display: inline;
 }
 
+.viewer__download-buttons {
+  position: relative;
+  left: auto;
+  top: auto;
+  margin-left: 15px;
+}
+
 .outputs__labels {
   display: flex;
   justify-content: flex-end;

@@ -1837,7 +1837,8 @@ export class ChartService {
           return barHeight;
         })
         .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', 0)')
-        .style('fill', '#C3D700');
+        //.classed('fill--gray-green', true);
+        .style('fill', 'var(--gray-green)'/*'#C3D700'*/);
        // .style('fill', '#f3a277');
       barLabels
         .selectAll('.labels1')

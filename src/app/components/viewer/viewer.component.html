@@ -112,19 +112,19 @@
               </div>
             </div>
             <div class="outputs__col">
-              <!-- <div id="output-risk_to_assets_1" class="chart-container"></div> -->
+              <div id="output-risk_to_assets_1" class="chart-container"></div>
               <app-gauge-display [view]="switchValue"
               [data]="gaugeData['risk_to_assets']"
               [id]="selectedCountry"></app-gauge-display>
             </div>
             <div class="outputs__col">
-              <!--<div id="output-resilience_1" class="chart-container"></div>-->
+              <div id="output-resilience_1" class="chart-container"></div>
               <app-gauge-display [view]="switchValue"
               [data]="gaugeData['resilience']"
               [id]="selectedCountry"></app-gauge-display>
             </div>
             <div class="outputs__col">
-              <!--<div id="output-risk_1" class="chart-container"></div>-->
+              <div id="output-risk_1" class="chart-container"></div>
               <app-gauge-display [view]="switchValue"
               [data]="gaugeData['risk']"
               [id]="selectedCountry"></app-gauge-display>
@@ -137,18 +137,18 @@
               <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
             </div>
             <div class="outputs__col">
-              <!--<div id="output-risk_to_assets_2" class="chart-container"></div>-->
+              <div id="output-risk_to_assets_2" class="chart-container"></div>
               <app-gauge-display [view]="switchValue"
               [data]="gaugeData['risk_to_assets']"></app-gauge-display>
             </div>
 
             <div class="outputs__col">
-              <!--<div id="output-resilience_2" class="chart-container"></div>-->
+              <div id="output-resilience_2" class="chart-container"></div>
               <app-gauge-display [view]="switchValue"
               [data]="gaugeData['resilience']"></app-gauge-display>
             </div>
             <div class="outputs__col">
-              <!--<div id="output-risk_2" class="chart-container"></div>-->
+              <div id="output-risk_2" class="chart-container"></div>
               <app-gauge-display [view]="switchValue"
               [data]="gaugeData['risk']"></app-gauge-display>
             </div>
@@ -175,34 +175,15 @@
           [ngClass]="{active: viewerDisplay === 'viewer'}"
           (click)="onChangeViewerIndViewEvent('viewer')">VIEW INDICATORS</button>
 
-          <button type="button" class="view-select__button btn btn-primary wt-lb" [disabled]='_selectedCountryList.length === 0 && 0' [ngClass]="{active: viewerDisplay === 'tech'}" >POLICY PRIORITY</button>
-          <button type="button" class="btn btn-primary wt-lb" [disabled]='_selectedCountryList.length === 0 && 0' [ngClass]="{active: viewerDisplay === 'tech'}" (click)="onChangeViewerIndViewEvent('tech')">ACCESS FULL MODEL</button>
+          <button type="button" class="view-select__button btn btn-primary wt-lb"
+          [disabled]='_selectedCountryList.length === 0 && 0'
+          [ngClass]="{active: viewerDisplay === 'policy'}"
+          (click)="onChangeViewerIndViewEvent('policy')">POLICY PRIORITY</button>
+          <!--<button type="button" class="btn btn-primary wt-lb" [disabled]='_selectedCountryList.length === 0 && 0' [ngClass]="{active: viewerDisplay === 'tech'}" (click)="onChangeViewerIndViewEvent('tech')">ACCESS FULL MODEL</button>
+          -->
         </div>
       </div>
     </div>
-
-    <div class="col-md-4 d-none">
-      <div class="cards-bg">
-        <p class="text-center mar-p">
-          Compare each country’s Asset and Well-Being Losses and Socio-Economic Resilience across the region or the entire world.
-        </p>
-        <div class="row ">
-          <div class="col-md-5 text-right">
-            <img src="assets/image/ic-globe.png" alt="">
-          </div>
-          <div class="col-md-7">
-            <div class="switch" (click)="onSwitchGlobal()">
-              <input type="radio" class="switch-input" name="view" [checked]="global">
-              <label for="week" class="switch-label switch-label-off">Global</label>
-              <input type="radio" class="switch-input" name="view" [checked]="!global">
-              <label for="month" class="switch-label switch-label-on">Regional</label>
-              <span class="switch-selection"></span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
 
     <!-- <div class="col-md-6">
       <h2 class="mappage__header">Hazards Selection
@@ -238,37 +219,66 @@
     </div>-->
 
   </div>
+  <div class="viewer__section viewer__section--tech"
+  *ngIf="viewerDisplay === 'viewer'">
+    <h2 class="mappage__header viewer__header">Country Resilience Factors
+      <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover2" triggers="mouseenter:mouseleave" popoverTitle="">
+        <i class="mdi mdi-information-outline"></i>
+      </button>
+      <ng-template #popover2>
+        <p class="popover-title-viewer">What are we seeing here?</p>
+        <p>
+          These are the main drivers of asset and well-being losses to natural disasters.
+          Poverty reduction and disaster risk management are closely linked, and there are many
+          tools governments and Bank teams can use to pursue both simultaneously.
+        </p>
+      </ng-template>
 
-  <div class="row" [hidden]="!viewerDisplay">
-    <div class="col-md-12">
-      <div class="">
-        <h2 class="mappage__header viewer__header">Country Resilience Factors
-          <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover2" triggers="mouseenter:mouseleave" popoverTitle="">
-            <i class="mdi mdi-information-outline"></i>
-          </button>
-          <ng-template #popover2>
-            <p class="popover-title-viewer">What are we seeing here?</p>
-            <p>
-              These are the main drivers of asset and well-being losses to natural disasters.
-              Poverty reduction and disaster risk management are closely linked, and there are many
-              tools governments and Bank teams can use to pursue both simultaneously.</p>
-          </ng-template>
+      <app-switch class="viewer__switch" [value]="switchValue"
+      [options]="switchOptions" [labels]="switchLabels"
+      (onChange)="switchValue = $event"></app-switch>
 
-          <app-switch class="viewer__switch" [value]="switchValue"
-          [options]="switchOptions" [labels]="switchLabels"
-          (onChange)="switchValue = $event"></app-switch>
+      <div class="viewer__download-buttons box-download">
+        <button type="button" class="btn btn-primary text-download" (click)="onResetTechDataEvent()" *ngIf="viewerDisplay == 'tech'">RESET</button>
+        <button type="button" class="btn btn-primary text-download" (click)="onDownloadCSVViewerReportEvent()"><img class="img-download" src="assets/image/ic-download-green.png" alt="">CSV</button>
+        <button type="button" class="btn btn-primary text-download" (click)="onDownloadPDFViewerReportEvent()"><img class="img-download" src="assets/image/ic-download-green.png" alt="">PDF</button>
+      </div>
+    </h2>
 
-          <div class="box-download">
-            <button type="button" class="btn btn-primary text-download" (click)="onResetTechDataEvent()" *ngIf="viewerDisplay == 'tech'">RESET</button>
-            <button type="button" class="btn btn-primary text-download" (click)="onDownloadCSVViewerReportEvent()"><img class="img-download" src="assets/image/ic-download-green.png" alt="">CSV</button>
-            <button type="button" class="btn btn-primary text-download" (click)="onDownloadPDFViewerReportEvent()"><img class="img-download" src="assets/image/ic-download-green.png" alt="">PDF</button>
-          </div>
-        </h2>
+    <app-indicator-tabs [viewerModel]="viewerModel" [view]="switchValue"
+    [viewerGroupModel]="viewerGroupModel" [countryData]="countryData"
+    [inputLabels]="inputLabels" [selectedCountry]="selectedCountry">
+    </app-indicator-tabs>
+  </div>
 
-        <app-indicator-tabs [viewerModel]="viewerModel" [view]="switchValue"
-        [viewerGroupModel]="viewerGroupModel" [countryData]="countryData"
-        [inputLabels]="inputLabels" [selectedCountry]="selectedCountry">
-        </app-indicator-tabs>
+
+  <div class="viewer__section viewer__section--policy"
+  *ngIf="viewerDisplay === 'policy'">
+    <h2 class="mappage__header viewer__header">
+      How Country Policies Can Reduce Asset And Well-Being Losses
+      <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover3" triggers="mouseenter:mouseleave" popoverTitle="">
+        <i class="mdi mdi-information-outline"></i>
+      </button>
+      <ng-template #popover3>
+        <p>
+          The figure below shows how various policies can reduce asset and well-being losses. Negative values indicate cases where the policy increases the losses. Avoided losses can be presented in absolute terms (US$ million) or relative terms (in percent of today’s losses). The policies can be ranked according to their effect on asset or well-being losses.
+        </p>
+      </ng-template>
+      <app-switch class="viewer__switch" [value]="switchPolicyValue"
+      [options]="switchPolicyOptions" [labels]="switchPolicyLabels"
+      (onChange)="switchPolicyValue = $event"></app-switch>
+
+      <div class="viewer__download-buttons box-download">
+        <button type="button" class="btn btn-primary text-download" (click)="onDownloadPDFViewerReportEvent()"><img class="img-download" src="assets/image/ic-download-green.png" alt="">PDF</button>
+      </div>
+    </h2>
+
+    <app-policy-list-chart [countryName]="selectedCountryName"
+    [type]="switchPolicyValue">
+    </app-policy-list-chart>
+  </div>
+</div>
+        XXXXXX<!--
             <div [hidden]="viewerDisplay === 'tech'">
               <div class="row">
                 <div class="col-md-12 box-tab">
@@ -472,7 +482,7 @@
               </div>
             </div>
 
-            <!--<div [hidden]="viewerDisplay === 'viewer'">
+            <div [hidden]="viewerDisplay === 'viewer'">
               <div class="row border-content"></div>
               <div class="row">
                 <div class="col-md-12 box-tab">
@@ -639,70 +649,7 @@
                 </div>
               </div>
             </div>
-          </div>-->
-
-    </div>
-  </div>
-
-</div>
-
-<div class="row d-none">
-  <div class="col-md-12">
-    <div id="about" class="card bg-light mb-3 card-02">
-      <div class="card-header">About Unbreakable</div>
-      <div class="card-body">
-        <p>
-          Economic losses from natural disasters totaled $210 billion in 2016.
-          Such statements, while true, imply that the impact of natural disasters is limited
-          to the damage inflicted on buildings, infrastructure, and agricultural production.
-          However, $1 in losses does not mean the same thing to a rich person as it does to
-          a poor person; the gravity of any loss depends on whom it affects, and the
-          traditional focus on aggregate losses obscures the plight of poor people by
-          restricting consideration to how natural disasters affect those wealthy enough to have
-          considerable assets to lose in the first place.
-        </p>
-
-        <p>
-          In 2016, the World Bank released Unbreakable, a flagship report that goes beyond
-          traditional metrics like gross asset losses to examine how natural disasters
-          affect people’s well-being. In an average year, the poorest 20% of people in a
-          country suffer less than 10% of aggregate asset losses, but fully 25% of aggregate
-          well-being losses. In other words, poor people suffer only a fraction of gross
-          economic losses caused by natural disasters, but they bear a much larger brunt of natural disasters’
-          consequences. This approach takes fuller account of how poverty increases people’s
-          vulnerability to natural disasters, and how natural disasters trap people in poverty.
-        </p>
-
-        <p>Learn more about <a href="https://www.gfdrr.org">GFDRR</a> and the <a href="https://www.gfdrr.org/unbreakable">Unbreakable Report.</a></p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="col-md-4 col-rm d-none">
-  <div id="#fat" class="card bg-light mb-3 card-01">
-    <div class="card-header">Unbreakable Resilience Indicator</div>
-    <div class="card-body">
-      This tool is designed to examine how natural disasters affect people’s well-being, and how policy and financial tools available to governments and the World Bank can mitigate these losses, helping more people to escape poverty. Click <a href="https://www.gfdrr.org/unbreakable">here</a>  to learn more.
-      <hr class="report">
-      <div class="row">
-        <div class="col-md-12">
-
-          <p>View the risk indicators of losses in assets and well-being and changes in socio-economic resilience due to natural disasters in an average year for your selected country.</p>
-          <p>Or click on 'Access Full Model' so you can manipulate the resilience inputs under the map to see how policy interventions could mitigate asset risk and well-being risk, and build socioeconomic resilience in countries around the world.</p>
-          <!-- <p>View losses on assets and well-being and changes in
-          socio-economic capacity for one or two countries.</p>
-          <p>Select two countries from the map or type their names:</p>-->
-        </div>
-      </div>
-      <div class="row box-general box-cu">
-
-      </div>
-      <br>
-    </div>
-  </div>
-
-</div>
-
+          </div>
+          --> XXXXXX
 
 <app-footer [selection]="false"></app-footer>

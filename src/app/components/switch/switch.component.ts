@@ -14,9 +14,7 @@ export class SwitchComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-    console.log('this', this)
-  }
+  ngOnInit() { }
 
   switchChange(value) {
     if (value !== this.value) {

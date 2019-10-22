@@ -35,6 +35,7 @@ import { GaugeComponent } from './components/gauge/gauge.component';
 import { SwitchComponent } from './components/switch/switch.component';
 import { GaugeDisplayComponent } from './components/gauge-display/gauge-display.component';
 import { IndicatorTabsComponent } from './components/indicator-tabs/indicator-tabs.component';
+import { PolicyListChartComponent } from './components/policy-list-chart/policy-list-chart.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { IndicatorTabsComponent } from './components/indicator-tabs/indicator-ta
     SwitchComponent,
     GaugeDisplayComponent,
     IndicatorTabsComponent,
+    PolicyListChartComponent,
   ],
   imports: [
     BrowserModule,

@@ -53,8 +53,6 @@ export class IndicatorTabsComponent implements OnInit {
       this.inputTypes[key] = this.chartConf.inputTypes[key];
     });
 
-    console.log(this.inputLabels)
-    console.log('countryData', this.countryData)
     this.inputGaugeData = ['inputSoc', 'inputEco', 'inputVul', 'inputExp']
     .reduce((acc, input) => {
       const keys = this.chartService.getInputIdChartByType(input);
@@ -63,15 +61,6 @@ export class IndicatorTabsComponent implements OnInit {
       }, {} as any)
       return acc;
     }, {} as any);
-    console.log('inputGaugeData', this.inputGaugeData)
-    /*this.inputTypes.inputSoc = this.chartService.getChartsConf().inputTypes.inputSoc;
-    this.inputTypes.inputEco = this.chartService.getChartsConf().inputTypes.inputEco;
-    this.inputTypes.inputVul = this.chartService.getChartsConf().inputTypes.inputVul;
-    this.inputTypes.inputExp = this.chartService.getChartsConf().inputTypes.inputExp;
-
-    this.inputTypes.inputExp.forEach((inputType) => {
-      this.hazardDisplay[inputType] = true;
-    });*/
   }
 
   gaugeType(key) {

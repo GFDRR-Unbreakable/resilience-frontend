@@ -11945,3 +11945,6 @@ fieldset {
   margin-bottom: 25px;
 }
 
+svg rect.fill--gray-green {
+  fill: var(--gray-green);
+}
