@@ -64,7 +64,6 @@
   }
 }
 
-
 .btn-callout {
   text-transform: uppercase;
   padding-left: 1.5rem;
@@ -102,8 +101,9 @@
   position: absolute;
   bottom: 0;
   width: 100%;
-  background: rgb(0, 0, 0); /* Fallback for older browsers without RGBA-support */
-  background: rgba(0, 0, 0, 0.6);
+  opacity: 0.8;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  background-color: #000000;
   padding: 8px 22px;
 }
 
@@ -128,7 +128,11 @@
 .card-title {
   color: #51C5D0;
   font-weight: normal;
-  text-align: center;
+}
+
+.card-subtitle {
+  color: #ff9d00;
+  font-size: 1.125rem;
 }
 
 .card-text {
