@@ -187,6 +187,7 @@
 .card-subtitle {
   color: #ff9d00;
   font-size: 1.125rem;
+  font-weight: 500;
 }
 
 .card-text {
