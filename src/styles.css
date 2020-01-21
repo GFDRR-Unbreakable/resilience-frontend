@@ -828,6 +828,18 @@ template {
     bottom: 20px;
     left: 23px;
   }
+
+  /* makes button group column on small screen sizes  */
+  @media (max-width: 900px) {
+    .tabs-dg {
+      flex-direction: column;
+      margin-right: auto;
+    }
+    .tabs-dg .btn-tab:not(:first-child) {
+      margin-top: 10px;
+    }
+  }
+
   .tabs-dg button{
     height: 50px;
     cursor: pointer;
