@@ -27,18 +27,26 @@
 
   <!-- Buttons/tabs -->
   <div class="btn-group tabs-dg" role="group" aria-label="Map dataviz UI">
-    <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'well'}" (click)="onChangeMapLayerEvent('well')">{{optionsLabel['well']}}</button>
-    <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'asset'}" (click)="onChangeMapLayerEvent('asset')">{{optionsLabel['asset']}}</button>
-    <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'socio'}" (click)="onChangeMapLayerEvent('socio')">{{optionsLabel['socio']}}</button>
+    <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'well'}"
+      (click)="onChangeMapLayerEvent('well')">{{optionsLabel['well']}}</button>
+    <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'asset'}"
+      (click)="onChangeMapLayerEvent('asset')">{{optionsLabel['asset']}}</button>
+    <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'socio'}"
+      (click)="onChangeMapLayerEvent('socio')">{{optionsLabel['socio']}}</button>
   </div>
   <!-- End Buttons/tabs -->
 
   <div class="callout-body" [ngClass]="{closed: !mapComponentOpen}">
     <div class="callout-body-trigger" (click)="toggleMapComponent()">&rsaquo;</div>
     <div class="callout-body-inner">
-      <h2>Unbreakable Resilience Indicator</h2>
+      <span class="callout-body-label">
+        {{ calloutTitle }}
+      </span>
+      <h2 class="callout-body-title">Unbreakable Resilience Indicator</h2>
       <div class="content">
-        <p>This tool is designed to examine how natural disasters affect people's well-being, and how policy and financial tools available to governments and the World Bank can mitigate these losses, helping more people to escape poverty.</p>
+        <p>This tool is designed to examine how natural disasters affect people's well-being, and how policy and
+          financial tools available to governments and the World Bank can mitigate these losses, helping more people to
+          escape poverty.</p>
       </div>
     </div>
   </div>
@@ -49,12 +57,9 @@
     <h2 class="mappage__header">Select Country</h2>
     <div class="box-dropdown row">
       <div class="country-select__wrapper form-group col-md-6" [class.has-danger]="searchFailed">
-        <input id="country-1Txt" type="text"
-        class="form-control input-wd country-select__input"
-        [(ngModel)]="viewerModel.firstCountry"
-        [ngbTypeahead]="searchCountryFn" #country1="ngModel"
-        (ngModelChange)="onFirstCountryInputChangeEvent()"
-        placeholder="Select a country"/>
+        <input id="country-1Txt" type="text" class="form-control input-wd country-select__input"
+          [(ngModel)]="viewerModel.firstCountry" [ngbTypeahead]="searchCountryFn" #country1="ngModel"
+          (ngModelChange)="onFirstCountryInputChangeEvent()" placeholder="Select a country" />
         <span class="country-select__label">Try another country!</span>
 
       </div>
@@ -64,27 +69,28 @@
   <div class="row">
     <div class="col-md-12">
       <div class="card-02">
-        <h2 class="mappage__header viewer__header">Output: Country Losses to Assets, Socio-Economic Resilience, and Well-Being
-          <app-switch class="viewer__switch" [value]="switchValue"
-          [options]="switchOptions" [labels]="switchLabels"
-          (onChange)="switchValue = $event"></app-switch>
-          <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover1" triggers="mouseenter:mouseleave" popoverTitle="">
+        <h2 class="mappage__header viewer__header">Output: Country Losses to Assets, Socio-Economic Resilience, and
+          Well-Being
+          <app-switch class="viewer__switch" [value]="switchValue" [options]="switchOptions" [labels]="switchLabels"
+            (onChange)="switchValue = $event"></app-switch>
+          <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover1"
+            triggers="mouseenter:mouseleave" popoverTitle="">
             <i class="mdi mdi-information-outline"></i>
           </button>
           <ng-template #popover1>
 
             <p><b>Risk to assets (% of GDP)</b> is the value of assets at risk,
-            considering hazard exposure and asset vulnerability.</p>
+              considering hazard exposure and asset vulnerability.</p>
 
             <p><b>Socioeconomic resilience:</b> The ability of the population
-            to recover from disasters (the ratio of asset losses to well-being
-            losses).</p>
+              to recover from disasters (the ratio of asset losses to well-being
+              losses).</p>
 
             <p><b>Risk to well-being (% of GDP)</b> is the potential impact of
-            asset losses on consumption.</p>
+              asset losses on consumption.</p>
 
             <p>For more details, please click on <b>Report</b> in the main
-            navigation</p>
+              navigation</p>
 
           </ng-template>
           <!-- <span><i class="mdi mdi-checkbox-blank-circle box-icon-c"></i> Country</span>
@@ -106,51 +112,45 @@
           <div id='outputs-1' class="outputs__row">
             <div class="outputs__col output__country-label">
               <div class="output__country">{{viewerModel.firstCountry || 'Global Average'}}</div>
-              <div *ngIf="viewerGroupModel.firstCountryGroup != ''"
-              class="region-name output__region">
+              <div *ngIf="viewerGroupModel.firstCountryGroup != ''" class="region-name output__region">
                 {{viewerGroupModel.firstCountryGroup}}
               </div>
             </div>
             <div class="outputs__col">
               <div id="output-risk_to_assets_1" class="chart-container"></div>
-              <app-gauge-display [view]="switchValue"
-              [data]="gaugeData['risk_to_assets']"
-              [id]="selectedCountry"></app-gauge-display>
+              <app-gauge-display [view]="switchValue" [data]="gaugeData['risk_to_assets']" [id]="selectedCountry">
+              </app-gauge-display>
             </div>
             <div class="outputs__col">
               <div id="output-resilience_1" class="chart-container"></div>
-              <app-gauge-display [view]="switchValue"
-              [data]="gaugeData['resilience']"
-              [id]="selectedCountry"></app-gauge-display>
+              <app-gauge-display [view]="switchValue" [data]="gaugeData['resilience']" [id]="selectedCountry">
+              </app-gauge-display>
             </div>
             <div class="outputs__col">
               <div id="output-risk_1" class="chart-container"></div>
-              <app-gauge-display [view]="switchValue"
-              [data]="gaugeData['risk']"
-              [id]="selectedCountry"></app-gauge-display>
+              <app-gauge-display [view]="switchValue" [data]="gaugeData['risk']" [id]="selectedCountry">
+              </app-gauge-display>
             </div>
           </div>
 
           <div id='outputs-2' class="outputs__row">
             <div class="outputs__col output__country-label">
               <div class="output__country">{{viewerModel.secondCountry || 'Global Average'}}</div>
-              <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
+              <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">
+                {{viewerGroupModel.secondCountryGroup}}</div>
             </div>
             <div class="outputs__col">
               <div id="output-risk_to_assets_2" class="chart-container"></div>
-              <app-gauge-display [view]="switchValue"
-              [data]="gaugeData['risk_to_assets']"></app-gauge-display>
+              <app-gauge-display [view]="switchValue" [data]="gaugeData['risk_to_assets']"></app-gauge-display>
             </div>
 
             <div class="outputs__col">
               <div id="output-resilience_2" class="chart-container"></div>
-              <app-gauge-display [view]="switchValue"
-              [data]="gaugeData['resilience']"></app-gauge-display>
+              <app-gauge-display [view]="switchValue" [data]="gaugeData['resilience']"></app-gauge-display>
             </div>
             <div class="outputs__col">
               <div id="output-risk_2" class="chart-container"></div>
-              <app-gauge-display [view]="switchValue"
-              [data]="gaugeData['risk']"></app-gauge-display>
+              <app-gauge-display [view]="switchValue" [data]="gaugeData['risk']"></app-gauge-display>
             </div>
           </div>
         </div>
@@ -164,21 +164,19 @@
     <h2 class="mappage__header">Select a View</h2>
     <div class="xcol-md-6 view-select__heading">
       <div class="view-select__heading-col">
-        <p>View the risk indicators of losses in assets and well-being and changes in socio-economic resilience due to natural disasters in an average year for your selected country.</p>
+        <p>View the risk indicators of losses in assets and well-being and changes in socio-economic resilience due to
+          natural disasters in an average year for your selected country.</p>
         <!--<p *ngIf="viewerModel.firstCountry"><a routerLink="/policyprioritylist" [queryParams]="{country: viewerModel.firstCountry}">View specific policy impacts for {{viewerModel.firstCountry}}</a></p>-->
       </div>
-      <div class="view-select__heading-col xbtn-group"
-      role="group" aria-label="Set viewer view">
+      <div class="view-select__heading-col xbtn-group" role="group" aria-label="Set viewer view">
         <div class="view-select__button-group">
           <button type="button" class="view-select__button btn btn-primary wt-lb"
-          [disabled]='_selectedCountryList.length === 0 && 0'
-          [ngClass]="{active: viewerDisplay === 'viewer'}"
-          (click)="onChangeViewerIndViewEvent('viewer')">VIEW INDICATORS</button>
+            [disabled]='_selectedCountryList.length === 0 && 0' [ngClass]="{active: viewerDisplay === 'viewer'}"
+            (click)="onChangeViewerIndViewEvent('viewer')">VIEW INDICATORS</button>
 
           <button type="button" class="view-select__button btn btn-primary wt-lb"
-          [disabled]='_selectedCountryList.length === 0 && 0'
-          [ngClass]="{active: viewerDisplay === 'policy'}"
-          (click)="onChangeViewerIndViewEvent('policy')">POLICY PRIORITY</button>
+            [disabled]='_selectedCountryList.length === 0 && 0' [ngClass]="{active: viewerDisplay === 'policy'}"
+            (click)="onChangeViewerIndViewEvent('policy')">POLICY PRIORITY</button>
           <!--<button type="button" class="btn btn-primary wt-lb" [disabled]='_selectedCountryList.length === 0 && 0' [ngClass]="{active: viewerDisplay === 'tech'}" (click)="onChangeViewerIndViewEvent('tech')">ACCESS FULL MODEL</button>
           -->
         </div>
@@ -219,10 +217,10 @@
     </div>-->
 
   </div>
-  <div class="viewer__section viewer__section--tech"
-  *ngIf="viewerDisplay === 'viewer'">
+  <div class="viewer__section viewer__section--tech" *ngIf="viewerDisplay === 'viewer'">
     <h2 class="mappage__header viewer__header">Country Resilience Factors
-      <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover2" triggers="mouseenter:mouseleave" popoverTitle="">
+      <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover2"
+        triggers="mouseenter:mouseleave" popoverTitle="">
         <i class="mdi mdi-information-outline"></i>
       </button>
       <ng-template #popover2>
@@ -234,51 +232,54 @@
         </p>
       </ng-template>
 
-      <app-switch class="viewer__switch" [value]="switchValue"
-      [options]="switchOptions" [labels]="switchLabels"
-      (onChange)="switchValue = $event"></app-switch>
+      <app-switch class="viewer__switch" [value]="switchValue" [options]="switchOptions" [labels]="switchLabels"
+        (onChange)="switchValue = $event"></app-switch>
 
       <div class="viewer__download-buttons box-download">
-        <button type="button" class="btn btn-primary text-download" (click)="onResetTechDataEvent()" *ngIf="viewerDisplay == 'tech'">RESET</button>
-        <button type="button" class="btn btn-primary text-download" (click)="onDownloadCSVViewerReportEvent()"><img class="img-download" src="assets/image/ic-download-green.png" alt="">CSV</button>
-        <button type="button" class="btn btn-primary text-download" (click)="onDownloadPDFViewerReportEvent()"><img class="img-download" src="assets/image/ic-download-green.png" alt="">PDF</button>
+        <button type="button" class="btn btn-primary text-download" (click)="onResetTechDataEvent()"
+          *ngIf="viewerDisplay == 'tech'">RESET</button>
+        <button type="button" class="btn btn-primary text-download" (click)="onDownloadCSVViewerReportEvent()"><img
+            class="img-download" src="assets/image/ic-download-green.png" alt="">CSV</button>
+        <button type="button" class="btn btn-primary text-download" (click)="onDownloadPDFViewerReportEvent()"><img
+            class="img-download" src="assets/image/ic-download-green.png" alt="">PDF</button>
       </div>
     </h2>
 
-    <app-indicator-tabs [viewerModel]="viewerModel" [view]="switchValue"
-    [viewerGroupModel]="viewerGroupModel" [countryData]="countryData"
-    [inputLabels]="inputLabels" [selectedCountry]="selectedCountry">
+    <app-indicator-tabs [viewerModel]="viewerModel" [view]="switchValue" [viewerGroupModel]="viewerGroupModel"
+      [countryData]="countryData" [inputLabels]="inputLabels" [selectedCountry]="selectedCountry">
     </app-indicator-tabs>
   </div>
 
 
-  <div class="viewer__section viewer__section--policy"
-  *ngIf="viewerDisplay === 'policy'">
+  <div class="viewer__section viewer__section--policy" *ngIf="viewerDisplay === 'policy'">
     <h2 class="mappage__header viewer__header">
       How Country Policies Can Reduce Asset And Well-Being Losses
-      <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover3" triggers="mouseenter:mouseleave" popoverTitle="">
+      <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover3"
+        triggers="mouseenter:mouseleave" popoverTitle="">
         <i class="mdi mdi-information-outline"></i>
       </button>
       <ng-template #popover3>
         <p>
-          The figure below shows how various policies can reduce asset and well-being losses. Negative values indicate cases where the policy increases the losses. Avoided losses can be presented in absolute terms (US$ million) or relative terms (in percent of today’s losses). The policies can be ranked according to their effect on asset or well-being losses.
+          The figure below shows how various policies can reduce asset and well-being losses. Negative values indicate
+          cases where the policy increases the losses. Avoided losses can be presented in absolute terms (US$ million)
+          or relative terms (in percent of today’s losses). The policies can be ranked according to their effect on
+          asset or well-being losses.
         </p>
       </ng-template>
-      <app-switch class="viewer__switch" [value]="switchPolicyValue"
-      [options]="switchPolicyOptions" [labels]="switchPolicyLabels"
-      (onChange)="switchPolicyValue = $event"></app-switch>
+      <app-switch class="viewer__switch" [value]="switchPolicyValue" [options]="switchPolicyOptions"
+        [labels]="switchPolicyLabels" (onChange)="switchPolicyValue = $event"></app-switch>
 
       <div class="viewer__download-buttons box-download">
-        <button type="button" class="btn btn-primary text-download" (click)="onDownloadPDFViewerReportEvent()"><img class="img-download" src="assets/image/ic-download-green.png" alt="">PDF</button>
+        <button type="button" class="btn btn-primary text-download" (click)="onDownloadPDFViewerReportEvent()"><img
+            class="img-download" src="assets/image/ic-download-green.png" alt="">PDF</button>
       </div>
     </h2>
 
-    <app-policy-list-chart [countryName]="selectedCountryName"
-    [type]="switchPolicyValue">
+    <app-policy-list-chart [countryName]="selectedCountryName" [type]="switchPolicyValue">
     </app-policy-list-chart>
   </div>
 </div>
-        XXXXXX<!--
+<!--
             <div [hidden]="viewerDisplay === 'tech'">
               <div class="row">
                 <div class="col-md-12 box-tab">
@@ -650,6 +651,6 @@
               </div>
             </div>
           </div>
-          --> XXXXXX
+          -->
 
 <app-footer [selection]="false"></app-footer>

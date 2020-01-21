@@ -2,23 +2,23 @@ import { listenToTriggers } from '@ng-bootstrap/ng-bootstrap/util/triggers';
 import { search } from '@ngrx/router-store';
 import { distinctUntilKeyChanged } from 'rxjs/operator/distinctUntilKeyChanged';
 import { distinct } from 'rxjs/operator/distinct';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { Viewer, ViewerGroup, ViewerModel } from '../../store/model/viewer.model';
 import { ViewerAction } from '../../store/action/viewer.action';
-import {AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import {map} from 'rxjs/operator/map';
-import {debounceTime} from 'rxjs/operator/debounceTime';
-import {distinctUntilChanged} from 'rxjs/operator/distinctUntilChanged';
-import {MapService} from '../../services/map.service';
-import {FileService} from '../../services/files.service';
+import { map } from 'rxjs/operator/map';
+import { debounceTime } from 'rxjs/operator/debounceTime';
+import { distinctUntilChanged } from 'rxjs/operator/distinctUntilChanged';
+import { MapService } from '../../services/map.service';
+import { FileService } from '../../services/files.service';
 // import {NgbSlideEvent} from '@ng-bootstrap/ng-bootstrap';
-import {ChartService} from '../../services/chart.service';
-import {Subscription} from 'rxjs/Subscription';
-import {Store} from '@ngrx/store';
-import {AppStore} from '../../store/default.store';
+import { ChartService } from '../../services/chart.service';
+import { Subscription } from 'rxjs/Subscription';
+import { Store } from '@ngrx/store';
+import { AppStore } from '../../store/default.store';
 // import * as enablePassiveEvent from 'default-passive-events/default-passive-events.js';
-import {MdSliderChange} from '@angular/material/';
+import { MdSliderChange } from '@angular/material/';
 
 import * as d3 from 'd3/d3.js';
 @Component({
@@ -32,6 +32,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * Public and private properties set to work with the component, these are
    * map conf, chart conf, UI events, observables and viewer models.
    */
+  public calloutTitle: string;
   public countryUIList: Array<any> = [];
   public countryListComp: Array<any> = [];
   public countryListIsoCodes: Array<any> = [];
@@ -219,7 +220,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   selectedCountry = 'MWI';
   selectedCountryName = 'Malawi';
 
-  inputGaugeData:any = {};
+  inputGaugeData: any = {};
   countryData: any[] = [];
 
   switchValue = 'focus';
@@ -245,14 +246,13 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     private chartService: ChartService,
     private store: Store<AppStore>,
     private fileService: FileService,
-    private router: ActivatedRoute ) {
+    private router: ActivatedRoute) {
 
     this.viewer$ = store.select('viewer');
     this.viewerModel1$ = store.select('viewerModel1');
     this.viewerModel2$ = store.select('viewerModel2');
     router.url.subscribe((url) => {
       this.url = url;
-      console.log(url[0].path);
     });
   }
   // LIFE-CYCLE METHODS
@@ -275,6 +275,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.chartConf = this.chartService.getChartsConf();
 
     this.hazardTypes = this.chartService.getChartsConf().hazardTypes;
+    this.calloutTitle = this.setCalloutTitle();
   }
   /**
    * This methods gets called when the component gets removed from the UI (normally happens while changing to another page).
@@ -311,13 +312,13 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this._filterCountryByInput(fromListFilter, 0, this.viewerModel.firstCountry);
 
-      this.store.dispatch({type: ViewerAction.EDIT_VIEWER, payload: this.viewerModel});
+      this.store.dispatch({ type: ViewerAction.EDIT_VIEWER, payload: this.viewerModel });
     }
 
     if (this.url[0].path === 'viewer') {
       // Set selected country for gagues.
       this.selectedCountry = fromListFilter.length ? fromListFilter[0].code
-      : 'AVG';
+        : 'AVG';
       if (fromListFilter.length) {
         this.selectedCountryName = fromListFilter[0].name;
       }
@@ -375,9 +376,9 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           }
         }
         const group = this.global ? 'GLOBAL' : viewerMod['group_name'];
-        this.chartService.updateOutputCharts(outputChartId, {model: newObj}, group, moveBothBrushes, this.viewerDisplay === 'tech');
+        this.chartService.updateOutputCharts(outputChartId, { model: newObj }, group, moveBothBrushes, this.viewerDisplay === 'tech');
       });
-      this.store.dispatch({type: ViewerAction[viewerActionStr], payload: viewerMod});
+      this.store.dispatch({ type: ViewerAction[viewerActionStr], payload: viewerMod });
     }
   }
   /**
@@ -475,7 +476,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.createMapPageOutputChartTable(outData, 'outputs-1', 'GLOBAL');
                 this.chartService.updateOutputCharts('outputs-1', filterCountryVal1[0].code, null, true, this.viewerDisplay === 'tech');
               }
-            }  else if (selectedIdx === 0 && this.viewerModel.secondCountry) {
+            } else if (selectedIdx === 0 && this.viewerModel.secondCountry) {
               const filterCountryVal2 = this.countryListComp.filter(val =>
                 val.name.toLowerCase() === this.viewerModel.secondCountry.toLowerCase());
               if (filterCountryVal2.length) {
@@ -498,7 +499,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * Adds passive UI events in the component.
    */
   addElPassiveEvents() {
-    const options: any = {passive: false};
+    const options: any = { passive: false };
     document.addEventListener('touchstart', this.onPassEv, options);
     document.addEventListener('touchmove', this.onPassEv, options);
     document.addEventListener('wheel', this.onPassEv, options);
@@ -538,7 +539,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  createMapPageOutputChartTable(data:any, containerId:string, groupName:any = undefined, isoCode: any = undefined, origin: string = 'No origin', allData?: any):any {
+  createMapPageOutputChartTable(data: any, containerId: string, groupName: any = undefined, isoCode: any = undefined, origin: string = 'No origin', allData?: any): any {
     // console.log('createMapPageOutputChartTable', data, allData);
 
     // this.chartService.createSingleOutputChart(data.risk_to_assets, 'risk_to_assets', 'output-risk_to_assets_1', groupName, isoCode);
@@ -554,12 +555,12 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.chartService.createOutputChart(data, containerId, groupName, false, isoCode);
   }
 
-  populateScatterGauges(allData: any, containerId:string) {
+  populateScatterGauges(allData: any, containerId: string) {
     this.countryData = allData._globalModelData;
 
     ['risk_to_assets', 'resilience', 'risk'].reduce((acc, key) => {
       const rows = Object.keys(this.countryData).map(id => {
-        return {id, value: this.countryData[id][key]};
+        return { id, value: this.countryData[id][key] };
       });
       const avgRow = {
         id: 'AVG',
@@ -570,19 +571,19 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     }, this.gaugeData);
 
     this.inputGaugeData = ['inputSoc', 'inputEco', 'inputVul', 'inputExp']
-    .reduce((acc, input) => {
-      const keys = this.chartService.getInputIdChartByType(input);
-      acc[input] = keys.reduce((acc2, key) => {
-        return this.mapGaugeRows(acc2, key, this.countryData);
-      }, {} as any)
-      return acc;
-    }, {} as any);
+      .reduce((acc, input) => {
+        const keys = this.chartService.getInputIdChartByType(input);
+        acc[input] = keys.reduce((acc2, key) => {
+          return this.mapGaugeRows(acc2, key, this.countryData);
+        }, {} as any)
+        return acc;
+      }, {} as any);
 
   }
 
   private mapGaugeRows(acc, key, countryData) {
     const rows = Object.keys(countryData).map(id => {
-      return {id, value: countryData[id][key]};
+      return { id, value: countryData[id][key] };
     });
     const avgRow = {
       id: 'AVG',
@@ -702,7 +703,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         };
         data.country2.inputs[key][inpKey]['value'] = {
           //label: this.sliderValues2[inpKey + '_display_value'],
-          label: d3.select(`.inputcharts--2 #table-${ inpKey } span.value`).text(),
+          label: d3.select(`.inputcharts--2 #table-${inpKey} span.value`).text(),
           value: this.sliderValues2[inpKey].value
         };
 
@@ -727,7 +728,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * Removes passive UI events in this component.
    */
   private removeElPassiveEvents() {
-    const options: any = {passive: false};
+    const options: any = { passive: false };
     document.removeEventListener('touchstart', this.onPassEv, options);
     document.removeEventListener('touchmove', this.onPassEv, options);
     document.removeEventListener('wheel', this.onPassEv, options);
@@ -744,6 +745,20 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       });
     }
   }
+
+  //sets the callout title based on the route params
+  setCalloutTitle() {
+    if (this.url[0].path === 'viewer') {
+      return 'Country page label';
+    } else if (this.url[0].path === 'full-analysis') {
+      return 'Analytical tool label';
+    } else if (this.url[0].path === 'specificpolicymeasure') {
+      return 'Policy page label';
+    } else {
+      return 'Callout title undefined';
+    }
+  }
+
   /**
    * Sets default map configuration to be used when user has interaction with the map chart.
    * The default configuration set in this method are adding a base map layer, listen "click" and "mouseover"
@@ -759,7 +774,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this.mapService.setHoverFnMapEvent((ev) => {
         const features = self.mapService.getMap()
-          .queryRenderedFeatures(ev.point, {layers: [self.mapService.getViewerFillLayer()]});
+          .queryRenderedFeatures(ev.point, { layers: [self.mapService.getViewerFillLayer()] });
         if (features.length) {
           const isoCode = features[0].properties['ISO_Code'];
           const names = features[0].properties['Name'];
@@ -767,7 +782,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
 
           const value = this.mapSlideUISelected == 'asset' ? countryData.risk_to_assets
             : this.mapSlideUISelected == 'socio' ? countryData.resilience
-            : this.mapSlideUISelected == 'well' ? countryData.risk : 0;
+              : this.mapSlideUISelected == 'well' ? countryData.risk : 0;
 
           this.hoverCountry = names;
           this.hoverValue = (parseFloat(value) * 100).toFixed(2);
@@ -856,7 +871,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       sliderObj[key + '_display_value'] =
         this.chartService.formatInputChartValues(0, input);
       // sliderObj[key + '_display_value'] =
-        // this.chartService.formatInputChartValues(sliderObj[key + '_display_value'], input);
+      // this.chartService.formatInputChartValues(sliderObj[key + '_display_value'], input);
       sliderObj[key + '_original_value'] =
         parseFloat(sliderObj[key + '_display_value'].replace('$', '').replace(',', ''));
       sliderObj[key + '_baseline_value'] = sliderObj[key + '_display_value'];
@@ -870,7 +885,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       sliderObj[key + '_display_value'] =
         this.chartService.formatInputChartValues(0, input);
       // sliderObj[key + '_display_value'] =
-        // this.chartService.formatInputChartValues((max + min) / 2, input);
+      // this.chartService.formatInputChartValues((max + min) / 2, input);
       sliderObj[key + '_baseline_value'] = sliderObj[key + '_display_value'];
       sliderObj[key + '_default_value'] = 0;
       sliderObj[key + '_difference_value'] = this.chartService.formatInputChartDifference(0, input);
@@ -1084,18 +1099,18 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.sliderValues1 = Object.assign({}, this.sliderValues1Default);
     this.sliderValues2 = Object.assign({}, this.sliderValues2Default);
     // Update states
-    this.store.dispatch({type: ViewerAction.EDIT_VIEWER, payload: this.viewerModel});
-    this.store.dispatch({type: ViewerAction.EDIT_VIEWER_MODEL_1, payload: this.viewerP1});
-    this.store.dispatch({type: ViewerAction.EDIT_VIEWER_MODEL_2, payload: this.viewerP2});
+    this.store.dispatch({ type: ViewerAction.EDIT_VIEWER, payload: this.viewerModel });
+    this.store.dispatch({ type: ViewerAction.EDIT_VIEWER_MODEL_1, payload: this.viewerP1 });
+    this.store.dispatch({ type: ViewerAction.EDIT_VIEWER_MODEL_2, payload: this.viewerP2 });
     if (!this._selectedCountryList.length) {
       this.viewerModel.firstCountry = '';
       this.viewerGroupModel.firstCountryGroup = '';
       this.viewerModel.secondCountry = '';
       this.viewerGroupModel.secondCountryGroup = '';
-    // Update charts
+      // Update charts
       this.chartService.updateOutputCharts('outputs-1', 'global', null, true, this.viewerDisplay === 'tech');
       this.chartService.updateOutputCharts('outputs-2', 'global', null, true, this.viewerDisplay === 'tech');
-    // Update map data
+      // Update map data
       if (this._selectedCountryList.length) {
         this._selectedCountryList.forEach(val => {
           this.mapService.setMapFilterByISOCode(val.code);
@@ -1167,11 +1182,11 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   onSwitchExposure(flood: boolean, earthquake: boolean, tsunami: boolean, windstorm: boolean) {
 
     const group1 = this.global ? 'GLOBAL'
-    : (this._selectedCountryList.length > 0
-    ? this._selectedCountryList[0].group : 'GLOBAL');
+      : (this._selectedCountryList.length > 0
+        ? this._selectedCountryList[0].group : 'GLOBAL');
     const group2 = this.global ? 'GLOBAL'
-    : (this._selectedCountryList.length > 1
-    ? this._selectedCountryList[1].group : 'GLOBAL');
+      : (this._selectedCountryList.length > 1
+        ? this._selectedCountryList[1].group : 'GLOBAL');
 
     let viewerHazardDefault1 = Object.assign({}, this.viewerP1Default);
     let viewerHazardDefault2 = Object.assign({}, this.viewerP2Default);
@@ -1268,7 +1283,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   onSwitchExposure1() {
     if (this.viewerDisplay === 'tech') {
       this.hazards.hazard1 = !this.hazards.hazard1;
-      this.onSwitchExposure(true, false, false ,false);
+      this.onSwitchExposure(true, false, false, false);
     }
   }
   /**
