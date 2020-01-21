@@ -836,6 +836,7 @@ template {
     /*background: #dbdddd;*/
     background: #f8f7fa;
     color: #666666;
+    margin-right: 10px;
     opacity: 0.8;
   }
   .tabs-dg .btn-tab:hover, .tabs-dg .btn-tab:active, .tabs-dg .btn-tab.active{

@@ -28,11 +28,11 @@
   <!-- Buttons/tabs -->
   <div class="btn-group tabs-dg" role="group" aria-label="Map dataviz UI">
     <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'well'}"
-      (click)="onChangeMapLayerEvent('well')">{{optionsLabel['well']}}</button>
+      (click)="onChangeMapLayerEvent('well')">Risk to Well-Being <br> (% of GDP)</button>
     <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'asset'}"
-      (click)="onChangeMapLayerEvent('asset')">{{optionsLabel['asset']}}</button>
+      (click)="onChangeMapLayerEvent('asset')">Risk to Assets <br> (% of GDP)</button>
     <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'socio'}"
-      (click)="onChangeMapLayerEvent('socio')">{{optionsLabel['socio']}}</button>
+      (click)="onChangeMapLayerEvent('socio')">Socio-Economic <br> Resilience</button>
   </div>
   <!-- End Buttons/tabs -->
 
