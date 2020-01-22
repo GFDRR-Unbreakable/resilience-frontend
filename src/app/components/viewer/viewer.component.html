@@ -113,7 +113,8 @@
             <div class="outputs__col output__country-label">
               <div class="output__country">{{viewerModel.firstCountry || 'Global Average'}}</div>
               <div *ngIf="viewerGroupModel.firstCountryGroup != ''" class="region-name output__region">
-                {{viewerGroupModel.firstCountryGroup}}
+                <div>GDP Per Capita: {{ outputRegionData.gdp_per_capita }}</div>
+                <div>Population: {{ outputRegionData.pop }}</div>
               </div>
             </div>
             <div class="outputs__col">

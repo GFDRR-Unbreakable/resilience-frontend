@@ -217,6 +217,12 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     'resilience': [],
     'risk': [],
   };
+
+  public outputRegionData = {
+    'gdp_per_capita': 0,
+    'pop': 0
+  }
+
   selectedCountry = 'MWI';
   selectedCountryName = 'Malawi';
 
@@ -321,8 +327,11 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         : 'AVG';
       if (fromListFilter.length) {
         this.selectedCountryName = fromListFilter[0].name;
+        this.selectedCountry = fromListFilter[0].code;
       }
       console.log('selectedCountryName', this.selectedCountryName)
+      console.log('selectedCountry', this.selectedCountry);
+
     }
 
     // @TODO: Find cleaner way to trigger model run.
@@ -527,13 +536,15 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       this.createMapPageOutputChartTable(data._outputDomains, 'outputs-1', undefined, undefined, '## getChartOutputData ##', data);
 
       this.populateScatterGauges(data, 'outputs-1');
+      this.populateOutputRegion(data);
+      console.log(this.outputRegionData);
       this.createMapPageOutputChartTable(data._outputDomains, 'outputs-2');
       this.countryUIList = this.chartService.getOutputDataUIList();
       this.countryListComp = this.chartService.getOutputList();
       this.countryListIsoCodes = this.countryListComp.map(val => val.code);
       this.mapService.setMapFilterByISOCodes(this.countryListIsoCodes);
 
-      // this.onFirstCountryInputChangeEvent();
+      //this.onFirstCountryInputChangeEvent();
     }, err => {
       console.log(err);
     });
@@ -553,6 +564,20 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.chartService.createSingleOutputChart(data.resilience, 'resilience', 'output-resilience_2', groupName, isoCode);
 
     // this.chartService.createOutputChart(data, containerId, groupName, false, isoCode);
+  }
+
+  //populates <div>.output__region
+  populateOutputRegion(allData: any) {
+    const allCountryData = allData._globalModelData;
+    if (this.selectedCountry !== 'AVG') {
+      //const filtered = Object.keys(allCountryData)
+      //.filter(key => allCountryData[key].name === this.viewerModel.firstCountry);
+      //const filteredData = allCountryData[filtered[0]];
+      //this.outputRegionData = { 'gdp_per_capita': +filteredData.macro_gdp_pc_pp, 'pop': +filteredData.macro_pop };
+
+      const selectedCountryData: ViewerModel = allCountryData[this.selectedCountry];
+      this.outputRegionData = { 'gdp_per_capita': +selectedCountryData.macro_gdp_pc_pp, 'pop': +selectedCountryData.macro_pop }
+    }
   }
 
   populateScatterGauges(allData: any, containerId: string) {
