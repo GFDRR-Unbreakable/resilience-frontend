@@ -226,7 +226,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   countryData: ViewerModel[] = [];
   outputRegionData = {
     'gdp_pc': '$755',
-    'pop': '16,362,567' //hardcoding initial malawi stats because I don't know how to get the inital state
+    'pop': '16.3m' //hardcoding initial malawi stats because I don't know how to get the inital state
   };
 
   switchValue = 'focus';
