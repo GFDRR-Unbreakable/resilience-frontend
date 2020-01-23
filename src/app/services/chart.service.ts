@@ -1,14 +1,14 @@
 import { Injectable, Output, Input } from '@angular/core';
-import {Observable} from 'rxjs/Rx';
-import {Subscription} from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/fromPromise';
 import * as d3 from 'd3/d3.js';
 import * as science from 'science/index.js';
 import * as d3Q from 'd3-queue/index.js';
-import {SERVER} from './server.conf';
-import {WebService} from '../services/web.service';
-import {ViewerModel} from '../store/model/viewer.model';
-import {URLSearchParams} from '@angular/http';
+import { SERVER } from './server.conf';
+import { WebService } from '../services/web.service';
+import { ViewerModel } from '../store/model/viewer.model';
+import { URLSearchParams } from '@angular/http';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
@@ -65,7 +65,7 @@ export class ChartService {
    */
   public type1S$: BehaviorSubject<string> = new BehaviorSubject<string>(null);
   set type1S(value: string) {
-   // console.log('emit: ' + value);
+    // console.log('emit: ' + value);
     this.type1S$.next(value);
   }
   constructor(private webService: WebService) {
@@ -224,7 +224,7 @@ export class ChartService {
       if (onlyPercent) {
         aValue = `(${percentageValue}% of GDP)`;
       }
-  } else {
+    } else {
       dollarLossGDPPositive = Math.round(dollarLossGDPPositive);
       asString = dollarLossGDPPositive;
       if (dollarLossGDPPositive >= aThousand) {
@@ -238,7 +238,7 @@ export class ChartService {
       if (onlyPercent) {
         aValue = `(${percentageValue}% of GDP)`;
       }
-  }
+    }
     return {
       dollarGDP: dollarLossGDP,
       text: aValue
@@ -254,9 +254,9 @@ export class ChartService {
    */
   subscription() {
     this.type1S$.subscribe(val => {
-    //  console.log('subscribe');
+      //  console.log('subscribe');
       this.type = val;
-     // console.log('type ', this.type);
+      // console.log('type ', this.type);
     });
   }
   private calculateGDPValues(containerId, key, numericValue, gdpDollars, precision, oldValue?) {
@@ -381,7 +381,7 @@ export class ChartService {
         }
       }
 
-		  // add a margin of 0.1 m,M
+      // add a margin of 0.1 m,M
       if (data.length > 0) {
         const m1 = data[0] - (data[0] * 0.1);
         const m2 = data[data.length - 1] + (data[data.length - 1] * 0.1);
@@ -415,7 +415,7 @@ export class ChartService {
         })])
         .range([height, 0]);
 
-		  // gaussian curve
+      // gaussian curve
       const l = d3.svg.line()
         .x((d) => {
           return x(d[0]);
@@ -425,7 +425,7 @@ export class ChartService {
         })
         .interpolate('basis');
 
-		  // area under gaussian curve
+      // area under gaussian curve
       const a = d3.svg.area()
         .x((d) => {
           return x(d[0]);
@@ -435,7 +435,7 @@ export class ChartService {
           return y(d[1]);
         });
 
-		// bisect data array at brush selection point
+      // bisect data array at brush selection point
       const b = d3.bisector((d) => {
         return d;
       }).left;
@@ -443,7 +443,7 @@ export class ChartService {
       const div = d3.select(`div#${containerId}`)
         .append('div')
         .attr('class', 'input-row');
-        // .attr('class', 'box-tab-text');
+      // .attr('class', 'box-tab-text');
 
       const table = div.append('table')
         .attr('width', '100%')
@@ -455,19 +455,19 @@ export class ChartService {
       const tr = table.append('tr')
         .style('pointer-events', 'none');
 
-        const td = tr.append('td')
+      const td = tr.append('td')
         .attr('width', '50%')
         .style('padding-left', '5px')
         .style('pointer-events', 'none');
 
       tr.append('td')
-          .attr('width', '50%')
-          .style('padding', '0')
-          .style('vertical-align', 'middle')
-          .append('span')
-            .attr('class', 'value')
-            .style('pointer-events', 'none')
-            .text(' ');
+        .attr('width', '50%')
+        .style('padding', '0')
+        .style('vertical-align', 'middle')
+        .append('span')
+        .attr('class', 'value')
+        .style('pointer-events', 'none')
+        .text(' ');
 
       const svg = td.append('svg')
         .attr('width', width + margin.left + margin.right)
@@ -476,9 +476,9 @@ export class ChartService {
         .attr('xmlns', 'http://www.w3.org/2000/svg')
         .style('pointer-events', 'none')
         .append('g')
-          .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-		  // add gaussian curve
+      // add gaussian curve
       const gaus = svg.append('g')
         .attr('id', input.key)
         .attr('class', 'gaussian');
@@ -489,9 +489,9 @@ export class ChartService {
         .data([science.stats.bandwidth.nrd0])
         .enter()
         .append('path')
-          .attr('d', (d) => {
-            return l(kde.bandwidth(d)(data));
-          });
+        .attr('d', (d) => {
+          return l(kde.bandwidth(d)(data));
+        });
 
       gaus.selectAll('path')
         // .style('stroke', '#000')
@@ -509,10 +509,10 @@ export class ChartService {
         .data([science.stats.bandwidth.nrd0])
         .enter()
         .append('path')
-          .attr('d', (d) => {
-            const dd = kde.bandwidth(d)(data);
-            return a(dd);
-          });
+        .attr('d', (d) => {
+          const dd = kde.bandwidth(d)(data);
+          return a(dd);
+        });
       area.selectAll('path')
         // .style('fill', '#E6E8EF');
         .style('fill', '#e4e4e4');
@@ -713,22 +713,22 @@ export class ChartService {
           tdElement.style('padding', '0.75rem 0');
         }
         const svg = tdElement.append('svg')
-        .attr('width', width + margin.left + margin.right)
-        .attr('height', height + margin.top + margin.bottom)
-        .attr('xmlns', 'http://www.w3.org/2000/svg')
-        .attr('id', idx)
+          .attr('width', width + margin.left + margin.right)
+          .attr('height', height + margin.top + margin.bottom)
+          .attr('xmlns', 'http://www.w3.org/2000/svg')
+          .attr('id', idx)
           .append('g')
-            .attr('transform',
-              'translate(' + margin.left + ',' + margin.top + ')')
-            .style('pointer-events', 'none')
-            .style('border-bottom', '1px solid lightgrey');
+          .attr('transform',
+            'translate(' + margin.left + ',' + margin.top + ')')
+          .style('pointer-events', 'none')
+          .style('border-bottom', '1px solid lightgrey');
         // add gaussian curve
         const gaus = svg.append('g')
           .attr('id', idx)
           .attr('class', 'gaussian');
         gaus.selectAll('#' + containerId + ' g#' + idx + ' .gaussian')
-        // Multivariant Density Estimation
-        // http://bit.ly/1Y3jEcD
+          // Multivariant Density Estimation
+          // http://bit.ly/1Y3jEcD
           .data([science['stats'].bandwidth.nrd0])
           .enter()
           .append('path')
@@ -961,9 +961,9 @@ export class ChartService {
         }
       } else {
         const table = div.append('table')
-        .attr('width', '100%')
-        .attr('class', 'table table-responsive')
-        .attr('id', 'table-' + idx);
+          .attr('width', '100%')
+          .attr('class', 'table table-responsive')
+          .attr('id', 'table-' + idx);
         const tr = table.append('tr');
         const td = tr.append('td')
           .attr('width', '100%');
@@ -1072,8 +1072,8 @@ export class ChartService {
       .attr('id', idx)
       .attr('class', 'gaussian');
     gaus.selectAll('#' + containerId + ' g#' + idx + ' .gaussian')
-    // Multivariant Density Estimation
-    // http://bit.ly/1Y3jEcD
+      // Multivariant Density Estimation
+      // http://bit.ly/1Y3jEcD
       .data([science['stats'].bandwidth.nrd0])
       .enter()
       .append('path')
@@ -1082,7 +1082,7 @@ export class ChartService {
       });
     // Add manually chart styles to be integrated when converting to base64 string
     gaus.selectAll('path')
-    // .style('stroke', '#000')
+      // .style('stroke', '#000')
       .style('stroke', '#7D8F8F')
       .style('stroke-width', '3px')
       .style('fill', 'none')
@@ -1101,7 +1101,7 @@ export class ChartService {
       });
     // Add manually chart styles to be integrated when converting to base64 string
     area.selectAll('path')
-    // .style('fill', '#5E6A6A');
+      // .style('fill', '#5E6A6A');
       .style('fill', '#e4e4e4');
 
     // add placeholder for initial model value
@@ -1427,15 +1427,15 @@ export class ChartService {
 
     // Label wrap text function
     const textWrap = (text, txtWidth) => {
-      text.each(function() {
+      text.each(function () {
         const textEl = d3.select(this),
-            words = textEl.text().split(/\s+/).reverse();
+          words = textEl.text().split(/\s+/).reverse();
         let word,
-            line = [],
-            lineNumber = 0;
+          line = [],
+          lineNumber = 0;
         const lineHeight = 1.1, // ems
-            y = textEl.attr('y'),
-            dy = parseFloat(textEl.attr('dy'));
+          y = textEl.attr('y'),
+          dy = parseFloat(textEl.attr('dy'));
         let tspan = textEl.text(null).append('tspan').attr('x', 0).attr('y', y).attr('dy', dy + 'em');
         while (word = words.pop()) {
           line.push(word);
@@ -1629,11 +1629,11 @@ export class ChartService {
         eBar = laneChart.append('g')
           .classed('e-bar', true);
         // Add bars with data container
-        dataBars  = laneChart.append('g')
+        dataBars = laneChart.append('g')
           .classed('bar-charts', true)
           .attr('transform', 'translate(0,' + margin.top + ')');
-          // Add right y-position bar labels container
-          barLabels = laneChart.append('g')
+        // Add right y-position bar labels container
+        barLabels = laneChart.append('g')
           .classed('bar-labels', true)
           .attr('transform', 'translate(-10,' + margin.top + ')');
       } else {
@@ -1679,34 +1679,34 @@ export class ChartService {
         .selectAll('.empty-bar1')
         .data(params.data)
         .enter()
-          .append('rect')
-          .classed('empty-bar1', true);
+        .append('rect')
+        .classed('empty-bar1', true);
       eBar
         .selectAll('.empty-bar2')
         .data(params.data)
         .enter()
-          .append('rect')
-          .classed('empty-bar2', true);
+        .append('rect')
+        .classed('empty-bar2', true);
       dataBars.selectAll('.bar-chart1')
         .data(params.data)
         .enter()
-          .append('rect')
-          .classed('bar-chart1', true);
+        .append('rect')
+        .classed('bar-chart1', true);
       dataBars.selectAll('.bar-chart2')
         .data(params.data)
         .enter()
-          .append('rect')
-          .classed('bar-chart2', true);
+        .append('rect')
+        .classed('bar-chart2', true);
       barLabels.selectAll('.labels1')
         .data(params.data)
         .enter()
-          .append('text')
-          .classed('labels1', true);
+        .append('text')
+        .classed('labels1', true);
       barLabels.selectAll('.labels2')
         .data(params.data)
         .enter()
-          .append('text')
-          .classed('labels2', true);
+        .append('text')
+        .classed('labels2', true);
       // Update phase
       const formatNumericData = (data) => {
         let value: any = Math.abs(Math.round(data));
@@ -1741,9 +1741,9 @@ export class ChartService {
           return barHeight;
         })
         .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', 0)')
-       // .style('fill', '#485050');
-       .style('fill', 'transparent');
-       // .style('fill', '#ffffff');
+        // .style('fill', '#485050');
+        .style('fill', 'transparent');
+      // .style('fill', '#ffffff');
       eBar
         .selectAll('.empty-bar2')
         .transition()
@@ -1765,9 +1765,9 @@ export class ChartService {
           return barHeight;
         })
         .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', 0)')
-       // .style('fill', '#485050');
+        // .style('fill', '#485050');
         .style('fill', 'transparent');
-       // .style('fill', '#ffffff');
+      // .style('fill', '#ffffff');
       dataBars
         .selectAll('.bar-chart1')
         .transition()
@@ -1801,7 +1801,7 @@ export class ChartService {
         })
         .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', 0)')
         .style('fill', '#6DCCDC');
-        // .style('fill', '#4b5455');
+      // .style('fill', '#4b5455');
       dataBars
         .selectAll('.bar-chart2')
         .transition()
@@ -1839,7 +1839,7 @@ export class ChartService {
         .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', 0)')
         //.classed('fill--gray-green', true);
         .style('fill', 'var(--gray-green)'/*'#C3D700'*/);
-       // .style('fill', '#f3a277');
+      // .style('fill', '#f3a277');
       barLabels
         .selectAll('.labels1')
         .transition()
@@ -1856,12 +1856,12 @@ export class ChartService {
         // .style('font-weight', 'bold')
         .text((d) => {
           let data;
-            if (countryList['chartType'] === 'absolute') {
-              data = (d.dWtot_currency < 0 ?
-                '-US$ ' + formatNumericData(d.dWtot_currency) : 'US$ ' + formatNumericData(d.dWtot_currency));
-            } else {
-              data = (d.dWtot_currency).toFixed(1) + '%';
-            }
+          if (countryList['chartType'] === 'absolute') {
+            data = (d.dWtot_currency < 0 ?
+              '-US$ ' + formatNumericData(d.dWtot_currency) : 'US$ ' + formatNumericData(d.dWtot_currency));
+          } else {
+            data = (d.dWtot_currency).toFixed(1) + '%';
+          }
           // }
           return data;
         })
@@ -1878,8 +1878,8 @@ export class ChartService {
           const yParam = isCountryListObject ? d.id : d.label;
           return yLane(yParam) + (barHeight * 2) + spaceBars;
         })
-       // .style('fill', '#f3a277')
-       // .style('font-weight', 'bold')
+        // .style('fill', '#f3a277')
+        // .style('font-weight', 'bold')
         .text((d) => {
           let data;
           if (hideAvoidedAssetLosses) {
@@ -1908,7 +1908,7 @@ export class ChartService {
         y: yAxis
       },
       gridLines: {
-          x: xGridLines
+        x: xGridLines
       }
     });
   }
@@ -2060,8 +2060,8 @@ export class ChartService {
     const ch2Fmt = window.btoa(ch2XMLStr);
     const ch2Str = svgPrefixStr + ch2Fmt;
     return {
-      chart1: <string> ch1Str,
-      chart2: <string> ch2Str
+      chart1: <string>ch1Str,
+      chart2: <string>ch2Str
     };
   }
   /**
@@ -2101,14 +2101,14 @@ export class ChartService {
         'hazard_ratio_fa__earthquake', 'hazard_ratio_fa__flood', 'hazard_ratio_flood_poor',
         'hazard_ratio_fa__tsunami', 'hazard_ratio_fa__wind'
       ],
-      'inputTypes' : {
+      'inputTypes': {
         'inputSoc': ['gamma_SP_cat_info__poor', 'macro_tau_tax', 'macro_borrow_abi', 'macro_prepare_scaleup', 'macro_T_rebuild_K'],
         'inputEco': ['axfin_cat_info__poor', 'axfin_cat_info__nonpoor', 'c_cat_info__poor', 'c_cat_info__nonpoor'],
         'inputVul': ['v_cat_info__poor', 'v_cat_info__nonpoor', 'shew_for_hazard_ratio'],
         'inputExp': ['hazard_ratio_flood_poor', 'hazard_ratio_fa__flood',
           'hazard_ratio_fa__earthquake', 'hazard_ratio_fa__tsunami', 'hazard_ratio_fa__wind']
       },
-      'hazardTypes' : {
+      'hazardTypes': {
         'hazardFlood': ['hazard_ratio_flood_poor', 'hazard_ratio_fa__flood'],
         'hazardEarthquake': ['hazard_ratio_fa__earthquake'],
         'hazardTsunami': ['hazard_ratio_fa__tsunami'],
@@ -2377,7 +2377,7 @@ export class ChartService {
     const me = this;
     return () => {
       const inputId = containerId.indexOf('1') >= 0 ? 'input1' : 'input2';
-      const toUpd =  me._inputConfig[input.key][inputId].forUpdate;
+      const toUpd = me._inputConfig[input.key][inputId].forUpdate;
       jQuery('#' + containerId + ' svg#' + input.key + ' #mask-' + input.key).empty();
       const s = me._inputConfig[input.key][inputId].brush.extent();
       const clip = toUpd.b(toUpd.distribData, s[1]);
@@ -2387,13 +2387,13 @@ export class ChartService {
       mask.selectAll('#' + containerId + ' g#mask-' + input.key + '.mask')
         .data([science.stats.bandwidth.nrd0])
         .enter()
-          .append('path')
-          // .style('fill', '#50C4CF')
-          .style('fill', '#e4e4e4')
-          .style('opacity', '1')
-          .attr('d', (d) => {
-            return toUpd.a(toUpd.kde.bandwidth(d)(selected));
-          });
+        .append('path')
+        // .style('fill', '#50C4CF')
+        .style('fill', '#e4e4e4')
+        .style('opacity', '1')
+        .attr('d', (d) => {
+          return toUpd.a(toUpd.kde.bandwidth(d)(selected));
+        });
       d3.select('#' + containerId + ' #' + input.key + ' g.resize.e path')
         .attr('d', 'M 0, 0 ' + ' L 0 ' + input.height);
       const span = jQuery('#' + containerId + ' #table-' + input.key + ' span.value');
@@ -2504,7 +2504,6 @@ export class ChartService {
     const promisedData = new Promise((resolve, reject) => {
       d3.csv(url, (err, data: any) => {
         if (err) { reject(err); }
-        console.log(`data from ${ url }`, data);
 
         data.forEach((value, index, arr) => {
           for (const key in value) {
@@ -2562,7 +2561,7 @@ export class ChartService {
         for (key in data[i][j]) {
           if (key === 'Asset losses label' || key === 'Wellbeing losses  label' ||
             key === 'Asset losses value' || key === 'Wellbeing losses value') {
-						// skip it since new line characters are coming on certain headers
+            // skip it since new line characters are coming on certain headers
           } else {
             this._newPolicyGroupedByCountryObj[data[i][j][key]][policyIds[i]] = {}; // countryName["axfin"] = {}
             break;
@@ -2570,11 +2569,11 @@ export class ChartService {
         }
         this._newPolicyGroupedByCountryObj[data[i][j][key]][policyIds[i]]['asset_losses_label'] = data[i][j]['Asset losses label'];
         this._newPolicyGroupedByCountryObj[data[i][j][key]][policyIds[i]]
-          ['wellbeing_losses_label'] = data[i][j]['Wellbeing losses  label'];
+        ['wellbeing_losses_label'] = data[i][j]['Wellbeing losses  label'];
 
         this._newPolicyGroupedByCountryObj[data[i][j][key]][policyIds[i]]['num_asset_losses_label'] = data[i][j]['Asset losses value'];
         this._newPolicyGroupedByCountryObj[data[i][j][key]][policyIds[i]]
-          ['num_wellbeing_losses_label'] = data[i][j]['Wellbeing losses value'];
+        ['num_wellbeing_losses_label'] = data[i][j]['Wellbeing losses value'];
 
         str = this._newPolicyGroupedByCountryObj[data[i][j][key]][policyIds[i]]['asset_losses_label'];
         out = this.changeRelativeValue(str);
@@ -2597,34 +2596,34 @@ export class ChartService {
       for (let j = 0; j < data[i].length; j++) {
         for (key in data[i][j]) {
           if (key === 'Asset losses label' || key === 'Wellbeing losses  label' ||
-            key === 'Asset losses value' || key === 'Wellbeing losses value'){
-						// skip it since new line characters are coming on certain headers
-        } else {
-          this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][key]] = {}; // axfin["countryName"] = {}
+            key === 'Asset losses value' || key === 'Wellbeing losses value') {
+            // skip it since new line characters are coming on certain headers
+          } else {
+            this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][key]] = {}; // axfin["countryName"] = {}
             idxPol = key;
             break; // break once you find the main column
           }
         }
         for (key in data[i][j]) {
-          if (key === 'Asset losses label'){
+          if (key === 'Asset losses label') {
             this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]['asset_losses_label'] = data[i][j]['Asset losses label'];
             str = this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]['asset_losses_label'];
             out = this.changeRelativeValue(str);
             this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]['rel_asset_losses_label'] = out[0];
             this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]['rel_num_asset_losses_label'] = out[1];
-          } else if ( key === 'Wellbeing losses  label') {
+          } else if (key === 'Wellbeing losses  label') {
             this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]
-              ['wellbeing_losses_label'] = data[i][j]['Wellbeing losses  label'];
+            ['wellbeing_losses_label'] = data[i][j]['Wellbeing losses  label'];
             str = this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]['wellbeing_losses_label'];
             out = this.changeRelativeValue(str);
             this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]['rel_wellbeing_losses_label'] = out[0];
             this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]['rel_num_wellbeing_losses_label'] = out[1];
-          } else if ( key === 'Asset losses value') {
+          } else if (key === 'Asset losses value') {
             this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]
-              ['num_asset_losses_label'] = data[i][j]['Asset losses value'];
-          } else if ( key === 'Wellbeing losses value') {
+            ['num_asset_losses_label'] = data[i][j]['Asset losses value'];
+          } else if (key === 'Wellbeing losses value') {
             this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]
-              ['num_wellbeing_losses_label'] = data[i][j]['Wellbeing losses value'];
+            ['num_wellbeing_losses_label'] = data[i][j]['Wellbeing losses value'];
           }
         }
       }
@@ -2717,17 +2716,17 @@ export class ChartService {
           sliderValues[conf + '_display_value'] = this.formatInputChartValues(model[conf], input);
           sliderValues[conf + '_baseline_value'] = this.formatInputChartValues(model[conf], input);
           sliderValues[conf + '_default_value'] = model[conf];
-          sliderValues[conf + '_difference_value'] = this.formatInputChartDifference(sliderValues[conf + '_default_value'] - model[conf] , input);
+          sliderValues[conf + '_difference_value'] = this.formatInputChartDifference(sliderValues[conf + '_default_value'] - model[conf], input);
           sliderValues[conf].value = model[conf];
           sliderValues[conf + '_value'] = model[conf] / (sliderValues[conf].max + sliderValues[conf].min) * 100;
           sliderValues[conf + '_original_value'] =
             ('' + sliderValues[conf + '_display_value']).replace('$', '').replace(',', '');
         }
-        ini.attr('x1', function(d) {
-            return input.x(+model[conf]);
-          })
+        ini.attr('x1', function (d) {
+          return input.x(+model[conf]);
+        })
           .attr('y1', 0)
-          .attr('x2', function(d) {
+          .attr('x2', function (d) {
             return input.x(+model[conf]);
           })
           .attr('y2', input.height);
@@ -2783,7 +2782,7 @@ export class ChartService {
         this.chart2Data.res = resilience2.contents()[0].nodeValue;
         this.chart2Data.risk = risk2.contents()[0].nodeValue;
 
-       // console.log(risk_to_assetts1.contents());
+        // console.log(risk_to_assetts1.contents());
         risk_to_assetts1.html(risk_to_assetts1.contents()[2].nodeValue);
         resilience1.html(resilience1.contents()[0].nodeValue);
         risk1.html(risk1.contents()[2].nodeValue);
@@ -2793,7 +2792,7 @@ export class ChartService {
         risk2.html(risk2.contents()[2].nodeValue);
       }
     } else {
-    //  console.log('estoy entrando al else');
+      //  console.log('estoy entrando al else');
       let dollarRTA1 = '$0';
       let percentage1 = '+0.00%';
       let dollarRISK1 = '$0';
@@ -2871,8 +2870,8 @@ export class ChartService {
 
       // IS NOT VISIABLE. Am not sure if it has any use.
       ini.attr('x1', (d) => {
-          return x(+model[idx]);
-        })
+        return x(+model[idx]);
+      })
         .attr('y1', 0)
         .attr('x2', (d) => {
           return x(+model[idx]);
@@ -2886,7 +2885,7 @@ export class ChartService {
       let extent = brush.extent()[1];
       let oldExtent = outputData[outputId].default;
       // if (groupName === 'GLOBAL' || !groupName) {
-        extent = +model[idx];
+      extent = +model[idx];
       // }
 
       brush.extent([0, extent]);
