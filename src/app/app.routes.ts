@@ -37,7 +37,7 @@ export const appRoutes: Routes = [
   },
   {
     path: 'full-analysis',
-    component: AnalyticalToolComponent
+    component: ViewerComponent
   }
 ];
 

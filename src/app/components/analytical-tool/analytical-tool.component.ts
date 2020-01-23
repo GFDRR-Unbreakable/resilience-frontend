@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Viewer } from 'app/store/model/viewer.model';
 
 @Component({
   selector: 'app-analytical-tool',
@@ -7,7 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AnalyticalToolComponent implements OnInit {
 
+  public viewerModel: Viewer = {
+    firstCountry: 'Malawi',
+    secondCountry: ''
+  };
+
   constructor() { }
+
 
   ngOnInit() {
   }
