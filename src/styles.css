@@ -29,13 +29,15 @@
   --white: #fff;
 }
 
-.terms-use{
+.toS {
+  margin-right: 20px;
+}
+
+.tos-pp {
   text-decoration: underline;
   color: var(--gray-dark);
 }
-.terms-use:hover{
-  color: var(--gray-dark);
-}
+
 .term-use-wrapper {
   text-align: center;
   padding: 30px 0 15px;
