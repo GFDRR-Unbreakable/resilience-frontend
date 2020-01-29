@@ -2,15 +2,8 @@
 <app-callout [calloutLabel]="'Policy page label'"></app-callout>
 <div class="container policy-measure">
   <div class="row">
-    <div class="col-md-12 scorecard-title">
-      <h4 class="policy-list">Specific Policy Measure</h4>
-      <a href="" routerLink="/viewer"><button type="button" class="btn button-map box-button-map"><i
-            class="mdi mdi-keyboard-backspace"></i> Map</button></a>
-      <button type="button" class="btn btn-primary text-download box-button-pdf" (click)="onDownloadPDFFileEvent()"><img
-          class="img-download" src="assets/image/ic-download.png" alt="">PDF</button>
-    </div>
     <div class="col-md-12 scorecard-title-01">
-      <h5>Select a policy scenario and region below: </h5>
+      <h5 class="mappage__header">Select a Policy Scenario and Region</h5>
     </div>
     <div class="col-md-12">
       <div ngbDropdown class="d-inline-block ">
@@ -40,24 +33,31 @@
             </button>
             <!-- <div *ngIf="aIndex !== regionUIList.length - 1" class="dropdown-divider-1"></div> -->
           </div>
+
         </div>
       </div>
     </div>
 
     <div class="col-md-12 scorecard-title">
-      <h4>Top 15 Countries</h4>
+      <h4 class="mappage__header">Top 15 Countries</h4>
+      <button type="button" class="btn btn-primary text-download box-button-pdf" (click)="onDownloadPDFFileEvent()">
+        <img class="img-download" src="assets/image/ic-download.png" alt="">
+        PDF
+      </button>
     </div>
+
     <div class="col-md-6">
       <h5 class="box-title-terms-01">Absolute Terms</h5>
-      <label class="text-sort">
+      <h5 class="legend-subtitle box-title-terms-01">U.S$, millions per year</h5>
+      <label class="legend-label">
         <i class="mdi mdi-checkbox-blank-circle box-icon-a"></i>
-        Avoided well-being losses
+        <span class="legend-label">Avoided well-being losses</span>
         <!-- <i class="mdi mdi-unfold-more-horizontal"></i> -->
         <!--<img class="icon-sort" (click)="onSortChartDataEvent('1', 'chart1')" />-->
       </label>
-      <label class="text-sort" [hidden]="selectedPolicyUIList.hideAvoidedAssetLosses && 0">
+      <label class="legend-label" [hidden]="selectedPolicyUIList.hideAvoidedAssetLosses && 0">
         <i class="mdi mdi-checkbox-blank-circle box-icon-c"></i>
-        Avoided asset losses
+        <span class="legend-label">Avoided asset losses</span>
         <!-- <i class="mdi mdi-unfold-more-horizontal"></i> -->
         <!--<img class="icon-sort" (click)="onSortChartDataEvent('2', 'chart1')" />-->
       </label>
@@ -67,15 +67,16 @@
     </div>
     <div class="col-md-6">
       <h5 class="box-title-terms-01 left-pd">Relative Terms</h5>
-      <label class="text-sort left-pd-01">
+      <h5 class="legend-subtitle box-title-terms-01">% of current</h5>
+      <label class="legend-label">
         <i class="mdi mdi-checkbox-blank-circle box-icon-a"></i>
-        Avoided well-being losses
+        <span class="legend-label">Avoided well-being losses</span>
         <!-- <i class="mdi mdi-unfold-more-horizontal"></i> -->
         <!--<img class="icon-sort" (click)="onSortChartDataEvent('1', 'chart2')">-->
       </label>
-      <label class="text-sort left-pd-01" [hidden]="selectedPolicyUIList.hideAvoidedAssetLosses && 0">
+      <label class="legend-label" [hidden]="selectedPolicyUIList.hideAvoidedAssetLosses && 0">
         <i class="mdi mdi-checkbox-blank-circle box-icon-c"></i>
-        Avoided asset losses
+        <span class="legend-label">Avoided asset losses</span>
         <!-- <i class="mdi mdi-unfold-more-horizontal"></i> -->
         <!--<img class="icon-sort" (click)="onSortChartDataEvent('2', 'chart2')">-->
       </label>

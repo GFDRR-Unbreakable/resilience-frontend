@@ -1477,8 +1477,6 @@ export class ChartService {
     const plotChartAxes = (params) => {
       const yLabelPos = isCountryListObject ? 15 : 5;
       const labelOffset = -20;
-      const xDescLabel = countryList['chartType'] === 'relative' ?
-        '% of Current Losses' : 'US$, millions per year';
       const xLabelPosition = width / 3.5;
       if (isNewChart) {
         // Adding lane lines
@@ -1503,7 +1501,6 @@ export class ChartService {
           .attr('y', 0)
           .style('text-anchor', 'middle')
           .attr('transform', 'translate(' + xLabelPosition + ', ' + labelOffset + ')')
-          .text(xDescLabel);
         laneChart.select('.x-axis2')
           .append('text')
           .classed('x-axis-lb2', true)
@@ -1511,7 +1508,6 @@ export class ChartService {
           .attr('y', 0)
           .style('text-anchor', 'middle')
           .attr('transform', 'translate(' + xLabelPosition + ', ' + (margin.bottom) + ')')
-          .text(xDescLabel);
         // Adding y axis labels
         laneChart.append('g')
           .classed('y-axis', true)
@@ -1541,7 +1537,6 @@ export class ChartService {
         laneChart.select('.x-axis-lb')
           .style('text-anchor', 'middle')
           .attr('transform', 'translate(' + xLabelPosition + ', ' + labelOffset + ')')
-          .text(xDescLabel);
       }
       // Apply UI styles in vertical lines to get them in base64 conversion process.
       laneChart.selectAll('g.lanes path')

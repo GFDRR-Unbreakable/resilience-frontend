@@ -1293,6 +1293,7 @@ template {
 .icon-sort:hover{
   background: url(assets/image/sort-v.png) no-repeat;
 }
+
 .text-sort{
   font-weight: 600;
 }
@@ -1342,9 +1343,7 @@ template {
 .box-title-terms{
   padding: 20px 0 !important;
 }
-.box-title-terms-01{
-  padding: 0px 20px 0px 20px !important;
-}
+
 div#map {
   height: 491px;
   width: inherit;
