@@ -19,10 +19,14 @@ export const appRoutes: Routes = [
   }, {
     path: 'contact',
     component: ContactComponent
-  }, {
-    path: 'policyprioritylist',
-    component: PolicyprioritylistComponent
-  }, {
+  },
+  // The policy priority list comparision component is deprecated,
+  // so commenting it out from the routes.
+  // {
+  //   path: 'policyprioritylist',
+  //   component: PolicyprioritylistComponent
+  // },
+  {
     path: 'scorecard',
     component: ScorecardComponent
   }, {
