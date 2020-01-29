@@ -1393,11 +1393,13 @@ export class ChartService {
 
     const xAxis = d3.svg.axis()
       .scale(xLane)
-      .tickFormat(formatAxis)
+      .tickValues([])
+      .outerTickSize(0)
       .orient('top');
     const xAxis2 = d3.svg.axis()
       .scale(xLane)
-      .tickFormat(formatAxis)
+      .tickValues([])
+      .outerTickSize(0)
       .orient('bottom');
     const yAxis = d3.svg.axis()
       .scale(yLane)
@@ -1517,6 +1519,35 @@ export class ChartService {
         laneChart.select('.y-axis')
           .selectAll('.tick text')
           .call(textWrap, margin.left);
+
+        //MIN and MAX labels
+        //--------------------
+
+        //this function generates Min and Max labels for the x-axis of the lane chart
+        const generateMinMaxLabel = (distanceFromLeftofChart: number, text: string) => {
+          // how far from the left of the svg should the label be placed
+          const translatefromLeft = 'translate(' + (margin.left + spaceLblCh + distanceFromLeftofChart) + ', ' + (margin.top - 5) + ')';
+
+          //Selects both svgs and appends label
+          d3.selectAll('svg')
+            .append('text')
+            .attr('text-anchor', 'middle')
+            .attr('transform', translatefromLeft)
+            .attr('y', -5)
+            .style('font-size', '12px')
+            .attr('fill', 'var(--gray-dark)')
+            .text(text);
+        }
+
+        //Min Label
+        generateMinMaxLabel(0, 'min');
+
+        //Max label
+        //Could not figure how how to get chart width, so hardcoding value in
+        generateMinMaxLabel(310, 'max');
+
+        //----------------------
+
       } else {
         // Update lane lines
         laneChart.selectAll('g.lanes')
@@ -1623,6 +1654,7 @@ export class ChartService {
         // Add empty bar charts container
         eBar = laneChart.append('g')
           .classed('e-bar', true);
+
         // Add bars with data container
         dataBars = laneChart.append('g')
           .classed('bar-charts', true)
