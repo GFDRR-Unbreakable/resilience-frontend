@@ -7,7 +7,15 @@ import { Input, Component, OnInit } from '@angular/core';
   styleUrls: ['./landing.component.css']
 })
 export class LandingPageComponent implements OnInit {
-  constructor() {}
+
+  //these variables are being declared to stop the build lint errors,
+  //do not delete them
+  hoverClass1: any;
+  hoverClass2: any;
+  hoverClass3: any;
+
+
+  constructor() { }
 
   ngOnInit() {
   }

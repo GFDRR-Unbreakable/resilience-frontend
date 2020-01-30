@@ -14,15 +14,15 @@ export class NavbarComponent implements OnInit {
    * It has injected a modal service which refers to Angular-bootstrap modal component.
    * @param modalService
    */
-  constructor(private modalService: NgbModal) {}
+  constructor(private modalService: NgbModal) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
   /**
    * This method is triggered when the "About" tab-button is clicked.
    * Opens a custom modal component to display About info.
    */
   onOpenModalEvent() {
-    this.modalService.open(AboutComponent,  {
+    this.modalService.open(AboutComponent, {
       size: 'lg'
     });
   }
@@ -31,7 +31,7 @@ export class NavbarComponent implements OnInit {
    * It scroll down the page to about info when it is rendered in the "Viewer" route, otherwise
    * it opens a "About" info modal component.
    */
-  onScrollAboutElEvent() {
+  onScrollAboutElEvent(event) {
     /*let el = jQuery('div#about');
     console.log(el.length)
     if (el.length) {
@@ -41,7 +41,7 @@ export class NavbarComponent implements OnInit {
       }, 1000);
       return false;
     } else {*/
-      this.onOpenModalEvent();
+    this.onOpenModalEvent();
     //}
   }
 }

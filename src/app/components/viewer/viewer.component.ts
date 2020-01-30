@@ -33,6 +33,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * Public and private properties set to work with the component, these are
    * map conf, chart conf, UI events, observables and viewer models.
    */
+
   public calloutTitle: string;
   public countryUIList: Array<any> = [];
   public countryListComp: Array<any> = [];
@@ -236,6 +237,10 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   switchPolicyValue = 'absolute';
   switchPolicyOptions = ['absolute', 'relative'];
   switchPolicyLabels = ['Absolute', 'Relative'];
+
+  //these variables are being declared to stop the build lint errors,
+  //do not delete them
+  searchFailed: any;
 
   /**
    * Component constructor which is first invoked when the app is rendering.
