@@ -1885,7 +1885,7 @@ export class ChartService {
           let data;
           if (countryList['chartType'] === 'absolute') {
             data = (d.dWtot_currency < 0 ?
-              '-US$ ' + formatNumericData(d.dWtot_currency) : 'US$ ' + formatNumericData(d.dWtot_currency));
+              '-$' + formatNumericData(d.dWtot_currency) : '$' + formatNumericData(d.dWtot_currency));
           } else {
             data = (d.dWtot_currency).toFixed(1) + '%';
           }
