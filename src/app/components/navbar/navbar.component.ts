@@ -1,8 +1,7 @@
 import { NgbModalOptions } from '@ng-bootstrap/ng-bootstrap/modal/modal.module';
 import { AboutComponent } from '../about/about.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit, ViewChild, ElementRef, ViewChildren, QueryList } from '@angular/core';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -14,6 +13,10 @@ export class NavbarComponent implements OnInit {
    * It has injected a modal service which refers to Angular-bootstrap modal component.
    * @param modalService
    */
+
+  @ViewChildren('menu-item') menuItems: QueryList<ElementRef>;
+  menuOpen: boolean = false;
+
   constructor(private modalService: NgbModal) { }
 
   ngOnInit() { }
@@ -43,5 +46,14 @@ export class NavbarComponent implements OnInit {
     } else {*/
     this.onOpenModalEvent();
     //}
+
+  }
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+    this.menuItems.forEach((el) => {
+      //set menu items to show or hide based on menuOpen state
+      this.menuOpen ? el.nativeElement.className = 'show' : 'hide';
+    });
   }
 }

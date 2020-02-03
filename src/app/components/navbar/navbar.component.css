@@ -1,0 +1,66 @@
+/* this css only applies to version 2 of the navbar */
+
+/* .flexmenu {
+  height: 20%;
+  width: 100%;
+  line-height: 1.4em;
+}
+.flex {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0.5em;
+}
+.menu-item {
+  display: none;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 15%;
+  font-weight: bold;
+}
+.menu-item:first-child {
+  display: inline-flex;
+  justify-content: left;
+  margin-left: 15%;
+  margin-right: auto;
+}
+.menu-item a {
+  color: var(--grey);
+  text-decoration: none;
+  padding:0 0.5em;
+}
+
+.mobile-menu {
+  position: absolute;
+  right: 0.5em;
+  top: 0.5em;
+  width: 1.2em;
+}
+.menu-icon {
+  font-size: 1.2em;
+  font-weight: bold;
+  cursor: pointer;
+}
+.hide {
+  display: none;
+}
+.show {
+  display: inline-flex;
+}
+
+@media screen and (min-width: 768px) {
+  .mobile-menu {
+    display: none;
+  }
+  .flex {
+    flex-direction: row;
+  }
+  .menu-item {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 10vw;
+    font-weight: bold;
+  }
+} */

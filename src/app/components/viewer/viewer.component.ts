@@ -328,8 +328,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
 
     if (this.url[0].path === 'viewer') {
       // Set selected country for gagues.
-      this.selectedCountry = fromListFilter.length ? fromListFilter[0].code
-        : 'AVG';
+
       if (fromListFilter.length) {
         this.selectedCountryName = fromListFilter[0].name;
         this.selectedCountry = fromListFilter[0].code;

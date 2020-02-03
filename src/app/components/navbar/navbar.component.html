@@ -1,4 +1,4 @@
-<!-- <nav id="navbar-example" class="navbar navbar-toggleable-md navbar-inverse bg-primary">
+<nav id="navbar-example" class="navbar navbar-toggleable-md navbar-inverse bg-primary">
   <div class="navbar-header">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
       aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,26 +26,33 @@
       </li>
     </ul>
   </div>
-</nav> -->
-
-<nav>
-  <ul class="nav__menu"></ul>
-  <li class="nav__logo">
-    <a href="#"><img src="assets/image/logo-04.png" alt="Unbreakable Resilience Indicator logo" width="230px"></a>
-  </li>
-  <li class="nav__item">
-    <a href="" routerLink="/viewer">COUNTRY</a>
-  </li>
-  <li class="nav__item">
-    <a href="" routerLink="/specificpolicymeasure">POLICY</a>
-  </li>
-  <li class="nav__item">
-    <a href="" routerLink="/full-analysis">ANALYTICAL TOOL</a>
-  </li>
-  <li class="nav__item">
-    <a href="" href="https://openknowledge.worldbank.org/handle/10986/25335" target="_blank">REPORT</a>
-  </li>
-  <li class="nav__item">
-    <a href="" (click)="onScrollAboutElEvent($event)">ABOUT</a>
-  </li>
 </nav>
+
+<!-- version two (non-bootstrap) of navbar tried to fix mobile issue but still running into problems -->
+
+<!-- <nav class="flexmenu">
+  <div class="flex">
+    <div class="menu-item">
+      <a href="#"><img src="assets/image/logo-04.png" alt="Unbreakable Resilience Indicator logo" width="230px"></a>
+    </div>
+    <div class="menu-item">
+      <a href="" routerLink="/viewer">COUNTRY</a>
+    </div>
+    <div class="menu-item">
+      <a href="" routerLink="/specificpolicymeasure">POLICY</a>
+    </div>
+    <div class="menu-item">
+      <a href="" routerLink="/full-analysis">ANALYTICAL TOOL</a>
+    </div>
+    <div class="menu-item">
+      <a href="" href="https://openknowledge.worldbank.org/handle/10986/25335" target="_blank">REPORT</a>
+    </div>
+    <div class="menu-item">
+      <a href="" (click)="onScrollAboutElEvent($event)">ABOUT</a>
+    </div>
+    <div class="mobile-menu">
+      <span *ngIf="!menuOpen" class="menu-icon" (click)="toggleMenu()">&#x2261;</span>
+      <span *ngIf="menuOpen" class="menu-icon" (click)="toggleMenu()">&#x2715;</span>
+    </div>
+  </div>
+</nav> -->
