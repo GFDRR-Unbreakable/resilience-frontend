@@ -342,8 +342,7 @@ template {
   height: 100%;
   align-items: center;
   justify-content: space-between;
-
-  margin-left: 22px;
+  margin-left: 40%;
   /*margin-top: 0 !important;*/
   margin-top: 7px;
   padding: 0;
