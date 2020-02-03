@@ -1193,9 +1193,9 @@ template {
   line-height: 1.5;
 }
 .scorecard-title{
-  display: -webkit-inline-box;
-  vertical-align: middle !important;
-  padding: 13px 36px 0px 36px!important;
+  align-items: center;
+  display: flex;
+  padding: 40px 36px 20px 36px!important;
 }
 .scorecard-title-01{
   display: -webkit-inline-box;
@@ -1254,10 +1254,8 @@ template {
   bottom: 16px;
 }
 .box-button-pdf{
-  position: absolute;
-  right: 32px;
-  /*top: 15px;*/
-  bottom: 16px;
+  height: 30px;
+  margin-left: 15px;
 }
 .box-icon-a{
   padding-left: 18px;

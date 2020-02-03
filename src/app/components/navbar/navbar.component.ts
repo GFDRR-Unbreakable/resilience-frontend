@@ -49,6 +49,7 @@ export class NavbarComponent implements OnInit {
 
   }
 
+  //method for version 2 of navbar
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
     this.menuItems.forEach((el) => {
