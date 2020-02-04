@@ -4,7 +4,7 @@
   <div class="row">
     <div class="card-deck">
       <div class="card" [ngClass]="hoverClass1" (mouseover)="hoverClass1 = 'card__hover'" (mouseout)="hoverClass1 = ''">
-        <a href="/viewer">
+        <a href="#" routerLink="/viewer">
           <img class="card-img-top" src="assets/image/image001.jpg" alt="Card image cap">
           <div class="card-body">
             <h4 class="card-title">Interested in a country?</h4>
@@ -28,7 +28,7 @@
         </a>
       </div>
       <div class="card" [ngClass]="hoverClass2" (mouseover)="hoverClass2 = 'card__hover'" (mouseout)="hoverClass2 = ''">
-        <a href="/policyprioritylist">
+        <a href="#" routerLink="/specificpolicymeasure">
           <img class="card-img-top" src="assets/image/policy-area-thumb.png" alt="Card image cap">
           <div class="card-body">
             <h4 class="card-title">Interested in a policy area?</h4>
@@ -53,7 +53,7 @@
       </div>
       <div class="card" id="card2" [ngClass]="hoverClass3" (mouseover)="hoverClass3 = 'card__hover'"
         (mouseout)="hoverClass3 = ''">
-        <a href="/full-analysis">
+        <a href="#" routerLink="/full-analysis">
           <img class="card-img-top" src="assets/image/full-analytical-tool-thumb3.png" alt="Card image cap">
           <div class="card-body">
             <div class="card-heading-last">

@@ -109,12 +109,15 @@
             </div>
           </div>
 
-          <div id='outputs-1' class="outputs__row">
+          <div id="outputs-1" class="outputs__row">
             <div class="outputs__col output__country-label">
-              <div class="output__country">{{viewerModel.firstCountry || 'Global Average'}}</div>
-              <div *ngIf="viewerGroupModel.firstCountryGroup != ''" class="region-name output__region">
-                <div>GDP Per Capita: {{ outputRegionData.gdp_pc }}</div>
-                <div>Population: {{ outputRegionData.pop }}</div>
+              <div>
+                <div class="output__country">
+                  {{ selectedCountryName }}</div>
+                <div class="region-name output__region">
+                  <div>GDP Per Capita: {{ outputRegionData.gdp_pc }}</div>
+                  <div>Population: {{ outputRegionData.pop }}</div>
+                </div>
               </div>
             </div>
             <div class="outputs__col">

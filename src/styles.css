@@ -29,13 +29,15 @@
   --white: #fff;
 }
 
-.terms-use{
+.toS {
+  margin-right: 20px;
+}
+
+.tos-pp {
   text-decoration: underline;
   color: var(--gray-dark);
 }
-.terms-use:hover{
-  color: var(--gray-dark);
-}
+
 .term-use-wrapper {
   text-align: center;
   padding: 30px 0 15px;
@@ -340,8 +342,7 @@ template {
   height: 100%;
   align-items: center;
   justify-content: space-between;
-
-  margin-left: 22px;
+  margin-left: 40%;
   /*margin-top: 0 !important;*/
   margin-top: 7px;
   padding: 0;
@@ -470,8 +471,7 @@ template {
  .box-icon-c{
    padding-left: 18px;
    padding-right: 5px;
-   /*color:#f3a277;*/
-   color: #C3D700;
+   color: var(--gray-green);
  }
 
  .map-background{
@@ -1192,9 +1192,9 @@ template {
   line-height: 1.5;
 }
 .scorecard-title{
-  display: -webkit-inline-box;
-  vertical-align: middle !important;
-  padding: 13px 36px 0px 36px!important;
+  align-items: center;
+  display: flex;
+  padding: 40px 36px 20px 36px!important;
 }
 .scorecard-title-01{
   display: -webkit-inline-box;
@@ -1253,10 +1253,8 @@ template {
   bottom: 16px;
 }
 .box-button-pdf{
-  position: absolute;
-  right: 32px;
-  /*top: 15px;*/
-  bottom: 16px;
+  height: 30px;
+  margin-left: 15px;
 }
 .box-icon-a{
   padding-left: 18px;
@@ -1292,6 +1290,7 @@ template {
 .icon-sort:hover{
   background: url(assets/image/sort-v.png) no-repeat;
 }
+
 .text-sort{
   font-weight: 600;
 }
@@ -1341,9 +1340,7 @@ template {
 .box-title-terms{
   padding: 20px 0 !important;
 }
-.box-title-terms-01{
-  padding: 0px 20px 0px 20px !important;
-}
+
 div#map {
   height: 491px;
   width: inherit;

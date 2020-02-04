@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-callout',
@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./callout.component.css']
 })
 export class CalloutComponent implements OnInit {
+  @Input() calloutLabel: string;
 
   constructor() { }
 

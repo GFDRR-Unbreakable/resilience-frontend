@@ -1393,11 +1393,13 @@ export class ChartService {
 
     const xAxis = d3.svg.axis()
       .scale(xLane)
-      .tickFormat(formatAxis)
+      .tickValues([])
+      .outerTickSize(0)
       .orient('top');
     const xAxis2 = d3.svg.axis()
       .scale(xLane)
-      .tickFormat(formatAxis)
+      .tickValues([])
+      .outerTickSize(0)
       .orient('bottom');
     const yAxis = d3.svg.axis()
       .scale(yLane)
@@ -1477,8 +1479,6 @@ export class ChartService {
     const plotChartAxes = (params) => {
       const yLabelPos = isCountryListObject ? 15 : 5;
       const labelOffset = -20;
-      const xDescLabel = countryList['chartType'] === 'relative' ?
-        '% of Current Losses' : 'US$, millions per year';
       const xLabelPosition = width / 3.5;
       if (isNewChart) {
         // Adding lane lines
@@ -1503,7 +1503,6 @@ export class ChartService {
           .attr('y', 0)
           .style('text-anchor', 'middle')
           .attr('transform', 'translate(' + xLabelPosition + ', ' + labelOffset + ')')
-          .text(xDescLabel);
         laneChart.select('.x-axis2')
           .append('text')
           .classed('x-axis-lb2', true)
@@ -1511,7 +1510,6 @@ export class ChartService {
           .attr('y', 0)
           .style('text-anchor', 'middle')
           .attr('transform', 'translate(' + xLabelPosition + ', ' + (margin.bottom) + ')')
-          .text(xDescLabel);
         // Adding y axis labels
         laneChart.append('g')
           .classed('y-axis', true)
@@ -1521,6 +1519,35 @@ export class ChartService {
         laneChart.select('.y-axis')
           .selectAll('.tick text')
           .call(textWrap, margin.left);
+
+        //MIN and MAX labels
+        //--------------------
+
+        //this function generates Min and Max labels for the x-axis of the lane chart
+        const generateMinMaxLabel = (distanceFromLeftofChart: number, text: string) => {
+          // how far from the left of the svg should the label be placed
+          const translatefromLeft = 'translate(' + (margin.left + spaceLblCh + distanceFromLeftofChart) + ', ' + (margin.top - 5) + ')';
+
+          //Selects both svgs and appends label
+          d3.selectAll('svg')
+            .append('text')
+            .attr('text-anchor', 'middle')
+            .attr('transform', translatefromLeft)
+            .attr('y', -5)
+            .style('font-size', '12px')
+            .attr('fill', 'var(--gray-dark)')
+            .text(text);
+        }
+
+        //Min Label
+        generateMinMaxLabel(0, 'min');
+
+        //Max label
+        //Could not figure how how to get chart width, so hardcoding value in
+        generateMinMaxLabel(310, 'max');
+
+        //----------------------
+
       } else {
         // Update lane lines
         laneChart.selectAll('g.lanes')
@@ -1541,7 +1568,6 @@ export class ChartService {
         laneChart.select('.x-axis-lb')
           .style('text-anchor', 'middle')
           .attr('transform', 'translate(' + xLabelPosition + ', ' + labelOffset + ')')
-          .text(xDescLabel);
       }
       // Apply UI styles in vertical lines to get them in base64 conversion process.
       laneChart.selectAll('g.lanes path')
@@ -1628,6 +1654,7 @@ export class ChartService {
         // Add empty bar charts container
         eBar = laneChart.append('g')
           .classed('e-bar', true);
+
         // Add bars with data container
         dataBars = laneChart.append('g')
           .classed('bar-charts', true)
@@ -1858,7 +1885,7 @@ export class ChartService {
           let data;
           if (countryList['chartType'] === 'absolute') {
             data = (d.dWtot_currency < 0 ?
-              '-US$ ' + formatNumericData(d.dWtot_currency) : 'US$ ' + formatNumericData(d.dWtot_currency));
+              '-$' + formatNumericData(d.dWtot_currency) : '$' + formatNumericData(d.dWtot_currency));
           } else {
             data = (d.dWtot_currency).toFixed(1) + '%';
           }

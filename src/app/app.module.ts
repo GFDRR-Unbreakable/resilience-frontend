@@ -22,6 +22,7 @@ import { LandingPageComponent } from './components/landing/landingpage.component
 
 import { routing } from './app.routes';
 import { store } from './app.store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { MapService } from './services/map.service';
 import { ChartService } from './services/chart.service';
 import { WebService } from './services/web.service';
@@ -70,7 +71,10 @@ import { CalloutComponent } from './components/callout/callout.component';
     BrowserAnimationsModule,
     MdSliderModule,
     routing,
-    store
+    store,
+    StoreDevtoolsModule.instrumentOnlyWithExtension({
+      maxAge: 5
+    })
   ],
   providers: [
     LoadingMaskService,

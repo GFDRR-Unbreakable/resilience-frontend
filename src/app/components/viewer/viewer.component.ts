@@ -33,6 +33,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * Public and private properties set to work with the component, these are
    * map conf, chart conf, UI events, observables and viewer models.
    */
+
   public calloutTitle: string;
   public countryUIList: Array<any> = [];
   public countryListComp: Array<any> = [];
@@ -237,6 +238,10 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   switchPolicyOptions = ['absolute', 'relative'];
   switchPolicyLabels = ['Absolute', 'Relative'];
 
+  //these variables are being declared to stop the build lint errors,
+  //do not delete them
+  searchFailed: any;
+
   /**
    * Component constructor which is first invoked when the app is rendering.
    * Inits accessing stored state-like data from the app root store data.
@@ -323,8 +328,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
 
     if (this.url[0].path === 'viewer') {
       // Set selected country for gagues.
-      this.selectedCountry = fromListFilter.length ? fromListFilter[0].code
-        : 'AVG';
+
       if (fromListFilter.length) {
         this.selectedCountryName = fromListFilter[0].name;
         this.selectedCountry = fromListFilter[0].code;
