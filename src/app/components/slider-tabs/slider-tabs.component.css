@@ -1,0 +1,32 @@
+
+.slider-tabs__row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.slider-tabs__content {
+  padding: 15px 0;
+}
+
+.slider-tabs__col {
+  margin-bottom: 30px;
+}
+
+.slider-tabs__col--slider {
+  position: relative;
+}
+
+.cols-5 .slider-tabs__col {
+  /* (100 / 5) - (30 * 4 / 5) */
+  flex: 0 0 calc(20% - 24px);
+}
+
+.cols-4 .slider-tabs__col {
+  /* (100 / 4) - (30 * 3 / 4) */
+  flex: 0 0 calc(25% - 22.5px);
+}
+
+.cols-3 .slider-tabs__col {
+  /* (100 / 3) - (30 * 2 / 3) */
+  flex: 0 0 calc(33.3333% - 20px);
+}

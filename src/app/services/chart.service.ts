@@ -597,7 +597,7 @@ export class ChartService {
 
       brushg.style('pointer-events', 'none');
       const brushEl = brushg[0][0];
-      brushEl.removeAllListeners();
+      // brushEl.removeAllListeners();
 
       const self = this;
       function brushstart() {
@@ -2266,9 +2266,10 @@ export class ChartService {
     formData.append('g', '');
     formData.append('m', model);
     formData.append('i_df', modelData);
-    console.log(url, data)
+    console.log(url, data, formData)
     return this.webService.post(url, formData)
       .map((res: Response) => {
+        // console.log('res', res['_body'])
         return res.json();
       }).catch(this.webService.errorHandler);
   }
@@ -2528,6 +2529,7 @@ export class ChartService {
     });
     const url = `${this._baseURL}${this._outputDataURL}`;
     this._outputUIList = [];
+
     const promisedData = new Promise((resolve, reject) => {
       d3.csv(url, (err, data: any) => {
         if (err) { reject(err); }
@@ -2702,7 +2704,7 @@ export class ChartService {
     jQuery.each(config, (conf, inpObj) => {
       const ini = d3.select(`#${containerId} svg#` + conf + ' g.initial line');
       const iniEl = ini[0][0];
-      if (iniEl) {
+      if (iniEl || 1) {
         let model;
         const inputId = containerId.indexOf('1') >= 0 ? 'input1' : 'input2';
         const input = inpObj[inputId];
@@ -2749,6 +2751,7 @@ export class ChartService {
           sliderValues[conf + '_original_value'] =
             ('' + sliderValues[conf + '_display_value']).replace('$', '').replace(',', '');
         }
+        /*
         ini.attr('x1', function (d) {
           return input.x(+model[conf]);
         })
@@ -2777,9 +2780,11 @@ export class ChartService {
 
         brushg.style('pointer-events', 'none');
         const brushEl = brushg[0][0];
+        // Will break app with phase 2 changes.
         brushEl.removeAllListeners();
 
         d3.selectAll(`#${containerId} g.brush > g.resize.w`).remove();
+        */
       }
       // remove existing initial marker
     });

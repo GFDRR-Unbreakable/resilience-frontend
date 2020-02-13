@@ -1,0 +1,10 @@
+.gauge-display {
+  display: flex;
+}
+.gauge-display__gauges {
+  flex: 1 1 auto;
+}
+.gauge-display__values {
+  font-size: 14px;
+  margin: 20px 0 0 10px;
+}

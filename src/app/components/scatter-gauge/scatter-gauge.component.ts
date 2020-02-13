@@ -1,6 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ChartService } from '../../services/chart.service';
+import { DataRow } from '../gauge/gauge.component';
+import { createEmptyStateSnapshot } from '@angular/router/src/router_state';
 
+const ROW_DEFAULT = {id: 'AVG', value: 0};
 @Component({
   selector: 'app-scatter-gauge',
   templateUrl: './scatter-gauge.component.html',
@@ -9,13 +12,15 @@ import { ChartService } from '../../services/chart.service';
 export class ScatterGaugeComponent implements OnInit {
   countryList: {[k: string]: string}[];
   countryMap: {[i: string]: string} = {};
-  hoverRow: {id: string, value: number} | null;
-  activeRow: {id: string, value: number};
-
-  @Input() data: {id: string, value: number}[];
+  hoverRow: DataRow | null;
+  activeRow: DataRow = ROW_DEFAULT;
+  changeDisplayRow: DataRow = ROW_DEFAULT;
+  @Input() data: DataRow[];
   @Input() id: string = 'AVG';
   @Input() max: number = 1;
   @Input() formatter: Function = (x) => x;
+  @Input() changeRow: DataRow | null;
+  @Input() hasChange = false;
 
   constructor(private chartService: ChartService) {
     this.countryList = this.chartService.getOutputList();
@@ -31,6 +36,7 @@ export class ScatterGaugeComponent implements OnInit {
 
   ngOnChanges() {
     this.activeRow = this.data.find(r => r.id === this.id);
+    this.changeDisplayRow = !!this.changeRow ? this.changeRow : this.activeRow;
   }
 
   mouseEnter(row) {
@@ -42,7 +48,6 @@ export class ScatterGaugeComponent implements OnInit {
   }
 
   pointPosition(row) {
-
     return row.value * 100 / this.max;
   }
 }

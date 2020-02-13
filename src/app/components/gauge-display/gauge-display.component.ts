@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import * as d3 from 'd3/d3.js';
+import { DataRow } from '../gauge/gauge.component';
 
 const PCT_FORMAT = d3.format('.2%');
 const NOOP = (x) => x;
@@ -16,11 +17,13 @@ export class GaugeDisplayComponent implements OnInit {
   countryMap: {[i: string]: string} = {};
   maxValue: number = 1;
   formatter = NOOP;
-
+  activeRow: DataRow;
   @Input() data: {id: string, value: number}[] = [];
   @Input() id: string = 'AVG';
   @Input() view: string = 'all';
   @Input() type: '%' | '$' | 'y' = '%';
+  @Input() changeRow: DataRow | null = null;
+  @Input() hasChange = false;
 
   constructor() { }
 
@@ -46,6 +49,9 @@ export class GaugeDisplayComponent implements OnInit {
     : this.type === 'y' ? YEAR_FORMAT
     : this.type === '$' ? MONEY_FORMAT
     : NOOP;
+
+    this.activeRow = this.data.find(({id}) => id === this.id);
+    console.log(this.activeRow)
   }
 
 }

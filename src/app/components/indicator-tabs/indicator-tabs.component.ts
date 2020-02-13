@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {ChartService} from '../../services/chart.service';
 
-const TABS = [
+export const TABS = [
   {label: 'Social Protection', id: 'inputSoc'},
   {label: 'Economic', id: 'inputEco'},
   {label: 'Vulnerability', id: 'inputVul'},

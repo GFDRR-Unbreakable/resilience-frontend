@@ -39,6 +39,7 @@ import { IndicatorTabsComponent } from './components/indicator-tabs/indicator-ta
 import { PolicyListChartComponent } from './components/policy-list-chart/policy-list-chart.component';
 import { AnalyticalToolComponent } from './components/analytical-tool/analytical-tool.component';
 import { CalloutComponent } from './components/callout/callout.component';
+import { SliderTabsComponent } from './components/slider-tabs/slider-tabs.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { CalloutComponent } from './components/callout/callout.component';
     PolicyListChartComponent,
     AnalyticalToolComponent,
     CalloutComponent,
+    SliderTabsComponent,
   ],
   imports: [
     BrowserModule,
