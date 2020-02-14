@@ -30,17 +30,18 @@ export class GaugeComponent implements OnInit {
   }
 
   ngOnChanges() {
-    console.log('changeRow', this.changeRow)
     this.markerRow = this.data.find(row => row.id === this.id) || ROW_DEFAULT;
     this.activeRow = !!this.changeRow ? this.changeRow : this.markerRow; //this.data.find(row => row.id === this.id) || ROW_DEFAULT;
 
   }
 
   barWidth() {
-    return this.activeRow.value * 100 / this.max;
+    const v = this.activeRow.value * 100 / this.max;
+    return v < 0 ? 0 : v > 100 ? 100 : v;
   }
 
   markerPos() {
-    return this.markerRow.value * 100 / this.max;
+    const v = this.markerRow.value * 100 / this.max;
+    return v < 0 ? 0 : v > 100 ? 100 : v;
   }
 }

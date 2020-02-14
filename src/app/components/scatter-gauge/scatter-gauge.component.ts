@@ -48,6 +48,7 @@ export class ScatterGaugeComponent implements OnInit {
   }
 
   pointPosition(row) {
-    return row.value * 100 / this.max;
+    const v = row.value * 100 / this.max;
+    return v < 0 ? 0 : v > 100 ? 100 : v;
   }
 }

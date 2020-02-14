@@ -51,7 +51,6 @@ export class GaugeDisplayComponent implements OnInit {
     : NOOP;
 
     this.activeRow = this.data.find(({id}) => id === this.id);
-    console.log(this.activeRow)
   }
 
 }

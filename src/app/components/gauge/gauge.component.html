@@ -1,6 +1,6 @@
 <div class="gauge" [class.is-avg]="activeRow.id === 'AVG'"
 [class.is-change-gauge]="hasChange" [class.showing-change]="hasChange && !!changeRow">
-  <span class="gauge__stat" [style.left.%]="barWidth()">
+  <span *ngIf="!hasChange" class="gauge__stat" [style.left.%]="barWidth()">
     {{formatter(activeRow.value)}}
   </span>
   <div class="gauge__bar" [style.width.%]="barWidth()"></div>

@@ -211,6 +211,7 @@
   justify-content: space-between;
   width: 220px;
   padding: 0;
+  position: relative;
 }
 
 .hazard-buttons__button {

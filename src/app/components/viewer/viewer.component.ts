@@ -333,18 +333,18 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       this.store.dispatch({ type: ViewerAction.EDIT_VIEWER, payload: this.viewerModel });
     }
 
-    if (this.url[0].path === 'viewer') {
+    // if (this.url[0].path === 'viewer') {
       // Set selected country for gagues.
 
-      if (fromListFilter.length) {
-        this.selectedCountryName = fromListFilter[0].name;
-        this.selectedCountry = fromListFilter[0].code;
-        this.outputRegionData = {
-          gdp_pc: numeral(this.countryData[this.selectedCountry].macro_gdp_pc_pp).format('$0,0'),
-          pop: numeral(this.countryData[this.selectedCountry].macro_pop).format('0.0a')
-        };
-      }
+    if (fromListFilter.length) {
+      this.selectedCountryName = fromListFilter[0].name;
+      this.selectedCountry = fromListFilter[0].code;
+      this.outputRegionData = {
+        gdp_pc: numeral(this.countryData[this.selectedCountry].macro_gdp_pc_pp).format('$0,0'),
+        pop: numeral(this.countryData[this.selectedCountry].macro_pop).format('0.0a')
+      };
     }
+   // }
 
     // @TODO: Find cleaner way to trigger model run.
     // No longer needed?? If so, Yay!
@@ -397,8 +397,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           }
         }
         const group = this.global ? 'GLOBAL' : viewerMod['group_name'];
-        console.log('gauge ~~~>', this.switchValue, this.gaugeData['risk'])
-        console.log('newObj', newObj['risk'])
+
         this.setGaugeChangeValues(newObj);
         //this.chartService.updateOutputCharts(outputChartId, { model: newObj }, group, moveBothBrushes, this.viewerDisplay === 'tech');
       });
@@ -444,7 +443,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       const filterExistence = this._selectedCountryList.filter(val => {
         return val.name === list[0].name;
       });
-      console.log('sliderValues', this.sliderValues1)
+      console.log('XXXsliderValues', this.sliderValues1)
       if (!filterExistence.length) {
         this._selectedCountryList.push({
           index: selectedIdx,
@@ -467,6 +466,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           this.chartService.createInputCharts(inData, idInVul, sliderValues, list[0].group);
           this.chartService.createInputCharts(inData, idInExp, sliderValues, list[0].group);
         }
+
+        this.clearGaugeChangeValues();
         this.setResetValues(sliderValues, viewerMod, selectedIdx === 0 ? 1 : 2, list[0].code);
         this.mapService.setMapFilterByISOCode(list[0].code);
       }
@@ -627,7 +628,11 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       acc[key] = {value: changeObj[key], id: changeObj.id};
       return acc;
     }, this.gaugeChangeData);
-    console.log(this.gaugeChangeData);
+    console.log('setGaugeChangeValues', this.gaugeChangeData);
+  }
+
+  clearGaugeChangeValues() {
+    this.gaugeChangeData = {risk_to_assets: null, resilience: null, risk: null};
   }
 
   private mapGaugeRows(acc, key, countryData) {
@@ -1340,7 +1345,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * @event Click - This event is triggered when the first hazard button is selected/deselected on the "Run model" view
    */
   onSwitchExposure1() {
-    if (this.viewerDisplay === 'tech') {
+    if (this.viewerDisplay === 'full-analysis') {
       this.hazards.hazard1 = !this.hazards.hazard1;
       this.onSwitchExposure(true, false, false, false);
     }
@@ -1349,7 +1354,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * @event Click - This event is triggered when the second hazard button is selected/deselected on the "Run model" view
    */
   onSwitchExposure2() {
-    if (this.viewerDisplay === 'tech') {
+    if (this.viewerDisplay === 'full-analysis') {
       this.hazards.hazard2 = !this.hazards.hazard2;
       this.onSwitchExposure(false, true, false, false);
     }
@@ -1358,7 +1363,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * @event Click - This event is triggered when the third hazard button is selected/deselected on the "Run model" view
    */
   onSwitchExposure3() {
-    if (this.viewerDisplay === 'tech') {
+    if (this.viewerDisplay === 'full-analysis') {
       this.hazards.hazard3 = !this.hazards.hazard3;
       this.onSwitchExposure(false, false, true, false);
     }
@@ -1367,7 +1372,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * @event Click - This event is triggered when the fourth hazard button is selected/deselected on the "Run model" view
    */
   onSwitchExposure4() {
-    if (this.viewerDisplay === 'tech') {
+    if (this.viewerDisplay === 'full-analysis') {
       this.hazards.hazard4 = !this.hazards.hazard4;
       this.onSwitchExposure(false, false, false, true);
     }
