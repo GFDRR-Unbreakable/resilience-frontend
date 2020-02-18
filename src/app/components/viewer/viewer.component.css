@@ -72,6 +72,12 @@
   overflow: hidden;
 }
 
+.map-background.is-hidden {
+  visibility: hidden;
+  height: 0px;
+  margin-bottom: 0;
+}
+
 .callout-body-trigger {
   position: absolute;
   left: 1rem;
@@ -124,6 +130,11 @@
   display: flex;
   align-items: center;
   margin: 0 0 30px;
+}
+
+.viewer__callout {
+  display: block;
+  margin-bottom: 2rem;
 }
 
 .viewer__switch {
@@ -232,4 +243,18 @@
 .viewer__slider-buttons {
   flex: 0 0 220px;
   margin-left: 10px;
+}
+
+.map-legend {
+  font-size: 13px;
+}
+
+.map-legend__row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.map-legend__key {
+  margin-left: 10px;
+  flex: 1 1 auto;
 }

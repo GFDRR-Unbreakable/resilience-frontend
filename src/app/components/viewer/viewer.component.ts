@@ -279,6 +279,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * Inits the map chart creation in the app and set its UI events.
    */
   ngOnInit() {
+    // console.log('ngOnInit')
     this.mapService.createMap('map');
     this.setMapConf();
     // this.addElPassiveEvents();
@@ -814,6 +815,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * UIevent on the map.
    */
   setMapConf() {
+    console.log('setMapConf');
     const self = this;
     this.mapService.addStylesOnMapLoading(() => {
       this.mapService.addBasemap();
@@ -1075,8 +1077,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * no one of them is selected.
    */
   onChangeViewerIndViewEvent(showPolicy = false) {
-    // this.viewerDisplay = viewType;
-    console.log('showPolicy', showPolicy)
     this.showPolicy = showPolicy;
     this.onResetTechDataEvent();
     return false;

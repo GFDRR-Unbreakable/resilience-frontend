@@ -1,5 +1,6 @@
 <div class="scatter-gauge" [class.is-change-gauge]="hasChange"
-[class.showing-change]="hasChange && !!changeRow">
+[class.showing-change]="hasChange && !!changeRow"
+[class.is-avg]="activeRow.id === 'AVG'">
   <span class="scatter-gauge__stat" [style.left.%]="pointPosition(activeRow)"
   *ngIf="!!activeRow && !hasChange">
     {{formatter(activeRow.value)}}

@@ -1,5 +1,5 @@
 <app-navbar></app-navbar>
-<div class="map-background">
+<div class="map-background" [class.is-hidden]="viewerDisplay !== 'viewer'">
   <div id="map"></div>
 
   <!-- Country graphics -->
@@ -14,13 +14,15 @@
   </div>
 
   <div class="map-legend">
-    <div *ngFor="let legend of legends">
+    <div *ngFor="let legend of legends" class="map-legend__row">
       <i class="mdi mdi-checkbox-blank float-left" [ngStyle]="{color: legend[2]}"></i>
-      <span class="map-legend-text" *ngIf="legend[0] === 'No data'">{{legend[0]}}</span>
-      <span class="map-legend-text-first" [hidden]="legend[0] === 'No data'">{{legend[0]}}</span>
-      <span class="map-legend-text-middle" [hidden]="legend[0] === 'No data'">-</span>
-      <span class="map-legend-text-last" [hidden]="legend[0] === 'No data'">{{legend[1]}}</span>
-      <span class="map-legend-text-percent" [hidden]="legend[0] === 'No data'">%</span>
+      <span class="map-legend__key">
+        <span class="map-legend-textx" *ngIf="legend[0] === 'No data'">{{legend[0]}}</span>
+        <span class="map-legend-text-firstx" [hidden]="legend[0] === 'No data'">{{legend[0]}}</span>
+        <span class="map-legend-text-middlex" [hidden]="legend[0] === 'No data'">-</span>
+        <span class="map-legend-text-lasxt" [hidden]="legend[0] === 'No data'">{{legend[1]}}</span>
+        <span class="map-legend-text-percentx" [hidden]="legend[0] === 'No data'">%</span>
+      </span>
       <br />
     </div>
   </div>
@@ -52,6 +54,9 @@
   </div>
 
 </div>
+<app-callout *ngIf="viewerDisplay !== 'viewer'" class="viewer__callout"
+[calloutLabel]="'Policy page label'"></app-callout>
+
 <div class="container">
   <div class="country-select__container">
     <h2 class="mappage__header">Select Country</h2>
@@ -175,11 +180,11 @@
       <div class="view-select__heading-col xbtn-group" role="group" aria-label="Set viewer view">
         <div class="view-select__button-group">
           <button type="button" class="view-select__button btn btn-primary wt-lb"
-            [disabled]='_selectedCountryList.length === 0 && 0' [ngClass]="{active: viewerDisplay === 'viewer'}"
+            [disabled]='_selectedCountryList.length === 0 && 0' [ngClass]="{active: !showPolicy}"
             (click)="onChangeViewerIndViewEvent()">VIEW INDICATORS</button>
 
           <button type="button" class="view-select__button btn btn-primary wt-lb"
-            [disabled]='_selectedCountryList.length === 0 && 0' [ngClass]="{active: viewerDisplay === 'policy'}"
+            [disabled]='_selectedCountryList.length === 0 && 0' [ngClass]="{active: showPolicy}"
             (click)="onChangeViewerIndViewEvent(true)">POLICY PRIORITY</button>
           <!--<button type="button" class="btn btn-primary wt-lb" [disabled]='_selectedCountryList.length === 0 && 0' [ngClass]="{active: viewerDisplay === 'tech'}" (click)="onChangeViewerIndViewEvent('tech')">ACCESS FULL MODEL</button>
           -->
