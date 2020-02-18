@@ -38,6 +38,7 @@ export class IndicatorTabsComponent implements OnInit {
   @Input() inputLabels: any = {};
   @Input() view: string;
   @Input() selectedCountry: string;
+  @Input() firstCountryOverride = '';
 
   constructor(private chartService:ChartService) { }
 

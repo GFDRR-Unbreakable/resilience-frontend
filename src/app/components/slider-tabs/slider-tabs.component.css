@@ -30,3 +30,13 @@
   /* (100 / 3) - (30 * 2 / 3) */
   flex: 0 0 calc(33.3333% - 20px);
 }
+
+.slider-tabs__values {
+  position: absolute;
+  right: 0;
+}
+
+.slider-tabs__mat-slider {
+  width: calc(100% - 50px);
+  min-width: 110px;
+}

@@ -21,7 +21,7 @@
         [ngClass]="'cols-' + (inputTypes[tab.id].length + 1)">
           <div class="indicator-tabs__col indicator-tabs__col--country">
             <span class="indicator-tabs__country">
-              {{viewerModel.firstCountry}}
+              {{firstCountryOverride}}
             </span>
           </div>
           <div *ngFor="let key of inputTypes[tab.id]"

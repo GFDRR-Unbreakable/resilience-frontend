@@ -247,6 +247,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   //do not delete them
   searchFailed: any;
 
+  showPolicy = false;
   /**
    * Component constructor which is first invoked when the app is rendering.
    * Inits accessing stored state-like data from the app root store data.
@@ -269,7 +270,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.viewerModel2$ = store.select('viewerModel2');
     router.url.subscribe((url) => {
       this.url = url;
-      console.log('url', url)
       this.viewerDisplay = url[0].path;
     });
   }
@@ -347,9 +347,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    // }
 
     // @TODO: Find cleaner way to trigger model run.
-    // No longer needed?? If so, Yay!
     if (fromListFilter.length > 0) {
-      this.onChangeViewerIndViewEvent((this.url[0].path === 'viewer') ? 'viewer' : 'tech');
+      this.onChangeViewerIndViewEvent();
     }
   }
 
@@ -415,7 +414,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * @param {String} field - Input-text field model
    */
   private _filterCountryByInput(list, selectedIdx, field) {
-    console.log('_filterCountryByInput',selectedIdx, field)
     if (list.length >= 1) {
       if (!selectedIdx) {
         this.viewerGroupModel.firstCountryGroup = list[0].group;
@@ -443,7 +441,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       const filterExistence = this._selectedCountryList.filter(val => {
         return val.name === list[0].name;
       });
-      console.log('XXXsliderValues', this.sliderValues1)
+
       if (!filterExistence.length) {
         this._selectedCountryList.push({
           index: selectedIdx,
@@ -539,19 +537,18 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * highlight/unhighlight indicator-layer a country on the map chart.
    */
   getChartOutputData() {
-    console.log('getChartOutputData')
     this.chartService.initOutputChartConf();
     this.getOutputDataSubs = this.chartService.getOutputDataObs().subscribe(data => {
-      console.log('######### CSV DATA #########')
       this.chartService.setInputData(data._globalModelData).then((inputData) => {
-        console.log(535, inputData)
         this.inputData = inputData;
         this.inputLabels = this.chartService.getInputLabels();
         this.createInputCharts(1, inputData, this.sliderValues1);
         this.createInputCharts(2, inputData, this.sliderValues2);
         this.setSliderConfValues(inputData);
 
-        this.initCountrySliderConfValues()
+        this.initCountrySliderConfValues();
+
+        this.setResetValues(this.sliderValues1, this.viewerP1, 1, this._selectedCountryList[0].code);
       });
 
       // Used to look up country data on hover.
@@ -596,7 +593,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
 
   populateScatterGauges(allData: any, containerId: string) {
     this.countryData = allData._globalModelData;
-    console.log('populateScatterGauges');
     ['risk_to_assets', 'resilience', 'risk'].reduce((acc, key) => {
       const rows = Object.keys(this.countryData).map(id => {
         return { id, value: this.countryData[id][key] };
@@ -628,7 +624,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       acc[key] = {value: changeObj[key], id: changeObj.id};
       return acc;
     }, this.gaugeChangeData);
-    console.log('setGaugeChangeValues', this.gaugeChangeData);
   }
 
   clearGaugeChangeValues() {
@@ -905,8 +900,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     const viewerPropDefault = viewerType === 1 ? 'viewerP1Default' : 'viewerP2Default';
     const sliderPropDefault = viewerType === 1 ? 'sliderValues1Default' : 'sliderValues2Default';
-    console.log('!!!! viewerMod !!!!', viewerMod['macro_borrow_abi'])
-    console.log('=====================')
+
 
     this[viewerPropDefault] = Object.assign({}, viewerMod);
     this[sliderPropDefault] = Object.assign({}, sliderObj);
@@ -957,7 +951,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * @param {Object} inputData - Input-indicator model object.
    */
   setSliderConfValues(inputData) {
-    console.log('### setSliderConfValues ###', inputData)
     for (const inputDataIndex in inputData) {
       if (inputData.hasOwnProperty(inputDataIndex)) {
         const key = inputData[inputDataIndex].key;
@@ -1025,7 +1018,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.sliderValues1Default = Object.assign({}, this.sliderValues1);
     this.sliderValues2Default = Object.assign({}, this.sliderValues2);
-    console.log('setSliderConfValues', this.sliderValues1);
   }
   /**
    * Subscribes to viewer model observable and checks any changes its observer has to be set in its
@@ -1082,8 +1074,10 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * @param {String} viewType - Sets the view type wheter is to either view indicator or run model or
    * no one of them is selected.
    */
-  onChangeViewerIndViewEvent(viewType) {
+  onChangeViewerIndViewEvent(showPolicy = false) {
     // this.viewerDisplay = viewType;
+    console.log('showPolicy', showPolicy)
+    this.showPolicy = showPolicy;
     this.onResetTechDataEvent();
     return false;
   }
@@ -1157,7 +1151,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       this.onSwitchExposure(false, false, false, false);
     }
 
-    console.log('onResetTechDataEvent');
     this.viewerP1 = Object.assign({}, this.viewerP1Default);
     this.viewerP2 = Object.assign({}, this.viewerP2Default);
     this.sliderValues1 = Object.assign({}, this.sliderValues1Default);
@@ -1281,7 +1274,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     viewerHazardDefault1['name'] = this._selectedCountryList[0].name;
     viewerHazardDefault1['id'] = this._selectedCountryList[0].code;
     viewerHazardDefault1['group_name'] = this._selectedCountryList[0].group;
-    console.log( 1237, 'viewerHazardDefault1', viewerHazardDefault1);
+    // console.log( 1287, 'viewerHazardDefault1', viewerHazardDefault1);
     this.chartService.getInputPModelData(viewerHazardDefault1).subscribe(data => {
       const newObj = {};
       for (const dataK in data) {

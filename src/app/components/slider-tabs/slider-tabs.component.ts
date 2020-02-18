@@ -38,7 +38,6 @@ export class SliderTabsComponent implements OnInit, OnChanges {
   }
 
   onSliderChange(key) {
-    console.log('onSliderChange', key);
     this.sliderChange.emit(key)
   }
 
