@@ -8,12 +8,25 @@
   align-items: center;
 }
 
+@media (max-width: 768px) {
+  .navbar__inner {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
 .navbar__logo {
   margin: 8px 0;
 }
 
 .navbar__nav {
   display: flex;
+}
+
+@media (max-width: 768px) {
+  .navbar__nav {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }
 
 .navbar__link {
@@ -28,6 +41,13 @@
   cursor: pointer;
   transition: 0.2s color;
 }
+
+@media (max-width: 768px) {
+  .navbar__link {
+    padding: 10px;
+  }
+}
+
 .navbar__link.is-active,
 .navbar__link:hover {
   color: var(--teal);

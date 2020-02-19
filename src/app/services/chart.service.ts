@@ -260,6 +260,7 @@ export class ChartService {
     });
   }
   private calculateGDPValues(containerId, key, numericValue, gdpDollars, precision, oldValue?) {
+    console.log('xxxx calculateGDPValues xxxx');
     this.subscription();
     let percent;
     let value;
@@ -283,6 +284,7 @@ export class ChartService {
         value = value + 'New value: ' + newValues.text;
       }
       value = value + '<br />' + moreValues.text;
+      console.log('Yooooo', key, this._outputDomains[key])
       this._outputDomains[key]['chart'][containerId] = {
         dollarGDP: moreValues.dollarGDP,
         valueGDP: numericValue,
@@ -300,6 +302,7 @@ export class ChartService {
       if (defaultValue != newValue) {
         value = value + '<br />New value: ' + newValue + percent;
       }
+      console.log('Yooooo', key, this._outputDomains[key])
       this._outputDomains[key]['chart'][containerId] = {
         value: numericValue,
         difference: differenceSignText,
@@ -624,7 +627,7 @@ export class ChartService {
   createOutputChart(outputData: any, containerId: string, groupName?: string, isScoreCardPage?: boolean, isoCode?: string) {
     jQuery(`div#${containerId}`).empty();
     const finalOutput = this.filterOutputDataByGroup(outputData, groupName);
-    console.log(finalOutput, outputData, groupName);
+    console.log('createOutputChart', finalOutput, outputData, groupName);
     const me = this;
     jQuery.each(finalOutput, (idx, output) => {
       const s1 = output.gradient[0];
@@ -1046,6 +1049,7 @@ export class ChartService {
       return d;
     }).left;
 
+    /*
     const div = d3.select(`#${containerId}`)
       .append('div')
       .attr('id', idx)
@@ -1128,9 +1132,10 @@ export class ChartService {
     };
     const brushend = () => {
       svg.classed('selecting', !d3.event.target.empty());
-    };
+    };*/
     const brush = d3.svg.brush()
       .x(x);
+
     // keep a reference to the brush for the output domain
     output.x = x;
     output.height = height;
@@ -1150,8 +1155,8 @@ export class ChartService {
     }
     this._outputDomains[idx][outputId].default = this._globalExtentData[idx];
     brush.extent([0, this._outputDomains[idx][outputId].brush.extent()[1]]);
-    brush.on('brush', brushmove);
-
+    // brush.on('brush', brushmove);
+    console.log('### _outputDomains', this._outputDomains)
     const line = d3.svg.line()
       .x((d) => {
         return d3.mean(data);
@@ -1160,6 +1165,7 @@ export class ChartService {
         return height;
       });
 
+    /*
     const brushg = svg.append('g')
       .attr('class', 'brush')
       .style('pointer-events', 'none')
@@ -1190,7 +1196,7 @@ export class ChartService {
     brushg.selectAll('#' + containerId + ' rect')
       .attr('height', height)
       .style('pointer-events', 'none');
-
+    */
     const line2 = d3.svg.line()
       .x((d) => {
         return d3.mean(data);
@@ -1198,7 +1204,7 @@ export class ChartService {
       .y((d) => {
         return height;
       });
-
+    /*
     const brushg2 = svg.append('g')
       .attr('class', 'brush2')
       .style('pointer-events', 'none')
@@ -1249,7 +1255,7 @@ export class ChartService {
       .attr('class', 'text-results')
       .append('span')
       .attr('class', 'text-number')
-      .html(textFn);
+      .html(textFn);*/
   }
 
   /**

@@ -80,6 +80,15 @@ footer {
   text-align: center;
   padding: 16px;
 }
+@media (max-width: 768px) {
+  footer {
+    height: 100px;
+  }
+  footer a {
+    display: block;
+    margin-bottom: 10px;
+  }
+}
 
 article,
 aside,
@@ -826,12 +835,13 @@ template {
   .tabs-dg{
     position: absolute !important;
     bottom: 20px;
-    left: 200px
+    /*left: 200px*/
+    left: 10px;
   }
 
   @media (max-width: 1250px) {
     .tabs-dg {
-      left: 100px;
+      /*left: 100px;*/
     }
   }
 

@@ -4,8 +4,31 @@
   justify-content: space-between;
 }
 
+@media (max-width: 991px) {
+  .slider-tabs__row {
+    flex-direction: column;
+    width: calc(50% - 20px);
+  }
+}
+
 .slider-tabs__content {
   padding: 15px 0;
+}
+
+
+@media (max-width: 991px) {
+  .tab-input:checked + label + .tab-content,
+  .slider-tabs__content {
+    display: flex;
+    justify-content: space-between;
+  }
+  .tab-content {
+    display: none;
+  }
+}
+
+.slider-tabs__col--label {
+  font-size: 14px;
 }
 
 .slider-tabs__col {

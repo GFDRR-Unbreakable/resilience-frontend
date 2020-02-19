@@ -349,7 +349,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // @TODO: Find cleaner way to trigger model run.
     if (fromListFilter.length > 0) {
-      this.onChangeViewerIndViewEvent();
+      // this.onChangeViewerIndViewEvent();
+      this.onResetTechDataEvent();
     }
   }
 
@@ -399,7 +400,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         const group = this.global ? 'GLOBAL' : viewerMod['group_name'];
 
         this.setGaugeChangeValues(newObj);
-        //this.chartService.updateOutputCharts(outputChartId, { model: newObj }, group, moveBothBrushes, this.viewerDisplay === 'tech');
+        console.log('updateOutputCharts')
+        this.chartService.updateOutputCharts(outputChartId, { model: newObj }, group, moveBothBrushes, this.viewerDisplay === 'tech');
       });
       this.store.dispatch({ type: ViewerAction[viewerActionStr], payload: viewerMod });
     }
@@ -452,7 +454,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         });
 
         if (this.global) {
-          // this.chartService.updateOutputCharts(idOut, list[0].code, null, true, this.viewerDisplay === 'tech');
+          console.log(this.viewerDisplay)
+          this.chartService.updateOutputCharts(idOut, list[0].code, null, true, this.viewerDisplay === 'full-analysis');
           this.chartService.updateInputCharts(idInSoc, sliderValues, list[0].code);
           this.chartService.updateInputCharts(idInEco, sliderValues, list[0].code);
           this.chartService.updateInputCharts(idInVul, sliderValues, list[0].code);
@@ -484,7 +487,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           field.toLowerCase() !== this._selectedCountryList[filterIndex[0]].name.toLowerCase()) {
           this.mapService.setMapFilterByISOCode(filterIndexFromAll[0].code);
           if (this.global) {
-            // this.chartService.updateOutputCharts(idOut, 'global', null, true, this.viewerDisplay === 'tech');
+            this.chartService.updateOutputCharts(idOut, 'global', null, true, this.viewerDisplay === 'full-analysis');
             this.chartService.updateInputCharts(idInSoc, sliderValues, 'global');
             this.chartService.updateInputCharts(idInEco, sliderValues, 'global');
             this.chartService.updateInputCharts(idInVul, sliderValues, 'global');
@@ -541,6 +544,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.chartService.initOutputChartConf();
     this.getOutputDataSubs = this.chartService.getOutputDataObs().subscribe(data => {
       this.chartService.setInputData(data._globalModelData).then((inputData) => {
+        console.log('!! data', data)
         this.inputData = inputData;
         this.inputLabels = this.chartService.getInputLabels();
         this.createInputCharts(1, inputData, this.sliderValues1);
@@ -579,15 +583,15 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   createMapPageOutputChartTable(data: any, containerId: string, groupName: any = undefined, isoCode: any = undefined, origin: string = 'No origin', allData?: any): any {
     // console.log('createMapPageOutputChartTable', data, allData);
 
-    // this.chartService.createSingleOutputChart(data.risk_to_assets, 'risk_to_assets', 'output-risk_to_assets_1', groupName, isoCode);
+    this.chartService.createSingleOutputChart(data.risk_to_assets, 'risk_to_assets', 'output-risk_to_assets_1', groupName, isoCode);
 
-    // this.chartService.createSingleOutputChart(data.resilience, 'resilience', 'output-resilience_1', groupName, isoCode);
-    // this.chartService.createSingleOutputChart(data.risk, 'risk', 'output-risk_1', groupName, isoCode);
+    this.chartService.createSingleOutputChart(data.resilience, 'resilience', 'output-resilience_1', groupName, isoCode);
+    this.chartService.createSingleOutputChart(data.risk, 'risk', 'output-risk_1', groupName, isoCode);
 
 
-    // this.chartService.createSingleOutputChart(data.risk_to_assets, 'risk_to_assets', 'output-risk_to_assets_2', groupName, isoCode);
-    // this.chartService.createSingleOutputChart(data.risk, 'risk', 'output-risk_2', groupName, isoCode);
-    // this.chartService.createSingleOutputChart(data.resilience, 'resilience', 'output-resilience_2', groupName, isoCode);
+    this.chartService.createSingleOutputChart(data.risk_to_assets, 'risk_to_assets', 'output-risk_to_assets_2', groupName, isoCode);
+    this.chartService.createSingleOutputChart(data.risk, 'risk', 'output-risk_2', groupName, isoCode);
+    this.chartService.createSingleOutputChart(data.resilience, 'resilience', 'output-resilience_2', groupName, isoCode);
 
     // this.chartService.createOutputChart(data, containerId, groupName, false, isoCode);
   }
@@ -655,6 +659,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     const inputTypes = chartConf.inputTypes;
     const firstInput = this.viewerModel.firstCountry;
     const secondInput = this.viewerModel.secondCountry;
+    console.log('processForFileJSONData');
     const data: any = {
       country1: {
         name: '',
@@ -689,6 +694,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     data.country1.name = !firstInput || countryFInput.length === 0 ? 'Global' : firstInput;
     data.country2.name = !secondInput || countrySInput.length === 0 ? 'Global' : secondInput;
 
+    console.log('outputData', outputData, this.viewerP1);
     jQuery.each(outputData, (key, out) => {
       if (!data.country1.outputs[key]) {
         data.country1.outputs[key] = {};
@@ -704,6 +710,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         if (!data.country2.outputs[key]['value']) {
           data.country2.outputs[key]['value'] = {};
         }
+        console.log(key, out);
         data.country1.outputs[key]['value'].dollarGDP = out.chart['outputs-1'].dollarGDP;
         data.country1.outputs[key]['value'].valueGDP = out.chart['outputs-1'].valueGDP;
         data.country1.outputs[key]['value'].difference = out.chart['outputs-1'].difference;
@@ -714,7 +721,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         data.country2.outputs[key]['value'].valueGDP = out.chart[`output-${key}_2`].valueGDP;
         data.country2.outputs[key]['value'].difference = out.chart[`output-${key}_2`].difference;
         data.country2.outputs[key]['value'].newValue = out.chart[`output-${key}_2`].newValue;
-        data.country2.outputs[key]['value'].today = out.chart[`output-${key}_2`].today;
+        data.country2.outputs[key]['value'].today = out.chart[`output-${key}_2`].today;/**/
       } else {
         data.country1.outputs[key]['value'] = out.chart['outputs-1'];
         data.country2.outputs[key]['value'] = out.chart['outputs-2'];
@@ -751,9 +758,10 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           label: this.sliderValues1[inpKey + '_display_value'],
           value: this.sliderValues1[inpKey].value
         };
+        console.log(this.sliderValues2);
         data.country2.inputs[key][inpKey]['value'] = {
-          //label: this.sliderValues2[inpKey + '_display_value'],
-          label: d3.select(`.inputcharts--2 #table-${inpKey} span.value`).text(),
+          label: this.sliderValues2[inpKey + '_display_value'],
+          //label: 'PLACEHOLDER', //d3.select(`.inputcharts--2 #table-${inpKey} span.value`).text(),
           value: this.sliderValues2[inpKey].value
         };
 
@@ -815,7 +823,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * UIevent on the map.
    */
   setMapConf() {
-    console.log('setMapConf');
     const self = this;
     this.mapService.addStylesOnMapLoading(() => {
       this.mapService.addBasemap();
@@ -1078,7 +1085,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   onChangeViewerIndViewEvent(showPolicy = false) {
     this.showPolicy = showPolicy;
-    this.onResetTechDataEvent();
+    // this.onResetTechDataEvent();
     return false;
   }
   /**

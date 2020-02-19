@@ -73,15 +73,16 @@
 
   <div class="row" *ngIf="viewerDisplay === 'viewer'">
     <div class="col-md-12">
-      <div class="card-02">
-        <h2 class="mappage__header viewer__header">Output: Country Losses to Assets, Socio-Economic Resilience, and
-          Well-Being
-          <app-switch class="viewer__switch" [value]="switchValue" [options]="switchOptions" [labels]="switchLabels"
-            (onChange)="switchValue = $event"></app-switch>
+      <div class="card-02x">
+        <h2 class="mappage__header viewer__header">
+          <span class="viewer__header-text">Output: Country Losses to Assets, Socio-Economic Resilience, and Well-Being</span>
           <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover1"
             triggers="mouseenter:mouseleave" popoverTitle="">
             <i class="mdi mdi-information-outline"></i>
           </button>
+
+          <app-switch class="viewer__switch" [value]="switchValue" [options]="switchOptions" [labels]="switchLabels" (onChange)="switchValue = $event"></app-switch>
+
           <ng-template #popover1>
 
             <p><b>Risk to assets (% of GDP)</b> is the value of assets at risk,
@@ -101,7 +102,7 @@
           <!-- <span><i class="mdi mdi-checkbox-blank-circle box-icon-c"></i> Country</span>
           <span><img src="assets/image/icon-map.png" alt=""> Global Average</span> -->
         </h2>
-        <div class="">
+        <div class="output__grid">
           <div class="outputs__labels xrow">
             <div class="outputs__label">
               {{ this.chartConf.outputs.risk_to_assets.descriptor }}
@@ -194,7 +195,8 @@
 
   </div>
   <div class="viewer__section viewer__section--tech" *ngIf="viewerDisplay === 'viewer' && !showPolicy">
-    <h2 class="mappage__header viewer__header">Country Resilience Factors
+    <h2 class="mappage__header viewer__header">
+      <span class="viewer__header-text">Country Resilience Factors</span>
       <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover2"
         triggers="mouseenter:mouseleave" popoverTitle="">
         <i class="mdi mdi-information-outline"></i>
@@ -298,7 +300,7 @@
             (onChange)="switchValue = $event"></app-switch>
         </h2>
 
-        <div class="">
+        <div class="output__grid output__grid--2col">
           <div class="outputs__labels">
             <div class="outputs__label">
               {{ this.chartConf.outputs.risk_to_assets.descriptor }}
