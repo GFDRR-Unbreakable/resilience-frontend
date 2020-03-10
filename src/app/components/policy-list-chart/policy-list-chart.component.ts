@@ -2,6 +2,17 @@ import { Component, OnInit, Input } from '@angular/core';
 import {ChartService} from '../../services/chart.service';
 import { Subscription } from 'rxjs';
 
+const TEXT = {
+  title: {
+    absolute: 'Absolute terms',
+    relative: 'Relative term'
+  },
+  subTitle: {
+    absolute: 'US$, millions per year',
+    relative: '% of current losses'
+  }
+};
+
 @Component({
   selector: 'app-policy-list-chart',
   templateUrl: './policy-list-chart.component.html',
@@ -10,11 +21,12 @@ import { Subscription } from 'rxjs';
 export class PolicyListChartComponent implements OnInit {
   private getScorecardDataSubs: Subscription;
   private chartCreated: boolean = false;
-
+  text = TEXT;
   chartId = `policy-list-chart-${ (Math.random() + '').replace('.', '') }`;
 
   @Input() countryName: string = '';
   @Input() type: 'absolute' | 'relative' = 'absolute';
+  @Input() forPrint = false
 
   constructor(private chartService: ChartService) {
 
@@ -56,7 +68,7 @@ export class PolicyListChartComponent implements OnInit {
       this._filterCountryByInput(fromListFilter, 0, this.policyModel.firstCountry);
       // console.log("HI", this.policyModel);
       this.store.dispatch({type: PolicyAction.EDIT_POLICY_FIELDS, payload: this.policyModel});*/
-      this.createChart()
+      this.createChart();
     });
   }
 
@@ -70,7 +82,8 @@ export class PolicyListChartComponent implements OnInit {
     const opts = {
       isNew: !this.chartCreated,
       chartType: this.type,
-      type: 'policyList'
+      type: 'policyList',
+      forPrint: this.forPrint
     };
     this.chartCreated = true;
     this.chartService.createPolicyListChart(data, this.chartId, opts);

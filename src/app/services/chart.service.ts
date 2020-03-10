@@ -11,6 +11,7 @@ import { ViewerModel } from '../store/model/viewer.model';
 import { URLSearchParams } from '@angular/http';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import * as html2canvas from 'html2canvas';
 
 @Injectable()
 export class ChartService {
@@ -1361,14 +1362,16 @@ export class ChartService {
     let min = d3.min(minValues);
     let maxValue = d3.max([maxFirstBarValue, maxSecondBarValue]);
     let w;
-    if (isCountryListObject) {
-      w = 720;
+    if (countryList.forPrint) {
+      w = 675;
+    } else if (isCountryListObject) {
+      w = 670;
     } else if (isPolicyListObject) {
-      w = 800;
+      w = 750;
     } else {
-      w = 700;
+      w = 650;
     }
-    const h = isCountryListObject ? recalculateChartHeight() : 1000;
+    const h = countryList.forPrint ? 820 : isCountryListObject ? recalculateChartHeight() : 1000;
     const margin = {
       left: isPolicyListObject ? 170 : 130,
       right: 70,
@@ -1378,6 +1381,8 @@ export class ChartService {
     const width = w - margin.left - margin.right;
     const height = h - margin.top - margin.bottom;
     const spaceLblCh = 10;
+
+    console.log(w, maxValue, width, countryList)
     let xDomain = [];
     xDomain.push(-1, maxValue);
 
@@ -1548,8 +1553,7 @@ export class ChartService {
         generateMinMaxLabel(0, 'min');
 
         //Max label
-        //Could not figure how how to get chart width, so hardcoding value in
-        generateMinMaxLabel(310, 'max');
+        generateMinMaxLabel(width - 250, 'max');
 
         //----------------------
 
@@ -2109,19 +2113,22 @@ export class ChartService {
     return {
       'outputs': {
         'risk_to_assets': {
-          'descriptor': 'Risk to assets (% of GDP)',
+          'descriptor': 'Risk to assets',
+          'info': '(% of GDP)',
           'gradient': ['#f0f9e8', '#08589e'],
           'number_type': 'percent',
           'precision': 2
         },
         'resilience': {
           'descriptor': 'Socio-economic resilience',
+          'info': '',
           'gradient': ['#990000', '#fef0d9'],
           'number_type': 'percent',
           'precision': 2
         },
         'risk': {
-          'descriptor': 'Risk to well-being (% of GDP)',
+          'descriptor': 'Risk to well-being',
+          'info': '(% of GDP)',
           'gradient': ['#edf8fb', '#6e016b'],
           'number_type': 'percent',
           'precision': 2
@@ -2497,8 +2504,11 @@ export class ChartService {
         const inputDomainsArr = [];
         data.forEach((value) => {
           const inputObj = {};
+          const descArr = this.parseDesc(value.descriptor);
           inputObj['key'] = value.key;
-          inputObj['descriptor'] = value.descriptor;
+          inputObj['descriptor'] = descArr[0]; //value.descriptor;
+          inputObj['info'] = descArr[1];
+
           inputObj['lower'] = +value.lower;
           inputObj['upper'] = +value.upper;
           inputObj['number_type'] = value.number_type;
@@ -2510,7 +2520,8 @@ export class ChartService {
             this._inputLabels[value.key] = {};
           }
           this._inputLabels[value.key].key = value.key;
-          this._inputLabels[value.key].descriptor = value.descriptor;
+          this._inputLabels[value.key].descriptor = descArr[0]; // value.descriptor;
+          this._inputLabels[value.key].info =  descArr[1];
           this._inputLabels[value.key].lower = +value.lower;
           this._inputLabels[value.key].upper = +value.upper;
           this._inputLabels[value.key].number_type = value.number_type;
@@ -2522,6 +2533,12 @@ export class ChartService {
     return promisedData;
     // this._inputDataProm$ = Observable.fromPromise(promisedData);
   }
+
+  parseDesc(desc) {
+    const arr = desc.split(' (');
+    return [arr[0], (arr[1] || '').replace(')', '')];
+  }
+
   /**
    * Retrieves output-model data from CSV file in order to saved into a output-model object data.
    */

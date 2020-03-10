@@ -2,6 +2,7 @@
   display: flex;
   justify-content: space-between;
 }
+
 @media (max-width: 991px) {
   .indicator-tabs__row {
     flex-direction: column;
@@ -63,8 +64,37 @@
   flex: 0 0 calc(33.3333% - 96.6666px);
 }
 
+/* Print columns */
+.for-print .indicator-tabs__row {
+  justify-content: flex-start;
+}
+.for-print .indicator-tabs__col:first-child {
+  flex: 0 0 132px;
+  width: 132px;
+}
+.for-print .indicator-tabs__col:first-child {
+  font-size: 12px;
+}
+
+.for-print .indicator-tabs__country {
+  font-size: 12px;
+}
+
+.for-print .cols-6 .indicator-tabs__col:not(:first-child),
+.for-print .cols-5 .indicator-tabs__col:not(:first-child),
+.for-print .cols-4 .indicator-tabs__col:not(:first-child) {
+  flex: 0 0 132px;
+  width: 132px;
+  margin-left: 16px;
+}
+
+.for-print .indicator-tabs__col {
+  margin-bottom: 10px;
+}
+
 .indicator-tabs__col--label {
-  font-size: 14px;
+  font-size: 12px;
+  line-height: 1.1;
 }
 
 .indicator-tabs__col--country {
@@ -83,4 +113,18 @@
     font-size: 16px;
     white-space: nowrap;
   }
+}
+
+.for-print .tab-content {
+  display: block;
+  padding: 10px 0;
+}
+
+.for-print .tab-content:first-child {
+  border-top: none;
+}
+
+.indicator-tabs__content-heading h4 {
+  margin-left: 148px;
+  font-size: 14px;
 }

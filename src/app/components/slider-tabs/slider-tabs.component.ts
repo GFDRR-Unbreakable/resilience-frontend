@@ -17,9 +17,11 @@ export class SliderTabsComponent implements OnInit, OnChanges {
     inputExp: []
   };
   sliderValuesPopulated = false;
+  popOverText = '';
 
   @Input() inputLabels: any = {};
   @Input() sliderValues: any = {};
+  @Input() forPrint = false;
   @Output() sliderChange = new EventEmitter<string>();
   @Output() sliderInputChange = new EventEmitter<any>();
   constructor(private chartService: ChartService) { }
@@ -47,5 +49,9 @@ export class SliderTabsComponent implements OnInit, OnChanges {
     // const eEvent = {sliderValues: this.sliderValues, key};
     this.sliderInputChange.emit({value, key});
     // this.onSliderChangeEvent(this.sliderValues, key);
+  }
+
+  printSliderPos(key) {
+    return this.sliderValues[`${key}_value`];
   }
 }

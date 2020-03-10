@@ -8,6 +8,8 @@ import { Component, OnInit, Input } from '@angular/core';
 export class CalloutComponent implements OnInit {
   @Input() calloutLabel: string;
 
+  @Input() title = '';
+  @Input() body = '';
   constructor() { }
 
   ngOnInit() {

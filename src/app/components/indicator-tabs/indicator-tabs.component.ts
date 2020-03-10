@@ -30,7 +30,7 @@ export class IndicatorTabsComponent implements OnInit {
   };
   renderTable = false;
   tabs = TABS;
-
+  popOverText = '';
 
   @Input() viewerModel:any;
   @Input() viewerGroupModel: any;
@@ -39,6 +39,7 @@ export class IndicatorTabsComponent implements OnInit {
   @Input() view: string;
   @Input() selectedCountry: string;
   @Input() firstCountryOverride = '';
+  @Input() forPrint = false;
 
   constructor(private chartService:ChartService) { }
 

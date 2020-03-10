@@ -1,5 +1,5 @@
 <app-navbar></app-navbar>
-<app-callout></app-callout>
+<app-callout [title]="calloutTitle" [body]="calloutBody"></app-callout>
 <div class="container">
   <div class="row">
     <div class="card-deck">
@@ -9,8 +9,7 @@
           <div class="card-body">
             <h4 class="card-title">Interested in a country?</h4>
             <div class="card__content-wrapper">
-              <p class="card-text">How resilient is your country? Click here to find policy options in a specific
-                country and make comparisons to other countries or global and regional averages.</p>
+              <p class="card-text">How resilient is your country? Click here to make comparisons to global averages, and to rank policy options for building resilience in a specific country. </p>
               <div class="card-link">Explore
                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                   xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 12.1 20"
@@ -27,6 +26,7 @@
           </div>
         </a>
       </div>
+
       <div class="card" [ngClass]="hoverClass2" (mouseover)="hoverClass2 = 'card__hover'" (mouseout)="hoverClass2 = ''">
         <a href="#" routerLink="/specificpolicymeasure">
           <img class="card-img-top" src="assets/image/policy-area-thumb.png" alt="Card image cap">
@@ -61,8 +61,7 @@
               <h4 class="card-title card-title-last">Access full analytical tool</h4>
             </div>
             <div class="card__content-wrapper">
-              <p class="card-text">Explore policy scenarios for countries included in the unbreakable model. Manually
-                adjust country conditions to assess impacts on resilience and avoided losses.</p>
+              <p class="card-text">Evaluate the benefit of customized policy scenarios on resilience in a country by manually adjusting country conditions.</p>
               <div class="card-link">
                 Explore
                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"

@@ -1,11 +1,13 @@
-<div class="slider-tabs">
+<div class="slider-tabs" [class.for-print]="forPrint">
   <div class="box-tab">
     <ng-container *ngFor="let tab of tabs; let f = first;">
-      <input [attr.id]="'tab-' + tab.id" type="radio" name="tabs"
-      class="slider-tabs__tab-input tab-input" [checked]="f">
+      <ng-container *ngIf="!forPrint">
+        <input [attr.id]="'tab-' + tab.id" type="radio" name="tabs"
+        class="slider-tabs__tab-input tab-input" [checked]="f">
 
-      <label [attr.for]="'tab-' + tab.id"
-      class="slider-tabs__tab-label tab-label">{{ tab.label }}</label>
+        <label [attr.for]="'tab-' + tab.id"
+        class="slider-tabs__tab-label tab-label">{{ tab.label }}</label>
+      </ng-container>
 
       <div class="slider-tabs__content tab-content">
         <div class="slider-tabs__row slider-tabs__row--labels"
@@ -16,6 +18,9 @@
 
             <span class="slider-tabs__col--label">
               {{inputLabels[key] ? inputLabels[key].descriptor : inputType}}
+              <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover" triggers="mouseenter:mouseleave"  popoverTitle="" (mouseover)="popOverText = inputLabels[key].info" *ngIf="!forPrint">
+                <i class="mdi mdi-information-outline"></i>
+              </button>
             </span>
           </div>
         </div>
@@ -24,7 +29,16 @@
         [ngClass]="'cols-' + (inputTypes[tab.id].length)">
           <ng-container *ngFor="let key of inputTypes[tab.id]">
             <div *ngIf="sliderValuesPopulated" class="slider-tabs__col slider-tabs__col--slider">
+              <div class="slider-tabs__print-slider" *ngIf="forPrint">
+                <div class="slider-tabs__range">
+                  <div class="slider-tabs__fill"
+                  [style.width.%]="printSliderPos(key)"></div>
+                  <div class="slider-tabs__point"
+                  [style.left.%]="printSliderPos(key)"></div>
+                </div>
+              </div>
               <md-slider
+              [class.is-invisible]="forPrint"
               class="slider-tabs__mat-slider"
               [min]="sliderValues[key + '_min']"
               [max]="sliderValues[key + '_max']"
@@ -51,3 +65,6 @@
     </ng-container>
   </div>
 </div>
+<ng-template #popover>
+  {{popOverText}}
+</ng-template>

@@ -22,6 +22,11 @@ import { AppStore } from '../../store/default.store';
 import { MdSliderChange } from '@angular/material/';
 
 import * as d3 from 'd3/d3.js';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+
+import blobStream from 'blob-stream';
+
 @Component({
   selector: 'app-viewer',
   templateUrl: './viewer.component.html',
@@ -34,7 +39,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * map conf, chart conf, UI events, observables and viewer models.
    */
 
-  public calloutTitle: string;
   public countryUIList: Array<any> = [];
   public countryListComp: Array<any> = [];
   public countryListIsoCodes: Array<any> = [];
@@ -248,6 +252,10 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   searchFailed: any;
 
   showPolicy = false;
+
+  calloutTitle = 'Advanced tool';
+  calloutBody = 'Use the advanced tool to explore the drivers of resilience, and to estimate the benefits of custom interventions. Create your own scenario by manipulating the sliders and see how these shifts contribute to resilience in your country.';
+
   /**
    * Component constructor which is first invoked when the app is rendering.
    * Inits accessing stored state-like data from the app root store data.
@@ -294,7 +302,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.chartConf = this.chartService.getChartsConf();
 
     this.hazardTypes = this.chartService.getChartsConf().hazardTypes;
-    this.calloutTitle = this.setCalloutTitle();
+    // this.calloutTitle = this.setCalloutTitle();
   }
   /**
    * This methods gets called when the component gets removed from the UI (normally happens while changing to another page).
@@ -454,7 +462,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         });
 
         if (this.global) {
-          console.log(this.viewerDisplay)
           this.chartService.updateOutputCharts(idOut, list[0].code, null, true, this.viewerDisplay === 'full-analysis');
           this.chartService.updateInputCharts(idInSoc, sliderValues, list[0].code);
           this.chartService.updateInputCharts(idInEco, sliderValues, list[0].code);
@@ -544,7 +551,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.chartService.initOutputChartConf();
     this.getOutputDataSubs = this.chartService.getOutputDataObs().subscribe(data => {
       this.chartService.setInputData(data._globalModelData).then((inputData) => {
-        console.log('!! data', data)
         this.inputData = inputData;
         this.inputLabels = this.chartService.getInputLabels();
         this.createInputCharts(1, inputData, this.sliderValues1);
@@ -659,7 +665,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     const inputTypes = chartConf.inputTypes;
     const firstInput = this.viewerModel.firstCountry;
     const secondInput = this.viewerModel.secondCountry;
-    console.log('processForFileJSONData');
+
     const data: any = {
       country1: {
         name: '',
@@ -805,7 +811,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   //sets the callout title based on the route params
-  setCalloutTitle() {
+  /*setCalloutTitle() {
     if (this.url[0].path === 'viewer') {
       return 'Country page label';
     } else if (this.url[0].path === 'full-analysis') {
@@ -815,7 +821,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     } else {
       return 'Callout title undefined';
     }
-  }
+  }*/
 
   /**
    * Sets default map configuration to be used when user has interaction with the map chart.
@@ -1440,5 +1446,23 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public toggleMapComponent() {
     this.mapComponentOpen = !this.mapComponentOpen;
+  }
+
+  screenshot() {
+    const element = document.getElementById('print');
+    const canvasOpts = {
+      scrollY: scrollY * -1,
+      dpi: 300,
+      scale: 2,
+    };
+
+    html2canvas(element, canvasOpts).then((canvas) => {
+      const img = canvas.toDataURL("image/png");
+      const doc = new jsPDF({unit: 'px', format: 'letter'});
+      const imgProps = doc.getImageProperties(img);
+
+      doc.addImage(img, 'PNG', 10, 10, imgProps.width/4, imgProps.height/4);
+      doc.save('test.pdf');
+    });
   }
 }

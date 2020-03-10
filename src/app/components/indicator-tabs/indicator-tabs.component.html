@@ -1,11 +1,18 @@
-<div class="indicator-tabs" *ngIf="renderTable">
+<div class="indicator-tabs" *ngIf="renderTable" [class.for-print]="forPrint">
   <div class="box-tab">
     <ng-container *ngFor="let tab of tabs; let f = first;">
-      <input [attr.id]="'tab-' + tab.id" type="radio" name="tabs"
-      class="indicator-tabs__tab-input tab-input" [checked]="f">
-      <label [attr.for]="'tab-' + tab.id"
-      class="indicator-tabs__tab-label tab-label">{{ tab.label }}</label>
+      <ng-container *ngIf="!forPrint">
+        <input [attr.id]="(forPrint ? 'print-' : '') + 'tab-' + tab.id"
+        type="radio" name="tabs"
+        class="indicator-tabs__tab-input tab-input" [checked]="f">
+        <label [attr.for]="'tab-' + tab.id"
+        class="indicator-tabs__tab-label tab-label">{{ tab.label }}</label>
+      </ng-container>
+
       <div class="indicator-tabs__content tab-content">
+        <div *ngIf="forPrint" class="indicator-tabs__content-heading">
+          <h4>{{ tab.label }}</h4>
+        </div>
         <div class="indicator-tabs__row indicator-tabs__row--labels"
         [ngClass]="'cols-' + (inputTypes[tab.id].length + 1)">
           <div class="indicator-tabs__col ">&nbsp;</div>
@@ -13,6 +20,9 @@
           class="indicator-tabs__col">
             <span class="indicator-tabs__col--label">
               {{inputLabels[key] ? inputLabels[key].descriptor : inputType}}
+              <button *ngIf="!forPrint" type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover" triggers="mouseenter:mouseleave" popoverTitle="" (mouseover)="popOverText = inputLabels[key].info">
+                <i class="mdi mdi-information-outline"></i>
+              </button>
             </span>
           </div>
         </div>
@@ -53,3 +63,6 @@
     </ng-container>
   </div>
 </div>
+<ng-template #popover>
+  {{popOverText}}
+</ng-template>

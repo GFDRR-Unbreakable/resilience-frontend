@@ -33,6 +33,10 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
   });
   public selectedPolicyUIList = this.policyGroupUIList[0];
   public selectedRegionUIList = this.regionUIList[0];
+
+  calloutTitle = 'Policy tool';
+  calloutBody = 'What are the expected benefits of investments in resilience? Select a specific policy from the drop-down list and compare the impact of the policy across countries. ';
+
   /**
    * Component constructor which is first invoked when the app is rendering.
    * It has two custom injected services: ChartService and FileService.
