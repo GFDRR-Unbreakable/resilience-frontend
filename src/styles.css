@@ -1204,12 +1204,13 @@ template {
 .scorecard-title{
   align-items: center;
   display: flex;
-  padding: 40px 36px 20px 36px!important;
+  padding-top: 40px;
+  padding-bottom: 20px;
 }
 .scorecard-title-01{
   display: -webkit-inline-box;
   vertical-align: middle !important;
-  padding: 13px 36px 0px 36px !important;
+  padding-top: 13px;
 }
 .scorecard-text{
   padding: 0px;

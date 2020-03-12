@@ -40,6 +40,8 @@ import { PolicyListChartComponent } from './components/policy-list-chart/policy-
 import { AnalyticalToolComponent } from './components/analytical-tool/analytical-tool.component';
 import { CalloutComponent } from './components/callout/callout.component';
 import { SliderTabsComponent } from './components/slider-tabs/slider-tabs.component';
+import { PrintComponent } from './components/print/print.component';
+import { SpecificPolicyListChartComponent } from './components/specific-policy-list-chart/specific-policy-list-chart.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +66,8 @@ import { SliderTabsComponent } from './components/slider-tabs/slider-tabs.compon
     AnalyticalToolComponent,
     CalloutComponent,
     SliderTabsComponent,
+    PrintComponent,
+    SpecificPolicyListChartComponent,
   ],
   imports: [
     BrowserModule,

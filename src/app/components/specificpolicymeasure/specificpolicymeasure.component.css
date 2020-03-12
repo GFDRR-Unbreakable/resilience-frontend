@@ -16,6 +16,10 @@
   font-size: 12px;
 }
 
+.dropdown-politics {
+  margin-left: 0;
+}
+
 /* Styles to make policy measure container responsive */
 /*
 @media (max-width: 992px) {

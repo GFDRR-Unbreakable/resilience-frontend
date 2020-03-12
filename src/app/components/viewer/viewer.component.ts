@@ -5,7 +5,7 @@ import { distinct } from 'rxjs/operator/distinct';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Viewer, ViewerGroup, ViewerModel } from '../../store/model/viewer.model';
 import { ViewerAction } from '../../store/action/viewer.action';
-import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operator/map';
 import { debounceTime } from 'rxjs/operator/debounceTime';
@@ -24,8 +24,8 @@ import { MdSliderChange } from '@angular/material/';
 import * as d3 from 'd3/d3.js';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { PrintComponent } from '../print/print.component';
 
-import blobStream from 'blob-stream';
 
 @Component({
   selector: 'app-viewer',
@@ -187,6 +187,9 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   public viewerModel2Subs: Subscription;
   private onPassEv = e => { e.preventDefault(); };
   private globalModelDataHash: any = {};
+
+  @ViewChild('print') print: PrintComponent;
+
   /**
    * Returns a list of matches as a result of a searched string when first or second input-text is being modified.
    */
@@ -1446,23 +1449,5 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public toggleMapComponent() {
     this.mapComponentOpen = !this.mapComponentOpen;
-  }
-
-  screenshot() {
-    const element = document.getElementById('print');
-    const canvasOpts = {
-      scrollY: scrollY * -1,
-      dpi: 300,
-      scale: 2,
-    };
-
-    html2canvas(element, canvasOpts).then((canvas) => {
-      const img = canvas.toDataURL("image/png");
-      const doc = new jsPDF({unit: 'px', format: 'letter'});
-      const imgProps = doc.getImageProperties(img);
-
-      doc.addImage(img, 'PNG', 10, 10, imgProps.width/4, imgProps.height/4);
-      doc.save('test.pdf');
-    });
   }
 }

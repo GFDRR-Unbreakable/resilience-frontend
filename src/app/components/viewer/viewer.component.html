@@ -66,9 +66,6 @@
     </div>
   </div>
 
-
-  <button (click)="screenshot()">Screenshot</button>
-
   <div class="row" *ngIf="viewerDisplay === 'viewer'">
     <div class="col-md-12">
       <div class="card-02x">
@@ -228,7 +225,7 @@
           *ngIf="viewerDisplay == 'tech'">RESET</button>
         <button type="button" class="btn btn-primary text-download" (click)="onDownloadCSVViewerReportEvent()"><img
             class="img-download" src="assets/image/ic-download-green.png" alt="">CSV</button>
-        <button type="button" class="btn btn-primary text-download" (click)="onDownloadPDFViewerReportEvent()"><img
+        <button type="button" class="btn btn-primary text-download" (click)="print.screenshot()"><img
             class="img-download" src="assets/image/ic-download-green.png" alt="">PDF</button>
       </div>
     </h2>
@@ -258,7 +255,7 @@
       <!--<app-switch class="viewer__switch" [value]="switchPolicyValue" [options]="switchPolicyOptions" [labels]="switchPolicyLabels" (onChange)="switchPolicyValue = $event"></app-switch>-->
 
       <div class="viewer__download-buttons box-download">
-        <button type="button" class="btn btn-primary text-download" (click)="onDownloadPDFViewerReportEvent()"><img
+        <button type="button" class="btn btn-primary text-download" (click)="print.screenshot()"><img
             class="img-download" src="assets/image/ic-download-green.png" alt="">PDF</button>
       </div>
     </h2>
@@ -361,167 +358,24 @@
       </div>
     </div>
   </div>
-  <button (click)="screenshot()">Screenshot</button>
 </div>
 
 <app-footer [selection]="false"></app-footer>
-
-<div class="print" id="print">
-  {{view}}
-  <div class="print__header">
-    <div class="print__logo">
-      <img src="assets/image/logo-04.png" />
-    </div>
-
-    <div class="print__heading">
-      <h2>Country: {{selectedCountryName}}</h2>
-    </div>
-  </div>
-
-  <div class="print__body">
-    <div class="print__section" *ngIf="viewerDisplay === 'viewer'">
-      <div class="print__heading">
-        <h3>
-          Country Losses to Assets, Well-Being, and Socio-Economic Resilience
-        </h3>
-      </div>
-      <div class="print__grid">
-        <div class="print__labels">
-          <div class="print__label">
-            {{ this.chartConf.outputs.risk_to_assets.descriptor }}
-          </div>
-          <div class="print__label">
-            {{ this.chartConf.outputs.resilience.descriptor }}
-          </div>
-          <div class="print__label">
-            {{ this.chartConf.outputs.risk.descriptor }}
-          </div>
-        </div>
-
-        <div class="print__row">
-          <div class="print__col print__country-label">
-            <div>
-              <div class="print__country">
-                {{ selectedCountryName }}
-              </div>
-            </div>
-          </div>
-          <div class="print__chart-wrapper">
-            <div class="print__col">
-              <app-gauge-display [view]="switchValue" [data]="gaugeData['risk_to_assets']" [id]="selectedCountry">
-              </app-gauge-display>
-            </div>
-            <div class="print__col">
-              <app-gauge-display [view]="switchValue" [data]="gaugeData['resilience']" [id]="selectedCountry">
-              </app-gauge-display>
-            </div>
-            <div class="print__col">
-              <app-gauge-display [view]="switchValue" [data]="gaugeData['risk']" [id]="selectedCountry">
-              </app-gauge-display>
-            </div>
-          </div>
-        </div>
-
-        <div class="print__row">
-          <div class="print__col print__country-label">
-            <div class="print__country">{{viewerModel.secondCountry || 'Global Average'}}</div>
-            <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">
-              {{viewerGroupModel.secondCountryGroup}}</div>
-          </div>
-          <div class="print__chart-wrapper">
-            <div class="print__col">
-              <app-gauge-display [view]="switchValue" [data]="gaugeData['risk_to_assets']"></app-gauge-display>
-            </div>
-
-            <div class="print__col">
-              <app-gauge-display [view]="switchValue" [data]="gaugeData['resilience']"></app-gauge-display>
-            </div>
-            <div class="print__col">
-              <app-gauge-display [view]="switchValue" [data]="gaugeData['risk']"></app-gauge-display>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="print__section"  *ngIf="viewerDisplay === 'viewer' && !showPolicy">
-      <div class="print__heading">
-        <h3>Country Resilience Factors</h3>
-      </div>
-      <app-indicator-tabs [viewerModel]="viewerModel" [view]="switchValue"
-      [viewerGroupModel]="viewerGroupModel" [countryData]="countryData"
-      [inputLabels]="inputLabels" [selectedCountry]="selectedCountry" [firstCountryOverride]="selectedCountryName" [forPrint]="true">
-      </app-indicator-tabs>
-    </div>
-
-    <div class="print__section"  *ngIf="viewerDisplay === 'viewer' && showPolicy">
-      <div class="print__heading print__heading--policy">
-        <h3>How Country Policies Can Reduce Asset And Well-Being Losses</h3>
-      </div>
-      <div class="print__policy-wrapper">
-        <div class="print__policy-list">
-          <app-policy-list-chart [countryName]="selectedCountryName" type="absolute" [forPrint]="true">
-          </app-policy-list-chart>
-        </div>
-        <div class="viewer__policy-list">
-          <app-policy-list-chart [countryName]="selectedCountryName" type="relative" [forPrint]="true">
-          </app-policy-list-chart>
-        </div>
-      </div>
-    </div>
-
-    <div class="print__section" *ngIf="viewerDisplay === 'full-analysis'">
-      <div class="print__heading">
-        <h3>[Place holder title] Input</h3>
-      </div>
-      <app-slider-tabs [forPrint]="true" [inputLabels]="inputLabels"
-      [sliderValues]="sliderValues1"
-      (sliderChange)="onSliderChangeEvent1($event)"
-      (sliderInputChange)="onSliderInputEventAlt($event)"></app-slider-tabs>
-    </div>
-
-    <div class="print__section" *ngIf="viewerDisplay === 'full-analysis'">
-      <div class="print__heading">
-        <h3>[Place holder title] Outcome</h3>
-      </div>
-      <div class="print__grid">
-        <div class="print__labels">
-          <div class="print__label">
-            {{ this.chartConf.outputs.risk_to_assets.descriptor }}
-          </div>
-          <div class="print__label">
-            {{ this.chartConf.outputs.resilience.descriptor }}
-          </div>
-          <div class="print__label">
-            {{ this.chartConf.outputs.risk.descriptor }}
-          </div>
-        </div>
-
-        <div class="print__row">
-          <div class="print__col print__country-label">
-            <div>
-              <div class="print__country">
-                {{ selectedCountryName }}
-              </div>
-            </div>
-          </div>
-          <div class="print__chart-wrapper">
-            <div class="print__col">
-              <app-gauge-display [view]="switchValue" [data]="gaugeData['risk_to_assets']" [id]="selectedCountry" [changeRow]="this.gaugeChangeData['risk_to_assets']" [hasChange]="true">
-              </app-gauge-display>
-            </div>
-            <div class="print__col">
-              <app-gauge-display [view]="switchValue" [data]="gaugeData['resilience']" [id]="selectedCountry" [changeRow]="this.gaugeChangeData['resilience']" [hasChange]="true">
-              </app-gauge-display>
-            </div>
-            <div class="print__col">
-              <app-gauge-display [view]="switchValue" [data]="gaugeData['risk']" [id]="selectedCountry" [changeRow]="this.gaugeChangeData['risk']"  [hasChange]="true">
-              </app-gauge-display>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
   <!-- End Print -->
-</div>
+<app-print #print
+[countryData]="countryData"
+[chartConf]="chartConf"
+[gaugeData]="gaugeData"
+[gaugeChangeData]="gaugeChangeData"
+[inputLabels]="inputLabels"
+[selectedCountry]="selectedCountry"
+[selectedCountryName]="selectedCountryName"
+[showPolicy]="showPolicy"
+[sliderValues1]="sliderValues1"
+[onSliderChangeEvent1]="onSliderChangeEvent1"
+[onSliderInputEventAlt]="onSliderInputEventAlt"
+[switchValue]="switchValue"
+[viewerDisplay]="viewerDisplay"
+[viewerGroupModel]="viewerGroupModel"
+[viewerModel]="viewerModel"></app-print>
+

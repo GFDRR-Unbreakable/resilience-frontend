@@ -1,9 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import {Subscription} from 'rxjs/Subscription';
 
 import {ChartService} from '../../services/chart.service';
 import {FileService} from '../../services/files.service';
+import { PrintComponent } from '../print/print.component';
 
 @Component({
   selector: 'app-specificpolicymeasure',
@@ -37,6 +38,7 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
   calloutTitle = 'Policy tool';
   calloutBody = 'What are the expected benefits of investments in resilience? Select a specific policy from the drop-down list and compare the impact of the policy across countries. ';
 
+  @ViewChild('print') print: PrintComponent;
   /**
    * Component constructor which is first invoked when the app is rendering.
    * It has two custom injected services: ChartService and FileService.
@@ -44,7 +46,10 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
    * @param {FileService} fileService - Service which is required to perform the download CSV or PDF file process through a server.
    */
   constructor(private chartService: ChartService,
-    private fileService: FileService) { }
+    private fileService: FileService) {
+
+    }
+
   /**
    * This method gets called after the component has invoked its constructor.
    * Inits Scorecard-measure data configuration.
@@ -65,12 +70,12 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
    * which gets updated data and plots mentioned data in plotted scorecard measure charts.
    */
   private _onChangeInputValuesEv() {
-    const policyObj = this.selectedPolicyUIList;
+    /*const policyObj = this.selectedPolicyUIList;
     const data = this.chartService.getMetricAllCountriesSinglePolicy(policyObj.id);
     this.chartService.createPolicyListChart(data, 'policy-measure-1',
       {type: 'policyMeasure', chartType: 'absolute', isNew: false, region: this.selectedRegionUIList.id}, policyObj.hideAvoidedAssetLosses);
     this.chartService.createPolicyListChart(data, 'policy-measure-2',
-      {type: 'policyMeasure', chartType: 'relative', isNew: false, region: this.selectedRegionUIList.id}, policyObj.hideAvoidedAssetLosses);
+      {type: 'policyMeasure', chartType: 'relative', isNew: false, region: this.selectedRegionUIList.id}, policyObj.hideAvoidedAssetLosses);*/
   }
   /**
    * This method builds data from ScorecardChart chart values to be
@@ -119,11 +124,12 @@ export class SpecificpolicymeasureComponent implements OnInit, OnDestroy {
           label: region
         });
       });
-      const policyData = this.chartService.getMetricAllCountriesSinglePolicy(this.selectedPolicyUIList.id);
+      /*const policyData = this.chartService.getMetricAllCountriesSinglePolicy(this.selectedPolicyUIList.id);
       this.chartService.createPolicyListChart(policyData, 'policy-measure-1',
         {type: 'policyMeasure', chartType: 'absolute', isNew: true, region: this.selectedRegionUIList.id}, this.selectedPolicyUIList.hideAvoidedAssetLosses);
+
       this.chartService.createPolicyListChart(policyData, 'policy-measure-2',
-        {type: 'policyMeasure', chartType: 'relative', region: this.selectedRegionUIList.id, isNew: true}, this.selectedPolicyUIList.hideAvoidedAssetLosses);
+        {type: 'policyMeasure', chartType: 'relative', region: this.selectedRegionUIList.id, isNew: true}, this.selectedPolicyUIList.hideAvoidedAssetLosses);*/
     });
   }
   /**

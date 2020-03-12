@@ -1274,6 +1274,7 @@ export class ChartService {
     const isCountryListObject = typeof countryList === 'object' && countryList['type'] === 'policyMeasure';
     const isCountryListCurrencyBased = isCountryListObject && countryList['chartType'] === 'absolute';
     const isCountryListPercentageBased = isCountryListObject && countryList['chartType'] === 'relative';
+    const forPrint = countryList.forPrint;
 
     jQuery.each(policyData, (idx, polData) => {
       const dKtot = countryList['chartType'] === 'absolute' ? +polData['num_asset_losses_label'] : +polData['rel_num_asset_losses_label'];
@@ -1362,8 +1363,8 @@ export class ChartService {
     let min = d3.min(minValues);
     let maxValue = d3.max([maxFirstBarValue, maxSecondBarValue]);
     let w;
-    if (countryList.forPrint) {
-      w = 675;
+    if (forPrint) {
+      w = isCountryListObject ? 635 : 675;
     } else if (isCountryListObject) {
       w = 670;
     } else if (isPolicyListObject) {
@@ -1371,7 +1372,10 @@ export class ChartService {
     } else {
       w = 650;
     }
-    const h = countryList.forPrint ? 820 : isCountryListObject ? recalculateChartHeight() : 1000;
+
+    let h = isCountryListObject ? recalculateChartHeight() : 1000;
+    h = forPrint && h > 820 ? 820 : h;
+
     const margin = {
       left: isPolicyListObject ? 170 : 130,
       right: 70,
@@ -1382,7 +1386,6 @@ export class ChartService {
     const height = h - margin.top - margin.bottom;
     const spaceLblCh = 10;
 
-    console.log(w, maxValue, width, countryList)
     let xDomain = [];
     xDomain.push(-1, maxValue);
 
@@ -1539,7 +1542,7 @@ export class ChartService {
           const translatefromLeft = 'translate(' + (margin.left + spaceLblCh + distanceFromLeftofChart) + ', ' + (margin.top - 5) + ')';
 
           //Selects both svgs and appends label
-          d3.selectAll('svg')
+          d3.select(`#${containerId} svg`)
             .append('text')
             .attr('text-anchor', 'middle')
             .attr('transform', translatefromLeft)
@@ -1549,13 +1552,13 @@ export class ChartService {
             .text(text);
         }
 
-        //Min Label
-        generateMinMaxLabel(0, 'min');
-
-        //Max label
-        generateMinMaxLabel(width - 250, 'max');
-
-        //----------------------
+        if (countryList.isNew) {
+          //Min Label
+          generateMinMaxLabel(0, 'min');
+          //Max label
+          const maxOff = isCountryListObject ? 215 : 250;
+          generateMinMaxLabel(width - maxOff, 'max');
+        }
 
       } else {
         // Update lane lines
@@ -1756,10 +1759,11 @@ export class ChartService {
         }
         return value;
       };
+      const duration = forPrint ? 0 : 500;
       eBar
         .selectAll('.empty-bar1')
         .transition()
-        .duration(500)
+        .duration(duration)
         .ease('bounce')
         .attr('x', (d, i) => {
           return 0;
@@ -1783,7 +1787,7 @@ export class ChartService {
       eBar
         .selectAll('.empty-bar2')
         .transition()
-        .duration(500)
+        .duration(duration)
         .ease('bounce')
         .attr('x', (d, i) => {
           return 0;
@@ -1807,7 +1811,7 @@ export class ChartService {
       dataBars
         .selectAll('.bar-chart1')
         .transition()
-        .duration(500)
+        .duration(duration)
         .ease('bounce')
         .attr('x', (d, i) => {
           const data = d.dWtot_currency;
@@ -1841,7 +1845,7 @@ export class ChartService {
       dataBars
         .selectAll('.bar-chart2')
         .transition()
-        .duration(500)
+        .duration(duration)
         .ease('bounce')
         .attr('x', (d, i) => {
           if (hideAvoidedAssetLosses) {
@@ -1874,12 +1878,12 @@ export class ChartService {
         })
         .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', 0)')
         //.classed('fill--gray-green', true);
-        .style('fill', 'var(--gray-green)'/*'#C3D700'*/);
+        .style('fill', "#7d8f8f" /*'var(--gray-green)'*//*'#C3D700'*/);
       // .style('fill', '#f3a277');
       barLabels
         .selectAll('.labels1')
         .transition()
-        .duration(500)
+        .duration(duration)
         .ease('bounce')
         .attr('x', (d, i) => {
           return width - 50;
@@ -1905,7 +1909,7 @@ export class ChartService {
       barLabels
         .selectAll('.labels2')
         .transition()
-        .duration(500)
+        .duration(duration)
         .ease('bounce')
         .attr('x', (d, i) => {
           return width - 50;

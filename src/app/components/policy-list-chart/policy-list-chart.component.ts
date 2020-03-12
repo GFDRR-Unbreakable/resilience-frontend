@@ -26,7 +26,7 @@ export class PolicyListChartComponent implements OnInit {
 
   @Input() countryName: string = '';
   @Input() type: 'absolute' | 'relative' = 'absolute';
-  @Input() forPrint = false
+  @Input() forPrint = false;
 
   constructor(private chartService: ChartService) {
 
