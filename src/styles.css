@@ -11975,3 +11975,8 @@ fieldset {
 svg rect.fill--gray-green {
   fill: var(--gray-green);
 }
+
+svg text tspan,
+svg text {
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}

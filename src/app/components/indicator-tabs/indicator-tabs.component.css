@@ -115,6 +115,10 @@
   }
 }
 
+.indicator-tabs.for-print {
+  margin-top: -10px;
+}
+
 .for-print .tab-content {
   display: block;
   padding: 10px 0;

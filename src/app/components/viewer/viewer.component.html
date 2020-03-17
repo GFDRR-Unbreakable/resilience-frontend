@@ -275,6 +275,10 @@
   <div class="viewer__section viewer__section--policy" *ngIf="viewerDisplay === 'full-analysis'">
     <h2 class="mappage__header viewer__header">
       [Place holder title] Input
+      <div class="viewer__download-buttons box-download">
+        <button type="button" class="btn btn-primary text-download" (click)="print.screenshot()"><img
+            class="img-download" src="assets/image/ic-download-green.png" alt="">PDF</button>
+      </div>
     </h2>
 
 

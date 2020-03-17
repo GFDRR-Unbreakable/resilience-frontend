@@ -9,6 +9,10 @@
   left: 10000px;
   top: 0;
   background-color: #ffffff;
+
+  /*left : 10px;
+  position: relative;
+  background-color: seashell;*/
 }
 
 .print__header {
@@ -38,7 +42,7 @@
 
 
 .print__section {
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .print__body .print__heading h3 {
