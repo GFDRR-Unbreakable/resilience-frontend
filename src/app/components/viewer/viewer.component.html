@@ -223,8 +223,9 @@
       <div class="viewer__download-buttons box-download">
         <button type="button" class="btn btn-primary text-download" (click)="onResetTechDataEvent()"
           *ngIf="viewerDisplay == 'tech'">RESET</button>
-        <button type="button" class="btn btn-primary text-download" (click)="onDownloadCSVViewerReportEvent()"><img
-            class="img-download" src="assets/image/ic-download-green.png" alt="">CSV</button>
+        <a class="btn btn-primary text-download" href="/assets/data/df_for_wrapper2.csv">
+          <img class="img-download" src="assets/image/ic-download-green.png" alt="">CSV
+        </a>
         <button type="button" class="btn btn-primary text-download" (click)="print.screenshot()"><img
             class="img-download" src="assets/image/ic-download-green.png" alt="">PDF</button>
       </div>
