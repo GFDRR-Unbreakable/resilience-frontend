@@ -96,3 +96,67 @@
     bottom: 0;
   }
 }
+
+
+.callout {
+
+}
+
+.callout__banner {
+  height: 300px;
+  background-size: cover;
+  background-image: url('/assets/image/flood-banner-5-13.png');
+  position: relative;
+}
+
+.callout__banner-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.callout__row,
+.callout__container {
+  height: 100%;
+}
+
+.callout__row {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.callout__prefix {
+  font-size: 42px;
+  line-height: 50px;
+  color: #fff;
+  font-weight: 900;
+}
+
+h1,
+h1.callout__prefix {
+  font-size: 42px;
+  line-height: 50px;
+  color: #fff;
+  text-transform: uppercase;
+  margin: 0 0 20px;
+  font-weight: normal;
+}
+
+.callout__intro {
+  width: calc(66.6666% - 15px);
+  font-size: 21px;
+  line-height: 1.4;
+}
+
+.is-landing .callout__intro {
+  color: var(--teal);
+}
+
+.callout__intro-wrapper {
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--gray-light);
+}

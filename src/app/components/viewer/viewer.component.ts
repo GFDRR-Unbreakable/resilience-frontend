@@ -22,8 +22,6 @@ import { AppStore } from '../../store/default.store';
 import { MdSliderChange } from '@angular/material/';
 
 import * as d3 from 'd3/d3.js';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
 import { PrintComponent } from '../print/print.component';
 
 

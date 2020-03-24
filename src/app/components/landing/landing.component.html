@@ -1,7 +1,7 @@
 <app-navbar></app-navbar>
-<app-callout [title]="calloutTitle" [body]="calloutBody"></app-callout>
+<app-callout [prefix]="callout.prefix" [title]="callout.title" [intro]="callout.intro" [isLanding]="true"></app-callout>
 <div class="container">
-  <div class="row">
+  <div class="rowx">
     <div class="card-deck">
       <div class="card" [ngClass]="hoverClass1" (mouseover)="hoverClass1 = 'card__hover'" (mouseout)="hoverClass1 = ''">
         <a href="#" routerLink="/viewer">

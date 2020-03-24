@@ -6,10 +6,11 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./callout.component.css']
 })
 export class CalloutComponent implements OnInit {
-  @Input() calloutLabel: string;
 
+  @Input() prefix = '';
   @Input() title = '';
-  @Input() body = '';
+  @Input() intro = '';
+  @Input() isLanding = false;
   constructor() { }
 
   ngOnInit() {
