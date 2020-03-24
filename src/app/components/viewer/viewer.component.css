@@ -148,7 +148,7 @@
 .viewer__header {
   display: flex;
   align-items: center;
-  margin: 0 0 30px;
+  margin: 0 0 20px;
   flex-wrap: wrap;
 }
 
@@ -399,4 +399,9 @@
 
 .viewer__policy-list {
   margin-bottom: 20px;
+}
+
+.viewer__slider-sub-heading {
+  font-size: 16px;
+  margin: 0 0 15px;
 }

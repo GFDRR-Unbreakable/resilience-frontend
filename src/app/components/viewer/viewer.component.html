@@ -283,11 +283,17 @@
 
 
     <div class="viewer__slider-row">
-      <app-slider-tabs [inputLabels]="inputLabels"
-      [sliderValues]="sliderValues1"
-      (sliderChange)="onSliderChangeEvent1($event)"
-      (sliderInputChange)="onSliderInputEventAlt($event)"></app-slider-tabs>
+      <div >
+        <h3 class="viewer__slider-sub-heading">Country Resilience Factors </h3>
+        <app-slider-tabs [inputLabels]="inputLabels"
+        [sliderValues]="sliderValues1"
+        (sliderChange)="onSliderChangeEvent1($event)"
+        (sliderInputChange)="onSliderInputEventAlt($event)"></app-slider-tabs>
+      </div>
+
       <div class="viewer__slider-buttons">
+        <h3 class="viewer__slider-sub-heading">Hazards Selection</h3>
+
         <div class="hover-a hazard-buttons" >
           <a (click)="onSwitchExposure1()" placement="top" ngbPopover="Coastal and Riverine Flooding" triggers="mouseenter:mouseleave" popoverTitle="" class="hazard-buttons__button">
             <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="!hazards.hazard1" src="assets/image/flood-yellow.png" alt=""/>
