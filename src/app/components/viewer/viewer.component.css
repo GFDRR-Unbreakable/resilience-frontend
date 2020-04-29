@@ -48,17 +48,18 @@
 .callout-body-inner p {
   font-size: 20px;
   line-height: 1.2;
-  color: #FFF;
+  color: #707070;
 }
 
 .callout-body-inner-icon {
-  width: 150px;
-  height: 150px;
+  width: 157px;
+  height: 155px;
 }
 
 .callout-body-inner h2 {
-  font-size: 36px;
+  font-size: 42px;
   font-weight: normal;
+  color: #707070;
 }
 
 @media (max-width: 992px) and (min-width: 768px) {
