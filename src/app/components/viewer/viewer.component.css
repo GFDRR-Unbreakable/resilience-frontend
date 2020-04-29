@@ -2,11 +2,10 @@
   position: absolute;
   height: 100%;
   width: 50%;
-  /*right: 0;*/
   left: 50%;
   top: 0;
-  background: rgb(0, 0, 0); /* Fallback for older browsers without RGBA-support */
-  background: rgba(0, 0, 0, 0.6);
+  background-size: cover;
+  background-image: url('../../../assets/image/Banner_Country.png');
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -42,7 +41,7 @@
 
 .callout-body-inner {
   width: 60%;
-  margin: 3rem 0rem 2rem 5.5rem;
+  margin: 3rem 0 2rem 5.5rem;
 }
 
 .callout-body-inner,
@@ -50,6 +49,11 @@
   font-size: 20px;
   line-height: 1.2;
   color: #FFF;
+}
+
+.callout-body-inner-icon {
+  width: 150px;
+  height: 150px;
 }
 
 .callout-body-inner h2 {
@@ -87,7 +91,7 @@
 
 .map-background.is-hidden {
   visibility: hidden;
-  height: 0px;
+  height: 0;
   margin-bottom: 0;
 }
 
