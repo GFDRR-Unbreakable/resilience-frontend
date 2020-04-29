@@ -1,24 +1,23 @@
-import { Component, OnInit, Input } from '@angular/core';
-
-const ROW_DEFAULT = {id: 'AVG', value: 0};
-
+import {Component, OnInit, Input, OnChanges} from '@angular/core';
 
 export interface DataRow {
   id: string;
   value: number;
-};
+}
+
+const ROW_DEFAULT = {id: 'AVG', value: 0};
 
 @Component({
   selector: 'app-gauge',
   templateUrl: './gauge.component.html',
   styleUrls: ['./gauge.component.css']
 })
-export class GaugeComponent implements OnInit {
+export class GaugeComponent implements OnInit, OnChanges {
   activeRow  = ROW_DEFAULT;
   markerRow = ROW_DEFAULT;
   @Input() data: DataRow[];
-  @Input() id: string = 'AVG';
-  @Input() max: number = 1;
+  @Input() id = 'AVG';
+  @Input() max = 1;
   @Input() formatter: Function = (x) => x;
   @Input() changeRow: DataRow | null;
   @Input() hasChange = false;
