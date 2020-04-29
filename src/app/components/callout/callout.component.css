@@ -99,14 +99,34 @@
 
 
 .callout {
+  position: relative;
+}
 
+.callout img {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  left: 45px;
+  top: 50px;
+  z-index: 999;
 }
 
 .callout__banner {
   height: 300px;
   background-size: cover;
-  background-image: url('../../../assets/image/flood-banner-5-13.png');
   position: relative;
+}
+
+.callout__banner.advanced {
+  background-image: url('../../../assets/image/banner_bg_Advanced_cropped.png');
+}
+
+.callout__banner.landing {
+  background-image: url('../../../assets/image/banner_bg_Landing_cropped.png');
+}
+
+.callout__banner.policy {
+  background-image: url('../../../assets/image/banner_bg_Policy_cropped.png');
 }
 
 .callout__banner-inner {
@@ -115,7 +135,11 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.container img {
+  width: 150px;
+  height: 150px;
 }
 
 .callout__row,
@@ -140,7 +164,7 @@ h1,
 h1.callout__prefix {
   font-size: 36px;
   line-height: 42px;
-  color: #fff;
+  color: #707070;
   text-transform: uppercase;
   margin: 0 0 20px;
   font-weight: normal;

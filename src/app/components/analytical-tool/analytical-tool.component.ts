@@ -9,8 +9,8 @@ import { Viewer } from 'app/store/model/viewer.model';
 })
 export class AnalyticalToolComponent implements OnInit {
 
-  //these variables are being declared to stop the build lint errors,
-  //do not delete them
+  // these variables are being declared to stop the build lint errors,
+  // do not delete them
   onFirstCountryInputChangeEvent: any;
   searchCountryFn: any;
   searchFailed: any;

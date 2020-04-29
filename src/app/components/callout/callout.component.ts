@@ -10,8 +10,9 @@ export class CalloutComponent implements OnInit {
   @Input() prefix = '';
   @Input() title = '';
   @Input() intro = '';
+  @Input() route = '';
   @Input() isLanding = false;
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
   }

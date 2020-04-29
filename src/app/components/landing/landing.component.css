@@ -1,5 +1,5 @@
 .card-deck {
-  margin: 30px 0px 10px 0px;
+  margin: 30px 0 10px 0;
 }
 
 @media (max-width: 576px) {

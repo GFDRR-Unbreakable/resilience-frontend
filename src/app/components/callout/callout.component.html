@@ -1,5 +1,7 @@
 <div class="callout" [class.is-landing]="isLanding">
-  <div class="callout__banner">
+  <img *ngIf="route === 'advanced'" src="../../../assets/image/Advanced_IconOnly.png"/>
+  <img *ngIf="route === 'policy'" src="../../../assets/image/Policy_IconOnly.png"/>
+  <div class="callout__banner" [ngClass]="route">
     <div class="callout__banner-inner">
       <div class="callout__container container">
         <div class="callout__row rowx">
