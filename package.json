@@ -8,7 +8,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "deploy": "npm run build && aws s3 sync --acl public-read --follow-symlinks --delete dist/ s3://graphicacy-gfdrr-unbreakable"
   },
   "private": true,
   "dependencies": {
