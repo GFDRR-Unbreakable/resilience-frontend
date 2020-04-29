@@ -4,7 +4,7 @@
   width: 50%;
   left: 50%;
   top: 0;
-  background-size: cover;
+  /*background-size: cover;*/
   background-image: url('../../../assets/image/Banner_Country.png');
   display: flex;
   align-items: center;
