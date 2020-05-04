@@ -1,8 +1,8 @@
 .callout-body {
   position: absolute;
   height: 100%;
-  width: 50%;
-  left: 50%;
+  width: 45%;
+  left: 55%;
   top: 0;
   /*background-size: cover;*/
   background-image: url('../../../assets/image/Banner_Country.png');

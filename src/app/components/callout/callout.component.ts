@@ -15,6 +15,7 @@ export class CalloutComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
+
   }
 
 }

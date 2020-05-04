@@ -1,9 +1,12 @@
 import {Component, OnInit, Input, OnChanges} from '@angular/core';
 import { ChartService } from '../../services/chart.service';
 import { createEmptyStateSnapshot } from '@angular/router/src/router_state';
-import {DataRow} from '../gauge/gauge.component';
 
 const ROW_DEFAULT = {id: 'AVG', value: 0};
+export interface DataRow {
+  id: string;
+  value: number;
+}
 @Component({
   selector: 'app-scatter-gauge',
   templateUrl: './scatter-gauge.component.html',

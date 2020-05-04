@@ -1,12 +1,14 @@
 import {Component, OnInit, Input, OnChanges} from '@angular/core';
 import * as d3 from 'd3/d3.js';
-import {DataRow} from '../gauge/gauge.component';
 
 const PCT_FORMAT = d3.format('.2%');
 const NOOP = (x) => x;
 const YEAR_FORMAT = (x) => `${ x } Yrs`;
 const MONEY_FORMAT = d3.format('$,.0f');
-
+export interface DataRow {
+  id: string;
+  value: number;
+}
 @Component({
   selector: 'app-gauge-display',
   templateUrl: './gauge-display.component.html',
