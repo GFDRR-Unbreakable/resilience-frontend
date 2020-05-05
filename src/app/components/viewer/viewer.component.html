@@ -34,7 +34,7 @@
     <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'asset'}"
       (click)="onChangeMapLayerEvent('asset')">Risk to Assets <br> (% of GDP)</button>
     <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'socio'}"
-      (click)="onChangeMapLayerEvent('socio')">Socio-Economic <br> Resilience</button>
+      (click)="onChangeMapLayerEvent('socio')">Socioeconomic <br> Resilience</button>
   </div>
   <!-- End Buttons/tabs -->
 
@@ -71,7 +71,7 @@
     <div class="col-md-12">
       <div class="card-02x">
         <h2 class="mappage__header viewer__header">
-          <span class="viewer__header-text">Output: Country Losses to Assets, Socio-Economic Resilience, and Well-Being</span>
+          <span class="viewer__header-text">Output: Country Losses to Assets, Socioeconomic Resilience, and Well-Being</span>
           <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover1"
             triggers="mouseenter:mouseleave" popoverTitle="">
             <i class="mdi mdi-information-outline"></i>
@@ -182,7 +182,7 @@
     <h2 class="mappage__header">Select a View</h2>
     <div class="xcol-md-6 view-select__heading">
       <div class="view-select__heading-col">
-        <p>View the risk indicators of losses in assets and well-being and changes in socio-economic resilience due to
+        <p>View the risk indicators of losses in assets and well-being and changes in socioeconomic resilience due to
           natural disasters in an average year for your selected country.</p>
         <!--<p *ngIf="viewerModel.firstCountry"><a routerLink="/policyprioritylist" [queryParams]="{country: viewerModel.firstCountry}">View specific policy impacts for {{viewerModel.firstCountry}}</a></p>-->
       </div>

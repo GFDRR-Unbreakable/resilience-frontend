@@ -2124,7 +2124,7 @@ export class ChartService {
           'precision': 2
         },
         'resilience': {
-          'descriptor': 'Socio-economic resilience',
+          'descriptor': 'Socioeconomic resilience',
           'info': '',
           'gradient': ['#990000', '#fef0d9'],
           'number_type': 'percent',
