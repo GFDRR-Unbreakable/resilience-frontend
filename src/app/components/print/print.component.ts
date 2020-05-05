@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, OnInit, Input} from '@angular/core';
 
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -29,7 +29,8 @@ export class PrintComponent implements OnInit {
   @Input() selectedRegionUIList: any;
   @Input() selectedPolicyUIList: any;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }
@@ -38,7 +39,18 @@ export class PrintComponent implements OnInit {
     this.show = true;
     setTimeout(() => {
       const element = document.getElementById('print');
-      const title = this.viewerDisplay === 'policytool' ? `specific-policy.pdf` : `${this.viewerDisplay}-${this.selectedCountry.toLowerCase()}.pdf`;
+      let title = '';
+      switch (this.viewerDisplay) {
+        case 'policytool':
+          title = `policy_scenario_view.pdf`;
+          break;
+        case 'countrytool':
+          title = `country_view_${this.selectedCountry.toLowerCase()}.pdf`;
+          break;
+        default:
+          title = `analysis_${this.selectedCountry.toLowerCase()}.pdf`;
+          break;
+      }
 
       const canvasOpts = {
         scrollY: scrollY * -1,
@@ -51,7 +63,7 @@ export class PrintComponent implements OnInit {
         const doc = new jsPDF({unit: 'px', format: 'letter'});
         const imgProps = doc.getImageProperties(img);
 
-        doc.addImage(img, 'PNG', 10, 10, imgProps.width/4, imgProps.height/4);
+        doc.addImage(img, 'PNG', 10, 10, imgProps.width / 4, imgProps.height / 4);
         doc.save(title);
         this.show = false;
       });
