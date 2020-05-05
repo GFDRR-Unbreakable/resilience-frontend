@@ -30,17 +30,17 @@ export const appRoutes: Routes = [
     path: 'scorecard',
     component: ScorecardComponent
   }, {
-    path: 'specificpolicymeasure',
+    path: 'policytool',
     component: SpecificpolicymeasureComponent
   }, {
     path: 'technicalmap',
     component: TechnicalmapComponent
   }, {
-    path: 'viewer',
+    path: 'countrytool',
     component: ViewerComponent
   },
   {
-    path: 'full-analysis',
+    path: 'advancedtool',
     component: ViewerComponent
   }
 ];

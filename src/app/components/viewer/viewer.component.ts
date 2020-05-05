@@ -1,11 +1,7 @@
-import { listenToTriggers } from '@ng-bootstrap/ng-bootstrap/util/triggers';
-import { search } from '@ngrx/router-store';
-import { distinctUntilKeyChanged } from 'rxjs/operator/distinctUntilKeyChanged';
-import { distinct } from 'rxjs/operator/distinct';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Viewer, ViewerGroup, ViewerModel } from '../../store/model/viewer.model';
 import { ViewerAction } from '../../store/action/viewer.action';
-import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operator/map';
 import { debounceTime } from 'rxjs/operator/debounceTime';
@@ -13,12 +9,10 @@ import { distinctUntilChanged } from 'rxjs/operator/distinctUntilChanged';
 import numeral from 'numeral';
 import { MapService } from '../../services/map.service';
 import { FileService } from '../../services/files.service';
-// import {NgbSlideEvent} from '@ng-bootstrap/ng-bootstrap';
 import { ChartService } from '../../services/chart.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 import { AppStore } from '../../store/default.store';
-// import * as enablePassiveEvent from 'default-passive-events/default-passive-events.js';
 import { MdSliderChange } from '@angular/material/';
 
 import * as d3 from 'd3/d3.js';
@@ -72,7 +66,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   public sliderValues2Default = {};
   public sliderValues1 = {};
   public sliderValues2 = {};
-  public viewerDisplay: string = 'viewer';
+  public viewerDisplay: string = 'countrytool';
   public viewerModel: Viewer = {
     firstCountry: 'Malawi',
     secondCountry: ''
@@ -274,7 +268,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     private fileService: FileService,
     private router: ActivatedRoute) {
 
-    this.viewer$ = store.select('viewer');
+    this.viewer$ = store.select('countrytool');
     this.viewerModel1$ = store.select('viewerModel1');
     this.viewerModel2$ = store.select('viewerModel2');
     router.url.subscribe((url) => {
@@ -343,7 +337,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       this.store.dispatch({ type: ViewerAction.EDIT_VIEWER, payload: this.viewerModel });
     }
 
-    // if (this.url[0].path === 'viewer') {
+    // if (this.url[0].path === 'countrytool') {
       // Set selected country for gagues.
 
     if (fromListFilter.length) {
@@ -463,7 +457,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         });
 
         if (this.global) {
-          this.chartService.updateOutputCharts(idOut, list[0].code, null, true, this.viewerDisplay === 'full-analysis');
+          this.chartService.updateOutputCharts(idOut, list[0].code, null, true, this.viewerDisplay === 'advancedtool');
           this.chartService.updateInputCharts(idInSoc, sliderValues, list[0].code);
           this.chartService.updateInputCharts(idInEco, sliderValues, list[0].code);
           this.chartService.updateInputCharts(idInVul, sliderValues, list[0].code);
@@ -495,7 +489,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           field.toLowerCase() !== this._selectedCountryList[filterIndex[0]].name.toLowerCase()) {
           this.mapService.setMapFilterByISOCode(filterIndexFromAll[0].code);
           if (this.global) {
-            this.chartService.updateOutputCharts(idOut, 'global', null, true, this.viewerDisplay === 'full-analysis');
+            this.chartService.updateOutputCharts(idOut, 'global', null, true, this.viewerDisplay === 'advancedtool');
             this.chartService.updateInputCharts(idInSoc, sliderValues, 'global');
             this.chartService.updateInputCharts(idInEco, sliderValues, 'global');
             this.chartService.updateInputCharts(idInVul, sliderValues, 'global');
@@ -691,7 +685,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         type: this.mapSlideUISelected
       };
     }
-    data.page = this.viewerDisplay === 'viewer' ? 'viewer' : 'tech';
+    data.page = this.viewerDisplay === 'countrytool' ? 'countrytool' : 'tech';
     const countryFInput = this._selectedCountryList.filter(val => {
       return val.name.toLowerCase() === firstInput.toLowerCase();
     });
@@ -773,7 +767,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         };
 
         if (isPDF) {
-          if (data.page === 'viewer') {
+          if (data.page === 'countrytool') {
             const chObj = this.chartService.formatSVGChartBase64Strings(key, true, inpKey);
             data.country1.inputs[key][inpKey]['chart'] = chObj.chart1;
             data.country2.inputs[key][inpKey]['chart'] = chObj.chart2;
@@ -813,11 +807,11 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
 
   //sets the callout title based on the route params
   /*setCalloutTitle() {
-    if (this.url[0].path === 'viewer') {
+    if (this.url[0].path === 'countrytool') {
       return 'Country page label';
-    } else if (this.url[0].path === 'full-analysis') {
+    } else if (this.url[0].path === 'advancedtool') {
       return 'Analytical tool label';
-    } else if (this.url[0].path === 'specificpolicymeasure') {
+    } else if (this.url[0].path === 'policytool') {
       return 'Policy page label';
     } else {
       return 'Callout title undefined';
@@ -1123,7 +1117,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       const blob = new Blob(['\ufeff', csvData]);
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
-      const fileName = (this.viewerDisplay === 'viewer' ? 'viewer' : 'technicalMap') + '_report.csv';
+      const fileName = (this.viewerDisplay === 'countrytool' ? 'countrytool' : 'technicalMap') + '_report.csv';
       a.setAttribute('href', url);
       a.setAttribute('download', fileName);
       document.body.appendChild(a);
@@ -1352,7 +1346,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * @event Click - This event is triggered when the first hazard button is selected/deselected on the "Run model" view
    */
   onSwitchExposure1() {
-    if (this.viewerDisplay === 'full-analysis') {
+    if (this.viewerDisplay === 'advancedtool') {
       this.hazards.hazard1 = !this.hazards.hazard1;
       this.onSwitchExposure(true, false, false, false);
     }
@@ -1361,7 +1355,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * @event Click - This event is triggered when the second hazard button is selected/deselected on the "Run model" view
    */
   onSwitchExposure2() {
-    if (this.viewerDisplay === 'full-analysis') {
+    if (this.viewerDisplay === 'advancedtool') {
       this.hazards.hazard2 = !this.hazards.hazard2;
       this.onSwitchExposure(false, true, false, false);
     }
@@ -1370,7 +1364,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * @event Click - This event is triggered when the third hazard button is selected/deselected on the "Run model" view
    */
   onSwitchExposure3() {
-    if (this.viewerDisplay === 'full-analysis') {
+    if (this.viewerDisplay === 'advancedtool') {
       this.hazards.hazard3 = !this.hazards.hazard3;
       this.onSwitchExposure(false, false, true, false);
     }
@@ -1379,7 +1373,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * @event Click - This event is triggered when the fourth hazard button is selected/deselected on the "Run model" view
    */
   onSwitchExposure4() {
-    if (this.viewerDisplay === 'full-analysis') {
+    if (this.viewerDisplay === 'advancedtool') {
       this.hazards.hazard4 = !this.hazards.hazard4;
       this.onSwitchExposure(false, false, false, true);
     }

@@ -1,5 +1,5 @@
 <app-navbar></app-navbar>
-<div class="map-background" [class.is-hidden]="viewerDisplay !== 'viewer'">
+<div class="map-background" [class.is-hidden]="viewerDisplay !== 'countrytool'">
   <div id="map"></div>
 
   <!-- Country graphics -->
@@ -50,8 +50,8 @@
   </div>
 
 </div>
-<app-callout *ngIf="viewerDisplay !== 'viewer'" class="viewer__callout"
-[title]="calloutTitle" [intro]="calloutBody" route="advanced"></app-callout>
+<app-callout *ngIf="viewerDisplay !== 'countrytool'" class="viewer__callout"
+[title]="calloutTitle" [intro]="calloutBody" route="advancedtool"></app-callout>
 
 <div class="container">
   <div class="country-select__container">
@@ -67,7 +67,7 @@
     </div>
   </div>
 
-  <div class="row" *ngIf="viewerDisplay === 'viewer'">
+  <div class="row" *ngIf="viewerDisplay === 'countrytool'">
     <div class="col-md-12">
       <div class="card-02x">
         <h2 class="mappage__header viewer__header">
@@ -178,7 +178,7 @@
 
 
 
-  <div class="view-select xrow" id="viewIndCtn" *ngIf="viewerDisplay === 'viewer'">
+  <div class="view-select xrow" id="viewIndCtn" *ngIf="viewerDisplay === 'countrytool'">
     <h2 class="mappage__header">Select a View</h2>
     <div class="xcol-md-6 view-select__heading">
       <div class="view-select__heading-col">
@@ -202,7 +202,7 @@
     </div>
 
   </div>
-  <div class="viewer__section viewer__section--tech" *ngIf="viewerDisplay === 'viewer' && !showPolicy">
+  <div class="viewer__section viewer__section--tech" *ngIf="viewerDisplay === 'countrytool' && !showPolicy">
     <h2 class="mappage__header viewer__header">
       <span class="viewer__header-text">Country Resilience Factors</span>
       <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover2"
@@ -239,7 +239,7 @@
   </div>
 
 
-  <div class="viewer__section viewer__section--policy" *ngIf="viewerDisplay === 'viewer' && showPolicy">
+  <div class="viewer__section viewer__section--policy" *ngIf="viewerDisplay === 'countrytool' && showPolicy">
     <h2 class="mappage__header viewer__header">
       How Country Policies Can Reduce Asset And Well-Being Losses
       <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover3"
@@ -274,7 +274,7 @@
     </div>
   </div>
 
-  <div class="viewer__section viewer__section--policy" *ngIf="viewerDisplay === 'full-analysis'">
+  <div class="viewer__section viewer__section--policy" *ngIf="viewerDisplay === 'advancedtool'">
     <h2 class="mappage__header viewer__header">
       [Place holder title] Input
       <div class="viewer__download-buttons box-download">
@@ -318,7 +318,7 @@
     </div>
   </div>
 
-  <div class="row" *ngIf="viewerDisplay === 'full-analysis'">
+  <div class="row" *ngIf="viewerDisplay === 'advancedtool'">
     <div class="col-md-12">
       <div class="card-02">
         <h2 class="mappage__header viewer__header">[Place holder title] Outcome

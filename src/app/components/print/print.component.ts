@@ -23,7 +23,7 @@ export class PrintComponent implements OnInit {
   @Input() onSliderChangeEvent1: Function;
   @Input() onSliderInputEventAlt: Function;
   @Input() switchValue = 'focus';
-  @Input() viewerDisplay = 'viewer';
+  @Input() viewerDisplay = 'countrytool';
   @Input() viewerGroupModel: any;
   @Input() viewerModel: any;
   @Input() selectedRegionUIList: any;
@@ -38,7 +38,7 @@ export class PrintComponent implements OnInit {
     this.show = true;
     setTimeout(() => {
       const element = document.getElementById('print');
-      const title = this.viewerDisplay === 'specific-policy' ? `specific-policy.pdf` : `${this.viewerDisplay}-${this.selectedCountry.toLowerCase()}.pdf`;
+      const title = this.viewerDisplay === 'policytool' ? `specific-policy.pdf` : `${this.viewerDisplay}-${this.selectedCountry.toLowerCase()}.pdf`;
 
       const canvasOpts = {
         scrollY: scrollY * -1,

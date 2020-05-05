@@ -1,6 +1,5 @@
 import {Component, OnInit, Input, OnChanges} from '@angular/core';
 import { ChartService } from '../../services/chart.service';
-import { createEmptyStateSnapshot } from '@angular/router/src/router_state';
 
 const ROW_DEFAULT = {id: 'AVG', value: 0};
 export interface DataRow {
