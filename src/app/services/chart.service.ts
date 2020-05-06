@@ -1,16 +1,16 @@
-import { Injectable, Output, Input } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
-import { Subscription } from 'rxjs/Subscription';
+import {Injectable, Output, Input} from '@angular/core';
+import {Observable} from 'rxjs/Rx';
+import {Subscription} from 'rxjs/Subscription';
 import 'rxjs/add/observable/fromPromise';
 import * as d3 from 'd3/d3.js';
 import * as science from 'science/index.js';
 import * as d3Q from 'd3-queue/index.js';
-import { SERVER } from './server.conf';
-import { WebService } from '../services/web.service';
-import { ViewerModel } from '../store/model/viewer.model';
-import { URLSearchParams } from '@angular/http';
-import { Subject } from 'rxjs/Subject';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import {SERVER} from './server.conf';
+import {WebService} from '../services/web.service';
+import {ViewerModel} from '../store/model/viewer.model';
+import {URLSearchParams} from '@angular/http';
+import {Subject} from 'rxjs/Subject';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import * as html2canvas from 'html2canvas';
 
 @Injectable()
@@ -65,12 +65,14 @@ export class ChartService {
    * @angular/http API configuration for it.
    */
   public type1S$: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+
   set type1S(value: string) {
-    // console.log('emit: ' + value);
     this.type1S$.next(value);
   }
+
   constructor(private webService: WebService) {
   }
+
   /**
    * DEPRECATED. This method returns calculations regarding the summatory,
    * average and counting policy-related data.
@@ -113,6 +115,7 @@ export class ChartService {
     });
     return outputMetricAvgInfo;
   }
+
   /**
    * Returns rounded or average of GDP value from a selected country or globally.
    * @param {String} idx - Determines which output-indicator is being set.
@@ -145,6 +148,7 @@ export class ChartService {
     }
     return avgDoll;
   }
+
   /**
    * Formats and calculates GDP values for Well-being and Risk-to-assets indicators.
    * @param {Number} gdpDollars - GDP value represented as monetary cost (in dollars).
@@ -245,6 +249,7 @@ export class ChartService {
       text: aValue
     };
   }
+
   /**
    * Calculates and formats main GDP values for output indicators.
    * Its calculated values are stored in @public outputDomain property for every output chart.
@@ -260,6 +265,7 @@ export class ChartService {
       // console.log('type ', this.type);
     });
   }
+
   private calculateGDPValues(containerId, key, numericValue, gdpDollars, precision, oldValue?) {
 
     this.subscription();
@@ -313,6 +319,7 @@ export class ChartService {
     }
     return value;
   }
+
   /**
    * Returns the number of svg elements created in Scorecard-Priority List page.
    */
@@ -323,6 +330,7 @@ export class ChartService {
     }
     return 0;
   }
+
   /**
    * Creates/removes input-indicator SVG charts. These charts are displayed on Viewer page.
    * @param {Object} inputData - Input-indicator data to be used to plot the chart
@@ -604,18 +612,22 @@ export class ChartService {
       // brushEl.removeAllListeners();
 
       const self = this;
+
       function brushstart() {
         svg.classed('selecting-input', true);
       }
+
       function brushend() {
         svg.classed('selecting-input', !d3.event.target.empty());
       }
+
       function _redrawInputPlot(id) {
         const config = this._inputConfig;
         const inputD = config[id];
       }
     });
   }
+
   /**
    * Creates/removes output-indicator SVG charts. These charts are displayed on Viewer and Scorecard Priority List pages.
    * @param {Object} outputData - Output-indicator data to be used to plot the chart.
@@ -1952,6 +1964,7 @@ export class ChartService {
       }
     });
   }
+
   /**
    * Filters and saves output-indicator data by group name which either pertains a country or is set as Global.
    * @param {Object} outputData - Output-indicator data.
@@ -1980,6 +1993,7 @@ export class ChartService {
     }
     return filteredOutputDomains;
   }
+
   /**
    * Filters and saves input-indicator data by group name which either pertains a country or is set as Global.
    * @param {Object} inputData - Input-indicator data.
@@ -2012,6 +2026,7 @@ export class ChartService {
     }
     return filteredInputDomains;
   }
+
   /**
    * Changes absolute to relative GDP values for Scorecard formatting data.
    * @param {String} str - Absolute GDP value
@@ -2025,6 +2040,7 @@ export class ChartService {
     this._outRelative[1] = percent;
     return this._outRelative;
   }
+
   /**
    * Return formatted input-data values to be displayed in its respective charts.
    * @param {String} data - The input data to format.
@@ -2050,6 +2066,7 @@ export class ChartService {
     }
     return value;
   }
+
   /**
    * Return formatted input-data values to be displayed in the sliders.
    * @param {String} data - The input data to format.
@@ -2065,6 +2082,7 @@ export class ChartService {
     }
     return sign + ' ' + formattedValue;
   }
+
   /**
    * Returns converted SVG charts to base64 string.
    * @param {String} chartId - Chart id which the chart belongs to.
@@ -2104,12 +2122,14 @@ export class ChartService {
       chart2: <string>ch2Str
     };
   }
+
   /**
    * Returns the globalModel object.
    */
   getGlobalModelData() {
     return this._globalModelData;
   }
+
   /**
    * Returns default chart configuration object used in all required components of the app and by this service itself.
    */
@@ -2232,33 +2252,39 @@ export class ChartService {
       }
     };
   }
+
   /**
    * Returns country group data object.
    */
   getCountryGroupData() {
     return this._countryGroupData;
   }
+
   /**
    * Returns input-indicator model data object.
    */
   getInputDataObj() {
     return this._inputConfig;
   }
+
   /**
    * Returns default input data object.
    */
   getInputData() {
     return this._inputDomains;
   }
+
   getInputLabels() {
     return this._inputLabels;
   }
+
   /**
    * Returns persisted input-data observable.
    */
   getInputDataObs() {
     return this._inputDataProm$;
   }
+
   /**
    * Returns input-chart id by general input type
    * @param {String} type - Genreal input type
@@ -2267,6 +2293,7 @@ export class ChartService {
     const inputTypes = this.getChartsConf().inputTypes;
     return inputTypes[type];
   }
+
   /**
    * Returns new output-input model data by sending it slider values from Viewer
    * page as form-data content type.
@@ -2282,25 +2309,26 @@ export class ChartService {
     formData.append('g', '');
     formData.append('m', model);
     formData.append('i_df', modelData);
-    console.log(url, data, formData)
     return this.webService.post(url, formData)
       .map((res: Response) => {
-        // console.log('res', res['_body'])
         return res.json();
       }).catch(this.webService.errorHandler);
   }
+
   /**
    * DEPRECATED. Returns max GDP value to be set in the X-coordinate of a Scorecard chart.
    */
   getMaxGDPCountryValue() {
     return this._maxGDPNum;
   }
+
   /**
    * DEPRECATED. Return set of max min Country GDP values to be set in a Scorecard chart.
    */
   getMaxMinGDPCountryValues() {
     return this._maxMinCountryXValues;
   }
+
   /**
    * Returns a set of countries by an specific scorecard policy name.
    * @param {String} policy -  Scorecard policy name.
@@ -2309,6 +2337,7 @@ export class ChartService {
     const allCountriesPolicy = this._newPolicyGroupedByPolicyObj;
     return allCountriesPolicy[policy];
   }
+
   /**
    * Returns a set of scorecard policies by an specific country name.
    * @param countryName
@@ -2317,24 +2346,28 @@ export class ChartService {
     const allPoliciesCountry = this._newPolicyGroupedByCountryObj;
     return allPoliciesCountry[countryName];
   }
+
   /**
    * Returns output model data.
    */
   getOutputData() {
     return this._outputDomains;
   }
+
   /**
    * Returns persisted output-data observable
    */
   getOutputDataObs() {
     return this._outputDataProm$;
   }
+
   /**
    * Returns output-model country list.
    */
   getOutputDataUIList() {
     return this._outputUIList;
   }
+
   /**
    * /**
    * Returns output-model list.
@@ -2342,18 +2375,21 @@ export class ChartService {
   getOutputList() {
     return this._outputList;
   }
+
   /**
    * Return Scorecard policy list data
    */
   getPolicyListData() {
     return this._policyInfoObj;
   }
+
   /**
    * DEPRECATED. Returns poloicy data grouped by region.
    */
   getRegionalPolicyData() {
     return this._regionalPoliciesInfoObj;
   }
+
   /**
    * Retrieves Scorecard policies data by their CSV files and encapsulates it in a observable promise data.
    */
@@ -2386,31 +2422,37 @@ export class ChartService {
         .defer(d3.csv, vpUrl)
         .defer(d3.csv, vrUrl)
         .await((err, axfin, fap, far, kp, pdsPackage, propNonpoor, shew, socialP, tRebuildK, vp, vr) => {
-          if (err) { reject(err); }
+          if (err) {
+            reject(err);
+          }
           const data = [axfin, fap, far, kp, pdsPackage, propNonpoor, shew, socialP, tRebuildK, vp, vr];
           resolve(data);
         });
     });
     this._scoreCardDataObs$ = Observable.fromPromise(promisedData);
   }
+
   /**
    * Returns scorecard data promise observable
    */
   getScoreCardDataObs() {
     return this._scoreCardDataObs$;
   }
+
   /**
    * Inits output-data default configuration
    */
   initOutputChartConf() {
     this.setOutputData();
   }
+
   /**
    * Inits scorecard-data default configuration
    */
   initScorecardChartConf() {
     this.getScorecardData();
   }
+
   /**
    * @event brush - This event is triggered when a D3 brush component is moved
    * from one side to another when a input chart has updated its data.
@@ -2450,6 +2492,7 @@ export class ChartService {
       });
     };
   }
+
   /**
    * This method merges input-model data into a complete input-model data.
    * @param {Array} inputArr - Set of Input-indicator values.
@@ -2496,6 +2539,7 @@ export class ChartService {
     });
     return inputDomains;
   }
+
   /**
    * Retrieves input-model data from CSV file in order to saved into a input-model object data.
    * @param {Object} _globalModelData - Global model object data.
@@ -2504,7 +2548,9 @@ export class ChartService {
     const url = `${this._baseURL}${this._inputInfoURL}`;
     const promisedData = new Promise((resolve, reject) => {
       d3.csv(url, (err, data: any) => {
-        if (err) { reject(err); }
+        if (err) {
+          reject(err);
+        }
         const inputDomainsArr = [];
         data.forEach((value) => {
           const inputObj = {};
@@ -2525,7 +2571,7 @@ export class ChartService {
           }
           this._inputLabels[value.key].key = value.key;
           this._inputLabels[value.key].descriptor = descArr[0]; // value.descriptor;
-          this._inputLabels[value.key].info =  descArr[1];
+          this._inputLabels[value.key].info = descArr[1];
           this._inputLabels[value.key].lower = +value.lower;
           this._inputLabels[value.key].upper = +value.upper;
           this._inputLabels[value.key].number_type = value.number_type;
@@ -2558,7 +2604,9 @@ export class ChartService {
 
     const promisedData = new Promise((resolve, reject) => {
       d3.csv(url, (err, data: any) => {
-        if (err) { reject(err); }
+        if (err) {
+          reject(err);
+        }
 
         data.forEach((value, index, arr) => {
           for (const key in value) {
@@ -2591,6 +2639,7 @@ export class ChartService {
     });
     this._outputDataProm$ = Observable.fromPromise(promisedData);
   }
+
   /**
    * Retrieves Scorecard data configuration in two main objects @public _newPolicyGroupedByCountryObj
    * and @public _newPolicyGroupedByPolicyObj to be displayed in its corresponding page.
@@ -2624,11 +2673,11 @@ export class ChartService {
         }
         this._newPolicyGroupedByCountryObj[data[i][j][key]][policyIds[i]]['asset_losses_label'] = data[i][j]['Asset losses label'];
         this._newPolicyGroupedByCountryObj[data[i][j][key]][policyIds[i]]
-        ['wellbeing_losses_label'] = data[i][j]['Wellbeing losses  label'];
+          ['wellbeing_losses_label'] = data[i][j]['Wellbeing losses  label'];
 
         this._newPolicyGroupedByCountryObj[data[i][j][key]][policyIds[i]]['num_asset_losses_label'] = data[i][j]['Asset losses value'];
         this._newPolicyGroupedByCountryObj[data[i][j][key]][policyIds[i]]
-        ['num_wellbeing_losses_label'] = data[i][j]['Wellbeing losses value'];
+          ['num_wellbeing_losses_label'] = data[i][j]['Wellbeing losses value'];
 
         str = this._newPolicyGroupedByCountryObj[data[i][j][key]][policyIds[i]]['asset_losses_label'];
         out = this.changeRelativeValue(str);
@@ -2668,22 +2717,23 @@ export class ChartService {
             this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]['rel_num_asset_losses_label'] = out[1];
           } else if (key === 'Wellbeing losses  label') {
             this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]
-            ['wellbeing_losses_label'] = data[i][j]['Wellbeing losses  label'];
+              ['wellbeing_losses_label'] = data[i][j]['Wellbeing losses  label'];
             str = this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]['wellbeing_losses_label'];
             out = this.changeRelativeValue(str);
             this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]['rel_wellbeing_losses_label'] = out[0];
             this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]['rel_num_wellbeing_losses_label'] = out[1];
           } else if (key === 'Asset losses value') {
             this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]
-            ['num_asset_losses_label'] = data[i][j]['Asset losses value'];
+              ['num_asset_losses_label'] = data[i][j]['Asset losses value'];
           } else if (key === 'Wellbeing losses value') {
             this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]
-            ['num_wellbeing_losses_label'] = data[i][j]['Wellbeing losses value'];
+              ['num_wellbeing_losses_label'] = data[i][j]['Wellbeing losses value'];
           }
         }
       }
     }
   }
+
   /**
    * Sorts an array given its element be set as a object.
    * @param array
@@ -2691,10 +2741,12 @@ export class ChartService {
    */
   private _sortByKey(array, key) {
     array.sort((a, b) => {
-      const x = a[key]; const y = b[key];
+      const x = a[key];
+      const y = b[key];
       return ((x < y) ? -1 : ((x > y) ? 1 : 0));
     });
   }
+
   /**
    * Change Scorecard chart font-type labels in order to be recognized while being converted as base64 string.
    * @param isScoreCardList
@@ -2712,12 +2764,14 @@ export class ChartService {
     chart1.find('text').css('font-family', fontFamilyTxt);
     chart2.find('text').css('font-family', fontFamilyTxt);
   }
+
   /**
    * Unsubscribes output data observable
    */
   unsubscribeOutputData() {
     this._outputDataSubs.unsubscribe();
   }
+
   /**
    * Updates input-indicator model chart, slider values and input chart values.
    * @param {String} containerId -  Input container element id
@@ -2766,7 +2820,8 @@ export class ChartService {
               model[conf] = model[conf] > 1 ? 1 : model[conf];
               model[conf] = model[conf] < 0 ? 0 : model[conf];
               break;
-            default: break;
+            default:
+              break;
           }
           sliderValues[conf + '_display_value'] = this.formatInputChartValues(model[conf], input);
           sliderValues[conf + '_baseline_value'] = this.formatInputChartValues(model[conf], input);
@@ -2815,6 +2870,7 @@ export class ChartService {
       // remove existing initial marker
     });
   }
+
   /**
    * Updates output-indicator model chart and its values
    * @param {String} containerId -  Output container element id

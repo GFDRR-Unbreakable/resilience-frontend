@@ -403,7 +403,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         const group = this.global ? 'GLOBAL' : viewerMod['group_name'];
 
         this.setGaugeChangeValues(newObj);
-        console.log('updateOutputCharts')
         this.chartService.updateOutputCharts(outputChartId, { model: newObj }, group, moveBothBrushes, this.viewerDisplay === 'tech');
       });
       this.store.dispatch({ type: ViewerAction[viewerActionStr], payload: viewerMod });
@@ -695,7 +694,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     data.country1.name = !firstInput || countryFInput.length === 0 ? 'Global' : firstInput;
     data.country2.name = !secondInput || countrySInput.length === 0 ? 'Global' : secondInput;
 
-    console.log('outputData', outputData, this.viewerP1);
     jQuery.each(outputData, (key, out) => {
       if (!data.country1.outputs[key]) {
         data.country1.outputs[key] = {};
@@ -711,7 +709,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         if (!data.country2.outputs[key]['value']) {
           data.country2.outputs[key]['value'] = {};
         }
-        console.log(key, out);
         data.country1.outputs[key]['value'].dollarGDP = out.chart['outputs-1'].dollarGDP;
         data.country1.outputs[key]['value'].valueGDP = out.chart['outputs-1'].valueGDP;
         data.country1.outputs[key]['value'].difference = out.chart['outputs-1'].difference;
@@ -759,7 +756,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           label: this.sliderValues1[inpKey + '_display_value'],
           value: this.sliderValues1[inpKey].value
         };
-        console.log(this.sliderValues2);
+
         data.country2.inputs[key][inpKey]['value'] = {
           label: this.sliderValues2[inpKey + '_display_value'],
           //label: 'PLACEHOLDER', //d3.select(`.inputcharts--2 #table-${inpKey} span.value`).text(),
@@ -1282,7 +1279,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     viewerHazardDefault1['name'] = this._selectedCountryList[0].name;
     viewerHazardDefault1['id'] = this._selectedCountryList[0].code;
     viewerHazardDefault1['group_name'] = this._selectedCountryList[0].group;
-    // console.log( 1287, 'viewerHazardDefault1', viewerHazardDefault1);
     this.chartService.getInputPModelData(viewerHazardDefault1).subscribe(data => {
       const newObj = {};
       for (const dataK in data) {
@@ -1290,6 +1286,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           newObj[dataK] = data[dataK][viewerHazardDefault1['name']];
         }
       }
+      this.setGaugeChangeValues(newObj);
+      this.chartService.updateOutputCharts('outputs-1', { model: newObj }, group1, true, this.viewerDisplay === 'tech');
       // this.chartService.updateOutputCharts('outputs-1', {model: newObj}, group1, true, this.viewerDisplay === 'tech');
 
       /*if (!!this._selectedCountryList[1]) {
