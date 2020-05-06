@@ -42,7 +42,7 @@ export class PrintComponent implements OnInit {
       let title = '';
       switch (this.viewerDisplay) {
         case 'policytool':
-          title = `policy_scenario_view.pdf`;
+          title = `specific_policy_view.pdf`;
           break;
         case 'countrytool':
           title = `country_view_${this.selectedCountry.toLowerCase()}.pdf`;
