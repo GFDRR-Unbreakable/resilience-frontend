@@ -39,7 +39,7 @@ export const SERVER = {
     VP_DATA: 'vp.csv',
     VR_DATA: 'vr.csv',
     INPUT_MODEL: 'model_adapter.py',
-    OUTPUT_DATA: 'df_for_wrapper2.csv',
+    OUTPUT_DATA: 'all_countries_data.csv',
     INPUTS_INFO: 'inputs_info_wrapper.csv'
   }
 };

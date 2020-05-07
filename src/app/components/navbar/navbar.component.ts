@@ -31,7 +31,7 @@ export class NavbarComponent implements OnInit {
   }
   /**
    * @event Click - This event is triggered when the "About" tab-button is clicked.
-   * It scroll down the page to about info when it is rendered in the "Viewer" route, otherwise
+   * It scroll down the page to about info when it is rendered in the "Countrytool" route, otherwise
    * it opens a "About" info modal component.
    */
   onScrollAboutElEvent(event) {

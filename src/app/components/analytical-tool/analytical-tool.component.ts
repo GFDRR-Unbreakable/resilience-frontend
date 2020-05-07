@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { Viewer } from 'app/store/model/viewer.model';
 
 @Component({

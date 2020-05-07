@@ -4,20 +4,20 @@
       <img src="assets/image/logo-04.png" />
     </div>
     <div class="print__heading">
-      <h2 *ngIf="viewerDisplay !== 'specific-policy'">
+      <h2 *ngIf="viewerDisplay !== 'policytool'">
         Country: {{selectedCountryName}}
       </h2>
-      <h2 *ngIf="viewerDisplay === 'specific-policy'">
+      <h2 *ngIf="viewerDisplay === 'policytool'">
         Policy: {{selectedPolicyUIList.label}}
       </h2>
     </div>
   </div>
 
   <div class="print__body">
-    <div class="print__section" *ngIf="viewerDisplay === 'viewer'">
+    <div class="print__section" *ngIf="viewerDisplay === 'countrytool'">
       <div class="print__heading">
         <h3>
-          Country Losses to Assets, Well-Being, and Socio-Economic Resilience
+          Country Losses to Assets, Well-Being, and Socioeconomic Resilience
         </h3>
       </div>
       <div class="print__grid">
@@ -79,7 +79,7 @@
       </div>
     </div>
 
-    <div class="print__section" *ngIf="viewerDisplay === 'viewer' && !showPolicy">
+    <div class="print__section" *ngIf="viewerDisplay === 'countrytool' && !showPolicy">
       <div class="print__heading">
         <h3>Country Resilience Factors</h3>
       </div>
@@ -89,7 +89,7 @@
       </app-indicator-tabs>
     </div>
 
-    <div class="print__section" *ngIf="viewerDisplay === 'viewer' && showPolicy">
+    <div class="print__section" *ngIf="viewerDisplay === 'countrytool' && showPolicy">
       <div class="print__heading print__heading--policy">
         <h3>How Country Policies Can Reduce Asset And Well-Being Losses</h3>
       </div>
@@ -105,18 +105,18 @@
       </div>
     </div>
 
-    <div class="print__section" *ngIf="viewerDisplay === 'full-analysis'">
+    <div class="print__section" *ngIf="viewerDisplay === 'advancedtool'">
       <div class="print__heading">
-        <h3>[Place holder title] Input</h3>
+        <h3>Changes in the drivers of risks and resilience:</h3>
       </div>
       <app-slider-tabs [forPrint]="true" [inputLabels]="inputLabels" [sliderValues]="sliderValues1"
         (sliderChange)="onSliderChangeEvent1($event)" (sliderInputChange)="onSliderInputEventAlt($event)">
       </app-slider-tabs>
     </div>
 
-    <div class="print__section" *ngIf="viewerDisplay === 'full-analysis'">
+    <div class="print__section" *ngIf="viewerDisplay === 'advancedtool'">
       <div class="print__heading">
-        <h3>[Place holder title] Outcome</h3>
+        <h3>New risk levels and socioeconomic resilience:</h3>
       </div>
       <div class="print__grid">
         <div class="print__labels">
@@ -160,7 +160,7 @@
       </div>
     </div>
 
-    <div class="print__section" *ngIf="viewerDisplay === 'specific-policy'">
+    <div class="print__section" *ngIf="viewerDisplay === 'policytool'">
       <div class="print__heading print__heading--policy">
         <h3>{{ selectedRegionUIList.label }}</h3>
       </div>

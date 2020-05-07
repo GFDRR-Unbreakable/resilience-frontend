@@ -1,5 +1,5 @@
 <app-navbar></app-navbar>
-<app-callout [prefix]="" [title]="calloutTitle" [intro]="calloutBody" route="policy"></app-callout>
+<app-callout [prefix]="" [title]="calloutTitle" [intro]="calloutBody" route="policytool"></app-callout>
 <div class="container policy-measure">
   <div class="row">
     <div class="col-md-12 scorecard-title-01">
@@ -54,7 +54,7 @@
 <app-footer [selection]="false"></app-footer>
 
 <app-print #print
-viewerDisplay="specific-policy"
+viewerDisplay="policytool"
 [selectedRegionUIList]="selectedRegionUIList"
 [selectedPolicyUIList]="selectedPolicyUIList">
 </app-print>

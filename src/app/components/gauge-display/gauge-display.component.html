@@ -1,11 +1,11 @@
 <div class="gauge-display">
   <div class="gauge-display__gauges">
     <app-scatter-gauge *ngIf="view === 'all'" [data]="data"
-    [id]="id" [max]="maxValue" [formatter]="formatter" [changeRow]="changeRow"
-    [hasChange]="hasChange"></app-scatter-gauge>
+                       [id]="id" [max]="maxValue" [formatter]="formatter" [changeRow]="changeRow"
+                       [hasChange]="hasChange"></app-scatter-gauge>
     <app-gauge *ngIf="view !== 'all'" [data]="data" [id]="id"
-    [max]="maxValue" [formatter]="formatter" [changeRow]="changeRow"
-    [hasChange]="hasChange"></app-gauge>
+               [max]="maxValue" [formatter]="formatter" [changeRow]="changeRow"
+               [hasChange]="hasChange"></app-gauge>
   </div>
 
   <div class="gauge-display__values" *ngIf="hasChange">
@@ -16,6 +16,10 @@
     <div class="gauge-display__change-value" *ngIf="!!changeRow">
       <span class="gauge-display__label">New </span>
       <span class="gauge-display__value">{{formatter(changeRow.value)}}</span>
+    </div>
+    <div class="gauge-display__default-value" *ngIf="!!changeRow">
+      <span class="gauge-display__label">Change </span>
+      <span class="gauge-display__value">{{formatter(changeRow.value - activeRow.value)}}</span>
     </div>
   </div>
 </div>

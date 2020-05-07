@@ -1,5 +1,5 @@
 <app-navbar></app-navbar>
-<div class="map-background" [class.is-hidden]="viewerDisplay !== 'viewer'">
+<div class="map-background" [class.is-hidden]="viewerDisplay !== 'countrytool'">
   <div id="map"></div>
 
   <!-- Country graphics -->
@@ -34,7 +34,7 @@
     <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'asset'}"
       (click)="onChangeMapLayerEvent('asset')">Risk to Assets <br> (% of GDP)</button>
     <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'socio'}"
-      (click)="onChangeMapLayerEvent('socio')">Socio-Economic <br> Resilience</button>
+      (click)="onChangeMapLayerEvent('socio')">Socioeconomic <br> Resilience</button>
   </div>
   <!-- End Buttons/tabs -->
 
@@ -42,7 +42,7 @@
     <div class="callout-body-trigger" (click)="toggleMapComponent()">&rsaquo;</div>
     <div class="callout-body-inner">
       <img class="callout-body-inner-icon" src="../../../assets/image/Country_IconOnly.png"/>
-      <h2 class="callout-body-title">Unbreakable Resilience Indicator</h2>
+      <h2 class="callout-body-title">Country Tool</h2>
       <div class="content">
         <p>What does resilience mean, and what investments or policies build it? Use the Country Tool to identify the drivers of resilience in your country. Select your country to get started.</p>
       </div>
@@ -50,8 +50,8 @@
   </div>
 
 </div>
-<app-callout *ngIf="viewerDisplay !== 'viewer'" class="viewer__callout"
-[title]="calloutTitle" [intro]="calloutBody" route="advanced"></app-callout>
+<app-callout *ngIf="viewerDisplay !== 'countrytool'" class="viewer__callout"
+[title]="calloutTitle" [intro]="calloutBody" route="advancedtool"></app-callout>
 
 <div class="container">
   <div class="country-select__container">
@@ -67,11 +67,11 @@
     </div>
   </div>
 
-  <div class="row" *ngIf="viewerDisplay === 'viewer'">
+  <div class="row" *ngIf="viewerDisplay === 'countrytool'">
     <div class="col-md-12">
       <div class="card-02x">
         <h2 class="mappage__header viewer__header">
-          <span class="viewer__header-text">Output: Country Losses to Assets, Socio-Economic Resilience, and Well-Being</span>
+          <span class="viewer__header-text">Output: Country Losses to Assets, Socioeconomic Resilience, and Well-Being</span>
           <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover1"
             triggers="mouseenter:mouseleave" popoverTitle="">
             <i class="mdi mdi-information-outline"></i>
@@ -178,11 +178,11 @@
 
 
 
-  <div class="view-select xrow" id="viewIndCtn" *ngIf="viewerDisplay === 'viewer'">
+  <div class="view-select xrow" id="viewIndCtn" *ngIf="viewerDisplay === 'countrytool'">
     <h2 class="mappage__header">Select a View</h2>
     <div class="xcol-md-6 view-select__heading">
       <div class="view-select__heading-col">
-        <p>View the risk indicators of losses in assets and well-being and changes in socio-economic resilience due to
+        <p>View the risk indicators of losses in assets and well-being and changes in socioeconomic resilience due to
           natural disasters in an average year for your selected country.</p>
         <!--<p *ngIf="viewerModel.firstCountry"><a routerLink="/policyprioritylist" [queryParams]="{country: viewerModel.firstCountry}">View specific policy impacts for {{viewerModel.firstCountry}}</a></p>-->
       </div>
@@ -202,7 +202,7 @@
     </div>
 
   </div>
-  <div class="viewer__section viewer__section--tech" *ngIf="viewerDisplay === 'viewer' && !showPolicy">
+  <div class="viewer__section viewer__section--tech" *ngIf="viewerDisplay === 'countrytool' && !showPolicy">
     <h2 class="mappage__header viewer__header">
       <span class="viewer__header-text">Country Resilience Factors</span>
       <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover2"
@@ -224,7 +224,7 @@
       <div class="viewer__download-buttons box-download">
         <button type="button" class="btn btn-primary text-download" (click)="onResetTechDataEvent()"
           *ngIf="viewerDisplay == 'tech'">RESET</button>
-        <a class="btn btn-primary text-download" href="/assets/data/df_for_wrapper2.csv">
+        <a class="btn btn-primary text-download" href="/assets/data/all_countries_data.csv">
           <img class="img-download" src="assets/image/ic-download-green.png" alt="">CSV
         </a>
         <button type="button" class="btn btn-primary text-download" (click)="print.screenshot()"><img
@@ -239,7 +239,7 @@
   </div>
 
 
-  <div class="viewer__section viewer__section--policy" *ngIf="viewerDisplay === 'viewer' && showPolicy">
+  <div class="viewer__section viewer__section--policy" *ngIf="viewerDisplay === 'countrytool' && showPolicy">
     <h2 class="mappage__header viewer__header">
       How Country Policies Can Reduce Asset And Well-Being Losses
       <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover3"
@@ -274,9 +274,9 @@
     </div>
   </div>
 
-  <div class="viewer__section viewer__section--policy" *ngIf="viewerDisplay === 'full-analysis'">
+  <div class="viewer__section viewer__section--policy" *ngIf="viewerDisplay === 'advancedtool'">
     <h2 class="mappage__header viewer__header">
-      [Place holder title] Input
+      Adjust the drivers of risks and resilience to evaluate a policy scenario:
       <div class="viewer__download-buttons box-download">
         <button type="button" class="btn btn-primary text-download" (click)="print.screenshot()"><img
             class="img-download" src="assets/image/ic-download-green.png" alt="">PDF</button>
@@ -318,10 +318,10 @@
     </div>
   </div>
 
-  <div class="row" *ngIf="viewerDisplay === 'full-analysis'">
+  <div class="row" *ngIf="viewerDisplay === 'advancedtool'">
     <div class="col-md-12">
       <div class="card-02">
-        <h2 class="mappage__header viewer__header">[Place holder title] Outcome
+        <h2 class="mappage__header viewer__header">New risk levels and socioeconomic resilience:
           <app-switch class="viewer__switch" [value]="switchValue" [options]="switchOptions" [labels]="switchLabels"
             (onChange)="switchValue = $event"></app-switch>
         </h2>
