@@ -46,6 +46,7 @@ import {PrintComponent} from './components/print/print.component';
 import {SpecificPolicyListChartComponent} from './components/specific-policy-list-chart/specific-policy-list-chart.component';
 
 import smartquotes from 'smartquotes';
+import { DisclaimerComponent } from './components/disclaimer/disclaimer.component';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import smartquotes from 'smartquotes';
     SliderTabsComponent,
     PrintComponent,
     SpecificPolicyListChartComponent,
+    DisclaimerComponent,
   ],
   imports: [
     BrowserModule,
