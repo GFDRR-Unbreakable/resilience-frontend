@@ -4,8 +4,11 @@
       <img src="assets/image/logo-04.png" />
     </div>
     <div class="print__heading">
-      <h2 *ngIf="viewerDisplay !== 'policytool'">
+      <h2 *ngIf="viewerDisplay === 'countrytool'">
         Country: {{selectedCountryName}}
+      </h2>
+      <h2 *ngIf="viewerDisplay === 'advancedtool'">
+        Policy scenario analysis for {{selectedCountryName}}
       </h2>
       <h2 *ngIf="viewerDisplay === 'policytool'">
         Policy: {{selectedPolicyUIList.label}}
