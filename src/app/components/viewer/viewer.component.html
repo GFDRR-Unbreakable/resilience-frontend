@@ -23,18 +23,21 @@
         <span class="map-legend-text-lasxt" [hidden]="legend[0] === 'No data'">{{legend[1]}}</span>
         <span class="map-legend-text-percentx" [hidden]="legend[0] === 'No data'">%</span>
       </span>
-      <br />
+      <br/>
     </div>
   </div>
 
   <!-- Buttons/tabs -->
   <div class="btn-group tabs-dg" role="group" aria-label="Map dataviz UI">
     <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'well'}"
-      (click)="onChangeMapLayerEvent('well')">Risk to Well-Being <br> (% of GDP)</button>
+            (click)="onChangeMapLayerEvent('well')">Risk to Well-Being <br> (% of GDP)
+    </button>
     <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'asset'}"
-      (click)="onChangeMapLayerEvent('asset')">Risk to Assets <br> (% of GDP)</button>
+            (click)="onChangeMapLayerEvent('asset')">Risk to Assets <br> (% of GDP)
+    </button>
     <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'socio'}"
-      (click)="onChangeMapLayerEvent('socio')">Socioeconomic <br> Resilience</button>
+            (click)="onChangeMapLayerEvent('socio')">Socioeconomic <br> Resilience
+    </button>
   </div>
   <!-- End Buttons/tabs -->
 
@@ -44,14 +47,15 @@
       <img class="callout-body-inner-icon" src="../../../assets/image/Country_IconOnly.png"/>
       <h2 class="callout-body-title">Country Tool</h2>
       <div class="content">
-        <p>What does resilience mean, and what investments or policies build it? Use the Country Tool to identify the drivers of resilience in your country. Select your country to get started.</p>
+        <p>What does resilience mean, and what investments or policies build it? Use the Country Tool to identify the
+          drivers of resilience in your country. Select your country to get started.</p>
       </div>
     </div>
   </div>
 
 </div>
 <app-callout *ngIf="viewerDisplay !== 'countrytool'" class="viewer__callout"
-[title]="calloutTitle" [intro]="calloutBody" route="advancedtool"></app-callout>
+             [title]="calloutTitle" [intro]="calloutBody" route="advancedtool"></app-callout>
 
 <div class="container">
   <div class="country-select__container">
@@ -59,8 +63,9 @@
     <div class="box-dropdown row">
       <div class="country-select__wrapper form-group col-md-6" [class.has-danger]="searchFailed">
         <input id="country-1Txt" type="text" class="form-control input-wd country-select__input"
-          [(ngModel)]="viewerModel.firstCountry" [ngbTypeahead]="searchCountryFn" #country1="ngModel"
-          (ngModelChange)="onFirstCountryInputChangeEvent()" placeholder="Select a country" />
+               (focus)="focus$.next('')"
+               [(ngModel)]="viewerModel.firstCountry" [ngbTypeahead]="searchCountryFn" #country1="ngModel"
+               (ngModelChange)="onFirstCountryInputChangeEvent()" placeholder="Select a country"/>
         <span class="country-select__label">Try another country!</span>
 
       </div>
@@ -71,13 +76,15 @@
     <div class="col-md-12">
       <div class="card-02x">
         <h2 class="mappage__header viewer__header">
-          <span class="viewer__header-text">Output: Country Losses to Assets, Socioeconomic Resilience, and Well-Being</span>
+          <span
+            class="viewer__header-text">Output: Country Losses to Assets, Socioeconomic Resilience, and Well-Being</span>
           <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover1"
-            triggers="mouseenter:mouseleave" popoverTitle="">
+                  triggers="mouseenter:mouseleave" popoverTitle="">
             <i class="mdi mdi-information-outline"></i>
           </button>
 
-          <app-switch class="viewer__switch" [value]="switchValue" [options]="switchOptions" [labels]="switchLabels" (onChange)="switchValue = $event"></app-switch>
+          <app-switch class="viewer__switch" [value]="switchValue" [options]="switchOptions" [labels]="switchLabels"
+                      (onChange)="switchValue = $event"></app-switch>
 
           <ng-template #popover1>
 
@@ -102,7 +109,8 @@
           <div class="outputs__labels xrow">
             <div class="outputs__label">
               {{ this.chartConf.outputs.risk_to_assets.descriptor }}
-              <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popoverRiskToAssets" triggers="mouseenter:mouseleave" popoverTitle="">
+              <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popoverRiskToAssets"
+                      triggers="mouseenter:mouseleave" popoverTitle="">
                 <i class="mdi mdi-information-outline"></i>
               </button>
               <ng-template #popoverRiskToAssets>
@@ -114,7 +122,8 @@
             </div>
             <div class="outputs__label">
               {{ this.chartConf.outputs.risk.descriptor }}
-              <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popoverRisk" triggers="mouseenter:mouseleave" popoverTitle="">
+              <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popoverRisk"
+                      triggers="mouseenter:mouseleave" popoverTitle="">
                 <i class="mdi mdi-information-outline"></i>
               </button>
               <ng-template #popoverRisk>
@@ -177,7 +186,6 @@
   </div>
 
 
-
   <div class="view-select xrow" id="viewIndCtn" *ngIf="viewerDisplay === 'countrytool'">
     <h2 class="mappage__header">Select a View</h2>
     <div class="xcol-md-6 view-select__heading">
@@ -189,12 +197,14 @@
       <div class="view-select__heading-col xbtn-group" role="group" aria-label="Set viewer view">
         <div class="view-select__button-group">
           <button type="button" class="view-select__button btn btn-primary wt-lb"
-            [disabled]='_selectedCountryList.length === 0 && 0' [ngClass]="{active: !showPolicy}"
-            (click)="onChangeViewerIndViewEvent()">VIEW INDICATORS</button>
+                  [disabled]='_selectedCountryList.length === 0 && 0' [ngClass]="{active: !showPolicy}"
+                  (click)="onChangeViewerIndViewEvent()">VIEW INDICATORS
+          </button>
 
           <button type="button" class="view-select__button btn btn-primary wt-lb"
-            [disabled]='_selectedCountryList.length === 0 && 0' [ngClass]="{active: showPolicy}"
-            (click)="onChangeViewerIndViewEvent(true)">POLICY PRIORITY</button>
+                  [disabled]='_selectedCountryList.length === 0 && 0' [ngClass]="{active: showPolicy}"
+                  (click)="onChangeViewerIndViewEvent(true)">POLICY PRIORITY
+          </button>
           <!--<button type="button" class="btn btn-primary wt-lb" [disabled]='_selectedCountryList.length === 0 && 0' [ngClass]="{active: viewerDisplay === 'tech'}" (click)="onChangeViewerIndViewEvent('tech')">ACCESS FULL MODEL</button>
           -->
         </div>
@@ -206,7 +216,7 @@
     <h2 class="mappage__header viewer__header">
       <span class="viewer__header-text">Country Resilience Factors</span>
       <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover2"
-        triggers="mouseenter:mouseleave" popoverTitle="">
+              triggers="mouseenter:mouseleave" popoverTitle="">
         <i class="mdi mdi-information-outline"></i>
       </button>
       <ng-template #popover2>
@@ -219,22 +229,25 @@
       </ng-template>
 
       <app-switch class="viewer__switch" [value]="switchValue" [options]="switchOptions" [labels]="switchLabels"
-        (onChange)="switchValue = $event"></app-switch>
+                  (onChange)="switchValue = $event"></app-switch>
 
       <div class="viewer__download-buttons box-download">
         <button type="button" class="btn btn-primary text-download" (click)="onResetTechDataEvent()"
-          *ngIf="viewerDisplay == 'tech'">RESET</button>
+                *ngIf="viewerDisplay == 'tech'">RESET
+        </button>
         <a class="btn btn-primary text-download" href="/assets/data/all_countries_data.csv">
           <img class="img-download" src="assets/image/ic-download-green.png" alt="">CSV
         </a>
         <button type="button" class="btn btn-primary text-download" (click)="print.screenshot()"><img
-            class="img-download" src="assets/image/ic-download-green.png" alt="">PDF</button>
+          class="img-download" src="assets/image/ic-download-green.png" alt="">PDF
+        </button>
       </div>
     </h2>
 
     <app-indicator-tabs [viewerModel]="viewerModel" [view]="switchValue"
-    [viewerGroupModel]="viewerGroupModel" [countryData]="countryData"
-    [inputLabels]="inputLabels" [selectedCountry]="selectedCountry" [firstCountryOverride]="selectedCountryName">
+                        [viewerGroupModel]="viewerGroupModel" [countryData]="countryData"
+                        [inputLabels]="inputLabels" [selectedCountry]="selectedCountry"
+                        [firstCountryOverride]="selectedCountryName">
     </app-indicator-tabs>
   </div>
 
@@ -243,7 +256,7 @@
     <h2 class="mappage__header viewer__header">
       How Country Policies Can Reduce Asset And Well-Being Losses
       <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover3"
-        triggers="mouseenter:mouseleave" popoverTitle="">
+              triggers="mouseenter:mouseleave" popoverTitle="">
         <i class="mdi mdi-information-outline"></i>
       </button>
       <ng-template #popover3>
@@ -258,7 +271,8 @@
 
       <div class="viewer__download-buttons box-download">
         <button type="button" class="btn btn-primary text-download" (click)="print.screenshot()"><img
-            class="img-download" src="assets/image/ic-download-green.png" alt="">PDF</button>
+          class="img-download" src="assets/image/ic-download-green.png" alt="">PDF
+        </button>
       </div>
     </h2>
 
@@ -279,42 +293,55 @@
       Adjust the drivers of risks and resilience to evaluate a policy scenario:
       <div class="viewer__download-buttons box-download">
         <button type="button" class="btn btn-primary text-download" (click)="print.screenshot()"><img
-            class="img-download" src="assets/image/ic-download-green.png" alt="">PDF</button>
+          class="img-download" src="assets/image/ic-download-green.png" alt="">PDF
+        </button>
       </div>
     </h2>
 
 
     <div class="viewer__slider-row">
-      <div >
+      <div>
         <h3 class="viewer__slider-sub-heading">Country Resilience Factors </h3>
         <app-slider-tabs [inputLabels]="inputLabels"
-        [sliderValues]="sliderValues1"
-        (sliderChange)="onSliderChangeEvent1($event)"
-        (sliderInputChange)="onSliderInputEventAlt($event)"></app-slider-tabs>
+                         [sliderValues]="sliderValues1"
+                         (sliderChange)="onSliderChangeEvent1($event)"
+                         (sliderInputChange)="onSliderInputEventAlt($event)"></app-slider-tabs>
       </div>
 
-      <div class="viewer__slider-buttons">
-        <h3 class="viewer__slider-sub-heading">Hazards Selection</h3>
+<!--      <div class="viewer__slider-buttons">-->
+<!--        <h3 class="viewer__slider-sub-heading">Hazards Selection</h3>-->
 
-        <div class="hover-a hazard-buttons" >
-          <a (click)="onSwitchExposure1()" placement="top" ngbPopover="Coastal and Riverine Flooding" triggers="mouseenter:mouseleave" popoverTitle="" class="hazard-buttons__button">
-            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="!hazards.hazard1" src="assets/image/flood-yellow.png" alt=""/>
-            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="hazards.hazard1" src="assets/image/flood.png" alt="" />
-          </a>
-          <a (click)="onSwitchExposure2()" placement="top" ngbPopover="Earthquakes" triggers="mouseenter:mouseleave" popoverTitle="" class="hazard-buttons__button">
-            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="!hazards.hazard2" src="assets/image/earthquake-yellow.png" alt="" />
-            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="hazards.hazard2" src="assets/image/earthquake.png" alt="" />
-          </a>
-          <a (click)="onSwitchExposure3()" placement="top" ngbPopover="Tsunamis" triggers="mouseenter:mouseleave" popoverTitle="" class="hazard-buttons__button">
-            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="!hazards.hazard3" src="assets/image/tsunami-yellow.png" alt="" />
-            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="hazards.hazard3" src="assets/image/tsunami.png" alt="" />
-          </a>
-          <a (click)="onSwitchExposure4()" placement="top" ngbPopover="Windstorms" triggers="mouseenter:mouseleave" popoverTitle="" class="hazard-buttons__button">
-            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="!hazards.hazard4" src="assets/image/wind-yellow.png" alt="" />
-            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="hazards.hazard4" src="assets/image/wind.png" alt="" />
-          </a>
-        </div>
-      </div>
+<!--        <div class="hover-a hazard-buttons">-->
+<!--          <a (click)="onSwitchExposure1()" placement="top" ngbPopover="Coastal and Riverine Flooding"-->
+<!--             triggers="mouseenter:mouseleave" popoverTitle="" class="hazard-buttons__button">-->
+<!--            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="!hazards.hazard1"-->
+<!--                 src="assets/image/flood-yellow.png" alt=""/>-->
+<!--            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="hazards.hazard1"-->
+<!--                 src="assets/image/flood.png" alt=""/>-->
+<!--          </a>-->
+<!--          <a (click)="onSwitchExposure2()" placement="top" ngbPopover="Earthquakes" triggers="mouseenter:mouseleave"-->
+<!--             popoverTitle="" class="hazard-buttons__button">-->
+<!--            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="!hazards.hazard2"-->
+<!--                 src="assets/image/earthquake-yellow.png" alt=""/>-->
+<!--            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="hazards.hazard2"-->
+<!--                 src="assets/image/earthquake.png" alt=""/>-->
+<!--          </a>-->
+<!--          <a (click)="onSwitchExposure3()" placement="top" ngbPopover="Tsunamis" triggers="mouseenter:mouseleave"-->
+<!--             popoverTitle="" class="hazard-buttons__button">-->
+<!--            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="!hazards.hazard3"-->
+<!--                 src="assets/image/tsunami-yellow.png" alt=""/>-->
+<!--            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="hazards.hazard3"-->
+<!--                 src="assets/image/tsunami.png" alt=""/>-->
+<!--          </a>-->
+<!--          <a (click)="onSwitchExposure4()" placement="top" ngbPopover="Windstorms" triggers="mouseenter:mouseleave"-->
+<!--             popoverTitle="" class="hazard-buttons__button">-->
+<!--            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="!hazards.hazard4"-->
+<!--                 src="assets/image/wind-yellow.png" alt=""/>-->
+<!--            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="hazards.hazard4"-->
+<!--                 src="assets/image/wind.png" alt=""/>-->
+<!--          </a>-->
+<!--        </div>-->
+<!--      </div>-->
     </div>
   </div>
 
@@ -323,7 +350,7 @@
       <div class="card-02">
         <h2 class="mappage__header viewer__header">New risk levels and socioeconomic resilience:
           <app-switch class="viewer__switch" [value]="switchValue" [options]="switchOptions" [labels]="switchLabels"
-            (onChange)="switchValue = $event"></app-switch>
+                      (onChange)="switchValue = $event"></app-switch>
         </h2>
 
         <div class="output__grid output__grid--2col">
@@ -352,17 +379,20 @@
             </div>
             <div class="outputs__col">
               <div id="output-risk_to_assets_1" class="chart-container"></div>
-              <app-gauge-display [view]="switchValue" [data]="gaugeData['risk_to_assets']" [id]="selectedCountry" [changeRow]="this.gaugeChangeData['risk_to_assets']" [hasChange]="true">
+              <app-gauge-display [view]="switchValue" [data]="gaugeData['risk_to_assets']" [id]="selectedCountry"
+                                 [changeRow]="this.gaugeChangeData['risk_to_assets']" [hasChange]="true">
               </app-gauge-display>
             </div>
             <div class="outputs__col">
               <div id="output-resilience_1" class="chart-container"></div>
-              <app-gauge-display [view]="switchValue" [data]="gaugeData['resilience']" [id]="selectedCountry" [changeRow]="this.gaugeChangeData['resilience']" [hasChange]="true">
+              <app-gauge-display [view]="switchValue" [data]="gaugeData['resilience']" [id]="selectedCountry"
+                                 [changeRow]="this.gaugeChangeData['resilience']" [hasChange]="true">
               </app-gauge-display>
             </div>
             <div class="outputs__col">
               <div id="output-risk_1" class="chart-container"></div>
-              <app-gauge-display [view]="switchValue" [data]="gaugeData['risk']" [id]="selectedCountry" [changeRow]="this.gaugeChangeData['risk']"  [hasChange]="true">
+              <app-gauge-display [view]="switchValue" [data]="gaugeData['risk']" [id]="selectedCountry"
+                                 [changeRow]="this.gaugeChangeData['risk']" [hasChange]="true">
               </app-gauge-display>
             </div>
           </div>
@@ -373,21 +403,21 @@
 </div>
 
 <app-footer [selection]="false"></app-footer>
-  <!-- End Print -->
+<!-- End Print -->
 <app-print #print
-[countryData]="countryData"
-[chartConf]="chartConf"
-[gaugeData]="gaugeData"
-[gaugeChangeData]="gaugeChangeData"
-[inputLabels]="inputLabels"
-[selectedCountry]="selectedCountry"
-[selectedCountryName]="selectedCountryName"
-[showPolicy]="showPolicy"
-[sliderValues1]="sliderValues1"
-[onSliderChangeEvent1]="onSliderChangeEvent1"
-[onSliderInputEventAlt]="onSliderInputEventAlt"
-[switchValue]="switchValue"
-[viewerDisplay]="viewerDisplay"
-[viewerGroupModel]="viewerGroupModel"
-[viewerModel]="viewerModel"></app-print>
+           [countryData]="countryData"
+           [chartConf]="chartConf"
+           [gaugeData]="gaugeData"
+           [gaugeChangeData]="gaugeChangeData"
+           [inputLabels]="inputLabels"
+           [selectedCountry]="selectedCountry"
+           [selectedCountryName]="selectedCountryName"
+           [showPolicy]="showPolicy"
+           [sliderValues1]="sliderValues1"
+           [onSliderChangeEvent1]="onSliderChangeEvent1"
+           [onSliderInputEventAlt]="onSliderInputEventAlt"
+           [switchValue]="switchValue"
+           [viewerDisplay]="viewerDisplay"
+           [viewerGroupModel]="viewerGroupModel"
+           [viewerModel]="viewerModel"></app-print>
 
