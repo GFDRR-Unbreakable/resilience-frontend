@@ -1,22 +1,21 @@
-import { ActivatedRoute } from '@angular/router';
-import { Viewer, ViewerGroup, ViewerModel } from '../../store/model/viewer.model';
-import { ViewerAction } from '../../store/action/viewer.action';
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operator/map';
-import { debounceTime } from 'rxjs/operator/debounceTime';
-import { distinctUntilChanged } from 'rxjs/operator/distinctUntilChanged';
+import {ActivatedRoute} from '@angular/router';
+import {Viewer, ViewerGroup, ViewerModel} from '../../store/model/viewer.model';
+import {ViewerAction} from '../../store/action/viewer.action';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Observable} from 'rxjs/Observable';
+import {map} from 'rxjs/operator/map';
+import {debounceTime} from 'rxjs/operator/debounceTime';
+import {distinctUntilChanged} from 'rxjs/operator/distinctUntilChanged';
 import numeral from 'numeral';
-import { MapService } from '../../services/map.service';
-import { FileService } from '../../services/files.service';
-import { ChartService } from '../../services/chart.service';
-import { Subscription } from 'rxjs/Subscription';
-import { Store } from '@ngrx/store';
-import { AppStore } from '../../store/default.store';
-import { MdSliderChange } from '@angular/material/';
-
-import * as d3 from 'd3/d3.js';
-import { PrintComponent } from '../print/print.component';
+import {MapService} from '../../services/map.service';
+import {FileService} from '../../services/files.service';
+import {ChartService} from '../../services/chart.service';
+import {Subscription} from 'rxjs/Subscription';
+import {Store} from '@ngrx/store';
+import {AppStore} from '../../store/default.store';
+import {MdSliderChange} from '@angular/material/';
+import {PrintComponent} from '../print/print.component';
+import {NgbTypeahead} from "@ng-bootstrap/ng-bootstrap";
 
 
 @Component({
@@ -177,17 +176,29 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   public viewerSubs: Subscription;
   public viewerModel1Subs: Subscription;
   public viewerModel2Subs: Subscription;
-  private onPassEv = e => { e.preventDefault(); };
+  private onPassEv = e => {
+    e.preventDefault();
+  };
   private globalModelDataHash: any = {};
 
+  @ViewChild('instance') instance: NgbTypeahead;
+
   @ViewChild('print') print: PrintComponent;
+
+  public onFocus = (e: Event) => {
+    e.stopPropagation();
+    setTimeout(() => {
+      const inputEvent: Event = new Event('input');
+      e.target.dispatchEvent(inputEvent);
+    }, 0);
+  }
 
   /**
    * Returns a list of matches as a result of a searched string when first or second input-text is being modified.
    */
   public searchCountryFn = (text$: Observable<string>) => {
     const debounceTimeFn = debounceTime.call(text$, 200);
-    const distinctUntilChangedFn = distinctUntilChanged.call(debounceTimeFn);
+    // const distinctUntilChangedFn = distinctUntilChanged.call(debounceTimeFn);
     const searchCb = term => {
       if (!term.length) {
         return this.countryUIList.slice(0, 10);
@@ -195,7 +206,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         return this.countryUIList.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) === 0).slice(0, 10);
       }
     };
-    return map.call(distinctUntilChangedFn, searchCb);
+    return map.call(debounceTimeFn, searchCb);
   }
   public inputTypes = {
     inputSoc: [],
@@ -276,6 +287,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       this.viewerDisplay = url[0].path;
     });
   }
+
   // LIFE-CYCLE METHODS
   /**
    * This method gets called after the component has invoked its constructor.
@@ -299,6 +311,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.hazardTypes = this.chartService.getChartsConf().hazardTypes;
     // this.calloutTitle = this.setCalloutTitle();
   }
+
   /**
    * This methods gets called when the component gets removed from the UI (normally happens while changing to another page).
    * Unsubscribes all the remaining observables which have been subscribed during UI events through rxjs library.
@@ -311,6 +324,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.removeSelectedCountriesOnMap();
     // this.removeElPassiveEvents();
   }
+
   /**
    * This method gets called when the component has rendered all its view features.
    * Subscribes all the observables used in this component through UI events.
@@ -320,6 +334,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.setViewerModel1ObservableConf();
     this.setViewerModel2ObservableConf();
   }
+
   // METHODS
   /**
    * This method invokes the creation/modification/deletion of a country data in terms of drawing it in the map chart and
@@ -334,11 +349,11 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this._filterCountryByInput(fromListFilter, 0, this.viewerModel.firstCountry);
 
-      this.store.dispatch({ type: ViewerAction.EDIT_VIEWER, payload: this.viewerModel });
+      this.store.dispatch({type: ViewerAction.EDIT_VIEWER, payload: this.viewerModel});
     }
 
     // if (this.url[0].path === 'countrytool') {
-      // Set selected country for gagues.
+    // Set selected country for gagues.
 
     if (fromListFilter.length) {
       this.selectedCountryName = fromListFilter[0].name;
@@ -348,7 +363,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         pop: numeral(this.countryData[this.selectedCountry].macro_pop).format('0.0a')
       };
     }
-   // }
+    // }
 
     // @TODO: Find cleaner way to trigger model run.
     if (fromListFilter.length > 0) {
@@ -403,11 +418,12 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         const group = this.global ? 'GLOBAL' : viewerMod['group_name'];
 
         this.setGaugeChangeValues(newObj);
-        this.chartService.updateOutputCharts(outputChartId, { model: newObj }, group, moveBothBrushes, this.viewerDisplay === 'tech');
+        this.chartService.updateOutputCharts(outputChartId, {model: newObj}, group, moveBothBrushes, this.viewerDisplay === 'tech');
       });
-      this.store.dispatch({ type: ViewerAction[viewerActionStr], payload: viewerMod });
+      this.store.dispatch({type: ViewerAction[viewerActionStr], payload: viewerMod});
     }
   }
+
   /**
    * This private method is called by the @private _changeCountryInput method set it in this component
    * which creates/updates/removes selected countries data in a @public array called _selectedCountryList,
@@ -525,11 +541,12 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
   }
+
   /**
    * Adds passive UI events in the component.
    */
   addElPassiveEvents() {
-    const options: any = { passive: false };
+    const options: any = {passive: false};
     document.addEventListener('touchstart', this.onPassEv, options);
     document.addEventListener('touchmove', this.onPassEv, options);
     document.addEventListener('wheel', this.onPassEv, options);
@@ -600,7 +617,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.countryData = allData._globalModelData;
     ['risk_to_assets', 'resilience', 'risk'].reduce((acc, key) => {
       const rows = Object.keys(this.countryData).map(id => {
-        return { id, value: this.countryData[id][key] };
+        return {id, value: this.countryData[id][key]};
       });
       const avgRow = {
         id: 'AVG',
@@ -623,7 +640,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   setGaugeChangeValues(changeObj) {
     ['risk_to_assets', 'resilience', 'risk'].reduce((acc, key) => {
       const rows = Object.keys(this.countryData).map(id => {
-        return { id, value: this.countryData[id][key] };
+        return {id, value: this.countryData[id][key]};
       });
 
       acc[key] = {value: changeObj[key], id: changeObj.id};
@@ -637,7 +654,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private mapGaugeRows(acc, key, countryData) {
     const rows = Object.keys(countryData).map(id => {
-      return { id, value: countryData[id][key] };
+      return {id, value: countryData[id][key]};
     });
     const avgRow = {
       id: 'AVG',
@@ -780,16 +797,18 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     data['global'] = this.global ? 'Global' : 'Regional';
     return data;
   }
+
   /**
    * Removes passive UI events in this component.
    */
   private removeElPassiveEvents() {
-    const options: any = { passive: false };
+    const options: any = {passive: false};
     document.removeEventListener('touchstart', this.onPassEv, options);
     document.removeEventListener('touchmove', this.onPassEv, options);
     document.removeEventListener('wheel', this.onPassEv, options);
     document.removeEventListener('wheelmove', this.onPassEv, options);
   }
+
   /**
    * Unhighlights selected countries on the map chart by using the @public array property _selectedCountryList.
    */
@@ -830,7 +849,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this.mapService.setHoverFnMapEvent((ev) => {
         const features = self.mapService.getMap()
-          .queryRenderedFeatures(ev.point, { layers: [self.mapService.getViewerFillLayer()] });
+          .queryRenderedFeatures(ev.point, {layers: [self.mapService.getViewerFillLayer()]});
         if (features.length) {
           const isoCode = features[0].properties['ISO_Code'];
           const names = features[0].properties['Name'];
@@ -863,6 +882,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       });
     });
   }
+
   /**
    * Resets to default slider values whether a country has been selected or not.
    * @param {Object} sliderObj - Slider model values
@@ -912,6 +932,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this[viewerPropDefault] = Object.assign({}, viewerMod);
     this[sliderPropDefault] = Object.assign({}, sliderObj);
   }
+
   /**
    * Sets slider detailed values.
    * @param {Object} sliderObj - Slider model.
@@ -953,6 +974,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       sliderObj[key + '_difference_value'] = this.chartService.formatInputChartDifference(0, input);
     }
   }
+
   /**
    * Sets default slider values when input data has been requested.
    * @param {Object} inputData - Input-indicator model object.
@@ -989,7 +1011,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
             min = 0;
             max = 1;
             break;
-          default: break;
+          default:
+            break;
         }
         this.setSingleSliderConfValue(this.sliderValues1, key, max, min, inputData[inputDataIndex]);
         // this.setSingleSliderConfValue(this.sliderValues2, key, max, min, inputData[inputDataIndex]);
@@ -1026,6 +1049,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.sliderValues1Default = Object.assign({}, this.sliderValues1);
     this.sliderValues2Default = Object.assign({}, this.sliderValues2);
   }
+
   /**
    * Subscribes to viewer model observable and checks any changes its observer has to be set in its
    * corresponding viewer model object which has the country input-text values.
@@ -1037,6 +1061,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
   }
+
   /**
    * Subscribes to first input-viewer model observable and checks any changes its observer has to be set in its
    * corresponding viewer model object.
@@ -1048,6 +1073,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
   }
+
   /**
    * Subscribes to second input-viewer model observable and checks any changes its observer has to be set in its
    * corresponding viewer model object.
@@ -1059,6 +1085,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
   }
+
   // EVENTS
   /**
    * @event Click - This event is called when a map indicator-layer is changed to another one
@@ -1075,6 +1102,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     const currentLegend = this.mapService.getMapPaintConf(mapId);
     this.legends = this.mapService.getMapLegendConf(mapId);
   }
+
   /**
    * @event Click - This event is called when the "View Indicator" or "Run Model" button is clicked
    * and automatically the page scrolls to UI-input data configuration or to the top of the page.
@@ -1086,6 +1114,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.onResetTechDataEvent();
     return false;
   }
+
   /**
    * @event Click - This event is triggered when user selects on the dropdown to
    * display output/inputs charts as Global when the charts are displayed as
@@ -1103,6 +1132,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       });
     }
   }
+
   /**
    * @event Click - This event is fired when the user clicks on the "CSV"
    * button to download a CSV file of the current input-output values displayed
@@ -1124,6 +1154,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       }, 1000);
     });
   }
+
   /**
    * @event Click - This event is triggered when the user click on the "PDF"
    * button to download a PDF file of the current input-output charts and values
@@ -1135,6 +1166,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       this.fileService.setPDFDownloadProcess(pdfData, this.viewerDisplay);
     });
   }
+
   /**
    * @event Change - This event is called when the first country input field is
    * being modified.
@@ -1142,6 +1174,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   onFirstCountryInputChangeEvent() {
     this._changeCountryInput(true);
   }
+
   /**
    * @event Click - This event is called when the "Reset" button is clicked in
    * order to reset default slider values according to selected countries or not.
@@ -1161,9 +1194,9 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.sliderValues1 = Object.assign({}, this.sliderValues1Default);
     this.sliderValues2 = Object.assign({}, this.sliderValues2Default);
     // Update states
-    this.store.dispatch({ type: ViewerAction.EDIT_VIEWER, payload: this.viewerModel });
-    this.store.dispatch({ type: ViewerAction.EDIT_VIEWER_MODEL_1, payload: this.viewerP1 });
-    this.store.dispatch({ type: ViewerAction.EDIT_VIEWER_MODEL_2, payload: this.viewerP2 });
+    this.store.dispatch({type: ViewerAction.EDIT_VIEWER, payload: this.viewerModel});
+    this.store.dispatch({type: ViewerAction.EDIT_VIEWER_MODEL_1, payload: this.viewerP1});
+    this.store.dispatch({type: ViewerAction.EDIT_VIEWER_MODEL_2, payload: this.viewerP2});
     if (!this._selectedCountryList.length) {
       this.viewerModel.firstCountry = '';
       this.viewerGroupModel.firstCountryGroup = '';
@@ -1181,12 +1214,14 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
   }
+
   /**
    * @event Change - This event is called when the second country input field is being modified.
    */
   onSecondCountryInputChangeEvent() {
     this._changeCountryInput(false);
   }
+
   /**
    * @event Click - This event is triggered when user selects on the dropdown to display output/inputs
    * charts as Global or Regional
@@ -1213,6 +1248,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       });
     }
   }
+
   setValueExposure(selected: boolean, key: string, key2?: string) {
     if (selected) {
       this.sliderValues1[key + '_value'] = this.sliderValues1Default[key + '_value'];
@@ -1287,7 +1323,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
       this.setGaugeChangeValues(newObj);
-      this.chartService.updateOutputCharts('outputs-1', { model: newObj }, group1, true, this.viewerDisplay === 'tech');
+      this.chartService.updateOutputCharts('outputs-1', {model: newObj}, group1, true, this.viewerDisplay === 'tech');
       // this.chartService.updateOutputCharts('outputs-1', {model: newObj}, group1, true, this.viewerDisplay === 'tech');
 
       /*if (!!this._selectedCountryList[1]) {
@@ -1340,6 +1376,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       }*/
     });
   }
+
   /**
    * @event Click - This event is triggered when the first hazard button is selected/deselected on the "Run model" view
    */
@@ -1349,6 +1386,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       this.onSwitchExposure(true, false, false, false);
     }
   }
+
   /**
    * @event Click - This event is triggered when the second hazard button is selected/deselected on the "Run model" view
    */
@@ -1358,6 +1396,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       this.onSwitchExposure(false, true, false, false);
     }
   }
+
   /**
    * @event Click - This event is triggered when the third hazard button is selected/deselected on the "Run model" view
    */
@@ -1367,6 +1406,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       this.onSwitchExposure(false, false, true, false);
     }
   }
+
   /**
    * @event Click - This event is triggered when the fourth hazard button is selected/deselected on the "Run model" view
    */
@@ -1376,6 +1416,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       this.onSwitchExposure(false, false, false, true);
     }
   }
+
   /**
    * This method works as a helper of the @event onSliderChangeEvent1 or @event onSliderChangeEvent1
    * which modifies values of the selected slider.
@@ -1392,6 +1433,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     sliderValues[key + '_difference_value'] = this.chartService.formatInputChartDifference(newValue - sliderValues[key + '_default_value'], input);
     sliderValues[key].value = newValue;
   }
+
   /**
    * @event Change - This event is triggered when a slider component of the first country set of sliders has changed of value
    * @param {String} key - Input-indicator model name.
@@ -1414,10 +1456,12 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.onSliderChangeEvent(this.sliderValues2, key);
     this._changeSliderValue(key, false);
   }
+
   onSliderInputEvent1(event: MdSliderChange, key) {
     this.sliderValues1[key + '_value'] = event.value;
     this.onSliderChangeEvent(this.sliderValues1, key);
   }
+
   onSliderInputEvent2(event: MdSliderChange, key) {
     this.sliderValues2[key + '_value'] = event.value;
     this.onSliderChangeEvent(this.sliderValues2, key);
