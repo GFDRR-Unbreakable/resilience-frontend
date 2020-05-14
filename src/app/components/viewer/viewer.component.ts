@@ -180,6 +180,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     e.preventDefault();
   };
   private globalModelDataHash: any = {};
+  private isResetting = false;
 
   @ViewChild('instance') instance: NgbTypeahead;
 
@@ -294,10 +295,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    * Inits the map chart creation in the app and set its UI events.
    */
   ngOnInit() {
-    // console.log('ngOnInit')
     this.mapService.createMap('map');
     this.setMapConf();
-    // this.addElPassiveEvents();
     this.inputTypes.inputSoc = this.chartService.getChartsConf().inputTypes.inputSoc;
     this.inputTypes.inputEco = this.chartService.getChartsConf().inputTypes.inputEco;
     this.inputTypes.inputVul = this.chartService.getChartsConf().inputTypes.inputVul;
@@ -598,7 +597,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   createMapPageOutputChartTable(data: any, containerId: string, groupName: any = undefined, isoCode: any = undefined, origin: string = 'No origin', allData?: any): any {
-    // console.log('createMapPageOutputChartTable', data, allData);
 
     this.chartService.createSingleOutputChart(data.risk_to_assets, 'risk_to_assets', 'output-risk_to_assets_1', groupName, isoCode);
 
@@ -638,10 +636,12 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   setGaugeChangeValues(changeObj) {
-    ['risk_to_assets', 'resilience', 'risk'].reduce((acc, key) => {
-      acc[key] = {value: changeObj[key], id: changeObj.id};
-      return acc;
-    }, this.gaugeChangeData);
+    if (!this.isResetting) {
+      ['risk_to_assets', 'resilience', 'risk'].reduce((acc, key) => {
+        acc[key] = {value: changeObj[key], id: changeObj.id};
+        return acc;
+      }, this.gaugeChangeData);
+    }
   }
 
   clearGaugeChangeValues() {
@@ -973,6 +973,12 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this._changeCountryInput(true);
   }
 
+  _resetSliders() {
+    this.isResetting = true;
+    this.onResetTechDataEvent();
+    this.clearGaugeChangeValues();
+  }
+
   /**
    * @event Click - This event is called when the "Reset" button is clicked in
    * order to reset default slider values according to selected countries or not.
@@ -1011,9 +1017,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         this._selectedCountryList = [];
       }
     }
-
-    // TODO - figure out how to clear gauge change values
-    setTimeout(() => this.clearGaugeChangeValues(), 750)
   }
 
   onSwitchExposure(flood: boolean, earthquake: boolean, tsunami: boolean, windstorm: boolean) {
@@ -1078,6 +1081,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       parseFloat(('' + sliderValues[key + '_display_value']).replace('$', '').replace(',', ''));
     sliderValues[key + '_difference_value'] = this.chartService.formatInputChartDifference(newValue - sliderValues[key + '_default_value'], input);
     sliderValues[key].value = newValue;
+    this.isResetting = false;
   }
 
   /**
