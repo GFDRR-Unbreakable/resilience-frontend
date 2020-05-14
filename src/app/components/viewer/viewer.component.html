@@ -296,9 +296,9 @@
     <h2 class="mappage__header viewer__header">
       Adjust the drivers of risks and resilience to evaluate a policy scenario:
       <div class="viewer__download-buttons box-download">
-<!--        <button type="button" class="btn btn-primary text-download" (click)="print.screenshot()"><img-->
-<!--          class="img-download" src="assets/image/ic-download-green.png" alt="">Reset-->
-<!--        </button>-->
+        <button type="button" class="btn btn-primary text-download" (click)="onResetTechDataEvent()">
+          RESET
+        </button>
         <button type="button" class="btn btn-primary text-download" (click)="print.screenshot()"><img
           class="img-download" src="assets/image/ic-download-green.png" alt="">PDF
         </button>
@@ -315,40 +315,40 @@
                          (sliderInputChange)="onSliderInputEventAlt($event)"></app-slider-tabs>
       </div>
 
-<!--      <div class="viewer__slider-buttons">-->
-<!--        <h3 class="viewer__slider-sub-heading">Hazards Selection</h3>-->
+      <!--      <div class="viewer__slider-buttons">-->
+      <!--        <h3 class="viewer__slider-sub-heading">Hazards Selection</h3>-->
 
-<!--        <div class="hover-a hazard-buttons">-->
-<!--          <a (click)="onSwitchExposure1()" placement="top" ngbPopover="Coastal and Riverine Flooding"-->
-<!--             triggers="mouseenter:mouseleave" popoverTitle="" class="hazard-buttons__button">-->
-<!--            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="!hazards.hazard1"-->
-<!--                 src="assets/image/flood-yellow.png" alt=""/>-->
-<!--            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="hazards.hazard1"-->
-<!--                 src="assets/image/flood.png" alt=""/>-->
-<!--          </a>-->
-<!--          <a (click)="onSwitchExposure2()" placement="top" ngbPopover="Earthquakes" triggers="mouseenter:mouseleave"-->
-<!--             popoverTitle="" class="hazard-buttons__button">-->
-<!--            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="!hazards.hazard2"-->
-<!--                 src="assets/image/earthquake-yellow.png" alt=""/>-->
-<!--            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="hazards.hazard2"-->
-<!--                 src="assets/image/earthquake.png" alt=""/>-->
-<!--          </a>-->
-<!--          <a (click)="onSwitchExposure3()" placement="top" ngbPopover="Tsunamis" triggers="mouseenter:mouseleave"-->
-<!--             popoverTitle="" class="hazard-buttons__button">-->
-<!--            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="!hazards.hazard3"-->
-<!--                 src="assets/image/tsunami-yellow.png" alt=""/>-->
-<!--            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="hazards.hazard3"-->
-<!--                 src="assets/image/tsunami.png" alt=""/>-->
-<!--          </a>-->
-<!--          <a (click)="onSwitchExposure4()" placement="top" ngbPopover="Windstorms" triggers="mouseenter:mouseleave"-->
-<!--             popoverTitle="" class="hazard-buttons__button">-->
-<!--            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="!hazards.hazard4"-->
-<!--                 src="assets/image/wind-yellow.png" alt=""/>-->
-<!--            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="hazards.hazard4"-->
-<!--                 src="assets/image/wind.png" alt=""/>-->
-<!--          </a>-->
-<!--        </div>-->
-<!--      </div>-->
+      <!--        <div class="hover-a hazard-buttons">-->
+      <!--          <a (click)="onSwitchExposure1()" placement="top" ngbPopover="Coastal and Riverine Flooding"-->
+      <!--             triggers="mouseenter:mouseleave" popoverTitle="" class="hazard-buttons__button">-->
+      <!--            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="!hazards.hazard1"-->
+      <!--                 src="assets/image/flood-yellow.png" alt=""/>-->
+      <!--            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="hazards.hazard1"-->
+      <!--                 src="assets/image/flood.png" alt=""/>-->
+      <!--          </a>-->
+      <!--          <a (click)="onSwitchExposure2()" placement="top" ngbPopover="Earthquakes" triggers="mouseenter:mouseleave"-->
+      <!--             popoverTitle="" class="hazard-buttons__button">-->
+      <!--            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="!hazards.hazard2"-->
+      <!--                 src="assets/image/earthquake-yellow.png" alt=""/>-->
+      <!--            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="hazards.hazard2"-->
+      <!--                 src="assets/image/earthquake.png" alt=""/>-->
+      <!--          </a>-->
+      <!--          <a (click)="onSwitchExposure3()" placement="top" ngbPopover="Tsunamis" triggers="mouseenter:mouseleave"-->
+      <!--             popoverTitle="" class="hazard-buttons__button">-->
+      <!--            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="!hazards.hazard3"-->
+      <!--                 src="assets/image/tsunami-yellow.png" alt=""/>-->
+      <!--            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="hazards.hazard3"-->
+      <!--                 src="assets/image/tsunami.png" alt=""/>-->
+      <!--          </a>-->
+      <!--          <a (click)="onSwitchExposure4()" placement="top" ngbPopover="Windstorms" triggers="mouseenter:mouseleave"-->
+      <!--             popoverTitle="" class="hazard-buttons__button">-->
+      <!--            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="!hazards.hazard4"-->
+      <!--                 src="assets/image/wind-yellow.png" alt=""/>-->
+      <!--            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="hazards.hazard4"-->
+      <!--                 src="assets/image/wind.png" alt=""/>-->
+      <!--          </a>-->
+      <!--        </div>-->
+      <!--      </div>-->
     </div>
   </div>
 
