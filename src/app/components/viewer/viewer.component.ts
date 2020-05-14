@@ -181,12 +181,15 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   };
   private globalModelDataHash: any = {};
   private isResetting = false;
+  private isFocusing = false;
 
   @ViewChild('instance') instance: NgbTypeahead;
 
   @ViewChild('print') print: PrintComponent;
 
   public onFocus = (e: Event) => {
+    this.isFocusing = true;
+    this.isResetting = true;
     e.stopPropagation();
     setTimeout(() => {
       const inputEvent: Event = new Event('input');
@@ -201,6 +204,10 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     const debounceTimeFn = debounceTime.call(text$, 200);
     // const distinctUntilChangedFn = distinctUntilChanged.call(debounceTimeFn);
     const searchCb = term => {
+      if (this.isFocusing) {
+        term = '';
+      }
+      this.isFocusing = false;
       if (!term.length) {
         return this.countryUIList.slice(0, 10);
       } else {
