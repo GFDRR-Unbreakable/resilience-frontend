@@ -639,10 +639,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
 
   setGaugeChangeValues(changeObj) {
     ['risk_to_assets', 'resilience', 'risk'].reduce((acc, key) => {
-      const rows = Object.keys(this.countryData).map(id => {
-        return {id, value: this.countryData[id][key]};
-      });
-
       acc[key] = {value: changeObj[key], id: changeObj.id};
       return acc;
     }, this.gaugeChangeData);
@@ -662,151 +658,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     };
     acc[key] = [...rows, avgRow];
     return acc;
-  }
-
-  /**
-   * This method builds data from Output & Input, country input fields and chart default values to be
-   * send as params to CSV or PDF-generation API endpoint.
-   * @param {Boolean} isPDF - Verifies the request data has to be generated for a PDF or CSV file.
-   */
-  private processForFileJSONData(isPDF?: boolean): any {
-    const outputData = this.chartService.getOutputData();
-    const chartConf = this.chartService.getChartsConf();
-    const inputData = this.chartService.getInputData();
-    const inputTypes = chartConf.inputTypes;
-    const firstInput = this.viewerModel.firstCountry;
-    const secondInput = this.viewerModel.secondCountry;
-
-    const data: any = {
-      country1: {
-        name: '',
-        outputs: {},
-        inputs: {}
-      },
-      country2: {
-        name: '',
-        outputs: {},
-        inputs: {}
-      },
-      selectedHazards: {
-        hazard1: this.hazards.hazard1,
-        hazard2: this.hazards.hazard2,
-        hazard3: this.hazards.hazard3,
-        hazard4: this.hazards.hazard4
-      }
-    };
-    if (isPDF) {
-      data.map = {
-        chart: document.querySelector('canvas').toDataURL(),
-        type: this.mapSlideUISelected
-      };
-    }
-    data.page = this.viewerDisplay === 'countrytool' ? 'countrytool' : 'tech';
-    const countryFInput = this._selectedCountryList.filter(val => {
-      return val.name.toLowerCase() === firstInput.toLowerCase();
-    });
-    const countrySInput = this._selectedCountryList.filter(val => {
-      return val.name.toLowerCase() === secondInput.toLowerCase();
-    });
-    data.country1.name = !firstInput || countryFInput.length === 0 ? 'Global' : firstInput;
-    data.country2.name = !secondInput || countrySInput.length === 0 ? 'Global' : secondInput;
-
-    jQuery.each(outputData, (key, out) => {
-      if (!data.country1.outputs[key]) {
-        data.country1.outputs[key] = {};
-      }
-      if (!data.country2.outputs[key]) {
-        data.country2.outputs[key] = {};
-      }
-      if (key.indexOf('risk') >= 0) {
-        const cleanedKey = (key === 'risk_to_assets') ? 'risks_to_assets' : key;
-        if (!data.country1.outputs[key]['value']) {
-          data.country1.outputs[key]['value'] = {};
-        }
-        if (!data.country2.outputs[key]['value']) {
-          data.country2.outputs[key]['value'] = {};
-        }
-        data.country1.outputs[key]['value'].dollarGDP = out.chart['outputs-1'].dollarGDP;
-        data.country1.outputs[key]['value'].valueGDP = out.chart['outputs-1'].valueGDP;
-        data.country1.outputs[key]['value'].difference = out.chart['outputs-1'].difference;
-        data.country1.outputs[key]['value'].newValue = out.chart['outputs-1'].newValue;
-        data.country1.outputs[key]['value'].today = out.chart['outputs-1'].today;
-
-        data.country2.outputs[key]['value'].dollarGDP = out.chart[`output-${key}_2`].dollarGDP;
-        data.country2.outputs[key]['value'].valueGDP = out.chart[`output-${key}_2`].valueGDP;
-        data.country2.outputs[key]['value'].difference = out.chart[`output-${key}_2`].difference;
-        data.country2.outputs[key]['value'].newValue = out.chart[`output-${key}_2`].newValue;
-        data.country2.outputs[key]['value'].today = out.chart[`output-${key}_2`].today;/**/
-      } else {
-        data.country1.outputs[key]['value'] = out.chart['outputs-1'];
-        data.country2.outputs[key]['value'] = out.chart['outputs-2'];
-      }
-      data.country1.outputs[key]['label'] = out.descriptor;
-      data.country2.outputs[key]['label'] = out.descriptor;
-      if (isPDF) {
-        const chObj = this.chartService.formatSVGChartBase64Strings('outputs', true, key);
-        data.country1.outputs[key]['chart'] = chObj.chart1;
-        data.country2.outputs[key]['chart'] = chObj.chart2;
-      }
-    });
-    jQuery.each(inputTypes, (key, inputT) => {
-      if (!data.country1.inputs[key]) {
-        data.country1.inputs[key] = {};
-      }
-      if (!data.country2.inputs[key]) {
-        data.country2.inputs[key] = {};
-      }
-      inputT.forEach(inpKey => {
-        const label = inputData.filter(val => {
-          return val.key === inpKey;
-        })[0].descriptor;
-        if (!data.country1.inputs[key][inpKey]) {
-          data.country1.inputs[key][inpKey] = {};
-        }
-        if (!data.country2.inputs[key][inpKey]) {
-          data.country2.inputs[key][inpKey] = {};
-        }
-        data.country1.inputs[key][inpKey]['label'] = label;
-        data.country2.inputs[key][inpKey]['label'] = label;
-
-        data.country1.inputs[key][inpKey]['value'] = {
-          label: this.sliderValues1[inpKey + '_display_value'],
-          value: this.sliderValues1[inpKey].value
-        };
-
-        data.country2.inputs[key][inpKey]['value'] = {
-          label: this.sliderValues2[inpKey + '_display_value'],
-          //label: 'PLACEHOLDER', //d3.select(`.inputcharts--2 #table-${inpKey} span.value`).text(),
-          value: this.sliderValues2[inpKey].value
-        };
-
-        if (isPDF) {
-          if (data.page === 'countrytool') {
-            const chObj = this.chartService.formatSVGChartBase64Strings(key, true, inpKey);
-            data.country1.inputs[key][inpKey]['chart'] = chObj.chart1;
-            data.country2.inputs[key][inpKey]['chart'] = chObj.chart2;
-          } else {
-            data.country1.inputs[key][inpKey]['min'] = this.sliderValues1[inpKey]['min'];
-            data.country1.inputs[key][inpKey]['max'] = this.sliderValues1[inpKey]['max'];
-            data.country2.inputs[key][inpKey]['min'] = this.sliderValues2[inpKey]['min'];
-            data.country2.inputs[key][inpKey]['max'] = this.sliderValues2[inpKey]['max'];
-          }
-        }
-      });
-    });
-    data['global'] = this.global ? 'Global' : 'Regional';
-    return data;
-  }
-
-  /**
-   * Removes passive UI events in this component.
-   */
-  private removeElPassiveEvents() {
-    const options: any = {passive: false};
-    document.removeEventListener('touchstart', this.onPassEv, options);
-    document.removeEventListener('touchmove', this.onPassEv, options);
-    document.removeEventListener('wheel', this.onPassEv, options);
-    document.removeEventListener('wheelmove', this.onPassEv, options);
   }
 
   /**
@@ -1111,60 +962,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   onChangeViewerIndViewEvent(showPolicy = false) {
     this.showPolicy = showPolicy;
-    // this.onResetTechDataEvent();
     return false;
-  }
-
-  /**
-   * @event Click - This event is triggered when user selects on the dropdown to
-   * display output/inputs charts as Global when the charts are displayed as
-   * Regional and the "Run model" is triggered.
-   * @deprecated
-   */
-  onDisplayTechMapViewEvent() {
-    if (!this.global) {
-      this.global = !this.global;
-      const outData = this.chartService.getOutputData();
-      this._selectedCountryList.forEach(country => {
-        const chartIndex = country.index === 0 ? '1' : '2';
-        this.createMapPageOutputChartTable(outData, `outputs-${chartIndex}`, 'GLOBAL', country.code);
-        this.chartService.updateOutputCharts(`outputs-${chartIndex}`, country.code, null, true, this.viewerDisplay === 'tech');
-      });
-    }
-  }
-
-  /**
-   * @event Click - This event is fired when the user clicks on the "CSV"
-   * button to download a CSV file of the current input-output values displayed
-   * on the page.
-   */
-  onDownloadCSVViewerReportEvent() {
-    const data = this.processForFileJSONData();
-    this.fileService.getViewerCSVFile(data).subscribe(csvData => {
-      const blob = new Blob(['\ufeff', csvData]);
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      const fileName = (this.viewerDisplay === 'countrytool' ? 'countrytool' : 'technicalMap') + '_report.csv';
-      a.setAttribute('href', url);
-      a.setAttribute('download', fileName);
-      document.body.appendChild(a);
-      a.click();
-      setTimeout(() => {
-        window.URL.revokeObjectURL(url);
-      }, 1000);
-    });
-  }
-
-  /**
-   * @event Click - This event is triggered when the user click on the "PDF"
-   * button to download a PDF file of the current input-output charts and values
-   * displayed on the page.
-   */
-  onDownloadPDFViewerReportEvent() {
-    const data = this.processForFileJSONData(true);
-    this.fileService.getViewerPDFFile(data).subscribe(pdfData => {
-      this.fileService.setPDFDownloadProcess(pdfData, this.viewerDisplay);
-    });
   }
 
   /**
@@ -1213,68 +1011,9 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         this._selectedCountryList = [];
       }
     }
-  }
 
-  /**
-   * @event Change - This event is called when the second country input field is being modified.
-   */
-  onSecondCountryInputChangeEvent() {
-    this._changeCountryInput(false);
-  }
-
-  /**
-   * @event Click - This event is triggered when user selects on the dropdown to display output/inputs
-   * charts as Global or Regional
-   */
-  onSwitchGlobal() {
-    this.global = !this.global;
-    if (this._selectedCountryList.length <= this.MAX_COUNTRIES_SELECTED) {
-      const inData = this.chartService.getInputData();
-      const outData = this.chartService.getOutputData();
-      this._selectedCountryList.forEach(country => {
-        const group = this.global ? 'GLOBAL' : country.group;
-        if (country.index === 0) {
-          this.createMapPageOutputChartTable(outData, 'outputs-1', group, country.code);
-          this.createInputCharts(1, inData, this.sliderValues1, group);
-          this.updateInputCharts(1, this.sliderValues1, country.code);
-          this.chartService.updateOutputCharts('outputs-1', country.code, null, true, this.viewerDisplay === 'tech');
-        }
-        if (country.index === 1) {
-          this.createMapPageOutputChartTable(outData, 'outputs-2', group, country.code);
-          this.createInputCharts(2, inData, this.sliderValues2, group);
-          this.updateInputCharts(2, this.sliderValues2, country.code);
-          this.chartService.updateOutputCharts('outputs-2', country.code, null, true, this.viewerDisplay === 'tech');
-        }
-      });
-    }
-  }
-
-  setValueExposure(selected: boolean, key: string, key2?: string) {
-    if (selected) {
-      this.sliderValues1[key + '_value'] = this.sliderValues1Default[key + '_value'];
-      this.sliderValues2[key + '_value'] = this.sliderValues2Default[key + '_value'];
-    } else {
-      this.sliderValues1[key + '_value'] = 0;
-      this.sliderValues2[key + '_value'] = 0;
-    }
-    this.onSliderChangeEvent(this.sliderValues1, key);
-    this.onSliderChangeEvent(this.sliderValues2, key);
-    if (key2) {
-      if (selected) {
-        this.sliderValues1[key2 + '_value'] = this.sliderValues1Default[key2 + '_value'];
-        this.sliderValues2[key2 + '_value'] = this.sliderValues2Default[key2 + '_value'];
-      } else {
-        this.sliderValues1[key2 + '_value'] = 0;
-        this.sliderValues2[key2 + '_value'] = 0;
-      }
-      this.onSliderChangeEvent(this.sliderValues1, key2);
-      this.onSliderChangeEvent(this.sliderValues2, key2);
-      this._changeSliderValue(key, true, key2, false);
-      this._changeSliderValue(key, false, key2, false);
-    } else {
-      this._changeSliderValue(key, true, key2, false);
-      this._changeSliderValue(key, false, key2, false);
-    }
+    // TODO - figure out how to clear gauge change values
+    setTimeout(() => this.clearGaugeChangeValues(), 750)
   }
 
   onSwitchExposure(flood: boolean, earthquake: boolean, tsunami: boolean, windstorm: boolean) {
@@ -1282,9 +1021,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     const group1 = this.global ? 'GLOBAL'
       : (this._selectedCountryList.length > 0
         ? this._selectedCountryList[0].group : 'GLOBAL');
-    const group2 = this.global ? 'GLOBAL'
-      : (this._selectedCountryList.length > 1
-        ? this._selectedCountryList[1].group : 'GLOBAL');
 
     let viewerHazardDefault1 = Object.assign({}, this.viewerP1Default);
     let viewerHazardDefault2 = Object.assign({}, this.viewerP2Default);
@@ -1324,97 +1060,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
       }
       this.setGaugeChangeValues(newObj);
       this.chartService.updateOutputCharts('outputs-1', {model: newObj}, group1, true, this.viewerDisplay === 'tech');
-      // this.chartService.updateOutputCharts('outputs-1', {model: newObj}, group1, true, this.viewerDisplay === 'tech');
-
-      /*if (!!this._selectedCountryList[1]) {
-        viewerHazardDefault2['name'] = this._selectedCountryList[1].name;
-        viewerHazardDefault2['id'] = this._selectedCountryList[1].code;
-        viewerHazardDefault2['group_name'] = this._selectedCountryList[1].group;
-
-        this.chartService.getInputPModelData(viewerHazardDefault2).subscribe(data => {
-          const newObj2 = {};
-          for (const dataK in data) {
-            if (data.hasOwnProperty(dataK)) {
-              newObj2[dataK] = data[dataK][viewerHazardDefault2['name']];
-            }
-          }
-          this.chartService.updateOutputCharts('outputs-2', {model: newObj2}, group2, true, this.viewerDisplay === 'tech');
-          let floodKey1 = null;
-          let floodKey2 = null;
-          this.hazardTypes.hazardFlood.forEach((hazardType) => {
-            this.hazardDisplay[hazardType] = this.hazards.hazard1;
-            if (flood) {
-              if (floodKey1 == null) {
-                floodKey1 = hazardType;
-              } else if (floodKey2 == null) {
-                floodKey2 = hazardType;
-              }
-            }
-          });
-          if (floodKey1 != null && floodKey2 != null) {
-            this.setValueExposure(this.hazards.hazard1, floodKey1, floodKey2);
-          }
-          this.hazardTypes.hazardEarthquake.forEach((hazardType) => {
-            this.hazardDisplay[hazardType] = this.hazards.hazard2;
-            if (earthquake) {
-              this.setValueExposure(this.hazards.hazard2, hazardType);
-            }
-          });
-          this.hazardTypes.hazardTsunami.forEach((hazardType) => {
-            this.hazardDisplay[hazardType] = this.hazards.hazard3;
-            if (tsunami) {
-              this.setValueExposure(this.hazards.hazard3, hazardType);
-            }
-          });
-          this.hazardTypes.hazardWindstorm.forEach((hazardType) => {
-            this.hazardDisplay[hazardType] = this.hazards.hazard4;
-            if (windstorm) {
-              this.setValueExposure(this.hazards.hazard4, hazardType);
-            }
-          });
-        });
-      }*/
     });
-  }
-
-  /**
-   * @event Click - This event is triggered when the first hazard button is selected/deselected on the "Run model" view
-   */
-  onSwitchExposure1() {
-    if (this.viewerDisplay === 'advancedtool') {
-      this.hazards.hazard1 = !this.hazards.hazard1;
-      this.onSwitchExposure(true, false, false, false);
-    }
-  }
-
-  /**
-   * @event Click - This event is triggered when the second hazard button is selected/deselected on the "Run model" view
-   */
-  onSwitchExposure2() {
-    if (this.viewerDisplay === 'advancedtool') {
-      this.hazards.hazard2 = !this.hazards.hazard2;
-      this.onSwitchExposure(false, true, false, false);
-    }
-  }
-
-  /**
-   * @event Click - This event is triggered when the third hazard button is selected/deselected on the "Run model" view
-   */
-  onSwitchExposure3() {
-    if (this.viewerDisplay === 'advancedtool') {
-      this.hazards.hazard3 = !this.hazards.hazard3;
-      this.onSwitchExposure(false, false, true, false);
-    }
-  }
-
-  /**
-   * @event Click - This event is triggered when the fourth hazard button is selected/deselected on the "Run model" view
-   */
-  onSwitchExposure4() {
-    if (this.viewerDisplay === 'advancedtool') {
-      this.hazards.hazard4 = !this.hazards.hazard4;
-      this.onSwitchExposure(false, false, false, true);
-    }
   }
 
   /**
@@ -1446,32 +1092,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   onSliderInputEventAlt({value, key}) {
     this.sliderValues1[key + '_value'] = value;
     this.onSliderChangeEvent(this.sliderValues1, key);
-  }
-
-  /**
-   * @event Change - This event is triggered when a slider component of the second country set of sliders has changed of value
-   * @param {String} key - Input-indicator model name.
-   */
-  onSliderChangeEvent2(key) {
-    this.onSliderChangeEvent(this.sliderValues2, key);
-    this._changeSliderValue(key, false);
-  }
-
-  onSliderInputEvent1(event: MdSliderChange, key) {
-    this.sliderValues1[key + '_value'] = event.value;
-    this.onSliderChangeEvent(this.sliderValues1, key);
-  }
-
-  onSliderInputEvent2(event: MdSliderChange, key) {
-    this.sliderValues2[key + '_value'] = event.value;
-    this.onSliderChangeEvent(this.sliderValues2, key);
-  }
-
-  private updateInputCharts(suffix, sliderVal, isoCode) {
-    const inputChartKeys = ['inputSoc', 'inputEco', 'inputVul', 'inputExp'];
-    inputChartKeys.forEach(key => {
-      this.chartService.updateInputCharts(`${key}-${suffix}`, sliderVal, isoCode);
-    });
   }
 
   private createInputCharts(suffix, data, sliderVal, filteredGroup = undefined) {
