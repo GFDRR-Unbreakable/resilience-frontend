@@ -47,6 +47,7 @@ import {SpecificPolicyListChartComponent} from './components/specific-policy-lis
 
 import smartquotes from 'smartquotes';
 import { DisclaimerComponent } from './components/disclaimer/disclaimer.component';
+import { WelcomeModalComponent } from './components/welcome-modal/welcome-modal.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import { DisclaimerComponent } from './components/disclaimer/disclaimer.componen
     PrintComponent,
     SpecificPolicyListChartComponent,
     DisclaimerComponent,
+    WelcomeModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -99,7 +101,8 @@ import { DisclaimerComponent } from './components/disclaimer/disclaimer.componen
     ChartService,
     FileService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [WelcomeModalComponent]
 })
 export class AppModule {
   constructor() {

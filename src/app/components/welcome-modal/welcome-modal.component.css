@@ -1,0 +1,30 @@
+.welcome-modal {
+
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  border-radius: 5px;
+}
+
+img.modal__logo {
+  height: 30px;
+  width: auto;
+  margin: 5px;
+}
+
+img.modal__logo:nth-child(2) {
+  height: 40px;
+}
+
+.modal-header,
+.modal-footer {
+  border: none;
+}
+
+button {
+  cursor: pointer;
+}

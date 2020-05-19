@@ -11980,3 +11980,7 @@ svg text tspan,
 svg text {
   font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
+
+.modal-backdrop {
+  /*background-color: #fff;*/
+}

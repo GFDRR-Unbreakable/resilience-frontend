@@ -1,0 +1,39 @@
+<div class="welcome-modal">
+  <div class="about modal-header">
+
+    <img *ngFor="let logo of logos" [attr.src]="logo.image"
+    [attr.title]="logo.title" [attr.id]="logo.id" class="modal__logo"/>
+  </div>
+  <div class="modal-body">
+    <h4 class="modal-title">Welcome to the Unbreakable – The Resilience Indicator Toolbox</h4>
+    <p>The Resilience Indicator, which the tools on this website are based, measures socioeconomic resilience in 117 countries, and provides insights on what investments and policies drives resilience. It is based on a simple model that calculates asset and well-being losses for multiple hazards: river floods, coastal floods due to storm surge, windstorms, earthquakes, and tsunamis. Socioeconomic resilience is then estimated as the ratio (ranging from 0-100%) of expected asset losses to expected well-being losses. A larger socioeconomic resilience means that a country’s population can experience larger asset losses while maintaining its well-being. A resilience level of 50% means that $1 in asset losses from a disaster results in a loss of well-being equivalent to a $2 drop in national in income. The tool uses input data on from the World Bank (World Development Indicators, ASPIRE, FINDEX) and the UN (UN-DRR Global Assessment Report 2015).</p>
+
+    <p><b>The data is from 2015, the latest year the different data sources were all available.</b></p>
+
+    <p>Users and potential partners can contact Unbreakable Resilience Indicator administrators with queries or information to add to the tool.</p>
+
+    <p>
+      <b>Disclaimer</b><br> The guidance given in different tools on the Unbreakable Resilience Indicator website do not replace the need for detailed natural hazard risk analysis and/or expert advice. While the data used model is published and peer-reviewed, there are still uncertainties in the data and analysis. Users of the tools should access more information by contacting relevant national authorities, reviewing the recommended resources, and through accessing detailed hazard data.
+    </p>
+
+    <p>
+      <b>Text Beyond "MORE" Button:</b><br> Information in this screening tool is provided for informational purposes only and does not constitute legal or scientific advice or service. The World Bank makes no warranties or representations, express or implied as to the accuracy or reliability of this tool or the data contained therein. A user of this tool should seek qualified experts for specific diagnosis and analysis of a particular project. Any use thereof or reliance thereon is at the sole and independent discretion and responsibility of the user. No conclusions or inferences drawn from the tool or relating to any aspect of any of the maps shown on the tool, should be attributed to the World Bank, its Board of Executive Directors, its Management, or any of its member countries.
+      The Unbreakable Resilience Indicator administration team periodically adds, changes, improves, or updates the Materials on this Site without notice.
+    </p>
+    <p>The boundaries, colors, denominations, and other information shown on any map in this work do not imply any judgment on the part of The World Bank concerning the legal status of any territory or the endorsement or acceptance of such boundaries.
+    </p>
+
+      <b>Sources</b>
+      <ul>
+        <li>Estimates of asset losses: <a href="https://www.undrr.org/publication/global-assessment-report-disaster-risk-reduction-2015">United Nations Global Assessment Report on Disaster Risk Reduction</a>.</li>
+        <li>Social protection of poor and non-poor:</li>
+        <li>Financial inclusion: <a href="https://globalfindex.worldbank.org/node">Global Findex database</a></li>
+        <li>Access to early warning: The Hyogo Framework for Action (HFA).</li>
+        <li> GDP per capita ($US, PPP): <a href="https://databank.worldbank.org/source/world-development-indicators">World Development Indicators (WDI)</a> database.</li>
+        <li>Readiness to scale-up social protection: The Hyogo Framework for Action (HFA).</li>
+      </ul>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="activeModal.close('')">Close</button>
+  </div>
+</div>
