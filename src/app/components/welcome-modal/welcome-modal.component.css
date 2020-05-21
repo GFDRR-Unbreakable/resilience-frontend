@@ -25,6 +25,14 @@ img.modal__logo:nth-child(2) {
   border: none;
 }
 
+.modal-footer {
+  justify-content: space-between;
+}
+
 button {
   cursor: pointer;
+}
+
+button.btn__more {
+  justify-self: flex-start;
 }
