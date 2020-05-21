@@ -35,7 +35,8 @@
     </ng-container>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary btn__more" (click)="readMore = true" [attr.disabled]="disabled">More</button>
+    <button type="button" class="btn btn-secondary btn__more" (click)="readMore = true" *ngIf="!readMore">More</button>
+    <span></span>
     <button type="button" class="btn btn-secondary" (click)="activeModal.close('')">I agree</button>
   </div>
 </div>
