@@ -11748,18 +11748,22 @@ fieldset {
 }
 .pd-12{
   display: -webkit-inline-box;
-  padding: 0px 35px;
+  padding: 0 35px;
 }
 .region-name {
   font-size: 12px;
   font-style: italic;
+  position: relative;
+}
+.source__text {
+  padding-top: 8px;
 }
 .popover-title-viewer {
   font-weight: bolder;
 }
 .footer-special {
   position: fixed !important;
-  bottom: 0px !important;
+  bottom: 0 !important;
   width: 100% !important;
   height: 79px !important;
 }
