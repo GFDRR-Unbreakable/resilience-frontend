@@ -15,9 +15,9 @@ export const SERVER = {
     // Local python endpoints
     // BASE_SERVER_PY: 'http://gfdrr-py.local/',
     // Dev python endpoints
-    BASE_SERVER_PY: 'http://18.191.153.87:9091/',
+    // BASE_SERVER_PY: 'http://18.191.153.87:9091/',
     // Prod python endpoints
-    // BASE_SERVER_PY: 'http://13.58.142.191:9091/',
+    BASE_SERVER_PY: 'https://unbreakable.gfdrr.org:9091/',
     SERVER_API: 'api/',
     SERVER_DOWNLOADPDF: 'pdf',
     SERVER_DOWNLOADSCPDF: 'sc_pdf',
