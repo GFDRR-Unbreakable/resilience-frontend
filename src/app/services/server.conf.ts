@@ -17,7 +17,7 @@ export const SERVER = {
     // Dev python endpoints
     // BASE_SERVER_PY: 'http://18.191.153.87:9091/',
     // Prod python endpoints
-    BASE_SERVER_PY: 'http://127.0.0.1:9091/',
+    BASE_SERVER_PY: 'http://127.0.0.1:9090/',
     SERVER_API: 'api/',
     SERVER_DOWNLOADPDF: 'pdf',
     SERVER_DOWNLOADSCPDF: 'sc_pdf',
