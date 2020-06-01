@@ -11,13 +11,13 @@ export const SERVER = {
     // Dev backend endpoints
     // BASE_SERVER: 'http://18.191.153.87:9090/',
     // Prod backend endpoints
-    BASE_SERVER: 'http://127.0.0.1:9090/',
+    BASE_SERVER: 'http://localhost:9090/',
     // Local python endpoints
     // BASE_SERVER_PY: 'http://gfdrr-py.local/',
     // Dev python endpoints
-    // BASE_SERVER_PY: 'http://18.191.153.87:9091/',
+    BASE_SERVER_PY: 'http://18.191.153.87:9091/',
     // Prod python endpoints
-    BASE_SERVER_PY: 'http://127.0.0.1:9091/',
+    // BASE_SERVER_PY: 'http://13.58.142.191:9091/',
     SERVER_API: 'api/',
     SERVER_DOWNLOADPDF: 'pdf',
     SERVER_DOWNLOADSCPDF: 'sc_pdf',
