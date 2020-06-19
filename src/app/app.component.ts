@@ -16,7 +16,7 @@ export class AppComponent {
     router.events
     .filter(event => event instanceof NavigationEnd)
     .subscribe(({urlAfterRedirects}:NavigationEnd) => {
-      if (urlAfterRedirects !== '/' && urlAfterRedirects !== '/privacy-notice' && !this.modalOpened) {
+      if (urlAfterRedirects !== '/' && !this.modalOpened) {
         this.modalOpened = true;
         this.modalService.open(WelcomeModalComponent, {
           size: 'lg'
