@@ -1,5 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
+import {NgcCookieConsentModule, NgcCookieConsentConfig} from 'ngx-cookieconsent';
+import { environment } from '../environments/environment';
 import {FormsModule} from '@angular/forms';
 import {HttpModule, RequestOptions, XHRBackend} from '@angular/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -49,6 +51,38 @@ import smartquotes from 'smartquotes';
 import { DisclaimerComponent } from './components/disclaimer/disclaimer.component';
 import { WelcomeModalComponent } from './components/welcome-modal/welcome-modal.component';
 import {PrivacyPolicyComponent} from "./components/privacy-policy/privacy-policy.component";
+import {GdprBannerComponent} from "./components/gdpr/gdpr-banner.component";
+
+const cookieConfig: NgcCookieConsentConfig = {
+  cookie: {
+    domain: environment.cookieDomain
+  },
+  position: 'bottom',
+  theme: 'block',
+  palette: {
+    popup: {
+      background: '#000000',
+      text: '#ffffff',
+      link: '#ffffff'
+    },
+    button: {
+      background: '#f1d600',
+      text: '#000000',
+      border: 'transparent'
+    }
+  },
+  type: 'info',
+  content: {
+    message: 'By continuing to browse the site you are agreeing to our use of cookies.',
+    dismiss: 'I Understand',
+    deny: 'Refuse cookies',
+    link: 'Learn more',
+    href: '/privacy-notice'
+  },
+  elements: {
+    messagelink: '<span id="cookieconsent:desc" class="cc-message">By continuing to browse the site you are agreeing to our <a aria-label="learn more about cookies" tabindex="0" class="cc-link" href="/cookie-policy" target="_blank">use of cookies</a>.</span>',
+  }
+};
 
 @NgModule({
   declarations: [
@@ -76,6 +110,7 @@ import {PrivacyPolicyComponent} from "./components/privacy-policy/privacy-policy
     PrintComponent,
     SpecificPolicyListChartComponent,
     DisclaimerComponent,
+    GdprBannerComponent,
     WelcomeModalComponent,
     PrivacyPolicyComponent
   ],
@@ -90,7 +125,8 @@ import {PrivacyPolicyComponent} from "./components/privacy-policy/privacy-policy
     store,
     StoreDevtoolsModule.instrumentOnlyWithExtension({
       maxAge: 5
-    })
+    }),
+    NgcCookieConsentModule.forRoot(cookieConfig),
   ],
   providers: [
     LoadingMaskService,

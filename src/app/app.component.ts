@@ -1,4 +1,4 @@
-import {Component, AfterViewInit, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { WelcomeModalComponent } from './components/welcome-modal/welcome-modal.component';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
