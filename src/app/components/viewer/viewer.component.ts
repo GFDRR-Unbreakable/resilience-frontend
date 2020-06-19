@@ -13,6 +13,7 @@ import {ChartService} from '../../services/chart.service';
 import {Subscription} from 'rxjs/Subscription';
 import {Store} from '@ngrx/store';
 import {AppStore} from '../../store/default.store';
+import {MdSliderChange} from '@angular/material/';
 import {PrintComponent} from '../print/print.component';
 import {NgbTypeahead} from "@ng-bootstrap/ng-bootstrap";
 
