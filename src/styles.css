@@ -11988,3 +11988,19 @@ svg text {
 .modal-backdrop {
   /*background-color: #fff;*/
 }
+
+.cookie-policy {
+  background: #fff;
+  font-size: 16px;
+  line-height: 24px;
+  padding: 10px;
+}
+
+@include breakpoint('mobile') {
+  padding-top: 62px;
+}
+
+.cookie-policy h1 {
+  margin: 40px 0 40px 0;
+  text-align: center;
+}
