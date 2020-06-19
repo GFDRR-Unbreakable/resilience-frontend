@@ -51,7 +51,7 @@ import smartquotes from 'smartquotes';
 import { DisclaimerComponent } from './components/disclaimer/disclaimer.component';
 import { WelcomeModalComponent } from './components/welcome-modal/welcome-modal.component';
 import {GdprBannerComponent} from "./components/gdpr/gdpr-banner.component";
-import { CookiePolicyComponent } from './cookie-policy.component';
+import { PrivacyPolicyComponent } from './privacy-policy.component';
 
 const cookieConfig: NgcCookieConsentConfig = {
   cookie: {
@@ -77,11 +77,11 @@ const cookieConfig: NgcCookieConsentConfig = {
     dismiss: 'I Understand',
     deny: 'Refuse cookies',
     link: 'Learn more',
-    href: '/cookie-policy',
-    policy: 'Cookie Policy'
+    href: '/privacy-notice',
+    policy: 'Privacy Notice'
   },
   elements: {
-    messagelink: '<span id="cookieconsent:desc" class="cc-message">By continuing to browse the site you are agreeing to our <a aria-label="learn more about cookies" tabindex="0" class="cc-link" href="/cookie-policy" target="_blank">use of cookies</a>.</span>',
+    messagelink: '<span id="cookieconsent:desc" class="cc-message">By continuing to browse the site you are agreeing to our <a aria-label="learn more about cookies" tabindex="0" class="cc-link" href="/privacy-notice" target="_blank">use of cookies</a>.</span>',
   }
 };
 
@@ -113,7 +113,7 @@ const cookieConfig: NgcCookieConsentConfig = {
     DisclaimerComponent,
     WelcomeModalComponent,
     GdprBannerComponent,
-    CookiePolicyComponent,
+    PrivacyPolicyComponent,
   ],
   imports: [
     BrowserModule,
