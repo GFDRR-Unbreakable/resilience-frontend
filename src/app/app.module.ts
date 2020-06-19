@@ -80,7 +80,7 @@ const cookieConfig: NgcCookieConsentConfig = {
     href: '/privacy-notice'
   },
   elements: {
-    messagelink: '<span id="cookieconsent:desc" class="cc-message">By continuing to browse the site you are agreeing to our <a aria-label="learn more about cookies" tabindex="0" class="cc-link" href="/cookie-policy" target="_blank">use of cookies</a>.</span>',
+    messagelink: '<span id="cookieconsent:desc" class="cc-message">By continuing to browse the site you are agreeing to our <a aria-label="learn more about cookies" tabindex="0" class="cc-link" href="/privacy-notice" target="_blank">use of cookies</a>.</span>',
   }
 };
 
