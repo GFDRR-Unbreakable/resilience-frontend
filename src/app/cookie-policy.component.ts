@@ -3,11 +3,11 @@ import { BaseComponent } from './base.component';
 import { Title } from '@angular/platform-browser';
 
 @Component({
-  templateUrl: './privacy-policy.component.html'
+  templateUrl: './cookie-policy.component.html'
 })
-export class PrivacyPolicyComponent extends BaseComponent {
+export class CookiePolicyComponent extends BaseComponent {
   constructor(private titleService: Title) {
     super();
-    this.titleService.setTitle('Privacy Notice');
+    this.titleService.setTitle('Cookie Policy');
   }
 }
