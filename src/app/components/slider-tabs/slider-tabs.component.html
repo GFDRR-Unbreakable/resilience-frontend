@@ -37,7 +37,7 @@
                   [style.left.%]="printSliderPos(key)"></div>
                 </div>
               </div>
-              <md-slider
+              <mat-slider
               [class.is-invisible]="forPrint"
               class="slider-tabs__mat-slider"
               [min]="sliderValues[key + '_min']"
@@ -47,7 +47,7 @@
               [(ngModel)]="sliderValues[key + '_value']"
               (change)="onSliderChange(key)"
               (input)="onSliderInputEvent($event, key)">
-              </md-slider>
+              </mat-slider>
 
               <span class="text-right slider-text slider-tabs__values">
                 {{sliderValues[key + '_difference_value']}} <br />

@@ -3,9 +3,11 @@ import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {HttpModule, RequestOptions, XHRBackend} from '@angular/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MdSliderModule} from '@angular/material';
+import {MatSliderModule} from '@angular/material';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import 'hammerjs';
+import { environment } from '../environments/environment';
+import { NgcCookieConsentConfig, NgcCookieConsentModule } from 'ngx-cookieconsent';
 
 import {AppComponent} from './app.component';
 import {NavbarComponent} from './components/navbar/navbar.component';
@@ -48,6 +50,40 @@ import {SpecificPolicyListChartComponent} from './components/specific-policy-lis
 import smartquotes from 'smartquotes';
 import { DisclaimerComponent } from './components/disclaimer/disclaimer.component';
 import { WelcomeModalComponent } from './components/welcome-modal/welcome-modal.component';
+import {GdprBannerComponent} from "./components/gdpr/gdpr-banner.component";
+import { CookiePolicyComponent } from './cookie-policy.component';
+
+const cookieConfig: NgcCookieConsentConfig = {
+  cookie: {
+    domain: environment.cookieDomain
+  },
+  position: 'bottom',
+  theme: 'block',
+  palette: {
+    popup: {
+      background: '#000000',
+      text: '#ffffff',
+      link: '#ffffff'
+    },
+    button: {
+      background: '#f1d600',
+      text: '#000000',
+      border: 'transparent'
+    }
+  },
+  type: 'info',
+  content: {
+    message: 'By continuing to browse the site you are agreeing to our use of cookies.',
+    dismiss: 'I Understand',
+    deny: 'Refuse cookies',
+    link: 'Learn more',
+    href: '/cookie-policy',
+    policy: 'Cookie Policy'
+  },
+  elements: {
+    messagelink: '<span id="cookieconsent:desc" class="cc-message">By continuing to browse the site you are agreeing to our <a aria-label="learn more about cookies" tabindex="0" class="cc-link" href="/cookie-policy" target="_blank">use of cookies</a>.</span>',
+  }
+};
 
 @NgModule({
   declarations: [
@@ -76,6 +112,8 @@ import { WelcomeModalComponent } from './components/welcome-modal/welcome-modal.
     SpecificPolicyListChartComponent,
     DisclaimerComponent,
     WelcomeModalComponent,
+    GdprBannerComponent,
+    CookiePolicyComponent,
   ],
   imports: [
     BrowserModule,
@@ -83,12 +121,13 @@ import { WelcomeModalComponent } from './components/welcome-modal/welcome-modal.
     HttpModule,
     NgbModule.forRoot(),
     BrowserAnimationsModule,
-    MdSliderModule,
+    MatSliderModule,
     routing,
     store,
     StoreDevtoolsModule.instrumentOnlyWithExtension({
       maxAge: 5
-    })
+    }),
+    NgcCookieConsentModule.forRoot(cookieConfig)
   ],
   providers: [
     LoadingMaskService,
