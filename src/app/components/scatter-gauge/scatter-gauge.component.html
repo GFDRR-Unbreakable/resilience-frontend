@@ -1,0 +1,23 @@
+<div class="scatter-gauge" [class.is-change-gauge]="hasChange"
+[class.showing-change]="hasChange && !!changeRow"
+[class.is-avg]="activeRow.id === 'AVG'">
+  <span class="scatter-gauge__stat" [style.left.%]="pointPosition(activeRow)"
+  *ngIf="!!activeRow && !hasChange">
+    {{formatter(activeRow.value)}}
+  </span>
+
+  <div *ngFor="let p of data"
+  class="scatter-gauge__point" [style.left.%]="pointPosition(p)"
+  [class.is-active]="p.id === id" (mouseenter)="mouseEnter(p)"
+  (mouseleave)="mouseLeave()"></div>
+
+  <div class="scatter-gauge__point scatter-gauge__point--change"
+  *ngIf="hasChange && !!changeDisplayRow"
+  [style.left.%]="pointPosition(changeDisplayRow)"
+  (mouseenter)="mouseEnter(changeDisplayRow)" (mouseleave)="mouseLeave()"></div>
+  <div *ngIf="!!hoverRow" class="scatter-gauge__tooltip"
+  [style.left.%]="pointPosition(hoverRow)">
+    <span class="scatter-gauge__row">{{ countryMap[hoverRow.id] }}</span>
+    <span class="scatter-gauge__row">{{ formatter(hoverRow.value) }}</span>
+  </div>
+</div>

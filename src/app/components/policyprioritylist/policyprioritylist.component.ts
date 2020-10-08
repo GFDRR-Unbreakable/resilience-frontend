@@ -401,9 +401,9 @@ export class PolicyprioritylistComponent implements OnInit, OnDestroy {
       this.policyModel.firstCountry = getUrlParameter('country');
       const fromListFilter = this.countryListComp.filter(
         val => val.name.toLowerCase() === this.policyModel.firstCountry.toLowerCase());
-      console.log(this.countryListComp);
+
       this._filterCountryByInput(fromListFilter, 0, this.policyModel.firstCountry);
-      console.log("HI", this.policyModel);
+
       this.store.dispatch({type: PolicyAction.EDIT_POLICY_FIELDS, payload: this.policyModel});
     });
   }

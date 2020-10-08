@@ -47,7 +47,7 @@ export class FileService {
   /**
    * Reusable snippet code to perform the PDF-file download process
    * @param {any} data - Data returned from API endpoint.
-   * @param {String} view - Determines which page is displayed on the app to change its file-name when the file is downloaded. 
+   * @param {String} view - Determines which page is displayed on the app to change its file-name when the file is downloaded.
    */
   setPDFDownloadProcess(data, view) {
     const byteString = window.atob(data);
@@ -65,7 +65,7 @@ export class FileService {
     document.body.appendChild(a);
     a.href = url;
     let fileName;
-    if (view === 'viewer') {
+    if (view === 'countrytool') {
       fileName = 'viewer_report';
     } else if (view === 'tech') {
       fileName = 'technicalMap_report';

@@ -1,0 +1,25 @@
+<div class="callout" [class.is-landing]="isLanding">
+
+  <div class="callout__banner" [ngClass]="route">
+    <div class="callout__banner-inner">
+      <div class="callout__container container">
+        <img *ngIf="route === 'advancedtool'" src="../../../assets/image/Advanced_IconOnly.png"/>
+        <img *ngIf="route === 'policytool'" src="../../../assets/image/Policy_IconOnly.png"/>
+        <div class="callout__row rowx">
+          <span *ngIf="prefix" class="callout__prefix">
+            {{ prefix }}
+          </span>
+          <h1 class="callout__title">
+            {{ title }}
+          </h1>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class=" container">
+    <div class="rowx callout__intro-wrapper">
+      <p class="callout__intro">{{ intro }}</p>
+    </div>
+  </div>
+</div>

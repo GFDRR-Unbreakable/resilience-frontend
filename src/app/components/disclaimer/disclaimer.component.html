@@ -1,0 +1,9 @@
+<div class="disclaimer__backdrop" [class.is-open]="showMsg"
+(click)="showMsg = false">
+  <div class="disclaimer__message">
+    <p>This website is best viewed on a desktop.</p>
+    <div class="disclaimer__button">
+      <button (click)="showMsg = false">Close</button>
+    </div>
+  </div>
+</div>

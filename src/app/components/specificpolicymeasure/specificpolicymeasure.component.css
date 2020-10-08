@@ -1,0 +1,30 @@
+.dropdown-toggle {
+  border: 1px solid var(--teal) !important;
+}
+
+.box-title-terms-01 {
+  font-weight: normal;
+  padding: 0px 20px 0px 20px !important;
+}
+
+.legend-subtitle {
+  font-size: 12px;
+}
+
+.legend-label {
+  display: inline;
+  font-size: 12px;
+}
+
+.dropdown-politics {
+  margin-left: 0;
+}
+
+/* Styles to make policy measure container responsive */
+/*
+@media (max-width: 992px) {
+  .policy-measure {
+    width: 100% !important;
+  }
+} */
+

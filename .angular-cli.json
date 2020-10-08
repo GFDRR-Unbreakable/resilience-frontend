@@ -9,7 +9,8 @@
       "outDir": "dist",
       "assets": [
         "assets",
-        "favicon.ico"
+        "favicon.ico",
+        ".htaccess"
       ],
       "index": "index.html",
       "main": "main.ts",
@@ -19,13 +20,15 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles.css"
+        "styles.css",
+        "../node_modules/cookieconsent/build/cookieconsent.min.css"
       ],
       "scripts": [
         "../node_modules/science/science.v1.js",
         "../node_modules/jquery/dist/jquery.min.js",
         "../node_modules/d3/d3.js",
-        "../node_modules/d3-queue/build/d3-queue.js"
+        "../node_modules/d3-queue/build/d3-queue.js",
+        "../node_modules/cookieconsent/build/cookieconsent.min.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

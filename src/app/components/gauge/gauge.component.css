@@ -1,0 +1,42 @@
+.gauge {
+  width: 100%;
+  margin-top: 20px;
+  height: 20px;
+  background-color: var(--gray-light);
+  position: relative;
+}
+
+.gauge__bar {
+  position: absolute;
+  top: 0;
+  width: 0;
+  height: 100%;
+  background-color: var(--teal);
+  transition: 2s width, 0.2s background-color;
+}
+
+.gauge__marker {
+  position: absolute;
+  top: 0;
+  width: 3px;
+  margin-left: -3px;
+  height: 100%;
+  background-color: var(--gray-green);
+  transition: 2s left;
+}
+
+.is-change-gauge:not(.showing-change) .gauge__bar,
+.is-avg .gauge__bar {
+  background-color: var(--gray-green);
+}
+
+.gauge__stat {
+  position: absolute;
+  top: -20px;
+  text-align: center;
+  width: 50px;
+  margin-left: -25px;
+  font-size: 14px;
+  left: 0;
+  transition: 2s left;
+}

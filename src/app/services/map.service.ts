@@ -126,7 +126,7 @@ export class MapService {
   /**
    * This method listens the UI @event style.load from mapbox-gl library and invokes passed
    * function callback
-   * @param {Function} cb - Anonymous custom function to be invoked when this event is happening on the map. 
+   * @param {Function} cb - Anonymous custom function to be invoked when this event is happening on the map.
    */
   addStylesOnMapLoading(cb: Function) {
     this.map.on('style.load', cb);
@@ -144,7 +144,7 @@ export class MapService {
       this.map.addSource(sourceParams.id, {
         'type': 'vector',
         'url': sourceParams.url
-      } as VectorSource) ;
+      } as VectorSource);
     }
     const layerObj: mapboxgl.Layer = {
       'id': mapParams.layerId,
@@ -167,8 +167,6 @@ export class MapService {
     if (mapParams.filter) {
       layerObj.filter = mapParams.filter;
     }
-
-    console.log("LAYER OBJECT", layerObj);
     this.map.addLayer(layerObj);
   }
   /**
@@ -184,7 +182,7 @@ export class MapService {
       this.map.addSource(sourceParams.id, {
         'type': 'vector',
         'url': sourceParams.url
-      } as VectorSource) ;
+      } as VectorSource);
     }
     const layerObj: mapboxgl.Layer = {
       'id': mapParams.layerId,
@@ -230,7 +228,7 @@ export class MapService {
   }
   /**
    * Plots a map chart given a mapId passed as argument.
-   * @param {String} mapId - HTML container Id which map chart will be plotted on the page. 
+   * @param {String} mapId - HTML container Id which map chart will be plotted on the page.
    */
   createMap(mapId: string) {
     this.map = new Map({
@@ -271,15 +269,15 @@ export class MapService {
    */
   getVectorFillParams(sourceParams, mapParams) {
     const defaultSourceParams: any = {
-      id: <string> null,
-      layer: <string> null,
-      hasSource: <boolean> false,
-      url: <string> null
+      id: <string>null,
+      layer: <string>null,
+      hasSource: <boolean>false,
+      url: <string>null
     };
     const defaultMapParams: any = {
-      layerId: <string> null,
-      filter: <any> null,
-      paint: <any> null
+      layerId: <string>null,
+      filter: <any>null,
+      paint: <any>null
     };
     return {
       source: Object.assign({}, defaultSourceParams, sourceParams),
@@ -293,18 +291,18 @@ export class MapService {
    */
   getVectorLinesParams(sourceParams, mapParams) {
     const defaultSourceParams = {
-      id: <string> null,
-      layer: <string> null,
-      hasSource: <boolean> false,
-      url: <string> null
+      id: <string>null,
+      layer: <string>null,
+      hasSource: <boolean>false,
+      url: <string>null
     };
     const defaultMapParams = {
-      layerId: <string> null,
-      filter: <any> null,
-      maxZoom: <number> 20,
-      minZoom: <number> 0,
-      color: <string> 'black',
-      lineWidth: <number> 1
+      layerId: <string>null,
+      filter: <any>null,
+      maxZoom: <number>20,
+      minZoom: <number>0,
+      color: <string>'black',
+      lineWidth: <number>1
     };
     return {
       source: Object.assign({}, defaultSourceParams, sourceParams),
@@ -319,7 +317,7 @@ export class MapService {
   }
   /**
    * Changes map filtering ISO-code for Filled-layer in order to show a country-selection-like functionality on the map.
-   * @param {String} isoCode - Country Iso-code 
+   * @param {String} isoCode - Country Iso-code
    */
   setMapFilterByISOCode(isoCode) {
     const defaultArr = ['in', 'ISO_Code'];
@@ -328,7 +326,7 @@ export class MapService {
   }
   /**
    * Changes map filtering ISO-code for existing and non-existing countries in order to
-   * show a country-selection-like functionality on the map. 
+   * show a country-selection-like functionality on the map.
    * @param {Array[String]} isoCodes - Set of country iso-codes.
    */
   setMapFilterByISOCodes(isoCodes) {

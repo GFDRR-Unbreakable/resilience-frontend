@@ -1,54 +1,26 @@
 <app-navbar></app-navbar>
-<div class="container-fluid">
-  <div class="row">
-    <img class="callout-img" src="assets/image/flood-banner-5-13.png" alt="Card image cap">
-      <div class="callout-body">
-        <div class="callout-body-inner">
-          <h2 class="callout-title">Mitigating losses and helping people escape from poverty</h2>
-          <p class="callout-text">$1 in disaster loss does not mean the same thing to a rich person as it does to a poor person. The Unbreakable Resilience Indicator measures socioeconomic resilience by combining risk to assets and risk to well-being. It measures not only the total losses but also how these losses translates into income losses to better design policies that protect the most vulnerable.</p>
-          <a class="btn btn-primary btn-callout" href="https://www.gfdrr.org/unbreakable" target="_blank">Learn More</a>
-        </div>
-    </div>
-  </div>
-</div>
+<app-callout [prefix]="callout.prefix" [title]="callout.title" [intro]="callout.intro" [isLanding]="true"
+             route="landing"></app-callout>
 <div class="container">
-  <div class="row">
+  <div class="rowx">
     <div class="card-deck">
       <div class="card" [ngClass]="hoverClass1" (mouseover)="hoverClass1 = 'card__hover'" (mouseout)="hoverClass1 = ''">
-        <a href="/viewer">
-          <img class="card-img-top" src="assets/image/image001.jpg" alt="Card image cap">
+        <a href="#" routerLink="/countrytool">
+          <img class="card-img-top" src="../../../assets/image/landing_Country.png" alt="Card image cap">
           <div class="card-body">
             <h4 class="card-title">Interested in a country?</h4>
             <div class="card__content-wrapper">
-              <p class="card-text">How resilient is your country? Click here to find policy options in a specific
-                country and make comparisons to other countries or global and regional averages.</p>
+              <p class="card-text">How resilient is your country? Click here to make comparisons to global averages, and
+                to rank policy options for building resilience in a specific country. </p>
               <div class="card-link">Explore
-                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                     viewBox="0 0 12.1 20" style="enable-background:new 0 0 12.1 20;" xml:space="preserve">
-              <style type="text/css">
-                .st0{fill:#51C5D0;}
-              </style>
-                  <path class="st0" d="M0,2.1L7.9,10L0,17.9L2.1,20l10-10L2.1,0L0,2.1z"/>
-              </svg>
-              </div>
-            </div>
-          </div>
-        </a>
-      </div>
-      <div class="card" [ngClass]="hoverClass2" (mouseover)="hoverClass2 = 'card__hover'" (mouseout)="hoverClass2 = ''">
-        <a href="/policyprioritylist">
-          <img class="card-img-top" src="assets/image/policy-area-thumb.png" alt="Card image cap">
-          <div class="card-body">
-            <h4 class="card-title">Interested in a policy area?</h4>
-            <div class="card__content-wrapper">
-              <p class="card-text">What are the most effective policy measures to strengthen resilience and avoid
-                disaster losses? Click here to explore our policy scorecard.</p>
-              <div class="card-link">Explore
-                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                     viewBox="0 0 12.1 20" style="enable-background:new 0 0 12.1 20;" xml:space="preserve">
-                <style type="text/css">
-                  .st0{fill:#51C5D0;}
-                </style>
+                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 12.1 20"
+                     style="enable-background:new 0 0 12.1 20;" xml:space="preserve">
+                  <style type="text/css">
+                    .st0 {
+                      fill: #51C5D0;
+                    }
+                  </style>
                   <path class="st0" d="M0,2.1L7.9,10L0,17.9L2.1,20l10-10L2.1,0L0,2.1z"/>
                 </svg>
               </div>
@@ -56,21 +28,51 @@
           </div>
         </a>
       </div>
-      <div class="card" id="card2" [ngClass]="hoverClass3" (mouseover)="hoverClass3 = 'card__hover'" (mouseout)="hoverClass3 = ''">
-        <a href="/full-analysis">
-          <img class="card-img-top" src="assets/image/full-analytical-tool-thumb3.png" alt="Card image cap">
+
+      <div class="card" [ngClass]="hoverClass2" (mouseover)="hoverClass2 = 'card__hover'" (mouseout)="hoverClass2 = ''">
+        <a href="#" routerLink="/policytool">
+          <img class="card-img-top" src="../../../assets/image/landing_Policy.png" alt="Card image cap">
           <div class="card-body">
-            <h4 class="card-title">Access full analytical tool</h4>
+            <h4 class="card-title">Interested in a policy area?</h4>
             <div class="card__content-wrapper">
-              <p class="card-text">Explore policy scenarios for countries included in the unbreakable model. Manually
-                adjust country conditions to assess impacts on resilience and avoided losses.</p>
+              <p class="card-text">What are the most effective policy measures to strengthen resilience and avoid
+                disaster losses? Click here to explore our policy scorecard.</p>
+              <div class="card-link">Explore
+                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 12.1 20"
+                     style="enable-background:new 0 0 12.1 20;" xml:space="preserve">
+                  <style type="text/css">
+                    .st0 {
+                      fill: #51C5D0;
+                    }
+                  </style>
+                  <path class="st0" d="M0,2.1L7.9,10L0,17.9L2.1,20l10-10L2.1,0L0,2.1z"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="card" id="card2" [ngClass]="hoverClass3" (mouseover)="hoverClass3 = 'card__hover'"
+           (mouseout)="hoverClass3 = ''">
+        <a href="#" routerLink="/advancedtool">
+          <img class="card-img-top" src="../../../assets/image/landing_AdvancedTool.png" alt="Card image cap">
+          <div class="card-body">
+
+            <h4 class="card-title">Advanced tool</h4>
+            <div class="card__content-wrapper">
+              <p class="card-text">Evaluate the benefit of customized policy scenarios on resilience in a country by
+                manually adjusting country conditions.</p>
               <div class="card-link">
                 Explore
-                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                     viewBox="0 0 12.1 20" style="enable-background:new 0 0 12.1 20;" xml:space="preserve">
-                <style type="text/css">
-                  .st0{fill:#51C5D0;}
-                </style>
+                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 12.1 20"
+                     style="enable-background:new 0 0 12.1 20;" xml:space="preserve">
+                  <style type="text/css">
+                    .st0 {
+                      fill: #51C5D0;
+                    }
+                  </style>
                   <path class="st0" d="M0,2.1L7.9,10L0,17.9L2.1,20l10-10L2.1,0L0,2.1z"/>
                 </svg>
               </div>

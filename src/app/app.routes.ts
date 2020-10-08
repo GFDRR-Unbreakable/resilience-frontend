@@ -1,12 +1,12 @@
 import { Routes, RouterModule } from '@angular/router';
-import {AboutComponent} from './components/about/about.component';
-import {ContactComponent} from './components/contact/contact.component';
-import {PolicyprioritylistComponent} from './components/policyprioritylist/policyprioritylist.component';
-import {ScorecardComponent} from './components/scorecard/scorecard.component';
-import {SpecificpolicymeasureComponent} from './components/specificpolicymeasure/specificpolicymeasure.component';
-import {TechnicalmapComponent} from './components/technicalmap/technicalmap.component';
-import {ViewerComponent} from './components/viewer/viewer.component';
-import {LandingPageComponent} from './components/landing/landingpage.component';
+import { AboutComponent } from './components/about/about.component';
+import { ContactComponent } from './components/contact/contact.component';
+import { ScorecardComponent } from './components/scorecard/scorecard.component';
+import { SpecificpolicymeasureComponent } from './components/specificpolicymeasure/specificpolicymeasure.component';
+import { TechnicalmapComponent } from './components/technicalmap/technicalmap.component';
+import { ViewerComponent } from './components/viewer/viewer.component';
+import { LandingPageComponent } from './components/landing/landingpage.component';
+import {PrivacyPolicyComponent} from "./components/privacy-policy/privacy-policy.component";
 
 export const appRoutes: Routes = [
   {
@@ -18,24 +18,26 @@ export const appRoutes: Routes = [
   }, {
     path: 'contact',
     component: ContactComponent
-  }, {
-    path: 'policyprioritylist',
-    component: PolicyprioritylistComponent
-  }, {
+  },
+  {
+    path: 'privacy-notice',
+    component: PrivacyPolicyComponent,
+  },
+  {
     path: 'scorecard',
     component: ScorecardComponent
   }, {
-    path: 'specificpolicymeasure',
+    path: 'policytool',
     component: SpecificpolicymeasureComponent
   }, {
     path: 'technicalmap',
     component: TechnicalmapComponent
   }, {
-    path: 'viewer',
+    path: 'countrytool',
     component: ViewerComponent
   },
   {
-    path: 'full-analysis',
+    path: 'advancedtool',
     component: ViewerComponent
   }
 ];

@@ -1,0 +1,188 @@
+<div class="print" id="print" *ngIf="show">
+  <div class="print__header">
+    <div class="print__logo">
+      <img src="assets/image/logo-04.png" />
+    </div>
+    <div class="print__heading">
+      <h2 *ngIf="viewerDisplay === 'countrytool'">
+        Country: {{selectedCountryName}}
+      </h2>
+      <h2 *ngIf="viewerDisplay === 'advancedtool'">
+        Policy scenario analysis for {{selectedCountryName}}
+      </h2>
+      <h2 *ngIf="viewerDisplay === 'policytool'">
+        Policy: {{selectedPolicyUIList.label}}
+      </h2>
+    </div>
+  </div>
+
+  <div class="print__body">
+    <div class="print__section" *ngIf="viewerDisplay === 'countrytool'">
+      <div class="print__heading">
+        <h3>
+          Country Losses to Assets, Well-Being, and Socioeconomic Resilience
+        </h3>
+      </div>
+      <div class="print__grid">
+        <div class="print__labels">
+          <div class="print__label">
+            {{ this.chartConf.outputs.risk_to_assets.descriptor }}
+          </div>
+          <div class="print__label">
+            {{ this.chartConf.outputs.resilience.descriptor }}
+          </div>
+          <div class="print__label">
+            {{ this.chartConf.outputs.risk.descriptor }}
+          </div>
+        </div>
+
+        <div class="print__row">
+          <div class="print__col print__country-label">
+            <div>
+              <div class="print__country">
+                {{ selectedCountryName }}
+              </div>
+            </div>
+          </div>
+          <div class="print__chart-wrapper">
+            <div class="print__col">
+              <app-gauge-display [view]="switchValue" [data]="gaugeData['risk_to_assets']" [id]="selectedCountry">
+              </app-gauge-display>
+            </div>
+            <div class="print__col">
+              <app-gauge-display [view]="switchValue" [data]="gaugeData['resilience']" [id]="selectedCountry">
+              </app-gauge-display>
+            </div>
+            <div class="print__col">
+              <app-gauge-display [view]="switchValue" [data]="gaugeData['risk']" [id]="selectedCountry">
+              </app-gauge-display>
+            </div>
+          </div>
+        </div>
+
+        <div class="print__row">
+          <div class="print__col print__country-label">
+            <div class="print__country">{{viewerModel.secondCountry || 'Global Average'}}</div>
+            <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">
+              {{viewerGroupModel.secondCountryGroup}}</div>
+          </div>
+          <div class="print__chart-wrapper">
+            <div class="print__col">
+              <app-gauge-display [view]="switchValue" [data]="gaugeData['risk_to_assets']"></app-gauge-display>
+            </div>
+
+            <div class="print__col">
+              <app-gauge-display [view]="switchValue" [data]="gaugeData['resilience']"></app-gauge-display>
+            </div>
+            <div class="print__col">
+              <app-gauge-display [view]="switchValue" [data]="gaugeData['risk']"></app-gauge-display>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="print__section" *ngIf="viewerDisplay === 'countrytool' && !showPolicy">
+      <div class="print__heading">
+        <h3>Country Resilience Factors</h3>
+      </div>
+      <app-indicator-tabs [viewerModel]="viewerModel" [view]="switchValue" [viewerGroupModel]="viewerGroupModel"
+        [countryData]="countryData" [inputLabels]="inputLabels" [selectedCountry]="selectedCountry"
+        [firstCountryOverride]="selectedCountryName" [forPrint]="true">
+      </app-indicator-tabs>
+    </div>
+
+    <div class="print__section" *ngIf="viewerDisplay === 'countrytool' && showPolicy">
+      <div class="print__heading print__heading--policy">
+        <h3>How Country Policies Can Reduce Asset And Well-Being Losses</h3>
+      </div>
+      <div class="print__policy-wrapper">
+        <div class="print__policy-list">
+          <app-policy-list-chart [countryName]="selectedCountryName" type="absolute" [forPrint]="true">
+          </app-policy-list-chart>
+        </div>
+        <div class="viewer__policy-list">
+          <app-policy-list-chart [countryName]="selectedCountryName" type="relative" [forPrint]="true">
+          </app-policy-list-chart>
+        </div>
+      </div>
+    </div>
+
+    <div class="print__section" *ngIf="viewerDisplay === 'advancedtool'">
+      <div class="print__heading">
+        <h3>Changes in the drivers of risks and resilience:</h3>
+      </div>
+      <app-slider-tabs [forPrint]="true" [inputLabels]="inputLabels" [sliderValues]="sliderValues1"
+        (sliderChange)="onSliderChangeEvent1($event)" (sliderInputChange)="onSliderInputEventAlt($event)">
+      </app-slider-tabs>
+    </div>
+
+    <div class="print__section" *ngIf="viewerDisplay === 'advancedtool'">
+      <div class="print__heading">
+        <h3>New risk levels and socioeconomic resilience:</h3>
+      </div>
+      <div class="print__grid">
+        <div class="print__labels">
+          <div class="print__label">
+            {{ this.chartConf.outputs.risk_to_assets.descriptor }}
+          </div>
+          <div class="print__label">
+            {{ this.chartConf.outputs.resilience.descriptor }}
+          </div>
+          <div class="print__label">
+            {{ this.chartConf.outputs.risk.descriptor }}
+          </div>
+        </div>
+
+        <div class="print__row">
+          <div class="print__col print__country-label">
+            <div>
+              <div class="print__country">
+                {{ selectedCountryName }}
+              </div>
+            </div>
+          </div>
+          <div class="print__chart-wrapper">
+            <div class="print__col">
+              <app-gauge-display [view]="switchValue" [data]="gaugeData['risk_to_assets']" [id]="selectedCountry"
+                [changeRow]="gaugeChangeData['risk_to_assets']" [hasChange]="true">
+              </app-gauge-display>
+            </div>
+            <div class="print__col">
+              <app-gauge-display [view]="switchValue" [data]="gaugeData['resilience']" [id]="selectedCountry"
+                [changeRow]="gaugeChangeData['resilience']" [hasChange]="true">
+              </app-gauge-display>
+            </div>
+            <div class="print__col">
+              <app-gauge-display [view]="switchValue" [data]="gaugeData['risk']" [id]="selectedCountry"
+                [changeRow]="gaugeChangeData['risk']" [hasChange]="true">
+              </app-gauge-display>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="print__section" *ngIf="viewerDisplay === 'policytool'">
+      <div class="print__heading print__heading--policy">
+        <h3>{{ selectedRegionUIList.label }}</h3>
+      </div>
+      <div class="print__heading print__heading--policy">
+        <h3>Top 15 Countries</h3>
+      </div>
+      <div class="print__policy-wrapper">
+        <div class="print__policy-list">
+          <app-specific-policy-list-chart type="absolute" [selectedPolicyUIList]="selectedPolicyUIList" [selectedRegionUIList]="selectedRegionUIList" [forPrint]="true"></app-specific-policy-list-chart>
+        </div>
+        <div class="print__policy-list">
+          <app-specific-policy-list-chart type="relative" [selectedPolicyUIList]="selectedPolicyUIList" [selectedRegionUIList]="selectedRegionUIList" [forPrint]="true"></app-specific-policy-list-chart>
+        </div>
+      </div>
+    </div>
+
+    <div class="print__footer" *ngIf="0">
+      <img src="assets/image/logo-WBG.png" class="footer-logo" alt="">
+      <img src="assets/image/logo-GFD.png" alt="">
+    </div>
+  </div>
+</div>

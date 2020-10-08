@@ -1,4 +1,4 @@
-import { Injectable, Output, Input } from '@angular/core';
+import {Injectable, Output, Input} from '@angular/core';
 import {Observable} from 'rxjs/Rx';
 import {Subscription} from 'rxjs/Subscription';
 import 'rxjs/add/observable/fromPromise';
@@ -9,8 +9,9 @@ import {SERVER} from './server.conf';
 import {WebService} from '../services/web.service';
 import {ViewerModel} from '../store/model/viewer.model';
 import {URLSearchParams} from '@angular/http';
-import { Subject } from 'rxjs/Subject';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import {Subject} from 'rxjs/Subject';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import * as html2canvas from 'html2canvas';
 
 @Injectable()
 export class ChartService {
@@ -64,12 +65,14 @@ export class ChartService {
    * @angular/http API configuration for it.
    */
   public type1S$: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+
   set type1S(value: string) {
-   // console.log('emit: ' + value);
     this.type1S$.next(value);
   }
+
   constructor(private webService: WebService) {
   }
+
   /**
    * DEPRECATED. This method returns calculations regarding the summatory,
    * average and counting policy-related data.
@@ -112,6 +115,7 @@ export class ChartService {
     });
     return outputMetricAvgInfo;
   }
+
   /**
    * Returns rounded or average of GDP value from a selected country or globally.
    * @param {String} idx - Determines which output-indicator is being set.
@@ -144,6 +148,7 @@ export class ChartService {
     }
     return avgDoll;
   }
+
   /**
    * Formats and calculates GDP values for Well-being and Risk-to-assets indicators.
    * @param {Number} gdpDollars - GDP value represented as monetary cost (in dollars).
@@ -224,7 +229,7 @@ export class ChartService {
       if (onlyPercent) {
         aValue = `(${percentageValue}% of GDP)`;
       }
-  } else {
+    } else {
       dollarLossGDPPositive = Math.round(dollarLossGDPPositive);
       asString = dollarLossGDPPositive;
       if (dollarLossGDPPositive >= aThousand) {
@@ -238,12 +243,13 @@ export class ChartService {
       if (onlyPercent) {
         aValue = `(${percentageValue}% of GDP)`;
       }
-  }
+    }
     return {
       dollarGDP: dollarLossGDP,
       text: aValue
     };
   }
+
   /**
    * Calculates and formats main GDP values for output indicators.
    * Its calculated values are stored in @public outputDomain property for every output chart.
@@ -254,12 +260,14 @@ export class ChartService {
    */
   subscription() {
     this.type1S$.subscribe(val => {
-    //  console.log('subscribe');
+      //  console.log('subscribe');
       this.type = val;
-     // console.log('type ', this.type);
+      // console.log('type ', this.type);
     });
   }
+
   private calculateGDPValues(containerId, key, numericValue, gdpDollars, precision, oldValue?) {
+
     this.subscription();
     let percent;
     let value;
@@ -283,6 +291,7 @@ export class ChartService {
         value = value + 'New value: ' + newValues.text;
       }
       value = value + '<br />' + moreValues.text;
+
       this._outputDomains[key]['chart'][containerId] = {
         dollarGDP: moreValues.dollarGDP,
         valueGDP: numericValue,
@@ -300,6 +309,7 @@ export class ChartService {
       if (defaultValue != newValue) {
         value = value + '<br />New value: ' + newValue + percent;
       }
+
       this._outputDomains[key]['chart'][containerId] = {
         value: numericValue,
         difference: differenceSignText,
@@ -309,6 +319,7 @@ export class ChartService {
     }
     return value;
   }
+
   /**
    * Returns the number of svg elements created in Scorecard-Priority List page.
    */
@@ -319,6 +330,7 @@ export class ChartService {
     }
     return 0;
   }
+
   /**
    * Creates/removes input-indicator SVG charts. These charts are displayed on Viewer page.
    * @param {Object} inputData - Input-indicator data to be used to plot the chart
@@ -339,6 +351,15 @@ export class ChartService {
         return val.key === type;
       })[0];
     });
+
+    /*if (containerId === 'inputSoc-1') {
+      console.log('######################')
+      console.log('createInputCharts', containerId, inputData)
+      console.log('inputTypeTxt', inputTypeTxt)
+      console.log('inputTypes', inputTypes)
+      console.log('filterInputType', filterInputType)
+    }*/
+
     // Reorder input properties
     jQuery.each(filterInputType, (key, val) => {
       val.propInd = inputTypes.indexOf(val.key);
@@ -372,7 +393,7 @@ export class ChartService {
         }
       }
 
-		  // add a margin of 0.1 m,M
+      // add a margin of 0.1 m,M
       if (data.length > 0) {
         const m1 = data[0] - (data[0] * 0.1);
         const m2 = data[data.length - 1] + (data[data.length - 1] * 0.1);
@@ -406,7 +427,7 @@ export class ChartService {
         })])
         .range([height, 0]);
 
-		  // gaussian curve
+      // gaussian curve
       const l = d3.svg.line()
         .x((d) => {
           return x(d[0]);
@@ -416,7 +437,7 @@ export class ChartService {
         })
         .interpolate('basis');
 
-		  // area under gaussian curve
+      // area under gaussian curve
       const a = d3.svg.area()
         .x((d) => {
           return x(d[0]);
@@ -426,17 +447,15 @@ export class ChartService {
           return y(d[1]);
         });
 
-		// bisect data array at brush selection point
+      // bisect data array at brush selection point
       const b = d3.bisector((d) => {
         return d;
       }).left;
 
-      console.log(containerId);
-
       const div = d3.select(`div#${containerId}`)
         .append('div')
         .attr('class', 'input-row');
-        // .attr('class', 'box-tab-text');
+      // .attr('class', 'box-tab-text');
 
       const table = div.append('table')
         .attr('width', '100%')
@@ -448,19 +467,19 @@ export class ChartService {
       const tr = table.append('tr')
         .style('pointer-events', 'none');
 
-        const td = tr.append('td')
+      const td = tr.append('td')
         .attr('width', '50%')
         .style('padding-left', '5px')
         .style('pointer-events', 'none');
 
       tr.append('td')
-          .attr('width', '50%')
-          .style('padding', '0')
-          .style('vertical-align', 'middle')
-          .append('span')
-            .attr('class', 'value')
-            .style('pointer-events', 'none')
-            .text(' ');
+        .attr('width', '50%')
+        .style('padding', '0')
+        .style('vertical-align', 'middle')
+        .append('span')
+        .attr('class', 'value')
+        .style('pointer-events', 'none')
+        .text(' ');
 
       const svg = td.append('svg')
         .attr('width', width + margin.left + margin.right)
@@ -469,9 +488,9 @@ export class ChartService {
         .attr('xmlns', 'http://www.w3.org/2000/svg')
         .style('pointer-events', 'none')
         .append('g')
-          .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-		  // add gaussian curve
+      // add gaussian curve
       const gaus = svg.append('g')
         .attr('id', input.key)
         .attr('class', 'gaussian');
@@ -482,9 +501,9 @@ export class ChartService {
         .data([science.stats.bandwidth.nrd0])
         .enter()
         .append('path')
-          .attr('d', (d) => {
-            return l(kde.bandwidth(d)(data));
-          });
+        .attr('d', (d) => {
+          return l(kde.bandwidth(d)(data));
+        });
 
       gaus.selectAll('path')
         // .style('stroke', '#000')
@@ -502,10 +521,10 @@ export class ChartService {
         .data([science.stats.bandwidth.nrd0])
         .enter()
         .append('path')
-          .attr('d', (d) => {
-            const dd = kde.bandwidth(d)(data);
-            return a(dd);
-          });
+        .attr('d', (d) => {
+          const dd = kde.bandwidth(d)(data);
+          return a(dd);
+        });
       area.selectAll('path')
         // .style('fill', '#E6E8EF');
         .style('fill', '#e4e4e4');
@@ -590,21 +609,25 @@ export class ChartService {
 
       brushg.style('pointer-events', 'none');
       const brushEl = brushg[0][0];
-      brushEl.removeAllListeners();
+      // brushEl.removeAllListeners();
 
       const self = this;
+
       function brushstart() {
         svg.classed('selecting-input', true);
       }
+
       function brushend() {
         svg.classed('selecting-input', !d3.event.target.empty());
       }
+
       function _redrawInputPlot(id) {
         const config = this._inputConfig;
         const inputD = config[id];
       }
     });
   }
+
   /**
    * Creates/removes output-indicator SVG charts. These charts are displayed on Viewer and Scorecard Priority List pages.
    * @param {Object} outputData - Output-indicator data to be used to plot the chart.
@@ -617,7 +640,7 @@ export class ChartService {
   createOutputChart(outputData: any, containerId: string, groupName?: string, isScoreCardPage?: boolean, isoCode?: string) {
     jQuery(`div#${containerId}`).empty();
     const finalOutput = this.filterOutputDataByGroup(outputData, groupName);
-    console.log(finalOutput, outputData, groupName);
+
     const me = this;
     jQuery.each(finalOutput, (idx, output) => {
       const s1 = output.gradient[0];
@@ -706,22 +729,22 @@ export class ChartService {
           tdElement.style('padding', '0.75rem 0');
         }
         const svg = tdElement.append('svg')
-        .attr('width', width + margin.left + margin.right)
-        .attr('height', height + margin.top + margin.bottom)
-        .attr('xmlns', 'http://www.w3.org/2000/svg')
-        .attr('id', idx)
+          .attr('width', width + margin.left + margin.right)
+          .attr('height', height + margin.top + margin.bottom)
+          .attr('xmlns', 'http://www.w3.org/2000/svg')
+          .attr('id', idx)
           .append('g')
-            .attr('transform',
-              'translate(' + margin.left + ',' + margin.top + ')')
-            .style('pointer-events', 'none')
-            .style('border-bottom', '1px solid lightgrey');
+          .attr('transform',
+            'translate(' + margin.left + ',' + margin.top + ')')
+          .style('pointer-events', 'none')
+          .style('border-bottom', '1px solid lightgrey');
         // add gaussian curve
         const gaus = svg.append('g')
           .attr('id', idx)
           .attr('class', 'gaussian');
         gaus.selectAll('#' + containerId + ' g#' + idx + ' .gaussian')
-        // Multivariant Density Estimation
-        // http://bit.ly/1Y3jEcD
+          // Multivariant Density Estimation
+          // http://bit.ly/1Y3jEcD
           .data([science['stats'].bandwidth.nrd0])
           .enter()
           .append('path')
@@ -954,9 +977,9 @@ export class ChartService {
         }
       } else {
         const table = div.append('table')
-        .attr('width', '100%')
-        .attr('class', 'table table-responsive')
-        .attr('id', 'table-' + idx);
+          .attr('width', '100%')
+          .attr('class', 'table table-responsive')
+          .attr('id', 'table-' + idx);
         const tr = table.append('tr');
         const td = tr.append('td')
           .attr('width', '100%');
@@ -1039,6 +1062,7 @@ export class ChartService {
       return d;
     }).left;
 
+    /*
     const div = d3.select(`#${containerId}`)
       .append('div')
       .attr('id', idx)
@@ -1065,8 +1089,8 @@ export class ChartService {
       .attr('id', idx)
       .attr('class', 'gaussian');
     gaus.selectAll('#' + containerId + ' g#' + idx + ' .gaussian')
-    // Multivariant Density Estimation
-    // http://bit.ly/1Y3jEcD
+      // Multivariant Density Estimation
+      // http://bit.ly/1Y3jEcD
       .data([science['stats'].bandwidth.nrd0])
       .enter()
       .append('path')
@@ -1075,7 +1099,7 @@ export class ChartService {
       });
     // Add manually chart styles to be integrated when converting to base64 string
     gaus.selectAll('path')
-    // .style('stroke', '#000')
+      // .style('stroke', '#000')
       .style('stroke', '#7D8F8F')
       .style('stroke-width', '3px')
       .style('fill', 'none')
@@ -1094,7 +1118,7 @@ export class ChartService {
       });
     // Add manually chart styles to be integrated when converting to base64 string
     area.selectAll('path')
-    // .style('fill', '#5E6A6A');
+      // .style('fill', '#5E6A6A');
       .style('fill', '#e4e4e4');
 
     // add placeholder for initial model value
@@ -1121,9 +1145,10 @@ export class ChartService {
     };
     const brushend = () => {
       svg.classed('selecting', !d3.event.target.empty());
-    };
+    };*/
     const brush = d3.svg.brush()
       .x(x);
+
     // keep a reference to the brush for the output domain
     output.x = x;
     output.height = height;
@@ -1143,8 +1168,7 @@ export class ChartService {
     }
     this._outputDomains[idx][outputId].default = this._globalExtentData[idx];
     brush.extent([0, this._outputDomains[idx][outputId].brush.extent()[1]]);
-    brush.on('brush', brushmove);
-
+    // brush.on('brush', brushmove);
     const line = d3.svg.line()
       .x((d) => {
         return d3.mean(data);
@@ -1153,6 +1177,7 @@ export class ChartService {
         return height;
       });
 
+    /*
     const brushg = svg.append('g')
       .attr('class', 'brush')
       .style('pointer-events', 'none')
@@ -1183,7 +1208,7 @@ export class ChartService {
     brushg.selectAll('#' + containerId + ' rect')
       .attr('height', height)
       .style('pointer-events', 'none');
-
+    */
     const line2 = d3.svg.line()
       .x((d) => {
         return d3.mean(data);
@@ -1191,7 +1216,7 @@ export class ChartService {
       .y((d) => {
         return height;
       });
-
+    /*
     const brushg2 = svg.append('g')
       .attr('class', 'brush2')
       .style('pointer-events', 'none')
@@ -1242,7 +1267,7 @@ export class ChartService {
       .attr('class', 'text-results')
       .append('span')
       .attr('class', 'text-number')
-      .html(textFn);
+      .html(textFn);*/
   }
 
   /**
@@ -1261,6 +1286,7 @@ export class ChartService {
     const isCountryListObject = typeof countryList === 'object' && countryList['type'] === 'policyMeasure';
     const isCountryListCurrencyBased = isCountryListObject && countryList['chartType'] === 'absolute';
     const isCountryListPercentageBased = isCountryListObject && countryList['chartType'] === 'relative';
+    const forPrint = countryList.forPrint;
 
     jQuery.each(policyData, (idx, polData) => {
       const dKtot = countryList['chartType'] === 'absolute' ? +polData['num_asset_losses_label'] : +polData['rel_num_asset_losses_label'];
@@ -1349,14 +1375,19 @@ export class ChartService {
     let min = d3.min(minValues);
     let maxValue = d3.max([maxFirstBarValue, maxSecondBarValue]);
     let w;
-    if (isCountryListObject) {
-      w = 720;
+    if (forPrint) {
+      w = isCountryListObject ? 635 : 675;
+    } else if (isCountryListObject) {
+      w = 670;
     } else if (isPolicyListObject) {
-      w = 800;
+      w = 750;
     } else {
-      w = 700;
+      w = 650;
     }
-    const h = isCountryListObject ? recalculateChartHeight() : 1000;
+
+    let h = isCountryListObject ? recalculateChartHeight() : 1000;
+    h = forPrint && h > 820 ? 820 : h;
+
     const margin = {
       left: isPolicyListObject ? 170 : 130,
       right: 70,
@@ -1366,6 +1397,7 @@ export class ChartService {
     const width = w - margin.left - margin.right;
     const height = h - margin.top - margin.bottom;
     const spaceLblCh = 10;
+
     let xDomain = [];
     xDomain.push(-1, maxValue);
 
@@ -1386,11 +1418,13 @@ export class ChartService {
 
     const xAxis = d3.svg.axis()
       .scale(xLane)
-      .tickFormat(formatAxis)
+      .tickValues([])
+      .outerTickSize(0)
       .orient('top');
     const xAxis2 = d3.svg.axis()
       .scale(xLane)
-      .tickFormat(formatAxis)
+      .tickValues([])
+      .outerTickSize(0)
       .orient('bottom');
     const yAxis = d3.svg.axis()
       .scale(yLane)
@@ -1420,15 +1454,15 @@ export class ChartService {
 
     // Label wrap text function
     const textWrap = (text, txtWidth) => {
-      text.each(function() {
+      text.each(function () {
         const textEl = d3.select(this),
-            words = textEl.text().split(/\s+/).reverse();
+          words = textEl.text().split(/\s+/).reverse();
         let word,
-            line = [],
-            lineNumber = 0;
+          line = [],
+          lineNumber = 0;
         const lineHeight = 1.1, // ems
-            y = textEl.attr('y'),
-            dy = parseFloat(textEl.attr('dy'));
+          y = textEl.attr('y'),
+          dy = parseFloat(textEl.attr('dy'));
         let tspan = textEl.text(null).append('tspan').attr('x', 0).attr('y', y).attr('dy', dy + 'em');
         while (word = words.pop()) {
           line.push(word);
@@ -1470,8 +1504,6 @@ export class ChartService {
     const plotChartAxes = (params) => {
       const yLabelPos = isCountryListObject ? 15 : 5;
       const labelOffset = -20;
-      const xDescLabel = countryList['chartType'] === 'relative' ?
-        '% of Current Losses' : 'US$, millions per year';
       const xLabelPosition = width / 3.5;
       if (isNewChart) {
         // Adding lane lines
@@ -1496,7 +1528,6 @@ export class ChartService {
           .attr('y', 0)
           .style('text-anchor', 'middle')
           .attr('transform', 'translate(' + xLabelPosition + ', ' + labelOffset + ')')
-          .text(xDescLabel);
         laneChart.select('.x-axis2')
           .append('text')
           .classed('x-axis-lb2', true)
@@ -1504,7 +1535,6 @@ export class ChartService {
           .attr('y', 0)
           .style('text-anchor', 'middle')
           .attr('transform', 'translate(' + xLabelPosition + ', ' + (margin.bottom) + ')')
-          .text(xDescLabel);
         // Adding y axis labels
         laneChart.append('g')
           .classed('y-axis', true)
@@ -1514,6 +1544,34 @@ export class ChartService {
         laneChart.select('.y-axis')
           .selectAll('.tick text')
           .call(textWrap, margin.left);
+
+        //MIN and MAX labels
+        //--------------------
+
+        //this function generates Min and Max labels for the x-axis of the lane chart
+        const generateMinMaxLabel = (distanceFromLeftofChart: number, text: string) => {
+          // how far from the left of the svg should the label be placed
+          const translatefromLeft = 'translate(' + (margin.left + spaceLblCh + distanceFromLeftofChart) + ', ' + (margin.top - 5) + ')';
+
+          //Selects both svgs and appends label
+          d3.select(`#${containerId} svg`)
+            .append('text')
+            .attr('text-anchor', 'middle')
+            .attr('transform', translatefromLeft)
+            .attr('y', -5)
+            .style('font-size', '12px')
+            .attr('fill', 'var(--gray-dark)')
+            .text(text);
+        }
+
+        if (countryList.isNew) {
+          //Min Label
+          generateMinMaxLabel(0, 'min');
+          //Max label
+          const maxOff = isCountryListObject ? 215 : 250;
+          generateMinMaxLabel(width - maxOff, 'max');
+        }
+
       } else {
         // Update lane lines
         laneChart.selectAll('g.lanes')
@@ -1534,7 +1592,6 @@ export class ChartService {
         laneChart.select('.x-axis-lb')
           .style('text-anchor', 'middle')
           .attr('transform', 'translate(' + xLabelPosition + ', ' + labelOffset + ')')
-          .text(xDescLabel);
       }
       // Apply UI styles in vertical lines to get them in base64 conversion process.
       laneChart.selectAll('g.lanes path')
@@ -1621,12 +1678,13 @@ export class ChartService {
         // Add empty bar charts container
         eBar = laneChart.append('g')
           .classed('e-bar', true);
+
         // Add bars with data container
-        dataBars  = laneChart.append('g')
+        dataBars = laneChart.append('g')
           .classed('bar-charts', true)
           .attr('transform', 'translate(0,' + margin.top + ')');
-          // Add right y-position bar labels container
-          barLabels = laneChart.append('g')
+        // Add right y-position bar labels container
+        barLabels = laneChart.append('g')
           .classed('bar-labels', true)
           .attr('transform', 'translate(-10,' + margin.top + ')');
       } else {
@@ -1672,34 +1730,34 @@ export class ChartService {
         .selectAll('.empty-bar1')
         .data(params.data)
         .enter()
-          .append('rect')
-          .classed('empty-bar1', true);
+        .append('rect')
+        .classed('empty-bar1', true);
       eBar
         .selectAll('.empty-bar2')
         .data(params.data)
         .enter()
-          .append('rect')
-          .classed('empty-bar2', true);
+        .append('rect')
+        .classed('empty-bar2', true);
       dataBars.selectAll('.bar-chart1')
         .data(params.data)
         .enter()
-          .append('rect')
-          .classed('bar-chart1', true);
+        .append('rect')
+        .classed('bar-chart1', true);
       dataBars.selectAll('.bar-chart2')
         .data(params.data)
         .enter()
-          .append('rect')
-          .classed('bar-chart2', true);
+        .append('rect')
+        .classed('bar-chart2', true);
       barLabels.selectAll('.labels1')
         .data(params.data)
         .enter()
-          .append('text')
-          .classed('labels1', true);
+        .append('text')
+        .classed('labels1', true);
       barLabels.selectAll('.labels2')
         .data(params.data)
         .enter()
-          .append('text')
-          .classed('labels2', true);
+        .append('text')
+        .classed('labels2', true);
       // Update phase
       const formatNumericData = (data) => {
         let value: any = Math.abs(Math.round(data));
@@ -1713,10 +1771,11 @@ export class ChartService {
         }
         return value;
       };
+      const duration = forPrint ? 0 : 500;
       eBar
         .selectAll('.empty-bar1')
         .transition()
-        .duration(500)
+        .duration(duration)
         .ease('bounce')
         .attr('x', (d, i) => {
           return 0;
@@ -1734,13 +1793,13 @@ export class ChartService {
           return barHeight;
         })
         .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', 0)')
-       // .style('fill', '#485050');
-       .style('fill', 'transparent');
-       // .style('fill', '#ffffff');
+        // .style('fill', '#485050');
+        .style('fill', 'transparent');
+      // .style('fill', '#ffffff');
       eBar
         .selectAll('.empty-bar2')
         .transition()
-        .duration(500)
+        .duration(duration)
         .ease('bounce')
         .attr('x', (d, i) => {
           return 0;
@@ -1758,13 +1817,13 @@ export class ChartService {
           return barHeight;
         })
         .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', 0)')
-       // .style('fill', '#485050');
+        // .style('fill', '#485050');
         .style('fill', 'transparent');
-       // .style('fill', '#ffffff');
+      // .style('fill', '#ffffff');
       dataBars
         .selectAll('.bar-chart1')
         .transition()
-        .duration(500)
+        .duration(duration)
         .ease('bounce')
         .attr('x', (d, i) => {
           const data = d.dWtot_currency;
@@ -1794,11 +1853,11 @@ export class ChartService {
         })
         .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', 0)')
         .style('fill', '#6DCCDC');
-        // .style('fill', '#4b5455');
+      // .style('fill', '#4b5455');
       dataBars
         .selectAll('.bar-chart2')
         .transition()
-        .duration(500)
+        .duration(duration)
         .ease('bounce')
         .attr('x', (d, i) => {
           if (hideAvoidedAssetLosses) {
@@ -1830,12 +1889,13 @@ export class ChartService {
           return barHeight;
         })
         .attr('transform', 'translate(' + (margin.left + spaceLblCh) + ', 0)')
-        .style('fill', '#C3D700');
-       // .style('fill', '#f3a277');
+        //.classed('fill--gray-green', true);
+        .style('fill', "#7d8f8f" /*'var(--gray-green)'*//*'#C3D700'*/);
+      // .style('fill', '#f3a277');
       barLabels
         .selectAll('.labels1')
         .transition()
-        .duration(500)
+        .duration(duration)
         .ease('bounce')
         .attr('x', (d, i) => {
           return width - 50;
@@ -1848,12 +1908,12 @@ export class ChartService {
         // .style('font-weight', 'bold')
         .text((d) => {
           let data;
-            if (countryList['chartType'] === 'absolute') {
-              data = (d.dWtot_currency < 0 ?
-                '-US$ ' + formatNumericData(d.dWtot_currency) : 'US$ ' + formatNumericData(d.dWtot_currency));
-            } else {
-              data = (d.dWtot_currency).toFixed(1) + '%';
-            }
+          if (countryList['chartType'] === 'absolute') {
+            data = (d.dWtot_currency < 0 ?
+              '-$' + formatNumericData(d.dWtot_currency) : '$' + formatNumericData(d.dWtot_currency));
+          } else {
+            data = (d.dWtot_currency).toFixed(1) + '%';
+          }
           // }
           return data;
         })
@@ -1861,7 +1921,7 @@ export class ChartService {
       barLabels
         .selectAll('.labels2')
         .transition()
-        .duration(500)
+        .duration(duration)
         .ease('bounce')
         .attr('x', (d, i) => {
           return width - 50;
@@ -1870,8 +1930,8 @@ export class ChartService {
           const yParam = isCountryListObject ? d.id : d.label;
           return yLane(yParam) + (barHeight * 2) + spaceBars;
         })
-       // .style('fill', '#f3a277')
-       // .style('font-weight', 'bold')
+        // .style('fill', '#f3a277')
+        // .style('font-weight', 'bold')
         .text((d) => {
           let data;
           if (hideAvoidedAssetLosses) {
@@ -1900,10 +1960,11 @@ export class ChartService {
         y: yAxis
       },
       gridLines: {
-          x: xGridLines
+        x: xGridLines
       }
     });
   }
+
   /**
    * Filters and saves output-indicator data by group name which either pertains a country or is set as Global.
    * @param {Object} outputData - Output-indicator data.
@@ -1932,6 +1993,7 @@ export class ChartService {
     }
     return filteredOutputDomains;
   }
+
   /**
    * Filters and saves input-indicator data by group name which either pertains a country or is set as Global.
    * @param {Object} inputData - Input-indicator data.
@@ -1964,6 +2026,7 @@ export class ChartService {
     }
     return filteredInputDomains;
   }
+
   /**
    * Changes absolute to relative GDP values for Scorecard formatting data.
    * @param {String} str - Absolute GDP value
@@ -1977,6 +2040,7 @@ export class ChartService {
     this._outRelative[1] = percent;
     return this._outRelative;
   }
+
   /**
    * Return formatted input-data values to be displayed in its respective charts.
    * @param {String} data - The input data to format.
@@ -2002,6 +2066,7 @@ export class ChartService {
     }
     return value;
   }
+
   /**
    * Return formatted input-data values to be displayed in the sliders.
    * @param {String} data - The input data to format.
@@ -2017,6 +2082,7 @@ export class ChartService {
     }
     return sign + ' ' + formattedValue;
   }
+
   /**
    * Returns converted SVG charts to base64 string.
    * @param {String} chartId - Chart id which the chart belongs to.
@@ -2052,16 +2118,18 @@ export class ChartService {
     const ch2Fmt = window.btoa(ch2XMLStr);
     const ch2Str = svgPrefixStr + ch2Fmt;
     return {
-      chart1: <string> ch1Str,
-      chart2: <string> ch2Str
+      chart1: <string>ch1Str,
+      chart2: <string>ch2Str
     };
   }
+
   /**
    * Returns the globalModel object.
    */
   getGlobalModelData() {
     return this._globalModelData;
   }
+
   /**
    * Returns default chart configuration object used in all required components of the app and by this service itself.
    */
@@ -2069,19 +2137,22 @@ export class ChartService {
     return {
       'outputs': {
         'risk_to_assets': {
-          'descriptor': 'Risk to assets (% of GDP)',
+          'descriptor': 'Risk to assets',
+          'info': '(% of GDP)',
           'gradient': ['#f0f9e8', '#08589e'],
           'number_type': 'percent',
           'precision': 2
         },
         'resilience': {
-          'descriptor': 'Socio-economic resilience',
+          'descriptor': 'Socioeconomic resilience',
+          'info': '',
           'gradient': ['#990000', '#fef0d9'],
           'number_type': 'percent',
           'precision': 2
         },
         'risk': {
-          'descriptor': 'Risk to well-being (% of GDP)',
+          'descriptor': 'Risk to well-being',
+          'info': '(% of GDP)',
           'gradient': ['#edf8fb', '#6e016b'],
           'number_type': 'percent',
           'precision': 2
@@ -2093,14 +2164,14 @@ export class ChartService {
         'hazard_ratio_fa__earthquake', 'hazard_ratio_fa__flood', 'hazard_ratio_flood_poor',
         'hazard_ratio_fa__tsunami', 'hazard_ratio_fa__wind'
       ],
-      'inputTypes' : {
+      'inputTypes': {
         'inputSoc': ['gamma_SP_cat_info__poor', 'macro_tau_tax', 'macro_borrow_abi', 'macro_prepare_scaleup', 'macro_T_rebuild_K'],
         'inputEco': ['axfin_cat_info__poor', 'axfin_cat_info__nonpoor', 'c_cat_info__poor', 'c_cat_info__nonpoor'],
         'inputVul': ['v_cat_info__poor', 'v_cat_info__nonpoor', 'shew_for_hazard_ratio'],
         'inputExp': ['hazard_ratio_flood_poor', 'hazard_ratio_fa__flood',
           'hazard_ratio_fa__earthquake', 'hazard_ratio_fa__tsunami', 'hazard_ratio_fa__wind']
       },
-      'hazardTypes' : {
+      'hazardTypes': {
         'hazardFlood': ['hazard_ratio_flood_poor', 'hazard_ratio_fa__flood'],
         'hazardEarthquake': ['hazard_ratio_fa__earthquake'],
         'hazardTsunami': ['hazard_ratio_fa__tsunami'],
@@ -2181,33 +2252,39 @@ export class ChartService {
       }
     };
   }
+
   /**
    * Returns country group data object.
    */
   getCountryGroupData() {
     return this._countryGroupData;
   }
+
   /**
    * Returns input-indicator model data object.
    */
   getInputDataObj() {
     return this._inputConfig;
   }
+
   /**
    * Returns default input data object.
    */
   getInputData() {
     return this._inputDomains;
   }
+
   getInputLabels() {
     return this._inputLabels;
   }
+
   /**
    * Returns persisted input-data observable.
    */
   getInputDataObs() {
     return this._inputDataProm$;
   }
+
   /**
    * Returns input-chart id by general input type
    * @param {String} type - Genreal input type
@@ -2216,6 +2293,7 @@ export class ChartService {
     const inputTypes = this.getChartsConf().inputTypes;
     return inputTypes[type];
   }
+
   /**
    * Returns new output-input model data by sending it slider values from Viewer
    * page as form-data content type.
@@ -2231,24 +2309,26 @@ export class ChartService {
     formData.append('g', '');
     formData.append('m', model);
     formData.append('i_df', modelData);
-
     return this.webService.post(url, formData)
       .map((res: Response) => {
         return res.json();
       }).catch(this.webService.errorHandler);
   }
+
   /**
    * DEPRECATED. Returns max GDP value to be set in the X-coordinate of a Scorecard chart.
    */
   getMaxGDPCountryValue() {
     return this._maxGDPNum;
   }
+
   /**
    * DEPRECATED. Return set of max min Country GDP values to be set in a Scorecard chart.
    */
   getMaxMinGDPCountryValues() {
     return this._maxMinCountryXValues;
   }
+
   /**
    * Returns a set of countries by an specific scorecard policy name.
    * @param {String} policy -  Scorecard policy name.
@@ -2257,6 +2337,7 @@ export class ChartService {
     const allCountriesPolicy = this._newPolicyGroupedByPolicyObj;
     return allCountriesPolicy[policy];
   }
+
   /**
    * Returns a set of scorecard policies by an specific country name.
    * @param countryName
@@ -2265,24 +2346,28 @@ export class ChartService {
     const allPoliciesCountry = this._newPolicyGroupedByCountryObj;
     return allPoliciesCountry[countryName];
   }
+
   /**
    * Returns output model data.
    */
   getOutputData() {
     return this._outputDomains;
   }
+
   /**
    * Returns persisted output-data observable
    */
   getOutputDataObs() {
     return this._outputDataProm$;
   }
+
   /**
    * Returns output-model country list.
    */
   getOutputDataUIList() {
     return this._outputUIList;
   }
+
   /**
    * /**
    * Returns output-model list.
@@ -2290,18 +2375,21 @@ export class ChartService {
   getOutputList() {
     return this._outputList;
   }
+
   /**
    * Return Scorecard policy list data
    */
   getPolicyListData() {
     return this._policyInfoObj;
   }
+
   /**
    * DEPRECATED. Returns poloicy data grouped by region.
    */
   getRegionalPolicyData() {
     return this._regionalPoliciesInfoObj;
   }
+
   /**
    * Retrieves Scorecard policies data by their CSV files and encapsulates it in a observable promise data.
    */
@@ -2334,31 +2422,37 @@ export class ChartService {
         .defer(d3.csv, vpUrl)
         .defer(d3.csv, vrUrl)
         .await((err, axfin, fap, far, kp, pdsPackage, propNonpoor, shew, socialP, tRebuildK, vp, vr) => {
-          if (err) { reject(err); }
+          if (err) {
+            reject(err);
+          }
           const data = [axfin, fap, far, kp, pdsPackage, propNonpoor, shew, socialP, tRebuildK, vp, vr];
           resolve(data);
         });
     });
     this._scoreCardDataObs$ = Observable.fromPromise(promisedData);
   }
+
   /**
    * Returns scorecard data promise observable
    */
   getScoreCardDataObs() {
     return this._scoreCardDataObs$;
   }
+
   /**
    * Inits output-data default configuration
    */
   initOutputChartConf() {
     this.setOutputData();
   }
+
   /**
    * Inits scorecard-data default configuration
    */
   initScorecardChartConf() {
     this.getScorecardData();
   }
+
   /**
    * @event brush - This event is triggered when a D3 brush component is moved
    * from one side to another when a input chart has updated its data.
@@ -2369,7 +2463,7 @@ export class ChartService {
     const me = this;
     return () => {
       const inputId = containerId.indexOf('1') >= 0 ? 'input1' : 'input2';
-      const toUpd =  me._inputConfig[input.key][inputId].forUpdate;
+      const toUpd = me._inputConfig[input.key][inputId].forUpdate;
       jQuery('#' + containerId + ' svg#' + input.key + ' #mask-' + input.key).empty();
       const s = me._inputConfig[input.key][inputId].brush.extent();
       const clip = toUpd.b(toUpd.distribData, s[1]);
@@ -2379,13 +2473,13 @@ export class ChartService {
       mask.selectAll('#' + containerId + ' g#mask-' + input.key + '.mask')
         .data([science.stats.bandwidth.nrd0])
         .enter()
-          .append('path')
-          // .style('fill', '#50C4CF')
-          .style('fill', '#e4e4e4')
-          .style('opacity', '1')
-          .attr('d', (d) => {
-            return toUpd.a(toUpd.kde.bandwidth(d)(selected));
-          });
+        .append('path')
+        // .style('fill', '#50C4CF')
+        .style('fill', '#e4e4e4')
+        .style('opacity', '1')
+        .attr('d', (d) => {
+          return toUpd.a(toUpd.kde.bandwidth(d)(selected));
+        });
       d3.select('#' + containerId + ' #' + input.key + ' g.resize.e path')
         .attr('d', 'M 0, 0 ' + ' L 0 ' + input.height);
       const span = jQuery('#' + containerId + ' #table-' + input.key + ' span.value');
@@ -2398,6 +2492,7 @@ export class ChartService {
       });
     };
   }
+
   /**
    * This method merges input-model data into a complete input-model data.
    * @param {Array} inputArr - Set of Input-indicator values.
@@ -2444,6 +2539,7 @@ export class ChartService {
     });
     return inputDomains;
   }
+
   /**
    * Retrieves input-model data from CSV file in order to saved into a input-model object data.
    * @param {Object} _globalModelData - Global model object data.
@@ -2452,12 +2548,17 @@ export class ChartService {
     const url = `${this._baseURL}${this._inputInfoURL}`;
     const promisedData = new Promise((resolve, reject) => {
       d3.csv(url, (err, data: any) => {
-        if (err) { reject(err); }
+        if (err) {
+          reject(err);
+        }
         const inputDomainsArr = [];
         data.forEach((value) => {
           const inputObj = {};
+          const descArr = this.parseDesc(value.descriptor);
           inputObj['key'] = value.key;
-          inputObj['descriptor'] = value.descriptor;
+          inputObj['descriptor'] = descArr[0]; //value.descriptor;
+          inputObj['info'] = descArr[1];
+
           inputObj['lower'] = +value.lower;
           inputObj['upper'] = +value.upper;
           inputObj['number_type'] = value.number_type;
@@ -2469,7 +2570,8 @@ export class ChartService {
             this._inputLabels[value.key] = {};
           }
           this._inputLabels[value.key].key = value.key;
-          this._inputLabels[value.key].descriptor = value.descriptor;
+          this._inputLabels[value.key].descriptor = descArr[0]; // value.descriptor;
+          this._inputLabels[value.key].info = descArr[1];
           this._inputLabels[value.key].lower = +value.lower;
           this._inputLabels[value.key].upper = +value.upper;
           this._inputLabels[value.key].number_type = value.number_type;
@@ -2481,6 +2583,12 @@ export class ChartService {
     return promisedData;
     // this._inputDataProm$ = Observable.fromPromise(promisedData);
   }
+
+  parseDesc(desc) {
+    const arr = desc.split(' (');
+    return [arr[0], (arr[1] || '').replace(')', '')];
+  }
+
   /**
    * Retrieves output-model data from CSV file in order to saved into a output-model object data.
    */
@@ -2493,10 +2601,12 @@ export class ChartService {
     });
     const url = `${this._baseURL}${this._outputDataURL}`;
     this._outputUIList = [];
+
     const promisedData = new Promise((resolve, reject) => {
       d3.csv(url, (err, data: any) => {
-        if (err) { reject(err); }
-        console.log(`data from ${ url }`, data);
+        if (err) {
+          reject(err);
+        }
 
         data.forEach((value, index, arr) => {
           for (const key in value) {
@@ -2529,6 +2639,7 @@ export class ChartService {
     });
     this._outputDataProm$ = Observable.fromPromise(promisedData);
   }
+
   /**
    * Retrieves Scorecard data configuration in two main objects @public _newPolicyGroupedByCountryObj
    * and @public _newPolicyGroupedByPolicyObj to be displayed in its corresponding page.
@@ -2554,7 +2665,7 @@ export class ChartService {
         for (key in data[i][j]) {
           if (key === 'Asset losses label' || key === 'Wellbeing losses  label' ||
             key === 'Asset losses value' || key === 'Wellbeing losses value') {
-						// skip it since new line characters are coming on certain headers
+            // skip it since new line characters are coming on certain headers
           } else {
             this._newPolicyGroupedByCountryObj[data[i][j][key]][policyIds[i]] = {}; // countryName["axfin"] = {}
             break;
@@ -2589,32 +2700,32 @@ export class ChartService {
       for (let j = 0; j < data[i].length; j++) {
         for (key in data[i][j]) {
           if (key === 'Asset losses label' || key === 'Wellbeing losses  label' ||
-            key === 'Asset losses value' || key === 'Wellbeing losses value'){
-						// skip it since new line characters are coming on certain headers
-        } else {
-          this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][key]] = {}; // axfin["countryName"] = {}
+            key === 'Asset losses value' || key === 'Wellbeing losses value') {
+            // skip it since new line characters are coming on certain headers
+          } else {
+            this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][key]] = {}; // axfin["countryName"] = {}
             idxPol = key;
             break; // break once you find the main column
           }
         }
         for (key in data[i][j]) {
-          if (key === 'Asset losses label'){
+          if (key === 'Asset losses label') {
             this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]['asset_losses_label'] = data[i][j]['Asset losses label'];
             str = this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]['asset_losses_label'];
             out = this.changeRelativeValue(str);
             this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]['rel_asset_losses_label'] = out[0];
             this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]['rel_num_asset_losses_label'] = out[1];
-          } else if ( key === 'Wellbeing losses  label') {
+          } else if (key === 'Wellbeing losses  label') {
             this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]
               ['wellbeing_losses_label'] = data[i][j]['Wellbeing losses  label'];
             str = this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]['wellbeing_losses_label'];
             out = this.changeRelativeValue(str);
             this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]['rel_wellbeing_losses_label'] = out[0];
             this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]['rel_num_wellbeing_losses_label'] = out[1];
-          } else if ( key === 'Asset losses value') {
+          } else if (key === 'Asset losses value') {
             this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]
               ['num_asset_losses_label'] = data[i][j]['Asset losses value'];
-          } else if ( key === 'Wellbeing losses value') {
+          } else if (key === 'Wellbeing losses value') {
             this._newPolicyGroupedByPolicyObj[policyIds[i]][data[i][j][idxPol]]
               ['num_wellbeing_losses_label'] = data[i][j]['Wellbeing losses value'];
           }
@@ -2622,6 +2733,7 @@ export class ChartService {
       }
     }
   }
+
   /**
    * Sorts an array given its element be set as a object.
    * @param array
@@ -2629,10 +2741,12 @@ export class ChartService {
    */
   private _sortByKey(array, key) {
     array.sort((a, b) => {
-      const x = a[key]; const y = b[key];
+      const x = a[key];
+      const y = b[key];
       return ((x < y) ? -1 : ((x > y) ? 1 : 0));
     });
   }
+
   /**
    * Change Scorecard chart font-type labels in order to be recognized while being converted as base64 string.
    * @param isScoreCardList
@@ -2650,12 +2764,14 @@ export class ChartService {
     chart1.find('text').css('font-family', fontFamilyTxt);
     chart2.find('text').css('font-family', fontFamilyTxt);
   }
+
   /**
    * Unsubscribes output data observable
    */
   unsubscribeOutputData() {
     this._outputDataSubs.unsubscribe();
   }
+
   /**
    * Updates input-indicator model chart, slider values and input chart values.
    * @param {String} containerId -  Input container element id
@@ -2668,7 +2784,7 @@ export class ChartService {
     jQuery.each(config, (conf, inpObj) => {
       const ini = d3.select(`#${containerId} svg#` + conf + ' g.initial line');
       const iniEl = ini[0][0];
-      if (iniEl) {
+      if (iniEl || 1) {
         let model;
         const inputId = containerId.indexOf('1') >= 0 ? 'input1' : 'input2';
         const input = inpObj[inputId];
@@ -2704,22 +2820,24 @@ export class ChartService {
               model[conf] = model[conf] > 1 ? 1 : model[conf];
               model[conf] = model[conf] < 0 ? 0 : model[conf];
               break;
-            default: break;
+            default:
+              break;
           }
           sliderValues[conf + '_display_value'] = this.formatInputChartValues(model[conf], input);
           sliderValues[conf + '_baseline_value'] = this.formatInputChartValues(model[conf], input);
           sliderValues[conf + '_default_value'] = model[conf];
-          sliderValues[conf + '_difference_value'] = this.formatInputChartDifference(sliderValues[conf + '_default_value'] - model[conf] , input);
+          sliderValues[conf + '_difference_value'] = this.formatInputChartDifference(sliderValues[conf + '_default_value'] - model[conf], input);
           sliderValues[conf].value = model[conf];
           sliderValues[conf + '_value'] = model[conf] / (sliderValues[conf].max + sliderValues[conf].min) * 100;
           sliderValues[conf + '_original_value'] =
             ('' + sliderValues[conf + '_display_value']).replace('$', '').replace(',', '');
         }
-        ini.attr('x1', function(d) {
-            return input.x(+model[conf]);
-          })
+        /*
+        ini.attr('x1', function (d) {
+          return input.x(+model[conf]);
+        })
           .attr('y1', 0)
-          .attr('x2', function(d) {
+          .attr('x2', function (d) {
             return input.x(+model[conf]);
           })
           .attr('y2', input.height);
@@ -2743,13 +2861,16 @@ export class ChartService {
 
         brushg.style('pointer-events', 'none');
         const brushEl = brushg[0][0];
+        // Will break app with phase 2 changes.
         brushEl.removeAllListeners();
 
         d3.selectAll(`#${containerId} g.brush > g.resize.w`).remove();
+        */
       }
       // remove existing initial marker
     });
   }
+
   /**
    * Updates output-indicator model chart and its values
    * @param {String} containerId -  Output container element id
@@ -2775,7 +2896,7 @@ export class ChartService {
         this.chart2Data.res = resilience2.contents()[0].nodeValue;
         this.chart2Data.risk = risk2.contents()[0].nodeValue;
 
-       // console.log(risk_to_assetts1.contents());
+        // console.log(risk_to_assetts1.contents());
         risk_to_assetts1.html(risk_to_assetts1.contents()[2].nodeValue);
         resilience1.html(resilience1.contents()[0].nodeValue);
         risk1.html(risk1.contents()[2].nodeValue);
@@ -2785,7 +2906,7 @@ export class ChartService {
         risk2.html(risk2.contents()[2].nodeValue);
       }
     } else {
-    //  console.log('estoy entrando al else');
+      //  console.log('estoy entrando al else');
       let dollarRTA1 = '$0';
       let percentage1 = '+0.00%';
       let dollarRISK1 = '$0';
@@ -2839,7 +2960,7 @@ export class ChartService {
       const chartId = `output-${(idx === 'risk_to_assets') ? 'risk_to_assets' : idx}_${numericSection}`;
 
       const ini = d3.select(`#${containerId} svg#${idx} g.initial line`);
-      console.log('ini', ini);
+
       const outputId = containerId.indexOf('1') >= 0 ? 'output1' : 'output2';
       const x = outputData[outputId].x;
       const height = outputData[outputId].height;
@@ -2863,8 +2984,8 @@ export class ChartService {
 
       // IS NOT VISIABLE. Am not sure if it has any use.
       ini.attr('x1', (d) => {
-          return x(+model[idx]);
-        })
+        return x(+model[idx]);
+      })
         .attr('y1', 0)
         .attr('x2', (d) => {
           return x(+model[idx]);
@@ -2878,7 +2999,7 @@ export class ChartService {
       let extent = brush.extent()[1];
       let oldExtent = outputData[outputId].default;
       // if (groupName === 'GLOBAL' || !groupName) {
-        extent = +model[idx];
+      extent = +model[idx];
       // }
 
       brush.extent([0, extent]);
@@ -2892,7 +3013,6 @@ export class ChartService {
       // This updates this._outputDomains[key]['chart'][containerId].
       const value = me.calculateGDPValues(containerId, idx, numericValue, avgDoll, precision, oldValue);
       const newChartId = chartId.slice(0, -2).replace('output-', '');
-      console.log("debug", chartId, value);
 
       jQuery(`#${containerId} #${chartId} .text-number`).html(value);
       // Hack for updating chart text on policy priority list

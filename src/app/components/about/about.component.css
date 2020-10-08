@@ -1,0 +1,8 @@
+.p-modal {
+  text-align: center;
+}
+
+.modal-body .block-modal,
+blockquote {
+  border: none;
+}

@@ -1,0 +1,15 @@
+<app-navbar></app-navbar>
+<app-callout></app-callout>
+<div class="container">
+  <div class="country-select__container">
+    <h2 class="mappage__header">Select Country</h2>
+    <div class="box-dropdown row">
+      <div class="country-select__wrapper form-group col-md-6" [class.has-danger]="searchFailed">
+        <input id="country-1Txt" type="text" class="form-control input-wd country-select__input"
+          [(ngModel)]="viewerModel.firstCountry" [ngbTypeahead]="searchCountryFn" #country1="ngModel"
+          (ngModelChange)="onFirstCountryInputChangeEvent()" placeholder="Select a country" />
+        <span class="country-select__label">Try another country!</span>
+      </div>
+    </div>
+  </div>
+</div>

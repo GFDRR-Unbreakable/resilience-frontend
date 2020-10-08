@@ -1,0 +1,66 @@
+.scatter-gauge {
+  width: 100%;
+  padding-top: 8px;
+  margin-top: 20px;
+  margin-bottom: 7px;
+  border-bottom: 1px solid var(--gray-dark);
+  position: relative;
+}
+
+.scatter-gauge__point {
+  position: absolute;
+  top: 0;
+  width: 16px;
+  height: 16px;
+  margin-left: -8px;
+  border-radius: 100%;
+  background-color: var(--teal);
+  opacity: 0.1;
+  cursor: crosshair;
+  left: 0;
+  transition: 2s left, 0.2s background-color;
+}
+
+.is-avg .scatter-gauge__point {
+  background-color:  var(--gray-green);
+}
+
+.scatter-gauge__point--change,
+.scatter-gauge__point.is-active {
+  opacity: 1;
+  border: 2px solid var(--gray-dark);
+  z-index: 10;
+}
+
+.is-change-gauge .scatter-gauge__point {
+  background-color: var(--gray-green);
+}
+
+.is-change-gauge.showing-change .scatter-gauge__point--change {
+  background-color:  var(--teal);
+}
+
+.scatter-gauge__tooltip {
+  position: absolute;
+  z-index: 100;
+  top: 15px;
+  padding: 5px 10px;
+  background-color: var(--white);
+  border: 1px solid var(--gray-light);
+  font-size: 14px;
+}
+
+.scatter-gauge__row {
+  display: block;
+  white-space: nowrap;
+}
+
+.scatter-gauge__stat {
+  position: absolute;
+  top: -20px;
+  text-align: center;
+  width: 50px;
+  margin-left: -25px;
+  font-size: 14px;
+  left: 0;
+}

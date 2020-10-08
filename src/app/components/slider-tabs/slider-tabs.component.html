@@ -1,0 +1,70 @@
+<div class="slider-tabs" [class.for-print]="forPrint">
+  <div class="box-tab">
+    <ng-container *ngFor="let tab of tabs; let f = first;">
+      <ng-container *ngIf="!forPrint">
+        <input [attr.id]="'tab-' + tab.id" type="radio" name="tabs"
+        class="slider-tabs__tab-input tab-input" [checked]="f">
+
+        <label [attr.for]="'tab-' + tab.id"
+        class="slider-tabs__tab-label tab-label">{{ tab.label }}</label>
+      </ng-container>
+
+      <div class="slider-tabs__content tab-content">
+        <div class="slider-tabs__row slider-tabs__row--labels"
+        [ngClass]="'cols-' + (inputTypes[tab.id].length)">
+
+          <div *ngFor="let key of inputTypes[tab.id]"
+          class="slider-tabs__col">
+
+            <span class="slider-tabs__col--label">
+              {{inputLabels[key] ? inputLabels[key].descriptor : inputType}}
+              <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover" triggers="mouseenter:mouseleave"  popoverTitle="" (mouseover)="popOverText = inputLabels[key].info" *ngIf="!forPrint">
+                <i class="mdi mdi-information-outline"></i>
+              </button>
+            </span>
+          </div>
+        </div>
+
+        <div class="slider-tabs__row slider-tabs__row--charts"
+        [ngClass]="'cols-' + (inputTypes[tab.id].length)">
+          <ng-container *ngFor="let key of inputTypes[tab.id]">
+            <div *ngIf="sliderValuesPopulated" class="slider-tabs__col slider-tabs__col--slider">
+              <div class="slider-tabs__print-slider" *ngIf="forPrint">
+                <div class="slider-tabs__range">
+                  <div class="slider-tabs__fill"
+                  [style.width.%]="printSliderPos(key)"></div>
+                  <div class="slider-tabs__point"
+                  [style.left.%]="printSliderPos(key)"></div>
+                </div>
+              </div>
+              <md-slider
+              [class.is-invisible]="forPrint"
+              class="slider-tabs__mat-slider"
+              [min]="sliderValues[key + '_min']"
+              [max]="sliderValues[key + '_max']"
+              [step]="sliderValues[key + '_step']"
+              [value]="sliderValues[key + '_value']"
+              [(ngModel)]="sliderValues[key + '_value']"
+              (change)="onSliderChange(key)"
+              (input)="onSliderInputEvent($event, key)">
+              </md-slider>
+
+              <span class="text-right slider-text slider-tabs__values">
+                {{sliderValues[key + '_difference_value']}} <br />
+                <span class="slider-text-base">
+                  Base: {{sliderValues[key + '_baseline_value']}}
+                </span><br />
+                <span class="slider-text-base">
+                  New Value: {{sliderValues[key + '_display_value']}}
+                </span>
+              </span>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
+<ng-template #popover>
+  {{popOverText}}
+</ng-template>

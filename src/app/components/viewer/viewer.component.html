@@ -1,5 +1,5 @@
 <app-navbar></app-navbar>
-<div class="map-background">
+<div class="map-background" [class.is-hidden]="viewerDisplay !== 'countrytool'">
   <div id="map"></div>
 
   <!-- Country graphics -->
@@ -14,717 +14,418 @@
   </div>
 
   <div class="map-legend">
-    <div *ngFor="let legend of legends">
+    <div *ngFor="let legend of legends" class="map-legend__row">
       <i class="mdi mdi-checkbox-blank float-left" [ngStyle]="{color: legend[2]}"></i>
-      <span class="map-legend-text" *ngIf="legend[0] === 'No data'">{{legend[0]}}</span>
-      <span class="map-legend-text-first" [hidden]="legend[0] === 'No data'">{{legend[0]}}</span>
-      <span class="map-legend-text-middle" [hidden]="legend[0] === 'No data'">-</span>
-      <span class="map-legend-text-last" [hidden]="legend[0] === 'No data'">{{legend[1]}}</span>
-      <span class="map-legend-text-percent" [hidden]="legend[0] === 'No data'">%</span>
-      <br />
+      <span class="map-legend__key">
+        <span class="map-legend-textx" *ngIf="legend[0] === 'No data'">{{legend[0]}}</span>
+        <span class="map-legend-text-firstx" [hidden]="legend[0] === 'No data'">{{legend[0]}}</span>
+        <span class="map-legend-text-middlex" [hidden]="legend[0] === 'No data'">-</span>
+        <span class="map-legend-text-lasxt" [hidden]="legend[0] === 'No data'">{{legend[1]}}</span>
+        <span class="map-legend-text-percentx" [hidden]="legend[0] === 'No data'">%</span>
+      </span>
+      <br/>
     </div>
   </div>
 
   <!-- Buttons/tabs -->
   <div class="btn-group tabs-dg" role="group" aria-label="Map dataviz UI">
-    <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'well'}" (click)="onChangeMapLayerEvent('well')">{{optionsLabel['well']}}</button>
-    <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'asset'}" (click)="onChangeMapLayerEvent('asset')">{{optionsLabel['asset']}}</button>
-    <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'socio'}" (click)="onChangeMapLayerEvent('socio')">{{optionsLabel['socio']}}</button>
+    <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'well'}"
+            (click)="onChangeMapLayerEvent('well')">Risk to Well-Being <br> (% of GDP)
+    </button>
+    <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'asset'}"
+            (click)="onChangeMapLayerEvent('asset')">Risk to Assets <br> (% of GDP)
+    </button>
+    <button type="button" class="btn btn-tab" [ngClass]="{active: mapSlideUISelected === 'socio'}"
+            (click)="onChangeMapLayerEvent('socio')">Socioeconomic <br> Resilience
+    </button>
   </div>
   <!-- End Buttons/tabs -->
 
   <div class="callout-body" [ngClass]="{closed: !mapComponentOpen}">
     <div class="callout-body-trigger" (click)="toggleMapComponent()">&rsaquo;</div>
     <div class="callout-body-inner">
-      <h2>Unbreakable Resilience Indicator</h2>
+      <img class="callout-body-inner-icon" src="../../../assets/image/Country_IconOnly.png"/>
+      <h2 class="callout-body-title">Country Tool</h2>
       <div class="content">
-        <p>This tool is designed to examine how natural disasters affect people's well-being, and how policy and financial tools available to governments and the World Bank can mitigate these losses, helping more people to escape poverty.</p>
+        <p>What does resilience mean, and what investments or policies build it? Use the Country Tool to identify the
+          drivers of resilience in your country. Select your country to get started.</p>
       </div>
     </div>
   </div>
 
 </div>
-<div class="container">
-  <div class="row">
-    <div class="col-md-7 col-lg-8 col-xl-8">
-      <h2 class="mappage__header">Select Country</h2>
-      <p>Select a country by typing its name below.</p>
-      <div class="box-dropdown row">
-        <div class="form-group col-md-6" [class.has-danger]="searchFailed">
-          <input id="country-1Txt" type="text" class="form-control input-wd" [(ngModel)]="viewerModel.firstCountry" [ngbTypeahead]="searchCountryFn" #country1="ngModel" (ngModelChange)="onFirstCountryInputChangeEvent()" placeholder="Country A"/>
-          <span *ngIf="searching">searching...</span>
-          <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
-        </div>
-<!--        <div class="form-group col-md-6" [class.has-danger]="searchFailed">-->
-<!--          <input id="country-2Txt" type="text" class="form-control input-wd" [(ngModel)]="viewerModel.secondCountry" [ngbTypeahead]="searchCountryFn" #country2="ngModel" (ngModelChange)="onSecondCountryInputChangeEvent()" placeholder="Country B"/>-->
-<!--          <span *ngIf="searching">searching...</span>-->
-<!--          <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>-->
-<!--        </div>-->
-      </div>
-    </div>
+<app-callout *ngIf="viewerDisplay !== 'countrytool'" class="viewer__callout"
+             [title]="calloutTitle" [intro]="calloutBody" route="advancedtool"></app-callout>
 
-    <div class="col-md-5 col-lg-4 col-xl-3">
-      <h3 class="mappage__header mappage__header--sub">Understanding the Graphics</h3>
-      <div class="row graphs-mg">
-        <div class="col-sm-7">
-          <img src="assets/image/histogram-big.png" alt="" *ngIf="viewerDisplay == 'tech'">
-          <img src="assets/image/histogram-big-01.png" alt="" *ngIf="viewerDisplay != 'tech'">
-        </div>
-        <div class="col-sm-5 text-left">
-          <p class="country-p" *ngIf="viewerDisplay == 'tech'">Policy simulation</p>
-          <p class="country-p" *ngIf="viewerDisplay != 'tech'">&nbsp;</p>
-          <p class="value-p">Today</p>
-          <p class="global-p">Global Histogram</p>
-        </div>
+<div class="container">
+  <div class="country-select__container">
+    <h2 class="mappage__header">Select Country</h2>
+    <div class="box-dropdown row">
+      <div class="country-select__wrapper form-group col-md-6" [class.has-danger]="searchFailed">
+        <input id="country-1Txt" type="text" class="form-control input-wd country-select__input"
+               [(ngModel)]="viewerModel.firstCountry"
+               #country1="ngModel"
+               [ngbTypeahead]="searchCountryFn"
+               (focus)="onFocus($event)"
+               (click)="onFocus($event)"
+               (ngModelChange)="onFirstCountryInputChangeEvent()"
+               placeholder="Select a country"/>
+        <span class="country-select__label">Try another country!</span>
+
       </div>
     </div>
   </div>
 
-  <div class="row">
+  <div class="row" *ngIf="viewerDisplay === 'countrytool'">
     <div class="col-md-12">
-      <div class="card-02">
-        <h2 class="mappage__header">Output: Country Losses to Assets, Socio-Economic Resilience, and Well-Being
-          <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover1" triggers="mouseenter:mouseleave" popoverTitle="">
+      <div class="card-02x">
+        <h2 class="mappage__header viewer__header">
+          <span
+            class="viewer__header-text">Output: Country Losses to Assets, Socioeconomic Resilience, and Well-Being</span>
+          <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover1"
+                  triggers="mouseenter:mouseleave" popoverTitle="">
             <i class="mdi mdi-information-outline"></i>
           </button>
+
+          <app-switch class="viewer__switch" [value]="switchValue" [options]="switchOptions" [labels]="switchLabels"
+                      (onChange)="switchValue = $event"></app-switch>
+
           <ng-template #popover1>
 
-            <p ><b>Risk to assets (% of GDP)</b> is the value of assets at risk,
-               considering hazard exposure and asset vulnerability.</p>
+            <p><b>Risk to assets</b> (% of GDP) is the annual repair & replacement costs for assets affected by disasters.</p>
 
-            <p><b>Socioeconomic resilience:</b> The ability of the population to recover
-              from disasters (the ratio of asset losses to well-being losses).</p>
+            <p><b>Socioeconomic resilience</b> indicates the ability of the population to cope with and recover from disasters. It is defined as the ratio of asset losses to wellbeing losses.</p>
 
-            <p><b>Risk to well-being (% of GDP)</b> is the potential impact of asset
-              losses on consumption. </p>
+            <p><b>Risk to well-being</b> (% of GDP) measures the total impact of disasters on the population’s wellbeing, taking into account the lower ability of poorer people to cope with and recover from a shock.</p>
 
-            <p>For more details, please click on <b>Report</b> in the main navigation</p>
+            <p>For a more technical definition and details on methodology, please click on “Report” in the main navigation.</p>
 
           </ng-template>
           <!-- <span><i class="mdi mdi-checkbox-blank-circle box-icon-c"></i> Country</span>
-          <span><img src="assets/image/icon-map.png" alt=""> Global Average</span> --></h2>
-        <div class="">
-
-          <div class="row">
-            <div class="col-md-3 offset-md-3">
+          <span><img src="assets/image/icon-map.png" alt=""> Global Average</span> -->
+        </h2>
+        <div class="output__grid">
+          <div class="outputs__labels xrow">
+            <div class="outputs__label">
               {{ this.chartConf.outputs.risk_to_assets.descriptor }}
+              <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popoverRiskToAssets"
+                      triggers="mouseenter:mouseleave" popoverTitle="">
+                <i class="mdi mdi-information-outline"></i>
+              </button>
+              <ng-template #popoverRiskToAssets>
+                {{ this.chartConf.outputs.risk_to_assets.info }}
+              </ng-template>
             </div>
-            <div class="col-md-3">
+            <div class="outputs__label">
               {{ this.chartConf.outputs.resilience.descriptor }}
             </div>
-            <div class="col-md-3">
+            <div class="outputs__label">
+              {{ this.chartConf.outputs.risk.descriptor }}
+              <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popoverRisk"
+                      triggers="mouseenter:mouseleave" popoverTitle="">
+                <i class="mdi mdi-information-outline"></i>
+              </button>
+              <ng-template #popoverRisk>
+                {{ this.chartConf.outputs.risk.info }}
+              </ng-template>
+            </div>
+          </div>
+
+          <div id="outputs-1" class="outputs__row">
+            <div class="outputs__col output__country-label">
+              <div>
+                <div class="output__country">
+                  {{ selectedCountryName }}</div>
+                <div class="region-name output__region">
+                  <div>GDP Per Capita: {{ outputRegionData.gdp_pc }}</div>
+                  <div>Population: {{ outputRegionData.pop }}</div>
+                  <div class="source__text">(2015, Source: <a target="_blank" href="https://databank.worldbank.org/source/world-development-indicators">
+                    World Development Indicators</a>)
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="outputs__col">
+              <div id="output-risk_to_assets_1" class="chart-container"></div>
+              <app-gauge-display [view]="switchValue" [data]="gaugeData['risk_to_assets']" [id]="selectedCountry">
+              </app-gauge-display>
+            </div>
+            <div class="outputs__col">
+              <div id="output-resilience_1" class="chart-container"></div>
+              <app-gauge-display [view]="switchValue" [data]="gaugeData['resilience']" [id]="selectedCountry">
+              </app-gauge-display>
+            </div>
+            <div class="outputs__col">
+              <div id="output-risk_1" class="chart-container"></div>
+              <app-gauge-display [view]="switchValue" [data]="gaugeData['risk']" [id]="selectedCountry">
+              </app-gauge-display>
+            </div>
+          </div>
+
+          <div id='outputs-2' class="outputs__row">
+            <div class="outputs__col output__country-label">
+              <div class="output__country">{{viewerModel.secondCountry || 'Global Average'}}</div>
+              <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">
+                {{viewerGroupModel.secondCountryGroup}}</div>
+            </div>
+            <div class="outputs__col">
+              <div id="output-risk_to_assets_2" class="chart-container"></div>
+              <app-gauge-display [view]="switchValue" [data]="gaugeData['risk_to_assets']"></app-gauge-display>
+            </div>
+
+            <div class="outputs__col">
+              <div id="output-resilience_2" class="chart-container"></div>
+              <app-gauge-display [view]="switchValue" [data]="gaugeData['resilience']"></app-gauge-display>
+            </div>
+            <div class="outputs__col">
+              <div id="output-risk_2" class="chart-container"></div>
+              <app-gauge-display [view]="switchValue" [data]="gaugeData['risk']"></app-gauge-display>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="view-select xrow" id="viewIndCtn" *ngIf="viewerDisplay === 'countrytool'">
+    <h2 class="mappage__header">Select a View</h2>
+    <div class="xcol-md-6 view-select__heading">
+      <div class="view-select__heading-col">
+        <p>View the risk indicators of losses in assets and well-being and changes in socioeconomic resilience due to
+          natural disasters in an average year for your selected country.</p>
+        <!--<p *ngIf="viewerModel.firstCountry"><a routerLink="/policyprioritylist" [queryParams]="{country: viewerModel.firstCountry}">View specific policy impacts for {{viewerModel.firstCountry}}</a></p>-->
+      </div>
+      <div class="view-select__heading-col xbtn-group" role="group" aria-label="Set viewer view">
+        <div class="view-select__button-group">
+          <button type="button" class="view-select__button btn btn-primary wt-lb"
+                  [disabled]='_selectedCountryList.length === 0 && 0' [ngClass]="{active: !showPolicy}"
+                  (click)="onChangeViewerIndViewEvent()">VIEW INDICATORS
+          </button>
+
+          <button type="button" class="view-select__button btn btn-primary wt-lb"
+                  [disabled]='_selectedCountryList.length === 0 && 0' [ngClass]="{active: showPolicy}"
+                  (click)="onChangeViewerIndViewEvent(true)">POLICY PRIORITY
+          </button>
+          <!--<button type="button" class="btn btn-primary wt-lb" [disabled]='_selectedCountryList.length === 0 && 0' [ngClass]="{active: viewerDisplay === 'tech'}" (click)="onChangeViewerIndViewEvent('tech')">ACCESS FULL MODEL</button>
+          -->
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="viewer__section viewer__section--tech" *ngIf="viewerDisplay === 'countrytool' && !showPolicy">
+    <h2 class="mappage__header viewer__header">
+      <span class="viewer__header-text">Country Resilience Factors</span>
+      <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover2"
+              triggers="mouseenter:mouseleave" popoverTitle="">
+        <i class="mdi mdi-information-outline"></i>
+      </button>
+      <ng-template #popover2>
+        <p class="popover-title-viewer">What are we seeing here?</p>
+        <p>
+          These are the main drivers of asset and well-being losses to natural disasters.
+          Poverty reduction and disaster risk management are closely linked, and there are many
+          tools governments and Bank teams can use to pursue both simultaneously.
+        </p>
+      </ng-template>
+
+      <app-switch class="viewer__switch" [value]="switchValue" [options]="switchOptions" [labels]="switchLabels"
+                  (onChange)="switchValue = $event"></app-switch>
+
+      <div class="viewer__download-buttons box-download">
+        <button type="button" class="btn btn-primary text-download" (click)="onResetTechDataEvent()"
+                *ngIf="viewerDisplay === 'tech'">RESET
+        </button>
+        <a class="btn btn-primary text-download" href="/assets/data/all_countries_data.csv">
+          <img class="img-download" src="assets/image/ic-download-green.png" alt="">CSV
+        </a>
+        <button type="button" class="btn btn-primary text-download" (click)="print.screenshot()"><img
+          class="img-download" src="assets/image/ic-download-green.png" alt="">PDF
+        </button>
+      </div>
+    </h2>
+
+    <app-indicator-tabs [viewerModel]="viewerModel" [view]="switchValue"
+                        [viewerGroupModel]="viewerGroupModel" [countryData]="countryData"
+                        [inputLabels]="inputLabels" [selectedCountry]="selectedCountry"
+                        [firstCountryOverride]="selectedCountryName">
+    </app-indicator-tabs>
+  </div>
+
+
+  <div class="viewer__section viewer__section--policy" *ngIf="viewerDisplay === 'countrytool' && showPolicy">
+    <h2 class="mappage__header viewer__header">
+      How Country Policies Can Reduce Asset And Well-Being Losses
+      <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover3"
+              triggers="mouseenter:mouseleave" popoverTitle="">
+        <i class="mdi mdi-information-outline"></i>
+      </button>
+      <ng-template #popover3>
+        <p>
+          The figure below shows how various policies can reduce asset and well-being losses. Negative values indicate
+          cases where the policy increases the losses. Avoided losses can be presented in absolute terms (US$ million)
+          or relative terms (in percent of today’s losses). The policies can be ranked according to their effect on
+          asset or well-being losses.
+        </p>
+      </ng-template>
+      <!--<app-switch class="viewer__switch" [value]="switchPolicyValue" [options]="switchPolicyOptions" [labels]="switchPolicyLabels" (onChange)="switchPolicyValue = $event"></app-switch>-->
+
+      <div class="viewer__download-buttons box-download">
+        <button type="button" class="btn btn-primary text-download" (click)="print.screenshot()"><img
+          class="img-download" src="assets/image/ic-download-green.png" alt="">PDF
+        </button>
+      </div>
+    </h2>
+
+    <div class="viewer__policy-wrapper">
+      <div class="viewer__policy-list">
+        <app-policy-list-chart [countryName]="selectedCountryName" type="absolute">
+        </app-policy-list-chart>
+      </div>
+      <div class="viewer__policy-list">
+        <app-policy-list-chart [countryName]="selectedCountryName" type="relative">
+        </app-policy-list-chart>
+      </div>
+    </div>
+  </div>
+
+  <div class="viewer__section viewer__section--policy" *ngIf="viewerDisplay === 'advancedtool'">
+    <h2 class="mappage__header viewer__header">
+      Adjust the drivers of risks and resilience to evaluate a policy scenario:
+      <div class="viewer__download-buttons box-download">
+        <button type="button" class="btn btn-primary text-download" (click)="_resetSliders()">
+          RESET
+        </button>
+        <button type="button" class="btn btn-primary text-download" (click)="print.screenshot()"><img
+          class="img-download" src="assets/image/ic-download-green.png" alt="">PDF
+        </button>
+      </div>
+    </h2>
+
+
+    <div class="viewer__slider-row">
+      <div>
+        <h3 class="viewer__slider-sub-heading">Country Resilience Factors </h3>
+        <app-slider-tabs [inputLabels]="inputLabels"
+                         [sliderValues]="sliderValues1"
+                         (sliderChange)="onSliderChangeEvent1($event)"
+                         (sliderInputChange)="onSliderInputEventAlt($event)"></app-slider-tabs>
+      </div>
+
+      <!--      <div class="viewer__slider-buttons">-->
+      <!--        <h3 class="viewer__slider-sub-heading">Hazards Selection</h3>-->
+
+      <!--        <div class="hover-a hazard-buttons">-->
+      <!--          <a (click)="onSwitchExposure1()" placement="top" ngbPopover="Coastal and Riverine Flooding"-->
+      <!--             triggers="mouseenter:mouseleave" popoverTitle="" class="hazard-buttons__button">-->
+      <!--            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="!hazards.hazard1"-->
+      <!--                 src="assets/image/flood-yellow.png" alt=""/>-->
+      <!--            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="hazards.hazard1"-->
+      <!--                 src="assets/image/flood.png" alt=""/>-->
+      <!--          </a>-->
+      <!--          <a (click)="onSwitchExposure2()" placement="top" ngbPopover="Earthquakes" triggers="mouseenter:mouseleave"-->
+      <!--             popoverTitle="" class="hazard-buttons__button">-->
+      <!--            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="!hazards.hazard2"-->
+      <!--                 src="assets/image/earthquake-yellow.png" alt=""/>-->
+      <!--            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="hazards.hazard2"-->
+      <!--                 src="assets/image/earthquake.png" alt=""/>-->
+      <!--          </a>-->
+      <!--          <a (click)="onSwitchExposure3()" placement="top" ngbPopover="Tsunamis" triggers="mouseenter:mouseleave"-->
+      <!--             popoverTitle="" class="hazard-buttons__button">-->
+      <!--            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="!hazards.hazard3"-->
+      <!--                 src="assets/image/tsunami-yellow.png" alt=""/>-->
+      <!--            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="hazards.hazard3"-->
+      <!--                 src="assets/image/tsunami.png" alt=""/>-->
+      <!--          </a>-->
+      <!--          <a (click)="onSwitchExposure4()" placement="top" ngbPopover="Windstorms" triggers="mouseenter:mouseleave"-->
+      <!--             popoverTitle="" class="hazard-buttons__button">-->
+      <!--            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="!hazards.hazard4"-->
+      <!--                 src="assets/image/wind-yellow.png" alt=""/>-->
+      <!--            <img class="icon-hazard icon-hazard-selecte hazard-buttons__img" [hidden]="hazards.hazard4"-->
+      <!--                 src="assets/image/wind.png" alt=""/>-->
+      <!--          </a>-->
+      <!--        </div>-->
+      <!--      </div>-->
+    </div>
+  </div>
+
+  <div class="row" *ngIf="viewerDisplay === 'advancedtool'">
+    <div class="col-md-12">
+      <div class="card-02">
+        <h2 class="mappage__header viewer__header">New risk levels and socioeconomic resilience:
+          <app-switch class="viewer__switch" [value]="switchValue" [options]="switchOptions" [labels]="switchLabels"
+                      (onChange)="switchValue = $event"></app-switch>
+        </h2>
+
+        <div class="output__grid output__grid--2col">
+          <div class="outputs__labels">
+            <div class="outputs__label">
+              {{ this.chartConf.outputs.risk_to_assets.descriptor }}
+            </div>
+            <div class="outputs__label">
+              {{ this.chartConf.outputs.resilience.descriptor }}
+            </div>
+            <div class="outputs__label">
               {{ this.chartConf.outputs.risk.descriptor }}
             </div>
           </div>
-          <div id='outputs-1' class="row">
-              <div class="col-md-3">
-                <div>{{viewerModel.firstCountry || 'Global Average'}}</div>
-                <div class="region-name" *ngIf="viewerGroupModel.firstCountryGroup != ''">{{viewerGroupModel.firstCountryGroup}}</div>
+
+          <div id="outputs-1" class="outputs__row">
+            <div class="outputs__col output__country-label">
+              <div>
+                <div class="output__country">
+                  {{ selectedCountryName }}</div>
+                <div class="region-name output__region">
+                  <div>GDP Per Capita: {{ outputRegionData.gdp_pc }}</div>
+                  <div>Population: {{ outputRegionData.pop }}</div>
+                  <div class="source__text">(2015, Source: <a target="_blank" href="https://databank.worldbank.org/source/world-development-indicators">
+                    World Development Indicators</a>)
+                  </div>
+                </div>
               </div>
-            <div class="col-md-3">
+            </div>
+            <div class="outputs__col">
               <div id="output-risk_to_assets_1" class="chart-container"></div>
+              <app-gauge-display [view]="switchValue" [data]="gaugeData['risk_to_assets']" [id]="selectedCountry"
+                                 [changeRow]="this.gaugeChangeData['risk_to_assets']" [hasChange]="true">
+              </app-gauge-display>
             </div>
-            <div class="col-md-3">
+            <div class="outputs__col">
               <div id="output-resilience_1" class="chart-container"></div>
+              <app-gauge-display [view]="switchValue" [data]="gaugeData['resilience']" [id]="selectedCountry"
+                                 [changeRow]="this.gaugeChangeData['resilience']" [hasChange]="true">
+              </app-gauge-display>
             </div>
-            <div class="col-md-3">
+            <div class="outputs__col">
               <div id="output-risk_1" class="chart-container"></div>
-            </div>
-          </div>
-          <div id='outputs-2' class="row">
-            <div class="col-md-3">
-              <div>{{viewerModel.secondCountry || 'Global Average'}}</div>
-              <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
-            </div>
-            <div class="col-md-3">
-              <div id="output-risk_to_assets_2" class="chart-container"></div>
-            </div>
-
-            <div class="col-md-3">
-              <div id="output-resilience_2" class="chart-container"></div>
-            </div>
-            <div class="col-md-3">
-              <div id="output-risk_2" class="chart-container"></div>
+              <app-gauge-display [view]="switchValue" [data]="gaugeData['risk']" [id]="selectedCountry"
+                                 [changeRow]="this.gaugeChangeData['risk']" [hasChange]="true">
+              </app-gauge-display>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-
-
-
-  <div class="row" id="viewIndCtn">
-    <div class="col-md-6">
-      <h2 class="mappage__header">Select a View</h2>
-      <p>View the risk indicators of losses in assets and well-being and changes in socio-economic resilience due to natural disasters in an average year for your selected country.</p>
-      <p *ngIf="viewerModel.firstCountry"><a routerLink="/policyprioritylist" [queryParams]="{country: viewerModel.firstCountry}">View specific policy impacts for {{viewerModel.firstCountry}}</a></p>
-      <div class="btn-group wt-dv" role="group" aria-label="Set viewer view">
-        <button type="button" class="btn btn-primary wt-lb" [disabled]='_selectedCountryList.length === 0' [ngClass]="{active: viewerDisplay === 'viewer'}" (click)="onChangeViewerIndViewEvent('viewer')">VIEW INDICATORS</button>
-        <span class="wt-sp">&nbsp;</span>
-        <button type="button" class="btn btn-primary wt-lb" [disabled]='_selectedCountryList.length === 0' [ngClass]="{active: viewerDisplay === 'tech'}" (click)="onChangeViewerIndViewEvent('tech')">ACCESS FULL MODEL</button>
-      </div>
-    </div>
-
-
-    <div class="col-md-4 d-none">
-      <div class="cards-bg">
-        <p class="text-center mar-p">
-          <!-- Compare each Countries' Asset and Well-Being Losses and Socio-Economic Capacity across the Region or the Entire World. -->
-          Compare each country’s Asset and Well-Being Losses and Socio-Economic Resilience across the region or the entire world.
-        </p>
-        <div class="row ">
-          <div class="col-md-5 text-right">
-            <img src="assets/image/ic-globe.png" alt="">
-          </div>
-          <div class="col-md-7">
-            <!-- <div ngbDropdown class="option-global">
-               <button [disabled]="_selectedCountryList.length !== MAX_COUNTRIES_SELECTED" class="btn btn-outline-primary btn-sm dropdown-global" id="dropdownBasic1" ngbDropdownToggle>
-                 <span *ngIf="global">GLOBAL</span>
-                 <span *ngIf="!global">Regional</span>
-               </button>
-               <div class="dropdown-menu box-item" aria-labelledby="dropdownBasic1">
-                  <button class="dropdown-item global-btn-ht" (click)="onSwitchGlobal()">
-                    <span *ngIf="!global">Global</span>
-                    <span *ngIf="global">Regional</span>
-                  </button>
-               </div>
-            </div> -->
-            <!-- <div class="switch-btn">
-                <label class="toggle-switch nolabel">
-                    <input type="checkbox" style="width: 100%;" [checked]="!global" (click)="onSwitchGlobal()"/>
-                    <span>
-                    <span class="pdg-01">Global</span>
-                    <span class="pdg-02">Regional</span>
-                    </span>
-                    <a></a>
-                </label>
-            </div> -->
-            <div class="switch" (click)="onSwitchGlobal()">
-              <input type="radio" class="switch-input" name="view" [checked]="global">
-              <label for="week" class="switch-label switch-label-off">Global</label>
-              <input type="radio" class="switch-input" name="view" [checked]="!global">
-              <label for="month" class="switch-label switch-label-on">Regional</label>
-              <span class="switch-selection"></span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    <div class="col-md-6">
-      <h2 class="mappage__header">Hazards Selection
-        <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Assessment can be performed for floods, earthquakes, tsunamis, windstorm, or any combination of them." triggers="mouseenter:mouseleave" popoverTitle="">
-          <i class="mdi mdi-information-outline"></i>
-        </button>
-      </h2>
-      <p [hidden]="!viewerDisplay || viewerDisplay !== 'tech'">Select one or multiple hazards.</p>
-      <div class="">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="hover-a hazard-buttons" >
-              <a (click)="onSwitchExposure1()" placement="top" ngbPopover="Coastal and Riverine Flooding" triggers="mouseenter:mouseleave" popoverTitle="">
-                <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard1" src="assets/image/flood-yellow.png" alt=""/>
-                <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard1" src="assets/image/flood.png" alt="" />
-              </a>
-              <a (click)="onSwitchExposure2()" placement="top" ngbPopover="Earthquakes" triggers="mouseenter:mouseleave" popoverTitle="">
-                <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard2" src="assets/image/earthquake-yellow.png" alt="" />
-                <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard2" src="assets/image/earthquake.png" alt="" />
-              </a>
-              <a (click)="onSwitchExposure3()" placement="top" ngbPopover="Tsunamis" triggers="mouseenter:mouseleave" popoverTitle="">
-                <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard3" src="assets/image/tsunami-yellow.png" alt="" />
-                <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard3" src="assets/image/tsunami.png" alt="" />
-              </a>
-              <a (click)="onSwitchExposure4()" placement="top" ngbPopover="Windstorms" triggers="mouseenter:mouseleave" popoverTitle="">
-                <img class="icon-hazard icon-hazard-selecte" [hidden]="!hazards.hazard4" src="assets/image/wind-yellow.png" alt="" />
-                <img class="icon-hazard icon-hazard-selecte" [hidden]="hazards.hazard4" src="assets/image/wind.png" alt="" />
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="row" [hidden]="!viewerDisplay">
-    <div class="col-md-12">
-      <div class="">
-        <h2 class="mappage__header">Country Resilience Factors
-          <button type="button" class="btn btn-icon-info" placement="right" [ngbPopover]="popover2" triggers="mouseenter:mouseleave" popoverTitle="">
-            <i class="mdi mdi-information-outline"></i>
-          </button>
-          <ng-template #popover2>
-            <p class="popover-title-viewer">What are we seeing here?</p>
-            <p>
-              These are the main drivers of asset and well-being losses to natural disasters.
-              Poverty reduction and disaster risk management are closely linked, and there are many
-              tools governments and Bank teams can use to pursue both simultaneously.</p>
-          </ng-template>
-
-          <div class="box-download">
-            <button type="button" class="btn btn-primary text-download" (click)="onResetTechDataEvent()" *ngIf="viewerDisplay == 'tech'">RESET</button>
-            <button type="button" class="btn btn-primary text-download" (click)="onDownloadCSVViewerReportEvent()"><img class="img-download" src="assets/image/ic-download-green.png" alt="">CSV</button>
-            <button type="button" class="btn btn-primary text-download" (click)="onDownloadPDFViewerReportEvent()"><img class="img-download" src="assets/image/ic-download-green.png" alt="">PDF</button>
-          </div></h2>
-        <div class="">
-          <div class="">
-            <!-- <ngb-tabset type="pills">
-               <ngb-tab title="Viewer">
-                  <ng-template ngbTabContent> -->
-            <div [hidden]="!viewerDisplay || viewerDisplay === 'tech'">
-              <div class="row">
-                <div class="col-md-12 box-tab">
-                  <!--<div class="row">-->
-                    <!--<div class="col-md-4"></div>-->
-                    <!--<div class="col-md-4"><b class="country-text">{{viewerModel.firstCountry || 'Global Average'}}</b></div>-->
-                    <!--<div class="col-md-4"><b class="country-text">{{viewerModel.secondCountry || 'Global Average'}}</b></div>-->
-                  <!--</div>-->
-
-
-                    <input id="tab-one" type="radio" name="tabs" class="tab-input" checked="checked">
-                    <label for="tab-one" class="tab-label">Social Protection</label>
-                    <div class="tab-content tab-content__flip-table-axis">
-                      <div class="row align-items-start">
-                        <div class="label-text">
-                          <div class="input_charts-label-text">&nbsp;</div>
-                          <table >
-                            <tbody>
-                            <tr *ngFor="let inputType of inputTypes.inputSoc">
-                              <td class="td-label-txt">{{inputLabels[inputType] ? inputLabels[inputType].descriptor : inputType}}</td>
-                            </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                        <div class="input-charts__wrapper">
-                          <div class="input_charts-label-text">{{viewerModel.firstCountry}}
-                            <div class="region-name" *ngIf="viewerGroupModel.firstCountryGroup != ''">{{viewerGroupModel.firstCountryGroup}}</div>
-                          </div>
-                          <div id="inputSoc-1" class="input__fip-table-axis inputcharts--1"></div>
-                        </div>
-                        <div class="input-charts__wrapper">
-                          <div class="input_charts-label-text">{{viewerModel.secondCountry || 'Global Average'}}
-                            <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
-                          </div>
-                          <div id="inputSoc-2" class="input__fip-table-axis inputcharts--2"></div>
-                        </div>
-                      </div>
-                    </div>
-                    <input id="tab-two" type="radio" name="tabs" class="tab-input">
-                    <label for="tab-two">Economic
-                      <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                       <i class="mdi mdi-information-outline"></i>
-                      </button> -->
-                    </label>
-                    <div class="tab-content tab-content__flip-table-axis">
-                      <div class="row">
-                        <div class="label-text">
-                          <div class="input_charts-label-text">&nbsp;</div>
-                          <table>
-                            <tbody>
-                            <tr *ngFor="let inputType of inputTypes.inputEco">
-                              <td class="td-label-txt">{{inputLabels[inputType] ? inputLabels[inputType].descriptor : inputType}}</td>
-                            </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                        <div class="input-charts__wrapper">
-                          <div class="input_charts-label-text">{{viewerModel.firstCountry}}
-                            <div class="region-name" *ngIf="viewerGroupModel.firstCountryGroup != ''">{{viewerGroupModel.firstCountryGroup}}</div>
-                          </div>
-                          <div id="inputEco-1" class="input__fip-table-axis inputcharts--1"></div>
-                        </div>
-                        <div class="input-charts__wrapper">
-                          <div class="input_charts-label-text">{{viewerModel.secondCountry || 'Global Average'}}
-                            <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
-                          </div>
-                          <div id="inputEco-2" class="input__fip-table-axis inputcharts--2"></div>
-                        </div>
-                      </div>
-                    </div>
-                    <input id="tab-three" type="radio" name="tabs" class="tab-input">
-                    <label for="tab-three">Vulnerability
-                      <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                       <i class="mdi mdi-information-outline"></i>
-                      </button> -->
-                    </label>
-                    <div class="tab-content tab-content__flip-table-axis">
-                      <div class="row">
-                        <div class="label-text">
-                          <div class="input_charts-label-text">&nbsp;</div>
-                          <table>
-                            <tbody>
-                            <tr *ngFor="let inputType of inputTypes.inputVul">
-                              <td class="td-label-txt">{{inputLabels[inputType] ? inputLabels[inputType].descriptor : inputType}}</td>
-                            </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                        <div class="input-charts__wrapper">
-                          <div class="input_charts-label-text">{{viewerModel.firstCountry}}
-                            <div class="region-name" *ngIf="viewerGroupModel.firstCountryGroup != ''">{{viewerGroupModel.firstCountryGroup}}</div>
-                          </div>
-                          <div id="inputVul-1" class="input__fip-table-axis inputcharts--1"></div>
-                        </div>
-                        <div class="input-charts__wrapper">
-                          <div class="input_charts-label-text">{{viewerModel.secondCountry || 'Global Average'}}
-                            <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
-                          </div>
-                          <div id="inputVul-2" class="input__fip-table-axis inputcharts--2"></div>
-                        </div>
-                      </div>
-                    </div>
-                    <input id="tab-four" type="radio" name="tabs" class="tab-input">
-                    <label for="tab-four">Exposure
-                      <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                        <i class="mdi mdi-information-outline"></i>
-                      </button> -->
-                    </label>
-                    <div class="tab-content tab-content__flip-table-axis">
-                      <div class="row">
-                        <div class="label-text">
-                          <div class="input_charts-label-text">&nbsp;</div>
-                          <table>
-                            <tbody>
-                            <tr *ngFor="let inputType of inputTypes.inputExp">
-                              <td class="td-label-txt">{{inputLabels[inputType] ? inputLabels[inputType].descriptor : inputType}}</td>
-                            </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                        <div class="input-charts__wrapper">
-                          <div class="input_charts-label-text">{{viewerModel.firstCountry}}
-                            <div class="region-name" *ngIf="viewerGroupModel.firstCountryGroup != ''">{{viewerGroupModel.firstCountryGroup}}</div>
-                          </div>
-                          <div id="inputExp-1" class="input__fip-table-axis inputcharts--1"></div>
-                        </div>
-                        <div class="input-charts__wrapper">
-                          <div class="input_charts-label-text">{{viewerModel.secondCountry || 'Global Average'}}
-                            <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
-                          </div>
-                          <div id="inputExp-2" class="input__fip-table-axis inputcharts--2"></div>
-                        </div>
-                      </div>
-                    </div>
-                </div>
-              </div>
-            </div>
-
-            <div [hidden]="!viewerDisplay || viewerDisplay === 'viewer'">
-              <!--<div class="row">-->
-                <!--<div class="col-md-12">-->
-                  <!--<div class="row pad-botTop10 justify-content-end">-->
-                    <!--<div class="col-md-4">-->
-                      <!--<span class="text-bold country-text-input"><b>{{viewerModel.firstCountry}}</b></span>-->
-                    <!--</div>-->
-                    <!--<div class="col-md-4">-->
-                      <!--<span class="text-bold country-text-input"><b>{{viewerModel.secondCountry}}</b></span>-->
-                    <!--</div>-->
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-              <div class="row border-content"></div>
-              <div class="row">
-                <div class="col-md-12 box-tab">
-                    <input id="tab-one_tech" type="radio" name="input-tabs" class="tab-input" checked="checked">
-                    <label for="tab-one_tech">Social Protection
-                      <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                      <i class="mdi mdi-information-outline"></i>
-                      </button> -->
-                    </label>
-                    <div class="tab-content">
-                      <div class="tab-content__flip-row-axis">
-                        <div class="row input-charts__flip-axis">
-                          <div class="box-tab-text">&nbsp;</div>
-                          <div class="input_charts-label-text" style="min-height: 80px;">{{viewerModel.firstCountry}}
-                            <div class="region-name" *ngIf="viewerGroupModel.firstCountryGroup != ''">{{viewerGroupModel.firstCountryGroup}}</div>
-                          </div>
-                          <div class="input_charts-label-text" style="min-height: 80px;">{{viewerModel.secondCountry}}
-                            <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
-                          </div>
-                        </div>
-                        <div class="row input-charts__flip-axis" *ngFor="let inputType of inputTypes.inputSoc">
-                          <div class="box-tab-text">
-                            {{inputLabels[inputType] ? inputLabels[inputType].descriptor : inputType}}
-                          </div>
-                          <div class="" style="position: relative; min-height: 80px;">
-                            <md-slider
-                              [min]="sliderValues1[inputType + '_min']"
-                              [max]="sliderValues1[inputType + '_max']"
-                              [step]="sliderValues1[inputType + '_step']"
-                              [value]="sliderValues1[inputType + '_value']"
-                              [(ngModel)]="sliderValues1[inputType + '_value']"
-                              (change)="onSliderChangeEvent1(inputType)"
-                              (input)="onSliderInputEvent1($event, inputType)"
-                            >
-                            </md-slider>
-                            <span class="text-right slider-text">
-                                              {{sliderValues1[inputType + '_difference_value']}} <br /> <span class="slider-text-base">Base: {{sliderValues1[inputType + '_baseline_value']}}</span>
-                                              <br /> <span class="slider-text-base">New Value: {{sliderValues1[inputType + '_display_value']}}</span>
-                                            </span>
-                          </div>
-                          <!--<div class="" style="position: relative; min-height: 80px;" [hidden]="viewerModel.secondCountry !== ''">
-                            <md-slider
-                              [min]="sliderValues2[inputType + '_min']"
-                              [max]="sliderValues2[inputType + '_max']"
-                              [step]="sliderValues2[inputType + '_step']"
-                              [value]="sliderValues2[inputType + '_value']"
-                              [(ngModel)]="sliderValues2[inputType + '_value']"
-                              (change)="onSliderChangeEvent2(inputType)"
-                              (input)="onSliderInputEvent2($event, inputType)"
-                            >
-                            </md-slider>
-                            <span class="text-right slider-text">
-                                              {{sliderValues2[inputType + '_difference_value']}} <br /> <span class="slider-text-base">Base: {{sliderValues2[inputType + '_baseline_value']}}</span>
-                                              <br /> <span class="slider-text-base">New Value: {{sliderValues2[inputType + '_display_value']}}</span>
-                                            </span>
-                          </div>-->
-                        </div>
-
-                      </div>
-                    </div>
-                    <input id="tab-two_tech" type="radio" name="input-tabs" class="tab-input">
-                    <label for="tab-two_tech">Economic
-                      <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                      <i class="mdi mdi-information-outline"></i>
-                      </button> -->
-                    </label>
-                    <div class="tab-content">
-                      <div class="tab-content__flip-row-axis">
-                        <div class="row input-charts__flip-axis">
-                          <div class="box-tab-text">&nbsp;</div>
-                          <div class="input_charts-label-text" style="min-height: 80px;">{{viewerModel.firstCountry}}
-                            <div class="region-name" *ngIf="viewerGroupModel.firstCountryGroup != ''">{{viewerGroupModel.firstCountryGroup}}</div>
-                          </div>
-                          <div class="input_charts-label-text" style="min-height: 80px;">{{viewerModel.secondCountry}}
-                            <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
-                          </div>
-                        </div>
-                        <div class="row input-charts__flip-axis" *ngFor="let inputType of inputTypes.inputEco">
-                          <div class="box-tab-text">
-                            {{inputLabels[inputType] ? inputLabels[inputType].descriptor : inputType}}
-                          </div>
-                          <div class="" style="position: relative; min-height: 80px;">
-                            <md-slider
-                              [min]="sliderValues1[inputType + '_min']"
-                              [max]="sliderValues1[inputType + '_max']"
-                              [step]="sliderValues1[inputType + '_step']"
-                              [value]="sliderValues1[inputType + '_value']"
-                              [(ngModel)]="sliderValues1[inputType + '_value']"
-                              (change)="onSliderChangeEvent1(inputType)"
-                              (input)="onSliderInputEvent1($event, inputType)"
-                            >
-                            </md-slider>
-                            <span class="text-right slider-text">
-                                              {{sliderValues1[inputType + '_difference_value']}} <br /> <span class="slider-text-base">Base: {{sliderValues1[inputType + '_baseline_value']}}</span>
-                                              <br /> <span class="slider-text-base">New Value: {{sliderValues1[inputType + '_display_value']}}</span>
-                                            </span>
-                          </div>
-                          <!--<div class="" style="position: relative; min-height: 80px;" [hidden]="viewerModel.secondCountry === ''">
-                            <md-slider
-                              [min]="sliderValues2[inputType + '_min']"
-                              [max]="sliderValues2[inputType + '_max']"
-                              [step]="sliderValues2[inputType + '_step']"
-                              [value]="sliderValues2[inputType + '_value']"
-                              [(ngModel)]="sliderValues2[inputType + '_value']"
-                              (change)="onSliderChangeEvent2(inputType)"
-                              (input)="onSliderInputEvent2($event, inputType)"
-                            >
-                            </md-slider>
-                            <span class="text-right slider-text">
-                                              {{sliderValues2[inputType + '_difference_value']}} <br /> <span class="slider-text-base">Base: {{sliderValues2[inputType + '_baseline_value']}}</span>
-                                              <br /> <span class="slider-text-base">New Value: {{sliderValues2[inputType + '_display_value']}}</span>
-                                            </span>
-                          </div>-->
-                        </div>
-
-                      </div>
-                    </div>
-                    <input id="tab-three_tech" type="radio" name="input-tabs" class="tab-input">
-                    <label for="tab-three_tech">Vulnerability
-                      <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                      <i class="mdi mdi-information-outline"></i>
-                      </button> -->
-                    </label>
-                    <div class="tab-content">
-                      <div class="tab-content__flip-row-axis">
-                        <div class="row input-charts__flip-axis">
-                          <div class="box-tab-text">&nbsp;</div>
-                          <div class="input_charts-label-text" style="min-height: 80px;">{{viewerModel.firstCountry}}
-                            <div class="region-name" *ngIf="viewerGroupModel.firstCountryGroup != ''">{{viewerGroupModel.firstCountryGroup}}</div>
-                          </div>
-                          <div class="input_charts-label-text" style="min-height: 80px;">{{viewerModel.secondCountry}}
-                            <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
-                          </div>
-                        </div>
-                        <div class="row input-charts__flip-axis" *ngFor="let inputType of inputTypes.inputVul">
-                          <div class="box-tab-text">
-                            {{inputLabels[inputType] ? inputLabels[inputType].descriptor : inputType}}
-                          </div>
-                          <div class="" style="position: relative; min-height: 80px;">
-                            <md-slider
-                              [min]="sliderValues1[inputType + '_min']"
-                              [max]="sliderValues1[inputType + '_max']"
-                              [step]="sliderValues1[inputType + '_step']"
-                              [value]="sliderValues1[inputType + '_value']"
-                              [(ngModel)]="sliderValues1[inputType + '_value']"
-                              (change)="onSliderChangeEvent1(inputType)"
-                              (input)="onSliderInputEvent1($event, inputType)"
-                            >
-                            </md-slider>
-                            <span class="text-right slider-text">
-                                              {{sliderValues1[inputType + '_difference_value']}} <br /> <span class="slider-text-base">Base: {{sliderValues1[inputType + '_baseline_value']}}</span>
-                                              <br /> <span class="slider-text-base">New Value: {{sliderValues1[inputType + '_display_value']}}</span>
-                                            </span>
-                          </div>
-                          <!--<div class="" style="position: relative; min-height: 80px;" [hidden]="viewerModel.secondCountry === ''">
-                            <md-slider
-                              [min]="sliderValues2[inputType + '_min']"
-                              [max]="sliderValues2[inputType + '_max']"
-                              [step]="sliderValues2[inputType + '_step']"
-                              [value]="sliderValues2[inputType + '_value']"
-                              [(ngModel)]="sliderValues2[inputType + '_value']"
-                              (change)="onSliderChangeEvent2(inputType)"
-                              (input)="onSliderInputEvent2($event, inputType)"
-                            >
-                            </md-slider>
-                            <span class="text-right slider-text">
-                                              {{sliderValues2[inputType + '_difference_value']}} <br /> <span class="slider-text-base">Base: {{sliderValues2[inputType + '_baseline_value']}}</span>
-                                              <br /> <span class="slider-text-base">New Value: {{sliderValues2[inputType + '_display_value']}}</span>
-                                            </span>
-                          </div>-->
-                        </div>
-
-                      </div>
-                    </div>
-                    <input id="tab-four_tech" type="radio" name="input-tabs" class="tab-input">
-                    <label for="tab-four_tech">Exposure
-                      <!-- <button type="button" class="btn btn-icon-info" placement="right" ngbPopover="Users of ThinkHazard! can quickly and robustly assess the level of river flood, earthquake, drought, cyclone, coastal flood, tsunami, volcano, and landslide hazard." triggers="mouseenter:mouseleave" popoverTitle="">
-                      <i class="mdi mdi-information-outline"></i>
-                      </button> -->
-                    </label>
-                    <div class="tab-content">
-                      <div class="tab-content__flip-row-axis">
-                        <div class="row input-charts__flip-axis">
-                          <div class="box-tab-text">&nbsp;</div>
-                          <div class="input_charts-label-text" style="min-height: 80px;">{{viewerModel.firstCountry}}
-                            <div class="region-name" *ngIf="viewerGroupModel.firstCountryGroup != ''">{{viewerGroupModel.firstCountryGroup}}</div>
-                          </div>
-                          <div class="input_charts-label-text" style="min-height: 80px;">{{viewerModel.secondCountry }}
-                            <div class="region-name" *ngIf="viewerGroupModel.secondCountryGroup != ''">{{viewerGroupModel.secondCountryGroup}}</div>
-                          </div>
-                        </div>
-                        <div class="row input-charts__flip-axis" *ngFor="let inputType of inputTypes.inputExp">
-                          <div class="box-tab-text" [hidden]="!hazardDisplay[inputType]">
-                            {{inputLabels[inputType] ? inputLabels[inputType].descriptor : inputType}}
-                          </div>
-                          <div class="" style="position: relative; min-height: 80px;" [hidden]="!hazardDisplay[inputType]">
-                            <md-slider
-                              [min]="sliderValues1[inputType + '_min']"
-                              [max]="sliderValues1[inputType + '_max']"
-                              [step]="sliderValues1[inputType + '_step']"
-                              [value]="sliderValues1[inputType + '_value']"
-                              [(ngModel)]="sliderValues1[inputType + '_value']"
-                              (change)="onSliderChangeEvent1(inputType)"
-                              (input)="onSliderInputEvent1($event, inputType)"
-                            >
-                            </md-slider>
-                            <span class="text-right slider-text">
-                                              {{sliderValues1[inputType + '_difference_value']}} <br /> <span class="slider-text-base">Base: {{sliderValues1[inputType + '_baseline_value']}}</span>
-                                              <br /> <span class="slider-text-base">New Value: {{sliderValues1[inputType + '_display_value']}}</span>
-                                            </span>
-                          </div>
-                          <!--<div class="" style="position: relative; min-height: 80px;" [hidden]="!hazardDisplay[inputType] && viewerModel.secondCountry === ''">
-                            <md-slider
-                              [min]="sliderValues2[inputType + '_min']"
-                              [max]="sliderValues2[inputType + '_max']"
-                              [step]="sliderValues2[inputType + '_step']"
-                              [value]="sliderValues2[inputType + '_value']"
-                              [(ngModel)]="sliderValues2[inputType + '_value']"
-                              (change)="onSliderChangeEvent2(inputType)"
-                              (input)="onSliderInputEvent2($event, inputType)"
-                            >
-                            </md-slider>
-                            <span class="text-right slider-text">
-                                              {{sliderValues2[inputType + '_difference_value']}} <br /> <span class="slider-text-base">Base: {{sliderValues2[inputType + '_baseline_value']}}</span>
-                                              <br /> <span class="slider-text-base">New Value: {{sliderValues2[inputType + '_display_value']}}</span>
-                                            </span>
-                          </div>
-                        </div>
-
-                      </div>
-
-                    </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<div class="row d-none">
-  <div class="col-md-12">
-    <div id="about" class="card bg-light mb-3 card-02">
-      <div class="card-header">About Unbreakable</div>
-      <div class="card-body">
-        <p>
-          Economic losses from natural disasters totaled $210 billion in 2016.
-          Such statements, while true, imply that the impact of natural disasters is limited
-          to the damage inflicted on buildings, infrastructure, and agricultural production.
-          However, $1 in losses does not mean the same thing to a rich person as it does to
-          a poor person; the gravity of any loss depends on whom it affects, and the
-          traditional focus on aggregate losses obscures the plight of poor people by
-          restricting consideration to how natural disasters affect those wealthy enough to have
-          considerable assets to lose in the first place.
-        </p>
-
-        <p>
-          In 2016, the World Bank released Unbreakable, a flagship report that goes beyond
-          traditional metrics like gross asset losses to examine how natural disasters
-          affect people’s well-being. In an average year, the poorest 20% of people in a
-          country suffer less than 10% of aggregate asset losses, but fully 25% of aggregate
-          well-being losses. In other words, poor people suffer only a fraction of gross
-          economic losses caused by natural disasters, but they bear a much larger brunt of natural disasters’
-          consequences. This approach takes fuller account of how poverty increases people’s
-          vulnerability to natural disasters, and how natural disasters trap people in poverty.
-        </p>
-
-        <p>Learn more about <a href="https://www.gfdrr.org">GFDRR</a> and the <a href="https://www.gfdrr.org/unbreakable">Unbreakable Report.</a></p>
       </div>
     </div>
   </div>
 </div>
-
-<div class="col-md-4 col-rm d-none">
-  <div id="#fat" class="card bg-light mb-3 card-01">
-    <div class="card-header">Unbreakable Resilience Indicator</div>
-    <div class="card-body">
-      This tool is designed to examine how natural disasters affect people’s well-being, and how policy and financial tools available to governments and the World Bank can mitigate these losses, helping more people to escape poverty. Click <a href="https://www.gfdrr.org/unbreakable">here</a>  to learn more.
-      <hr class="report">
-      <div class="row">
-        <div class="col-md-12">
-
-          <p>View the risk indicators of losses in assets and well-being and changes in socio-economic resilience due to natural disasters in an average year for your selected country.</p>
-          <p>Or click on 'Access Full Model' so you can manipulate the resilience inputs under the map to see how policy interventions could mitigate asset risk and well-being risk, and build socioeconomic resilience in countries around the world.</p>
-          <!-- <p>View losses on assets and well-being and changes in
-          socio-economic capacity for one or two countries.</p> 
-          <p>Select two countries from the map or type their names:</p>-->
-        </div>
-      </div>
-      <div class="row box-general box-cu">
-
-      </div>
-      <br>
-    </div>
-  </div>
-
-</div>
-
 
 <app-footer [selection]="false"></app-footer>
+<!-- End Print -->
+<app-print #print
+           [countryData]="countryData"
+           [chartConf]="chartConf"
+           [gaugeData]="gaugeData"
+           [gaugeChangeData]="gaugeChangeData"
+           [inputLabels]="inputLabels"
+           [selectedCountry]="selectedCountry"
+           [selectedCountryName]="selectedCountryName"
+           [showPolicy]="showPolicy"
+           [sliderValues1]="sliderValues1"
+           [onSliderChangeEvent1]="onSliderChangeEvent1"
+           [onSliderInputEventAlt]="onSliderInputEventAlt"
+           [switchValue]="switchValue"
+           [viewerDisplay]="viewerDisplay"
+           [viewerGroupModel]="viewerGroupModel"
+           [viewerModel]="viewerModel"></app-print>
+

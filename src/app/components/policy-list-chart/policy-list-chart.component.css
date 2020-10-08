@@ -1,0 +1,37 @@
+.chart-legend-title {
+  font-size: 18px;
+}
+
+.chart-legend-subtitle {
+  font-size: 12px;
+}
+
+.chart-legend-detail-wrapper {
+  align-items: center;
+  display: flex;
+  margin-top: 10px;
+  margin-bottom: 22px;
+}
+
+.detail-margin {
+  margin-right: 15px;
+}
+
+.chart-legend-detail {
+  font-size: 12px;
+}
+
+.chart-legend-ellipse {
+  margin-right: 4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+}
+
+.ellipse-blue {
+  background-color: var(--teal);
+}
+
+.ellipse-gray {
+  background-color: var(--gray-green);
+}

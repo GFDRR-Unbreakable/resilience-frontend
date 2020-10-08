@@ -9,15 +9,15 @@ export const SERVER = {
     // Local backend endpoints
     // BASE_SERVER: 'http://localhost:9090/',
     // Dev backend endpoints
-    BASE_SERVER: 'http://18.191.153.87:9090/',
+    // BASE_SERVER: 'http://18.191.153.87:9090/',
     // Prod backend endpoints
-    // BASE_SERVER: 'http://13.58.142.191:9090/',
+    BASE_SERVER: 'http://localhost:9090/',
     // Local python endpoints
     // BASE_SERVER_PY: 'http://gfdrr-py.local/',
     // Dev python endpoints
-    BASE_SERVER_PY: 'http://18.191.153.87:9091/',
+    // BASE_SERVER_PY: 'http://18.191.153.87:9091/',
     // Prod python endpoints
-    // BASE_SERVER_PY: 'http://13.58.142.191:9091/',
+    BASE_SERVER_PY: 'https://unbreakable.gfdrr.org:9091/',
     SERVER_API: 'api/',
     SERVER_DOWNLOADPDF: 'pdf',
     SERVER_DOWNLOADSCPDF: 'sc_pdf',
@@ -39,7 +39,7 @@ export const SERVER = {
     VP_DATA: 'vp.csv',
     VR_DATA: 'vr.csv',
     INPUT_MODEL: 'model_adapter.py',
-    OUTPUT_DATA: 'df_for_wrapper2.csv',
+    OUTPUT_DATA: 'all_countries_data.csv',
     INPUTS_INFO: 'inputs_info_wrapper.csv'
   }
 };
