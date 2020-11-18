@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { Map, MapboxOptions } from 'mapbox-gl';
+import {Injectable} from '@angular/core';
+import {Map, MapboxOptions} from 'mapbox-gl';
 import * as mapboxgl from 'mapbox-gl';
 import VectorSource = mapboxgl.VectorSource;
 
@@ -8,8 +8,10 @@ export class MapService {
   /**
    * Public and private variables are set here to be used along with the Mapbox-gl library.
    */
+    // public token: String
+    //   = 'pk.eyJ1IjoiZ3NkcG0iLCJhIjoiY2lqbmN5eG9mMDBndHVmbTU5Mmg1djF6MiJ9.QqFCD7tcmccysN8GUClW8w';
   public token: String
-    = 'pk.eyJ1IjoiZ3NkcG0iLCJhIjoiY2lqbmN5eG9mMDBndHVmbTU5Mmg1djF6MiJ9.QqFCD7tcmccysN8GUClW8w';
+    = 'pk.eyJ1IjoiZ2ZkcnItZGFzaGJvYXJkIiwiYSI6ImNqMnV3MWppdjAwMXUydmxhaG1weTZzaW8ifQ.drORihaTAcJEGLXFSKjvfQ';
   public map: Map;
   private _sourceId = 'dashboard';
   private _layerId = 'all-country';
@@ -77,12 +79,14 @@ export class MapService {
       ['No data', '', '#f6f6f4']
     ]
   };
+
   /**
    * Set mapboxgl accestoken when this service is initialized by a component.
    */
   constructor() {
     (mapboxgl as any).accessToken = this.token;
   }
+
   /**
    * Appends base-layers on the map chart, these includes the root-layer and hovering-layer.
    */
@@ -123,6 +127,7 @@ export class MapService {
       }
     });
   }
+
   /**
    * This method listens the UI @event style.load from mapbox-gl library and invokes passed
    * function callback
@@ -131,6 +136,7 @@ export class MapService {
   addStylesOnMapLoading(cb: Function) {
     this.map.on('style.load', cb);
   }
+
   /**
    * Appends vector-lines layer to contrast country geometry limitation in its base-layer.
    * @param {Object} sourceParams - Source params to be used in the layer configuration
@@ -169,6 +175,7 @@ export class MapService {
     }
     this.map.addLayer(layerObj);
   }
+
   /**
    * Appends vector-fill layer to contrast country geometry selection in its base-layer.
    * @param {Object} sourceParams - Source params to be used in the layer configuration
@@ -197,6 +204,7 @@ export class MapService {
     }
     this.map.addLayer(layerObj);
   }
+
   /**
    * Modifies layer styles like background-color when layers are being changed according the indicators.
    * @param {Object} params - Style related properties to be set.
@@ -206,6 +214,7 @@ export class MapService {
     const layerStyle = this.getMapPaintConf(params.type);
     this.map.setPaintProperty(this._layerId, styleProp, layerStyle);
   }
+
   /**
    * Modifies Isocode private array according to passed id.
    * @param {Number} id - Id to be pushed or popped from the Isocode private array.
@@ -226,6 +235,7 @@ export class MapService {
       this._isoCodesArr = [];
     }
   }
+
   /**
    * Plots a map chart given a mapId passed as argument.
    * @param {String} mapId - HTML container Id which map chart will be plotted on the page.
@@ -242,12 +252,14 @@ export class MapService {
       renderWorldCopies: false,
     });
   }
+
   /**
    * Returns the mapbox-gl created map configuration object.
    */
   getMap() {
     return this.map;
   }
+
   /**
    * Returns style configuration for selected-indicator (basemap) layer.
    * @param {String} type - Indicator name
@@ -255,6 +267,7 @@ export class MapService {
   getMapPaintConf(type: string) {
     return this._getViewerStyleConf[type];
   }
+
   /**
    * Returns style configuration for selected-indicator legend UI component.
    * @param {String} type - Indicator name
@@ -262,6 +275,7 @@ export class MapService {
   getMapLegendConf(type: string) {
     return this._getViewerMapLegendConf[type];
   }
+
   /**
    * Merges new Vector-fill object params with default ones and returns them into another object
    * @param {Object} sourceParams - Source params to be used in the layer configuration
@@ -284,6 +298,7 @@ export class MapService {
       map: Object.assign({}, defaultMapParams, mapParams)
     };
   }
+
   /**
    * Merges new Vector-lines object params with default ones and returns them into another object
    * @param {Object} sourceParams - Source params to be used in the layer configuration
@@ -309,12 +324,14 @@ export class MapService {
       map: Object.assign({}, defaultMapParams, mapParams)
     };
   }
+
   /**
    * Returns Fill-layer name.
    */
   getViewerFillLayer(): string {
     return this._layerFillId;
   }
+
   /**
    * Changes map filtering ISO-code for Filled-layer in order to show a country-selection-like functionality on the map.
    * @param {String} isoCode - Country Iso-code
@@ -324,6 +341,7 @@ export class MapService {
     this.changeIsoCodeFilter(isoCode);
     this.map.setFilter(this._layerHoverId, [...defaultArr, ...this._isoCodesArr]);
   }
+
   /**
    * Changes map filtering ISO-code for existing and non-existing countries in order to
    * show a country-selection-like functionality on the map.
@@ -334,6 +352,7 @@ export class MapService {
     this.map.setFilter(this._layerId, [...defaultArr, ...isoCodes]);
     this.map.setFilter(this._layerFillId, [...defaultArr, ...isoCodes]);
   }
+
   /**
    * This method listens @event click from the mapbox-gl map chart and invokes passed
    * function callback
@@ -342,6 +361,7 @@ export class MapService {
   setClickFnMapEvent(cb: Function) {
     this.map.on('click', cb);
   }
+
   /**
    * This method listens @event mousemove from the mapbox-gl map chart and invokes passed
    * function callback
