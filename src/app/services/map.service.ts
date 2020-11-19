@@ -8,8 +8,6 @@ export class MapService {
   /**
    * Public and private variables are set here to be used along with the Mapbox-gl library.
    */
-    // public token: String
-    //   = 'pk.eyJ1IjoiZ3NkcG0iLCJhIjoiY2lqbmN5eG9mMDBndHVmbTU5Mmg1djF6MiJ9.QqFCD7tcmccysN8GUClW8w';
   public token: String
     = 'pk.eyJ1IjoiZ2ZkcnItZGFzaGJvYXJkIiwiYSI6ImNqMnV3MWppdjAwMXUydmxhaG1weTZzaW8ifQ.drORihaTAcJEGLXFSKjvfQ';
   public map: Map;
@@ -244,7 +242,7 @@ export class MapService {
     this.map = new Map({
       container: mapId,
       preserveDrawingBuffer: true,
-      style: 'mapbox://styles/gsdpm/cir6ljf470006bsmehhstmxeh',
+      style: 'mapbox://styles/gfdrr-dashboard/ckhnniw80114y1an6vt03fzq2',
       center: [0, 20],
       zoom: 0.85,
       maxZoom: 4.6,
