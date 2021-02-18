@@ -60,7 +60,7 @@
 <div class="container">
   <div class="country-select__container">
     <h2 class="mappage__header">Select Country</h2>
-    <div class="box-dropdown row">
+    <!-- <div class="box-dropdown row">
       <div class="country-select__wrapper form-group col-md-6" [class.has-danger]="searchFailed">
         <input id="country-1Txt" type="text" class="form-control input-wd country-select__input"
                [(ngModel)]="viewerModel.firstCountry"
@@ -72,6 +72,38 @@
                placeholder="Select a country"/>
         <span class="country-select__label">Try another country!</span>
 
+      </div>
+    </div> -->
+    <div class="box-dropdown row">
+      <div class="country-select__wrapper form-group col-md-6">
+        <md-input-container class="country-select__input-container" floatPlaceholder="never">
+          <input
+            mdInput
+            class="country-select__input"
+            [mdAutocomplete]="auto"
+            [formControl]="countryCtrl"
+            [(ngModel)]="viewerModel.firstCountry"
+          >
+          <button
+            mdSuffix
+            class="country-select__clear-button"
+            (click)="viewerModel.firstCountry = ''"
+          >
+            <i class="mdi mdi-close"></i>
+          </button>
+        </md-input-container>
+
+        <md-autocomplete #auto="mdAutocomplete">
+          <md-option
+            *ngFor="let country of filteredCountries | async"
+            [value]="country"
+            (onSelectionChange)="onCountryOptionSelect($event)"
+            >
+            {{ country }}
+          </md-option>
+        </md-autocomplete>
+
+        <span class="country-select__label">Try another country!</span>
       </div>
     </div>
   </div>

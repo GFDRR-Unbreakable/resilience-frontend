@@ -2,10 +2,10 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {NgcCookieConsentModule, NgcCookieConsentConfig} from 'ngx-cookieconsent';
 import { environment } from '../environments/environment';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpModule, RequestOptions, XHRBackend} from '@angular/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MdSliderModule} from '@angular/material';
+import {MdSliderModule, MdInputModule, MdAutocompleteModule} from '@angular/material';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import 'hammerjs';
 
@@ -117,10 +117,13 @@ const cookieConfig: NgcCookieConsentConfig = {
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpModule,
     NgbModule.forRoot(),
     BrowserAnimationsModule,
     MdSliderModule,
+    MdInputModule,
+    MdAutocompleteModule,
     routing,
     store,
     StoreDevtoolsModule.instrumentOnlyWithExtension({

@@ -13,10 +13,9 @@ import {ChartService} from '../../services/chart.service';
 import {Subscription} from 'rxjs/Subscription';
 import {Store} from '@ngrx/store';
 import {AppStore} from '../../store/default.store';
-import {MdSliderChange} from '@angular/material/';
 import {PrintComponent} from '../print/print.component';
 import {NgbTypeahead} from "@ng-bootstrap/ng-bootstrap";
-
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-viewer',
@@ -183,6 +182,10 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   private isResetting = false;
   private isFocusing = false;
 
+  countryCtrl: FormControl;
+  filteredCountries: any;
+  countries = [];
+
   @ViewChild('instance') instance: NgbTypeahead;
 
   @ViewChild('print') print: PrintComponent;
@@ -197,6 +200,18 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     }, 0);
   }
 
+  filterCountryList(val: string) {
+    return val ? this.countryUIList.filter(s => s.toLowerCase().indexOf(val.toLowerCase()) === 0) : this.countryUIList;
+  }
+
+  onCountryOptionSelect(e) {
+    const {isUserInput, source} = e;
+    if(isUserInput) {
+      this.viewerModel.firstCountry = source.value;
+      this.onFirstCountryInputChangeEvent();
+    }
+  }
+
   /**
    * Returns a list of matches as a result of a searched string when first or second input-text is being modified.
    */
@@ -208,6 +223,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         term = '';
       }
       this.isFocusing = false;
+      console.log('countryUIList', this.countryUIList);
+
       if (!term.length) {
         return this.countryUIList.slice(0, 10);
       } else {
@@ -286,6 +303,11 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     private store: Store<AppStore>,
     private fileService: FileService,
     private router: ActivatedRoute) {
+
+    this.countryCtrl = new FormControl();
+    this.filteredCountries = this.countryCtrl.valueChanges
+        .startWith(null)
+        .map(name =>  this.filterCountryList(name));
 
     this.viewer$ = store.select('countrytool');
     this.viewerModel1$ = store.select('viewerModel1');

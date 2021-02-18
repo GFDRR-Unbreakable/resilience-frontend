@@ -12004,3 +12004,13 @@ svg text {
   margin: 40px 0 40px 0;
   text-align: center;
 }
+
+
+.country-select__wrapper .mat-input-underline {
+  display: none;
+}
+
+.country-select__wrapper .mat-input-infix {
+  border-top: 0;
+  padding-top: 0
+}
