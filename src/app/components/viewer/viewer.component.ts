@@ -223,7 +223,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         term = '';
       }
       this.isFocusing = false;
-      console.log('countryUIList', this.countryUIList);
 
       if (!term.length) {
         return this.countryUIList.slice(0, 10);
@@ -304,11 +303,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     private fileService: FileService,
     private router: ActivatedRoute) {
 
-    this.countryCtrl = new FormControl();
-    this.filteredCountries = this.countryCtrl.valueChanges
-        .startWith(null)
-        .map(name =>  this.filterCountryList(name));
-
     this.viewer$ = store.select('countrytool');
     this.viewerModel1$ = store.select('viewerModel1');
     this.viewerModel2$ = store.select('viewerModel2');
@@ -338,6 +332,20 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.hazardTypes = this.chartService.getChartsConf().hazardTypes;
     // this.calloutTitle = this.setCalloutTitle();
+
+    this.countryCtrl = new FormControl();
+
+    this.filteredCountries = this.countryCtrl.valueChanges
+      .startWith(this.viewerModel.firstCountry)
+      .map(name =>  {
+        const showFullList = !name.length || (name === this.selectedCountryName);
+        return !showFullList ? this.filterCountryList(name) : this.countryUIList.slice();
+      });
+  }
+
+  onAutocompleteFocus() {
+    // Shows full country list when you focus on input with a country selected.
+    this.countryCtrl.setValue(this.viewerModel.firstCountry);
   }
 
   /**
